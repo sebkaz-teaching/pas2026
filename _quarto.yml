@@ -14,9 +14,7 @@ project:
     - "*.qmd"
     - "lectures/*.qmd"
     - "cwiczenia/*.qmd"
-    - "!lectures/spotkanie2.qmd"
     - "!lectures/spotkanie3.qmd"
-    - "!cwiczenia/spotkanie2.qmd"
     - "!cwiczenia/spotkanie3.qmd"
 
 website:
@@ -30,12 +28,12 @@ website:
       - section: "Wykłady (3 spotkania x 90 min)"
         contents:
           - lectures/spotkanie1.qmd
-          # - lectures/spotkanie2.qmd
+          - lectures/spotkanie2.qmd
           # - lectures/spotkanie3.qmd
       - section: "Laboratoria (3 spotkania x 3h)"
         contents:
           - cwiczenia/spotkanie1.qmd
-          # - cwiczenia/spotkanie2.qmd
+          - cwiczenia/spotkanie2.qmd
           # - cwiczenia/spotkanie3.qmd
   page-footer: "Copyright 2026, Sebastian Zając"
 format:

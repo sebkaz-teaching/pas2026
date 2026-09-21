@@ -1,200 +1,219 @@
 [
   {
-    "objectID": "lectures/spotkanie1.html",
-    "href": "lectures/spotkanie1.html",
-    "title": "Spotkanie 1: Architektura i protokół HTTP",
-    "section": "",
-    "text": "Po tej części powinieneś rozumieć, z jakich warstw składa się typowa aplikacja sieciowa, czym różni się od zwykłego programu działającego lokalnie, jak wygląda komunikacja klient–serwer oraz jakie są główne style projektowania API. Poznasz też projekt, który będziemy budować przez cały semestr na laboratoriach.\n\n\n\n\nAplikacja sieciowa (ang. network application) to program, którego części działają na różnych maszynach połączonych siecią i komunikują się ze sobą, wymieniając dane według ustalonego protokołu.\nKluczowa różnica względem programu lokalnego: stan i logika nie muszą żyć w tym samym procesie co interfejs użytkownika. Telefon żołnierza wysyłający zgłoszenie i serwer przechowujący dane o sprzęcie to dwa oddzielne programy, które nigdy nie współdzielą pamięci — jedyny sposób komunikacji to sieć.\n\n\n\nSystem rezerwacji (hotel, poligon, sala wykładowa)\nBankowość internetowa\nKomunikatory (WhatsApp, Signal)\nSystemy ewidencji sprzętu i logistyki\n\n\n\n\n\n\nNajpopularniejszy model architektury aplikacji sieciowej.\n\n\n\n\n\n\n\nRola\nZadanie\n\n\n\n\nKlient\nInicjuje żądanie, prezentuje wynik użytkownikowi (przeglądarka, aplikacja mobilna, inny serwer)\n\n\nSerwer\nNasłuchuje na żądania, przetwarza je, zwraca odpowiedź\n\n\n\n\nSerwer nie “dzwoni” sam do klienta bez powodu — to klient zawsze inicjuje rozmowę. (Wyjątki: WebSocket, powiadomienia push — omówimy przy okazji wykładu o skalowalności.)\n\n\n\nRozdzielenie klienta i serwera daje:\n\nniezależne skalowanie — można dodać kolejne serwery bez zmiany klienta,\nwielu klientów na jeden serwer — przeglądarka, aplikacja mobilna i inny system mogą korzystać z tego samego API,\naktualizacje bez przeinstalowywania — zmiana logiki na serwerze nie wymaga nic od użytkownika.\n\n\n\n\n\n\nTypowa aplikacja sieciowa dzieli się na trzy warstwy:\n\n\n\n\n\n\n\n\nWarstwa\nOdpowiada za\nPrzykład technologii\n\n\n\n\nPrezentacji (frontend)\nInterfejs użytkownika\nHTML/CSS/JS, aplikacja mobilna\n\n\nLogiki biznesowej (backend)\nReguły, walidację, przetwarzanie żądań\nPython (FastAPI), Java, Node.js\n\n\nDanych\nTrwałe przechowywanie informacji\nPostgreSQL, SQLite, MongoDB\n\n\n\n\n Schemat trójwarstwowy: Klient (frontend) ↔︎ API (backend) ↔︎ Baza danych\n\nTo ten sam podział, co poziomy ANSI/SPARC z kursów o bazach danych — tu warstwa “logiki” dodatkowo pośredniczy między światem zewnętrznym a bazą, zamiast pozwalać klientowi łączyć się z bazą bezpośrednio.\nDlaczego backend nigdy nie powinien pozwalać frontendowi łączyć się z bazą wprost? Bo wtedy każdy klient musiałby znać hasło do bazy, strukturę tabel i reguły biznesowe — a zmiana schematu bazy złamałaby każdą aplikację kliencką osobno.\n\n\n\n\nAby klient i serwer się zrozumiały, muszą mówić tym samym językiem — protokołem.\n\n\n\n\n\nWarstwa (uproszczony model)\nPrzykład protokołu\n\n\n\n\nAplikacji\nHTTP/HTTPS, FTP, SMTP\n\n\nTransportowa\nTCP, UDP\n\n\nSieciowa\nIP\n\n\n\nHTTP (HyperText Transfer Protocol) działa na bazie TCP — zanim popłynie choćby bajt danych HTTP, klient i serwer muszą nawiązać połączenie TCP (tzw. three-way handshake). HTTPS to HTTP owinięte w warstwę szyfrowania TLS.\nSzczegóły samego HTTP (metody, nagłówki, kody odpowiedzi) to temat części II tego spotkania — na razie tylko umiejscawiamy go w stosie.\n\n\n\n\n\nKiedy backend ma udostępnić swoje możliwości innym programom, robi to przez API (Application Programming Interface). Kilka konkurencyjnych stylów:\n\n\n\n\n\n\n\n\nStyl\nFormat danych\nCharakterystyka\n\n\n\n\nREST\nzwykle JSON\nzasoby adresowane przez URL, operacje przez metody HTTP — dominujący styl dziś\n\n\nSOAP\nXML\nsztywny kontrakt (WSDL), popularny w starszych systemach korporacyjnych/rządowych\n\n\nGraphQL\nJSON\nklient sam opisuje, jakich danych potrzebuje, w jednym zapytaniu\n\n\ngRPC\nbinarny (Protocol Buffers)\nbardzo szybki, typowany, głównie do komunikacji między mikroserwisami\n\n\nWebSocket\ndowolny\ndwukierunkowy, trwały kanał — do komunikacji w czasie rzeczywistym (czat, powiadomienia)\n\n\n\nW tym kursie skupiamy się na REST — to on zdominował publiczne API i będzie tym, co zbudujesz na laboratoriach.\n\n\n\nKażdy zasób (rzecz, którą aplikacja przechowuje) ma swój adres URL, a to, co chcemy z nim zrobić, wyrażamy metodą HTTP (GET = pobierz, POST = utwórz, PUT/PATCH = zmień, DELETE = usuń) — nie czasownikiem w samym adresie.\n\nPrzykład: zamiast GET /pobierzRezerwacje?id=5, w REST piszemy GET /rezerwacje/5. Adres opisuje co, metoda HTTP opisuje jak.\n\n\n\n\n\nPrzez 12 laboratoriów zbudujemy razem jeden, rosnący system: rezerwację poligonu/strzelnicy dla jednostki wojskowej.\n\n\n\n\n\n\n\n\n\nRola\nMoże\n\n\n\n\nPlanista poligonu\nzarządzać dostępnością poligonów, zatwierdzać/odrzucać rezerwacje\n\n\nDowódca jednostki\nrezerwować poligon dla swojego pododdziału\n\n\n(gość/niezalogowany)\ntylko przeglądać dostępność, bez rezerwacji\n\n\n\n\n\n\n\nPoligon — nazwa, lokalizacja, dostępne przedziały czasowe, typ (strzelnica, teren manewrowy…)\nJednostka — nazwa, dowódca\nRezerwacja — który poligon, która jednostka, od kiedy do kiedy, status (oczekująca, zatwierdzona, odrzucona)\n\n\n\n\nDwie jednostki nie mogą zarezerwować tego samego poligonu w nakładających się przedziałach czasu. To pozornie proste wymaganie wróci wielokrotnie — przy walidacji danych, przy autoryzacji (kto może zatwierdzić konflikt) i przy współbieżności (co gdy dwie rezerwacje przychodzą w tej samej sekundzie).\n\n💡 Zapamiętaj ten problem — będziemy go rozwiązywać stopniowo, warstwa po warstwie, przez cały semestr.\n\n\n\n\n\n\n\nAplikacja sieciowa rozdziela klienta i serwer, komunikujących się przez sieć według ustalonego protokołu.\nTypowy podział to trzy warstwy: prezentacji, logiki biznesowej, danych.\nHTTP to protokół aplikacyjny działający na TCP; HTTPS dodaje szyfrowanie TLS.\nREST to dominujący dziś styl API: zasoby jako adresy URL, operacje jako metody HTTP.\nSemestralny projekt: system rezerwacji poligonu — zaczynamy od środowiska pracy i pierwszego serwera na laboratorium 1.",
-    "crumbs": [
-      "Wykłady (3 spotkania x 90 min)",
-      "Spotkanie 1: Architektura i protokół HTTP"
-    ]
-  },
-  {
-    "objectID": "lectures/spotkanie1.html#cele",
-    "href": "lectures/spotkanie1.html#cele",
-    "title": "Spotkanie 1: Architektura i protokół HTTP",
-    "section": "",
-    "text": "Po tej części powinieneś rozumieć, z jakich warstw składa się typowa aplikacja sieciowa, czym różni się od zwykłego programu działającego lokalnie, jak wygląda komunikacja klient–serwer oraz jakie są główne style projektowania API. Poznasz też projekt, który będziemy budować przez cały semestr na laboratoriach.",
-    "crumbs": [
-      "Wykłady (3 spotkania x 90 min)",
-      "Spotkanie 1: Architektura i protokół HTTP"
-    ]
-  },
-  {
-    "objectID": "lectures/spotkanie1.html#czym-jest-aplikacja-sieciowa",
-    "href": "lectures/spotkanie1.html#czym-jest-aplikacja-sieciowa",
-    "title": "Spotkanie 1: Architektura i protokół HTTP",
-    "section": "",
-    "text": "Aplikacja sieciowa (ang. network application) to program, którego części działają na różnych maszynach połączonych siecią i komunikują się ze sobą, wymieniając dane według ustalonego protokołu.\nKluczowa różnica względem programu lokalnego: stan i logika nie muszą żyć w tym samym procesie co interfejs użytkownika. Telefon żołnierza wysyłający zgłoszenie i serwer przechowujący dane o sprzęcie to dwa oddzielne programy, które nigdy nie współdzielą pamięci — jedyny sposób komunikacji to sieć.\n\n\n\nSystem rezerwacji (hotel, poligon, sala wykładowa)\nBankowość internetowa\nKomunikatory (WhatsApp, Signal)\nSystemy ewidencji sprzętu i logistyki",
-    "crumbs": [
-      "Wykłady (3 spotkania x 90 min)",
-      "Spotkanie 1: Architektura i protokół HTTP"
-    ]
-  },
-  {
-    "objectID": "lectures/spotkanie1.html#model-klientserwer",
-    "href": "lectures/spotkanie1.html#model-klientserwer",
-    "title": "Spotkanie 1: Architektura i protokół HTTP",
-    "section": "",
-    "text": "Najpopularniejszy model architektury aplikacji sieciowej.\n\n\n\n\n\n\n\nRola\nZadanie\n\n\n\n\nKlient\nInicjuje żądanie, prezentuje wynik użytkownikowi (przeglądarka, aplikacja mobilna, inny serwer)\n\n\nSerwer\nNasłuchuje na żądania, przetwarza je, zwraca odpowiedź\n\n\n\n\nSerwer nie “dzwoni” sam do klienta bez powodu — to klient zawsze inicjuje rozmowę. (Wyjątki: WebSocket, powiadomienia push — omówimy przy okazji wykładu o skalowalności.)\n\n\n\nRozdzielenie klienta i serwera daje:\n\nniezależne skalowanie — można dodać kolejne serwery bez zmiany klienta,\nwielu klientów na jeden serwer — przeglądarka, aplikacja mobilna i inny system mogą korzystać z tego samego API,\naktualizacje bez przeinstalowywania — zmiana logiki na serwerze nie wymaga nic od użytkownika.",
-    "crumbs": [
-      "Wykłady (3 spotkania x 90 min)",
-      "Spotkanie 1: Architektura i protokół HTTP"
-    ]
-  },
-  {
-    "objectID": "lectures/spotkanie1.html#warstwy-aplikacji-sieciowej",
-    "href": "lectures/spotkanie1.html#warstwy-aplikacji-sieciowej",
-    "title": "Spotkanie 1: Architektura i protokół HTTP",
-    "section": "",
-    "text": "Typowa aplikacja sieciowa dzieli się na trzy warstwy:\n\n\n\n\n\n\n\n\nWarstwa\nOdpowiada za\nPrzykład technologii\n\n\n\n\nPrezentacji (frontend)\nInterfejs użytkownika\nHTML/CSS/JS, aplikacja mobilna\n\n\nLogiki biznesowej (backend)\nReguły, walidację, przetwarzanie żądań\nPython (FastAPI), Java, Node.js\n\n\nDanych\nTrwałe przechowywanie informacji\nPostgreSQL, SQLite, MongoDB\n\n\n\n\n Schemat trójwarstwowy: Klient (frontend) ↔︎ API (backend) ↔︎ Baza danych\n\nTo ten sam podział, co poziomy ANSI/SPARC z kursów o bazach danych — tu warstwa “logiki” dodatkowo pośredniczy między światem zewnętrznym a bazą, zamiast pozwalać klientowi łączyć się z bazą bezpośrednio.\nDlaczego backend nigdy nie powinien pozwalać frontendowi łączyć się z bazą wprost? Bo wtedy każdy klient musiałby znać hasło do bazy, strukturę tabel i reguły biznesowe — a zmiana schematu bazy złamałaby każdą aplikację kliencką osobno.",
-    "crumbs": [
-      "Wykłady (3 spotkania x 90 min)",
-      "Spotkanie 1: Architektura i protokół HTTP"
-    ]
-  },
-  {
-    "objectID": "lectures/spotkanie1.html#protokoły-komunikacyjne",
-    "href": "lectures/spotkanie1.html#protokoły-komunikacyjne",
-    "title": "Spotkanie 1: Architektura i protokół HTTP",
-    "section": "",
-    "text": "Aby klient i serwer się zrozumiały, muszą mówić tym samym językiem — protokołem.\n\n\n\n\n\nWarstwa (uproszczony model)\nPrzykład protokołu\n\n\n\n\nAplikacji\nHTTP/HTTPS, FTP, SMTP\n\n\nTransportowa\nTCP, UDP\n\n\nSieciowa\nIP\n\n\n\nHTTP (HyperText Transfer Protocol) działa na bazie TCP — zanim popłynie choćby bajt danych HTTP, klient i serwer muszą nawiązać połączenie TCP (tzw. three-way handshake). HTTPS to HTTP owinięte w warstwę szyfrowania TLS.\nSzczegóły samego HTTP (metody, nagłówki, kody odpowiedzi) to temat części II tego spotkania — na razie tylko umiejscawiamy go w stosie.",
-    "crumbs": [
-      "Wykłady (3 spotkania x 90 min)",
-      "Spotkanie 1: Architektura i protokół HTTP"
-    ]
-  },
-  {
-    "objectID": "lectures/spotkanie1.html#style-projektowania-api",
-    "href": "lectures/spotkanie1.html#style-projektowania-api",
-    "title": "Spotkanie 1: Architektura i protokół HTTP",
-    "section": "",
-    "text": "Kiedy backend ma udostępnić swoje możliwości innym programom, robi to przez API (Application Programming Interface). Kilka konkurencyjnych stylów:\n\n\n\n\n\n\n\n\nStyl\nFormat danych\nCharakterystyka\n\n\n\n\nREST\nzwykle JSON\nzasoby adresowane przez URL, operacje przez metody HTTP — dominujący styl dziś\n\n\nSOAP\nXML\nsztywny kontrakt (WSDL), popularny w starszych systemach korporacyjnych/rządowych\n\n\nGraphQL\nJSON\nklient sam opisuje, jakich danych potrzebuje, w jednym zapytaniu\n\n\ngRPC\nbinarny (Protocol Buffers)\nbardzo szybki, typowany, głównie do komunikacji między mikroserwisami\n\n\nWebSocket\ndowolny\ndwukierunkowy, trwały kanał — do komunikacji w czasie rzeczywistym (czat, powiadomienia)\n\n\n\nW tym kursie skupiamy się na REST — to on zdominował publiczne API i będzie tym, co zbudujesz na laboratoriach.\n\n\n\nKażdy zasób (rzecz, którą aplikacja przechowuje) ma swój adres URL, a to, co chcemy z nim zrobić, wyrażamy metodą HTTP (GET = pobierz, POST = utwórz, PUT/PATCH = zmień, DELETE = usuń) — nie czasownikiem w samym adresie.\n\nPrzykład: zamiast GET /pobierzRezerwacje?id=5, w REST piszemy GET /rezerwacje/5. Adres opisuje co, metoda HTTP opisuje jak.",
-    "crumbs": [
-      "Wykłady (3 spotkania x 90 min)",
-      "Spotkanie 1: Architektura i protokół HTTP"
-    ]
-  },
-  {
-    "objectID": "lectures/spotkanie1.html#projekt-semestralny-system-rezerwacji-poligonu",
-    "href": "lectures/spotkanie1.html#projekt-semestralny-system-rezerwacji-poligonu",
-    "title": "Spotkanie 1: Architektura i protokół HTTP",
-    "section": "",
-    "text": "Przez 12 laboratoriów zbudujemy razem jeden, rosnący system: rezerwację poligonu/strzelnicy dla jednostki wojskowej.\n\n\n\n\n\n\n\n\n\nRola\nMoże\n\n\n\n\nPlanista poligonu\nzarządzać dostępnością poligonów, zatwierdzać/odrzucać rezerwacje\n\n\nDowódca jednostki\nrezerwować poligon dla swojego pododdziału\n\n\n(gość/niezalogowany)\ntylko przeglądać dostępność, bez rezerwacji\n\n\n\n\n\n\n\nPoligon — nazwa, lokalizacja, dostępne przedziały czasowe, typ (strzelnica, teren manewrowy…)\nJednostka — nazwa, dowódca\nRezerwacja — który poligon, która jednostka, od kiedy do kiedy, status (oczekująca, zatwierdzona, odrzucona)\n\n\n\n\nDwie jednostki nie mogą zarezerwować tego samego poligonu w nakładających się przedziałach czasu. To pozornie proste wymaganie wróci wielokrotnie — przy walidacji danych, przy autoryzacji (kto może zatwierdzić konflikt) i przy współbieżności (co gdy dwie rezerwacje przychodzą w tej samej sekundzie).\n\n💡 Zapamiętaj ten problem — będziemy go rozwiązywać stopniowo, warstwa po warstwie, przez cały semestr.",
-    "crumbs": [
-      "Wykłady (3 spotkania x 90 min)",
-      "Spotkanie 1: Architektura i protokół HTTP"
-    ]
-  },
-  {
-    "objectID": "lectures/spotkanie1.html#podsumowanie-części-i",
-    "href": "lectures/spotkanie1.html#podsumowanie-części-i",
-    "title": "Spotkanie 1: Architektura i protokół HTTP",
-    "section": "",
-    "text": "Aplikacja sieciowa rozdziela klienta i serwer, komunikujących się przez sieć według ustalonego protokołu.\nTypowy podział to trzy warstwy: prezentacji, logiki biznesowej, danych.\nHTTP to protokół aplikacyjny działający na TCP; HTTPS dodaje szyfrowanie TLS.\nREST to dominujący dziś styl API: zasoby jako adresy URL, operacje jako metody HTTP.\nSemestralny projekt: system rezerwacji poligonu — zaczynamy od środowiska pracy i pierwszego serwera na laboratorium 1.",
-    "crumbs": [
-      "Wykłady (3 spotkania x 90 min)",
-      "Spotkanie 1: Architektura i protokół HTTP"
-    ]
-  },
-  {
-    "objectID": "lectures/spotkanie1.html#cele-1",
-    "href": "lectures/spotkanie1.html#cele-1",
-    "title": "Spotkanie 1: Architektura i protokół HTTP",
+    "objectID": "lectures/spotkanie2.html#cele",
+    "href": "lectures/spotkanie2.html#cele",
+    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
     "section": "🎯 Cele",
-    "text": "🎯 Cele\nPo tej części będziesz rozumieć strukturę żądania i odpowiedzi HTTP, znał najważniejsze metody i kody statusu, oraz wiedział, dlaczego HTTP jest protokołem “bezstanowym” i co to oznacza w praktyce dla projektowania aplikacji.",
+    "text": "🎯 Cele\nNauczysz się projektować adresy URL i strukturę odpowiedzi API tak, żeby były przewidywalne i łatwe w użyciu — oraz poznasz, jak FastAPI generuje dokumentację OpenAPI automatycznie z Waszego kodu.",
     "crumbs": [
       "Wykłady (3 spotkania x 90 min)",
-      "Spotkanie 1: Architektura i protokół HTTP"
+      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
     ]
   },
   {
-    "objectID": "lectures/spotkanie1.html#anatomia-żądania-http",
-    "href": "lectures/spotkanie1.html#anatomia-żądania-http",
-    "title": "Spotkanie 1: Architektura i protokół HTTP",
-    "section": "1️⃣ Anatomia żądania HTTP",
-    "text": "1️⃣ Anatomia żądania HTTP\nKiedy przeglądarka (albo curl, albo Wasz kod) wysyła żądanie, wygląda ono (uproszczone) tak:\nGET /poligony/5 HTTP/1.1\nHost: sebastianzajac.pl\nAccept: application/json\nAuthorization: Bearer eyJhbGc...\n\n(puste ciało — GET zwykle go nie ma)\n\n\n\n\n\n\n\nElement\nZnaczenie\n\n\n\n\nLinia startowa\nmetoda + ścieżka + wersja protokołu\n\n\nNagłówki (headers)\nmetadane: co akceptujemy, kim jesteśmy, jaki format wysyłamy\n\n\nCiało (body)\nwłaściwe dane (przy GET zwykle puste, przy POST/PUT — tak)",
+    "objectID": "lectures/spotkanie2.html#zasoby-nie-czynności",
+    "href": "lectures/spotkanie2.html#zasoby-nie-czynności",
+    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
+    "section": "1️⃣ Zasoby, nie czynności",
+    "text": "1️⃣ Zasoby, nie czynności\nAdres URL w REST opisuje rzecz (zasób), nie akcję — akcję wyraża metoda HTTP (spotkanie 1, część II). Dobra konwencja nazewnicza:\n\n\n\nŹle\nDobrze\n\n\n\n\n/getPoligony\nGET /poligony\n\n\n/utworzRezerwacje\nPOST /rezerwacje\n\n\n/poligon/usun/5\nDELETE /poligony/5\n\n\n\nZasady:\n\nRzeczowniki, nie czasowniki w ścieżce.\nLiczba mnoga dla kolekcji: /poligony, nie /poligon.\nMałe litery, myślniki zamiast podkreślników w wieloczłonowych nazwach.",
     "crumbs": [
       "Wykłady (3 spotkania x 90 min)",
-      "Spotkanie 1: Architektura i protokół HTTP"
+      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
     ]
   },
   {
-    "objectID": "lectures/spotkanie1.html#metody-http-czasowniki-rest-a",
-    "href": "lectures/spotkanie1.html#metody-http-czasowniki-rest-a",
-    "title": "Spotkanie 1: Architektura i protokół HTTP",
-    "section": "2️⃣ Metody HTTP — czasowniki REST-a",
-    "text": "2️⃣ Metody HTTP — czasowniki REST-a\n\n\n\nMetoda\nZnaczenie\nMa ciało?\nBezpieczna?*\nIdempotentna?**\n\n\n\n\nGET\npobierz zasób\nnie\ntak\ntak\n\n\nPOST\nutwórz nowy zasób\ntak\nnie\nnie\n\n\nPUT\nzastąp cały zasób\ntak\nnie\ntak\n\n\nPATCH\nzmodyfikuj część zasobu\ntak\nnie\nnie (zwykle)\n\n\nDELETE\nusuń zasób\nnie\nnie\ntak\n\n\n\n* Bezpieczna (safe) = nie zmienia stanu serwera — można ją wywołać wielokrotnie bez skutków ubocznych (przeglądarka może np. prefetchować linki GET). ** Idempotentna = wielokrotne wykonanie daje ten sam efekt co jednokrotne. DELETE /poligony/5 wywołane dwa razy nadal kończy się brakiem poligonu 5 — drugie wywołanie nic nowego nie psuje (może zwrócić 404, ale stan systemu jest identyczny). POST nie jest idempotentny: dwukrotne wysłanie tworzy dwa zasoby.\n\n⚠️ To rozróżnienie ma praktyczne znaczenie: jeśli klient nie dostał odpowiedzi (timeout sieciowy) i nie wie, czy żądanie dotarło, bezpiecznie może powtórzyć PUT/DELETE, ale powtórzenie POST może utworzyć duplikat.",
+    "objectID": "lectures/spotkanie2.html#zasoby-zagnieżdżone",
+    "href": "lectures/spotkanie2.html#zasoby-zagnieżdżone",
+    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
+    "section": "2️⃣ Zasoby zagnieżdżone",
+    "text": "2️⃣ Zasoby zagnieżdżone\nKiedy jeden zasób “należy” logicznie do drugiego:\nGET /poligony/5/rezerwacje        -- rezerwacje na poligonie 5\nPOST /poligony/5/rezerwacje       -- nowa rezerwacja na poligonie 5\nGET /jednostki/3/rezerwacje       -- rezerwacje jednostki 3\n\n⚠️ Nie zagnieżdżaj głębiej niż 2 poziomy (/a/1/b/2/c/3 jest już nieczytelne) — jeśli potrzebujesz głębszego zagnieżdżenia, rozważ osobny, płaski endpoint z filtrowaniem przez query params zamiast ścieżki.",
     "crumbs": [
       "Wykłady (3 spotkania x 90 min)",
-      "Spotkanie 1: Architektura i protokół HTTP"
+      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
     ]
   },
   {
-    "objectID": "lectures/spotkanie1.html#kody-statusu-pięć-rodzin",
-    "href": "lectures/spotkanie1.html#kody-statusu-pięć-rodzin",
-    "title": "Spotkanie 1: Architektura i protokół HTTP",
-    "section": "3️⃣ Kody statusu — pięć rodzin",
-    "text": "3️⃣ Kody statusu — pięć rodzin\n\n\n\n\n\n\n\n\nZakres\nRodzina\nPrzykłady\n\n\n\n\n1xx\nInformacyjne\nrzadko używane bezpośrednio w API\n\n\n2xx\nSukces\n200 OK, 201 Created, 204 No Content\n\n\n3xx\nPrzekierowanie\n301 Moved Permanently, 304 Not Modified\n\n\n4xx\nBłąd klienta\n400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found\n\n\n5xx\nBłąd serwera\n500 Internal Server Error, 503 Service Unavailable\n\n\n\n\n🔹 Rozróżnienie, które myli początkujących: 401 vs 403\n\n401 Unauthorized — “nie wiem, kim jesteś” (brak albo niepoprawne uwierzytelnienie).\n403 Forbidden — “wiem, kim jesteś, ale nie masz uprawnień do tej operacji”.\n\nPrzykład z naszego projektu: żołnierz bez zalogowania próbujący zobaczyć /rezerwacje → 401. Zalogowany żołnierz próbujący zatwierdzić rezerwację (uprawnienie tylko planisty) → 403.",
+    "objectID": "lectures/spotkanie2.html#filtrowanie-sortowanie-paginacja-przez-query-params",
+    "href": "lectures/spotkanie2.html#filtrowanie-sortowanie-paginacja-przez-query-params",
+    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
+    "section": "3️⃣ Filtrowanie, sortowanie, paginacja — przez query params",
+    "text": "3️⃣ Filtrowanie, sortowanie, paginacja — przez query params\nGET /rezerwacje?status=zatwierdzona          -- filtrowanie\nGET /rezerwacje?sortuj=data&kierunek=desc    -- sortowanie\nGET /rezerwacje?strona=2&na_strone=20         -- paginacja\nQuery params (po ?) nadają się do opcjonalnych modyfikatorów zapytania — ścieżka (/rezerwacje) zostaje ta sama niezależnie od tego, jak filtrujesz czy sortujesz wynik.\n\n\n\n\n\n\nNoteDlaczego paginacja jest ważna, nawet w małym projekcie?\n\n\n\nGET /rezerwacje bez paginacji, gdy tabela urośnie do 100 000 wierszy, zwróci gigantyczną odpowiedź, która obciąży i serwer, i klienta. Dobra praktyka: zawsze projektuj endpointy listujące z myślą o paginacji, nawet jeśli na start danych jest mało.",
     "crumbs": [
       "Wykłady (3 spotkania x 90 min)",
-      "Spotkanie 1: Architektura i protokół HTTP"
+      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
     ]
   },
   {
-    "objectID": "lectures/spotkanie1.html#nagłówki-które-będziecie-używać-najczęściej",
-    "href": "lectures/spotkanie1.html#nagłówki-które-będziecie-używać-najczęściej",
-    "title": "Spotkanie 1: Architektura i protokół HTTP",
-    "section": "4️⃣ Nagłówki, które będziecie używać najczęściej",
-    "text": "4️⃣ Nagłówki, które będziecie używać najczęściej\n\n\n\n\n\n\n\nNagłówek\nRola\n\n\n\n\nContent-Type\njaki format ma ciało żądania/odpowiedzi (application/json)\n\n\nAuthorization\ndane uwierzytelniające (Bearer &lt;token&gt;) — wracamy do tego przy bezpieczeństwie\n\n\nAccept\njaki format klient chce dostać z powrotem\n\n\nCache-Control\njak długo/czy wolno cache’ować odpowiedź",
+    "objectID": "lectures/spotkanie2.html#wersjonowanie-api",
+    "href": "lectures/spotkanie2.html#wersjonowanie-api",
+    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
+    "section": "4️⃣ Wersjonowanie API",
+    "text": "4️⃣ Wersjonowanie API\nKiedy zmieniasz kształt API w sposób, który złamałby istniejących klientów (np. zmieniasz nazwę pola), potrzebujesz wersjonowania:\n/api/v1/poligony\n/api/v2/poligony\nAlternatywa: wersjonowanie przez nagłówek (Accept: application/vnd.api.v2+json) — rzadziej spotykane w praktyce, ale czystsze koncepcyjnie. W tym kursie użyjemy prostszego podejścia z prefiksem /api/v1/ w ścieżce.",
     "crumbs": [
       "Wykłady (3 spotkania x 90 min)",
-      "Spotkanie 1: Architektura i protokół HTTP"
+      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
     ]
   },
   {
-    "objectID": "lectures/spotkanie1.html#http-jest-bezstanowy-co-to-znaczy-naprawdę",
-    "href": "lectures/spotkanie1.html#http-jest-bezstanowy-co-to-znaczy-naprawdę",
-    "title": "Spotkanie 1: Architektura i protokół HTTP",
-    "section": "5️⃣ HTTP jest bezstanowy — co to znaczy naprawdę",
-    "text": "5️⃣ HTTP jest bezstanowy — co to znaczy naprawdę\nSerwer nie pamięta niczego między dwoma żądaniami tego samego klienta — każde żądanie musi nieść ze sobą wszystko, czego serwer potrzebuje, żeby je obsłużyć (np. token uwierzytelniający w nagłówku, nie “zapamiętane” gdzieś po stronie serwera).\n\n💡 To dlaczego logowanie polega na tym, że klient za każdym razem wysyła token (w Authorization), a nie że serwer “pamięta”, że kogoś już zalogował 5 minut temu. Do mechanizmu tokenów wrócimy przy wykładzie o bezpieczeństwie.\n\n\n\n\n\n\n\nNoteA cookies i sesje?\n\n\n\nHistorycznie serwery symulowały stan przez cookies + sesje po stronie serwera (Set-Cookie → przeglądarka odsyła ten sam identyfikator przy każdym żądaniu → serwer odnajduje zapisany stan w swojej pamięci/bazie). To dalej działa i bywa używane, ale w architekturach REST/API (szczególnie gdy klientem nie jest przeglądarka, tylko np. aplikacja mobilna) tokeny bezstanowe (JWT) są dziś częstszym wyborem — nie wymagają, żeby serwer pamiętał cokolwiek o sesji.",
+    "objectID": "lectures/spotkanie2.html#openapi-dokumentacja-która-się-nie-starzeje",
+    "href": "lectures/spotkanie2.html#openapi-dokumentacja-która-się-nie-starzeje",
+    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
+    "section": "5️⃣ OpenAPI — dokumentacja, która się nie starzeje",
+    "text": "5️⃣ OpenAPI — dokumentacja, która się nie starzeje\nPamiętacie /docs z laboratorium 1? To nie przypadek, że działa automatycznie — FastAPI generuje specyfikację OpenAPI (JSON opisujący każdy endpoint, jego parametry, kształt odpowiedzi) bezpośrednio z Waszego kodu (adnotacji typów, modeli Pydantic). Dostępna jest pod /openapi.json.\nDlaczego to ważne: dokumentacja pisana ręcznie (osobny plik Word/Markdown) zawsze z czasem rozjeżdża się z rzeczywistym kodem — ktoś zmienia endpoint i zapomina zaktualizować opis. Dokumentacja generowana z kodu nie może się rozjechać, bo to dosłownie ten sam kod.\n@app.get(\n    \"/poligony/{poligon_id}\",\n    response_model=Poligon,\n    summary=\"Pobierz jeden poligon po ID\",\n    description=\"Zwraca 404, jesli poligon o podanym ID nie istnieje.\",\n)\ndef pobierz_poligon(poligon_id: int):\n    ...\nParametry summary/description trafiają bezpośrednio do /docs — dobra dokumentacja API to część kodu, nie osobny dokument.",
     "crumbs": [
       "Wykłady (3 spotkania x 90 min)",
-      "Spotkanie 1: Architektura i protokół HTTP"
+      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
     ]
   },
   {
-    "objectID": "lectures/spotkanie1.html#cache-kiedy-nie-pytać-serwera-drugi-raz",
-    "href": "lectures/spotkanie1.html#cache-kiedy-nie-pytać-serwera-drugi-raz",
-    "title": "Spotkanie 1: Architektura i protokół HTTP",
-    "section": "6️⃣ Cache — kiedy nie pytać serwera drugi raz",
-    "text": "6️⃣ Cache — kiedy nie pytać serwera drugi raz\nCache-Control: max-age=3600 mówi klientowi (albo pośredniczącemu proxy): “ta odpowiedź jest ważna przez godzinę, nie pytaj mnie ponownie”. Dobrze zaprojektowane API rozróżnia zasoby, które warto cache’ować (lista dostępnych poligonów, zmienia się rzadko) od tych, których nie wolno (stan bieżącej rezerwacji — musi być zawsze aktualny).",
+    "objectID": "lectures/spotkanie2.html#spójna-struktura-błędów",
+    "href": "lectures/spotkanie2.html#spójna-struktura-błędów",
+    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
+    "section": "6️⃣ Spójna struktura błędów",
+    "text": "6️⃣ Spójna struktura błędów\nZamiast każdy endpoint zwracający błędy w innym formacie, warto ustalić jeden wzorzec:\n{\n  \"detail\": \"Poligon nie znaleziony\"\n}\nFastAPI robi to domyślnie dla HTTPException (dokładnie ten kształt, który widzieliście już w laboratoriach) — trzymajcie się tego wzorca konsekwentnie we wszystkich endpointach.",
     "crumbs": [
       "Wykłady (3 spotkania x 90 min)",
-      "Spotkanie 1: Architektura i protokół HTTP"
+      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
     ]
   },
   {
-    "objectID": "lectures/spotkanie1.html#podsumowanie-części-ii",
-    "href": "lectures/spotkanie1.html#podsumowanie-części-ii",
-    "title": "Spotkanie 1: Architektura i protokół HTTP",
+    "objectID": "lectures/spotkanie2.html#podsumowanie-części-i",
+    "href": "lectures/spotkanie2.html#podsumowanie-części-i",
+    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
+    "section": "🧾 Podsumowanie części I",
+    "text": "🧾 Podsumowanie części I\n\nURL opisuje zasób (rzeczownik, liczba mnoga), metoda HTTP opisuje akcję.\nZagnieżdżaj zasoby maksymalnie na 2 poziomy; filtruj/sortuj/paginuj przez query params.\nWersjonuj API przez prefiks ścieżki, gdy zmiana złamałaby istniejących klientów.\nOpenAPI/Swagger generowane z kodu nigdy się nie starzeje — w odróżnieniu od ręcznie pisanej dokumentacji.",
+    "crumbs": [
+      "Wykłady (3 spotkania x 90 min)",
+      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie2.html#cele-1",
+    "href": "lectures/spotkanie2.html#cele-1",
+    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
+    "section": "🎯 Cele",
+    "text": "🎯 Cele\nPoznasz różnicę między uwierzytelnianiem a autoryzacją, zrozumiesz jak działają tokeny JWT, oraz poznasz najważniejsze podatności z listy OWASP Top 10 i jak się przed nimi bronić — wiedzę, którą zastosujesz praktycznie w kolejnych laboratoriach.",
+    "crumbs": [
+      "Wykłady (3 spotkania x 90 min)",
+      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie2.html#uwierzytelnianie-vs-autoryzacja",
+    "href": "lectures/spotkanie2.html#uwierzytelnianie-vs-autoryzacja",
+    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
+    "section": "1️⃣ Uwierzytelnianie vs autoryzacja",
+    "text": "1️⃣ Uwierzytelnianie vs autoryzacja\nTo dwa różne pytania, często mylone:\n\n\n\n\n\n\n\n\nPytanie\nTermin\nPrzykład\n\n\n\n\nKim jesteś?\nUwierzytelnianie (authentication)\nlogin + hasło, token\n\n\nCo wolno Ci zrobić?\nAutoryzacja (authorization)\nplanista może zatwierdzać rezerwacje, żołnierz — nie\n\n\n\nSystem może wiedzieć, kim jesteś (uwierzytelniony), ale mimo to odmówić Ci operacji (brak autoryzacji) — to dokładnie różnica między 401 a 403 ze spotkania 1.",
+    "crumbs": [
+      "Wykłady (3 spotkania x 90 min)",
+      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie2.html#jak-przechowywać-hasła-nigdy-jawnym-tekstem",
+    "href": "lectures/spotkanie2.html#jak-przechowywać-hasła-nigdy-jawnym-tekstem",
+    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
+    "section": "2️⃣ Jak przechowywać hasła — nigdy jawnym tekstem",
+    "text": "2️⃣ Jak przechowywać hasła — nigdy jawnym tekstem\n# NIGDY:\nif podane_haslo == uzytkownik.haslo:  # haslo w bazie jako czysty tekst\n\n# ZAWSZE: hashowanie z \"solą\"\nimport bcrypt\n\nhash_hasla = bcrypt.hashpw(haslo.encode(), bcrypt.gensalt())\n# ... zapisz hash_hasla w bazie, NIGDY samego hasla\n\n# przy logowaniu:\nbcrypt.checkpw(podane_haslo.encode(), hash_hasla)\nbcrypt (i podobne: argon2, scrypt) to funkcje jednokierunkowe — z hasha nie da się odtworzyć hasła, a każde wywołanie z “solą” (losowym dodatkiem) daje inny wynik nawet dla tego samego hasła, co chroni przed atakami tęczowych tablic (rainbow tables). Praktykę tę zastosujecie w kolejnych laboratoriach.",
+    "crumbs": [
+      "Wykłady (3 spotkania x 90 min)",
+      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie2.html#sesje-vs-tokeny-dwa-modele-uwierzytelniania",
+    "href": "lectures/spotkanie2.html#sesje-vs-tokeny-dwa-modele-uwierzytelniania",
+    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
+    "section": "3️⃣ Sesje vs tokeny — dwa modele uwierzytelniania",
+    "text": "3️⃣ Sesje vs tokeny — dwa modele uwierzytelniania\n\n\n\n\n\n\n\n\n\nSesje (cookie-based)\nTokeny (JWT)\n\n\n\n\nGdzie żyje stan\npo stronie serwera (baza sesji)\nw samym tokenie, po stronie klienta\n\n\nSkalowanie na wiele serwerów\nwymaga współdzielonej bazy sesji\ntrywialne — każdy serwer sam zweryfikuje token\n\n\nUnieważnienie przed wygaśnięciem\nłatwe (usuń z bazy)\ntrudniejsze (token jest ważny, dopóki nie wygaśnie)\n\n\n\nW tym kursie używamy JWT (JSON Web Token) — pasuje do architektury bezstanowej ze spotkania 1.",
+    "crumbs": [
+      "Wykłady (3 spotkania x 90 min)",
+      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie2.html#anatomia-jwt",
+    "href": "lectures/spotkanie2.html#anatomia-jwt",
+    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
+    "section": "4️⃣ Anatomia JWT",
+    "text": "4️⃣ Anatomia JWT\nToken JWT to trzy części oddzielone kropkami: header.payload.signature\neyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5rb3dhbHNraSIsInJvbGEiOiJkb3dvZGNhIn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c\n\nHeader — jaki algorytm podpisu (np. HS256).\nPayload — dane (np. {\"sub\": \"jankowalski\", \"rola\": \"dowodca\", \"exp\": 1735689600}) — czytelne dla każdego (to tylko Base64, nie szyfrowanie!), więc nigdy nie wkładajcie tam haseł czy innych sekretów.\nSignature — podpis kryptograficzny, weryfikowany kluczem znanym tylko serwerowi — to on gwarantuje, że nikt nie sfałszował payloadu.\n\n\n\n\n\n\n\nImportantJWT jest podpisany, nie zaszyfrowany\n\n\n\nKażdy, kto przechwyci token, może odczytać jego zawartość (Base64 to nie szyfrowanie) — nie może jej jednak zmienić niezauważenie, bo podpis by się nie zgadzał. Wniosek: JWT chroni przed fałszowaniem danych, nie przed ich odczytaniem — transport tokenu musi iść przez HTTPS, żeby nikt po drodze go nie podsłuchał.",
+    "crumbs": [
+      "Wykłady (3 spotkania x 90 min)",
+      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie2.html#owasp-top-10-trzy-podatności-które-napotkacie-w-laboratoriach",
+    "href": "lectures/spotkanie2.html#owasp-top-10-trzy-podatności-które-napotkacie-w-laboratoriach",
+    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
+    "section": "5️⃣ OWASP Top 10 — trzy podatności, które napotkacie w laboratoriach",
+    "text": "5️⃣ OWASP Top 10 — trzy podatności, które napotkacie w laboratoriach\n\nSQL Injection\n# PODATNE:\nconn.execute(f\"SELECT * FROM uzytkownicy WHERE login = '{login}'\")\n# atakujacy wpisuje: login = \"' OR '1'='1\"\nObrona: zawsze parametryzowane zapytania (widzieliście to już przy bazie danych) — conn.execute(\"... WHERE login = ?\", (login,)).\n\n\nXSS (Cross-Site Scripting)\nAtakujący wstrzykuje złośliwy JavaScript do danych, które potem są wyświetlane innemu użytkownikowi bez odpowiedniego oczyszczenia (np. komentarz zawierający &lt;script&gt;...&lt;/script&gt;, wyświetlony bez escapowania w przeglądarce ofiary).\nObrona: nowoczesne frameworki frontendowe (React i podobne) domyślnie escapują dane przy renderowaniu — problem pojawia się głównie, gdy ktoś świadomie to wyłączy (dangerouslySetInnerHTML i podobne).\n\n\nCSRF (Cross-Site Request Forgery)\nAtakujący nakłania przeglądarkę ofiary (zalogowanej w Waszej aplikacji) do wysłania żądania bez jej wiedzy (np. przez ukryty formularz na złośliwej stronie). Ponieważ przeglądarka automatycznie dołącza cookies do żądań, serwer “widzi” żądanie jako uwierzytelnione.\nObrona: API oparte o JWT w nagłówku Authorization (nie w cookies) jest z natury odporne na klasyczny CSRF — atakująca strona nie ma dostępu do tokenu przechowywanego przez Waszą aplikację (np. w pamięci JS), więc nie może go dołączyć do sfałszowanego żądania.",
+    "crumbs": [
+      "Wykłady (3 spotkania x 90 min)",
+      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie2.html#httpstls-dlaczego-zawsze",
+    "href": "lectures/spotkanie2.html#httpstls-dlaczego-zawsze",
+    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
+    "section": "6️⃣ HTTPS/TLS — dlaczego zawsze",
+    "text": "6️⃣ HTTPS/TLS — dlaczego zawsze\nBez TLS każdy w tej samej sieci (Wi-Fi w kawiarni, router po drodze) może odczytać cały ruch — łącznie z tokenami JWT i hasłami przesyłanymi przy logowaniu. TLS szyfruje transport między klientem a serwerem — to warunek konieczny, nie opcjonalny dodatek, dla każdej aplikacji przyjmującej dane logowania.",
+    "crumbs": [
+      "Wykłady (3 spotkania x 90 min)",
+      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie2.html#podsumowanie-części-ii",
+    "href": "lectures/spotkanie2.html#podsumowanie-części-ii",
+    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
     "section": "🧾 Podsumowanie części II",
-    "text": "🧾 Podsumowanie części II\n\nŻądanie HTTP = linia startowa (metoda + ścieżka) + nagłówki + opcjonalne ciało.\nMetody różnią się tym, czy są bezpieczne i idempotentne — to ma realne konsekwencje przy błędach sieciowych.\nKody 4xx to błąd po stronie klienta, 5xx — po stronie serwera; 401 ≠ 403.\nHTTP jest bezstanowy — każde żądanie musi być samowystarczalne.",
+    "text": "🧾 Podsumowanie części II\n\nUwierzytelnianie = kim jesteś; autoryzacja = co wolno Ci zrobić — to dwa osobne mechanizmy.\nHasła zawsze hashowane (bcrypt/argon2), nigdy przechowywane jawnym tekstem.\nJWT jest podpisany (integralność), nie zaszyfrowany (poufność) — payload jest czytelny dla każdego.\nSQL injection, XSS, CSRF — trzy klasyczne podatności; parametryzowane zapytania, escapowanie i tokeny w nagłówku to podstawowa obrona.",
     "crumbs": [
       "Wykłady (3 spotkania x 90 min)",
-      "Spotkanie 1: Architektura i protokół HTTP"
+      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
     ]
   },
   {
-    "objectID": "lectures/spotkanie1.html#źródła",
-    "href": "lectures/spotkanie1.html#źródła",
-    "title": "Spotkanie 1: Architektura i protokół HTTP",
+    "objectID": "lectures/spotkanie2.html#źródła",
+    "href": "lectures/spotkanie2.html#źródła",
+    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
     "section": "📚 Źródła",
-    "text": "📚 Źródła\n\nR. Fielding, Architectural Styles and the Design of Network-based Software Architectures\nMDN Web Docs — An overview of HTTP, HTTP request methods, HTTP response status codes\nRFC 9110 — HTTP Semantics\nDokumentacja FastAPI (framework używany na laboratoriach)",
+    "text": "📚 Źródła\n\nDokumentacja FastAPI — Path Operations, OpenAPI, Security\nM. Masse, REST API Design Rulebook\nOWASP Top 10 (owasp.org)\nRFC 7519 — JSON Web Token (JWT)",
     "crumbs": [
       "Wykłady (3 spotkania x 90 min)",
-      "Spotkanie 1: Architektura i protokół HTTP"
+      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Informacje ogólne",
+    "section": "",
+    "text": "Kod:\nSemestr: zimowy",
+    "crumbs": [
+      "Informacje ogólne"
+    ]
+  },
+  {
+    "objectID": "index.html#projektowanie-aplikacji-sieciowych",
+    "href": "index.html#projektowanie-aplikacji-sieciowych",
+    "title": "Informacje ogólne",
+    "section": "",
+    "text": "Kod:\nSemestr: zimowy",
+    "crumbs": [
+      "Informacje ogólne"
+    ]
+  },
+  {
+    "objectID": "index.html#kalendarz",
+    "href": "index.html#kalendarz",
+    "title": "Informacje ogólne",
+    "section": "Kalendarz",
+    "text": "Kalendarz\n\n\nWykład dla grup:\n\nTODO: dzień tygodnia, godzina, sala\n\n\n\nLaboratorium dla grup:\n\nTODO: dzień tygodnia, godzina, sala",
+    "crumbs": [
+      "Informacje ogólne"
     ]
   },
   {
@@ -462,33 +481,410 @@
     ]
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Informacje ogólne",
+    "objectID": "cwiczenia/spotkanie2.html",
+    "href": "cwiczenia/spotkanie2.html",
+    "title": "Lab, spotkanie 2: Walidacja, logowanie, role i ochrona",
     "section": "",
-    "text": "Kod:\nSemestr: zimowy",
+    "text": "Cztery części: dopinamy walidację danych, dodajemy prawdziwych użytkowników z hasłami, uwierzytelnianie przez JWT z rolami, i na koniec łatamy dziury bezpieczeństwa, które w tym momencie ma każdy niedbale napisany serwer.",
     "crumbs": [
-      "Informacje ogólne"
+      "Laboratoria (3 spotkania x 3h)",
+      "Lab, spotkanie 2: Walidacja, logowanie, role i ochrona"
     ]
   },
   {
-    "objectID": "index.html#projektowanie-aplikacji-sieciowych",
-    "href": "index.html#projektowanie-aplikacji-sieciowych",
-    "title": "Informacje ogólne",
-    "section": "",
-    "text": "Kod:\nSemestr: zimowy",
+    "objectID": "cwiczenia/spotkanie2.html#cel",
+    "href": "cwiczenia/spotkanie2.html#cel",
+    "title": "Lab, spotkanie 2: Walidacja, logowanie, role i ochrona",
+    "section": "🎯 Cel",
+    "text": "🎯 Cel\nWzmocnić walidację ponad to, co Pydantic robi domyślnie (typy) — dodać reguły biznesowe (np. data_od musi być przed data_do) i ujednolicić sposób zgłaszania błędów w całym API.",
     "crumbs": [
-      "Informacje ogólne"
+      "Laboratoria (3 spotkania x 3h)",
+      "Lab, spotkanie 2: Walidacja, logowanie, role i ochrona"
     ]
   },
   {
-    "objectID": "index.html#kalendarz",
-    "href": "index.html#kalendarz",
-    "title": "Informacje ogólne",
-    "section": "Kalendarz",
-    "text": "Kalendarz\n\n\nWykład dla grup:\n\nTODO: dzień tygodnia, godzina, sala\n\n\n\nLaboratorium dla grup:\n\nTODO: dzień tygodnia, godzina, sala",
+    "objectID": "cwiczenia/spotkanie2.html#walidacja-na-poziomie-pola-field",
+    "href": "cwiczenia/spotkanie2.html#walidacja-na-poziomie-pola-field",
+    "title": "Lab, spotkanie 2: Walidacja, logowanie, role i ochrona",
+    "section": "1️⃣ Walidacja na poziomie pola — Field",
+    "text": "1️⃣ Walidacja na poziomie pola — Field\nfrom pydantic import BaseModel, Field\n\nclass PoligonCreate(BaseModel):\n    nazwa: str = Field(min_length=2, max_length=100)\n    lokalizacja: str = Field(min_length=2)\n    typ: str\n    dostepny: bool = True\nField pozwala dodać ograniczenia (długość, zakres liczbowy) bez pisania własnego kodu sprawdzającego — Pydantic zwróci 422 z czytelnym opisem, zanim Twoja funkcja w ogóle zobaczy dane.",
     "crumbs": [
-      "Informacje ogólne"
+      "Laboratoria (3 spotkania x 3h)",
+      "Lab, spotkanie 2: Walidacja, logowanie, role i ochrona"
+    ]
+  },
+  {
+    "objectID": "cwiczenia/spotkanie2.html#walidacja-reguł-biznesowych-model_validator",
+    "href": "cwiczenia/spotkanie2.html#walidacja-reguł-biznesowych-model_validator",
+    "title": "Lab, spotkanie 2: Walidacja, logowanie, role i ochrona",
+    "section": "2️⃣ Walidacja reguł biznesowych — model_validator",
+    "text": "2️⃣ Walidacja reguł biznesowych — model_validator\nReguła “data_od musi być przed data_do” dotyczy relacji między dwoma polami, nie pojedynczego pola — potrzebuje własnego walidatora:\nfrom pydantic import model_validator\nfrom datetime import datetime\n\nclass RezerwacjaCreate(BaseModel):\n    poligon_id: int\n    jednostka_id: int\n    data_od: str\n    data_do: str\n\n    @model_validator(mode=\"after\")\n    def sprawdz_zakres_dat(self):\n        if datetime.fromisoformat(self.data_od) &gt;= datetime.fromisoformat(self.data_do):\n            raise ValueError(\"data_od musi byc wczesniejsza niz data_do\")\n        return self\nTaki błąd Pydantic zamienia automatycznie na 422 — spójnie z resztą walidacji.",
+    "crumbs": [
+      "Laboratoria (3 spotkania x 3h)",
+      "Lab, spotkanie 2: Walidacja, logowanie, role i ochrona"
+    ]
+  },
+  {
+    "objectID": "cwiczenia/spotkanie2.html#spójne-kody-błędów-w-całym-api",
+    "href": "cwiczenia/spotkanie2.html#spójne-kody-błędów-w-całym-api",
+    "title": "Lab, spotkanie 2: Walidacja, logowanie, role i ochrona",
+    "section": "3️⃣ Spójne kody błędów w całym API",
+    "text": "3️⃣ Spójne kody błędów w całym API\nUstal (i trzymaj się) konwencji:\n\n\n\n\n\n\n\nSytuacja\nKod\n\n\n\n\nDane niepoprawnego typu/kształtu\n422 (automatycznie od Pydantic)\n\n\nZasób nie istnieje\n404\n\n\nPoprawne dane, ale konflikt ze stanem (duplikat, nakładający się termin)\n409\n\n\nBrak uprawnień\n403\n\n\nBrak uwierzytelnienia\n401\n\n\n\n\n✅ Mini-zadanie części I\nDodaj model_validator sprawdzający, że data_od rezerwacji nie jest w przeszłości (porównaj z datetime.now()). Sprawdź, że próba rezerwacji poligonu na wczoraj zwraca 422 z czytelnym komunikatem.",
+    "crumbs": [
+      "Laboratoria (3 spotkania x 3h)",
+      "Lab, spotkanie 2: Walidacja, logowanie, role i ochrona"
+    ]
+  },
+  {
+    "objectID": "cwiczenia/spotkanie2.html#cel-1",
+    "href": "cwiczenia/spotkanie2.html#cel-1",
+    "title": "Lab, spotkanie 2: Walidacja, logowanie, role i ochrona",
+    "section": "🎯 Cel",
+    "text": "🎯 Cel\nDodać prawdziwych użytkowników: tabelę w bazie, bezpieczne hashowanie haseł, i pierwsze dwa endpointy uwierzytelniania: /register i /login.",
+    "crumbs": [
+      "Laboratoria (3 spotkania x 3h)",
+      "Lab, spotkanie 2: Walidacja, logowanie, role i ochrona"
+    ]
+  },
+  {
+    "objectID": "cwiczenia/spotkanie2.html#tabela-użytkowników",
+    "href": "cwiczenia/spotkanie2.html#tabela-użytkowników",
+    "title": "Lab, spotkanie 2: Walidacja, logowanie, role i ochrona",
+    "section": "1️⃣ Tabela użytkowników",
+    "text": "1️⃣ Tabela użytkowników\nCREATE TABLE IF NOT EXISTS uzytkownicy (\n    id INTEGER PRIMARY KEY AUTOINCREMENT,\n    login TEXT NOT NULL UNIQUE,\n    hash_hasla TEXT NOT NULL,\n    rola TEXT NOT NULL DEFAULT 'dowodca'  -- 'dowodca' albo 'planista'\n);",
+    "crumbs": [
+      "Laboratoria (3 spotkania x 3h)",
+      "Lab, spotkanie 2: Walidacja, logowanie, role i ochrona"
+    ]
+  },
+  {
+    "objectID": "cwiczenia/spotkanie2.html#hashowanie-haseł-nigdy-jawnym-tekstem",
+    "href": "cwiczenia/spotkanie2.html#hashowanie-haseł-nigdy-jawnym-tekstem",
+    "title": "Lab, spotkanie 2: Walidacja, logowanie, role i ochrona",
+    "section": "2️⃣ Hashowanie haseł — nigdy jawnym tekstem",
+    "text": "2️⃣ Hashowanie haseł — nigdy jawnym tekstem\npip install bcrypt\nimport bcrypt\n\ndef zahashuj_haslo(haslo: str) -&gt; str:\n    return bcrypt.hashpw(haslo.encode(), bcrypt.gensalt()).decode()\n\ndef sprawdz_haslo(haslo: str, hash_z_bazy: str) -&gt; bool:\n    return bcrypt.checkpw(haslo.encode(), hash_z_bazy.encode())",
+    "crumbs": [
+      "Laboratoria (3 spotkania x 3h)",
+      "Lab, spotkanie 2: Walidacja, logowanie, role i ochrona"
+    ]
+  },
+  {
+    "objectID": "cwiczenia/spotkanie2.html#endpoint-register",
+    "href": "cwiczenia/spotkanie2.html#endpoint-register",
+    "title": "Lab, spotkanie 2: Walidacja, logowanie, role i ochrona",
+    "section": "3️⃣ Endpoint /register",
+    "text": "3️⃣ Endpoint /register\nclass RejestracjaRequest(BaseModel):\n    login: str\n    haslo: str = Field(min_length=8)\n    rola: str = \"dowodca\"\n\n@app.post(\"/register\", status_code=201)\ndef rejestracja(dane: RejestracjaRequest):\n    with get_db() as conn:\n        istniejacy = conn.execute(\"SELECT id FROM uzytkownicy WHERE login = ?\", (dane.login,)).fetchone()\n        if istniejacy:\n            raise HTTPException(status_code=409, detail=\"Login juz zajety\")\n        cursor = conn.execute(\n            \"INSERT INTO uzytkownicy (login, hash_hasla, rola) VALUES (?, ?, ?)\",\n            (dane.login, zahashuj_haslo(dane.haslo), dane.rola),\n        )\n        conn.commit()\n        return {\"id\": cursor.lastrowid, \"login\": dane.login, \"rola\": dane.rola}",
+    "crumbs": [
+      "Laboratoria (3 spotkania x 3h)",
+      "Lab, spotkanie 2: Walidacja, logowanie, role i ochrona"
+    ]
+  },
+  {
+    "objectID": "cwiczenia/spotkanie2.html#endpoint-login-na-razie-bez-tokenu-dopiero-część-iii",
+    "href": "cwiczenia/spotkanie2.html#endpoint-login-na-razie-bez-tokenu-dopiero-część-iii",
+    "title": "Lab, spotkanie 2: Walidacja, logowanie, role i ochrona",
+    "section": "4️⃣ Endpoint /login (na razie bez tokenu — dopiero część III)",
+    "text": "4️⃣ Endpoint /login (na razie bez tokenu — dopiero część III)\nclass LoginRequest(BaseModel):\n    login: str\n    haslo: str\n\n@app.post(\"/login\")\ndef login(dane: LoginRequest):\n    with get_db() as conn:\n        uzytkownik = conn.execute(\"SELECT * FROM uzytkownicy WHERE login = ?\", (dane.login,)).fetchone()\n        if not uzytkownik or not sprawdz_haslo(dane.haslo, uzytkownik[\"hash_hasla\"]):\n            raise HTTPException(status_code=401, detail=\"Nieprawidlowy login lub haslo\")\n        return {\"komunikat\": \"Zalogowano\", \"rola\": uzytkownik[\"rola\"]}\nZwróć uwagę: komunikat błędu jest celowo taki sam niezależnie od tego, czy zły jest login, czy hasło (“Nieprawidlowy login lub haslo”) — gdyby rozróżniać (“login nie istnieje” vs “złe hasło”), atakujący mógłby w ten sposób sprawdzać, które loginy istnieją w systemie.\n\n✅ Mini-zadanie części II\nDodaj walidację, że login ma co najmniej 3 znaki i składa się tylko z liter/cyfr (np. przez Field(pattern=...) albo model_validator).",
+    "crumbs": [
+      "Laboratoria (3 spotkania x 3h)",
+      "Lab, spotkanie 2: Walidacja, logowanie, role i ochrona"
+    ]
+  },
+  {
+    "objectID": "cwiczenia/spotkanie2.html#cel-2",
+    "href": "cwiczenia/spotkanie2.html#cel-2",
+    "title": "Lab, spotkanie 2: Walidacja, logowanie, role i ochrona",
+    "section": "🎯 Cel",
+    "text": "🎯 Cel\nZamienić /login z części II na wydawanie prawdziwego tokenu JWT, i zabezpieczyć wybrane endpointy tak, żeby wymagały konkretnej roli (np. tylko planista może zatwierdzać rezerwacje).",
+    "crumbs": [
+      "Laboratoria (3 spotkania x 3h)",
+      "Lab, spotkanie 2: Walidacja, logowanie, role i ochrona"
+    ]
+  },
+  {
+    "objectID": "cwiczenia/spotkanie2.html#generowanie-tokenu",
+    "href": "cwiczenia/spotkanie2.html#generowanie-tokenu",
+    "title": "Lab, spotkanie 2: Walidacja, logowanie, role i ochrona",
+    "section": "1️⃣ Generowanie tokenu",
+    "text": "1️⃣ Generowanie tokenu\npip install python-jose[cryptography]\nfrom jose import jwt\nfrom datetime import datetime, timedelta\n\nSECRET_KEY = \"zmien-mnie-w-prawdziwym-projekcie\"  # docelowo: zmienna srodowiskowa!\nALGORITHM = \"HS256\"\n\ndef utworz_token(login: str, rola: str) -&gt; str:\n    dane = {\n        \"sub\": login,\n        \"rola\": rola,\n        \"exp\": datetime.utcnow() + timedelta(hours=8),\n    }\n    return jwt.encode(dane, SECRET_KEY, algorithm=ALGORITHM)\nZaktualizuj /login, żeby zwracał token zamiast samego komunikatu:\n@app.post(\"/login\")\ndef login(dane: LoginRequest):\n    # ... weryfikacja jak w czesci II ...\n    token = utworz_token(uzytkownik[\"login\"], uzytkownik[\"rola\"])\n    return {\"access_token\": token, \"token_type\": \"bearer\"}",
+    "crumbs": [
+      "Laboratoria (3 spotkania x 3h)",
+      "Lab, spotkanie 2: Walidacja, logowanie, role i ochrona"
+    ]
+  },
+  {
+    "objectID": "cwiczenia/spotkanie2.html#weryfikacja-tokenu-depends",
+    "href": "cwiczenia/spotkanie2.html#weryfikacja-tokenu-depends",
+    "title": "Lab, spotkanie 2: Walidacja, logowanie, role i ochrona",
+    "section": "2️⃣ Weryfikacja tokenu — Depends",
+    "text": "2️⃣ Weryfikacja tokenu — Depends\nFastAPI ma wbudowany mechanizm wstrzykiwania zależności (Depends) — idealny do “za każdym razem zweryfikuj token, zanim wykonasz właściwą logikę endpointu”:\nfrom fastapi import Depends\nfrom fastapi.security import OAuth2PasswordBearer\n\noauth2_scheme = OAuth2PasswordBearer(tokenUrl=\"login\")\n\ndef pobierz_biezacego_uzytkownika(token: str = Depends(oauth2_scheme)) -&gt; dict:\n    try:\n        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])\n        return {\"login\": payload[\"sub\"], \"rola\": payload[\"rola\"]}\n    except Exception:\n        raise HTTPException(status_code=401, detail=\"Nieprawidlowy lub wygasly token\")\nDowolny endpoint dostaje uwierzytelnionego użytkownika, dopisując jeden parametr:\n@app.get(\"/rezerwacje\")\ndef lista_rezerwacji(uzytkownik: dict = Depends(pobierz_biezacego_uzytkownika)):\n    ...",
+    "crumbs": [
+      "Laboratoria (3 spotkania x 3h)",
+      "Lab, spotkanie 2: Walidacja, logowanie, role i ochrona"
+    ]
+  },
+  {
+    "objectID": "cwiczenia/spotkanie2.html#autoryzacja-wymagaj-konkretnej-roli",
+    "href": "cwiczenia/spotkanie2.html#autoryzacja-wymagaj-konkretnej-roli",
+    "title": "Lab, spotkanie 2: Walidacja, logowanie, role i ochrona",
+    "section": "3️⃣ Autoryzacja — wymagaj konkretnej roli",
+    "text": "3️⃣ Autoryzacja — wymagaj konkretnej roli\ndef wymagaj_roli(wymagana_rola: str):\n    def sprawdz(uzytkownik: dict = Depends(pobierz_biezacego_uzytkownika)) -&gt; dict:\n        if uzytkownik[\"rola\"] != wymagana_rola:\n            raise HTTPException(status_code=403, detail=\"Brak uprawnien do tej operacji\")\n        return uzytkownik\n    return sprawdz\n\n\n@app.post(\"/rezerwacje/{rez_id}/zatwierdz\")\ndef zatwierdz_rezerwacje(rez_id: int, uzytkownik: dict = Depends(wymagaj_roli(\"planista\"))):\n    ...\nwymagaj_roli(\"planista\") to fabryka zależności — funkcja zwracająca funkcję, dopasowaną do konkretnej roli. Dzięki temu jeden mechanizm obsługuje dowolną liczbę ról bez powtarzania kodu.\n\n✅ Mini-zadanie części III\nZabezpiecz DELETE /poligony/{id} tak, żeby tylko planista mógł usuwać poligony — dowodca próbujący to zrobić powinien dostać 403.",
+    "crumbs": [
+      "Laboratoria (3 spotkania x 3h)",
+      "Lab, spotkanie 2: Walidacja, logowanie, role i ochrona"
+    ]
+  },
+  {
+    "objectID": "cwiczenia/spotkanie2.html#cel-3",
+    "href": "cwiczenia/spotkanie2.html#cel-3",
+    "title": "Lab, spotkanie 2: Walidacja, logowanie, role i ochrona",
+    "section": "🎯 Cel",
+    "text": "🎯 Cel\nZamknąć trzy luki bezpieczeństwa, które są łatwe do przeoczenia w kodzie napisanym “na szybko”: brak walidacji nazw kolumn w sortowaniu, brak limitu żądań, i brak kontroli CORS.",
+    "crumbs": [
+      "Laboratoria (3 spotkania x 3h)",
+      "Lab, spotkanie 2: Walidacja, logowanie, role i ochrona"
+    ]
+  },
+  {
+    "objectID": "cwiczenia/spotkanie2.html#sql-injection-przez-nazwę-kolumny-luka-której-nie-łata",
+    "href": "cwiczenia/spotkanie2.html#sql-injection-przez-nazwę-kolumny-luka-której-nie-łata",
+    "title": "Lab, spotkanie 2: Walidacja, logowanie, role i ochrona",
+    "section": "1️⃣ SQL injection przez nazwę kolumny — luka, której nie łata ?",
+    "text": "1️⃣ SQL injection przez nazwę kolumny — luka, której nie łata ?\n# PODATNE — mimo ze reszta zapytania jest parametryzowana!\n@app.get(\"/rezerwacje\")\ndef lista(sortuj: str = \"data_od\"):\n    return conn.execute(f\"SELECT * FROM rezerwacje ORDER BY {sortuj}\").fetchall()\nPlaceholdery (?) działają tylko dla wartości, nie dla nazw kolumn/tabel — sortuj wstawiony przez f-string pozwala atakującemu wpisać dowolny SQL. Obrona: biała lista dozwolonych wartości.\nDOZWOLONE_KOLUMNY = {\"data_od\", \"data_do\", \"status\"}\n\n@app.get(\"/rezerwacje\")\ndef lista(sortuj: str = \"data_od\"):\n    if sortuj not in DOZWOLONE_KOLUMNY:\n        raise HTTPException(status_code=400, detail=\"Nieprawidlowa kolumna sortowania\")\n    return conn.execute(f\"SELECT * FROM rezerwacje ORDER BY {sortuj}\").fetchall()",
+    "crumbs": [
+      "Laboratoria (3 spotkania x 3h)",
+      "Lab, spotkanie 2: Walidacja, logowanie, role i ochrona"
+    ]
+  },
+  {
+    "objectID": "cwiczenia/spotkanie2.html#rate-limiting-ogranicz-liczbę-żądań",
+    "href": "cwiczenia/spotkanie2.html#rate-limiting-ogranicz-liczbę-żądań",
+    "title": "Lab, spotkanie 2: Walidacja, logowanie, role i ochrona",
+    "section": "2️⃣ Rate limiting — ogranicz liczbę żądań",
+    "text": "2️⃣ Rate limiting — ogranicz liczbę żądań\nBez limitu, ktoś może próbować zalogować się tysiące razy na sekundę (atak brute-force na hasło) albo po prostu zasypać serwer żądaniami.\npip install slowapi\nfrom slowapi import Limiter\nfrom slowapi.util import get_remote_address\n\nlimiter = Limiter(key_func=get_remote_address)\napp.state.limiter = limiter\n\n@app.post(\"/login\")\n@limiter.limit(\"5/minute\")\ndef login(request: Request, dane: LoginRequest):\n    ...",
+    "crumbs": [
+      "Laboratoria (3 spotkania x 3h)",
+      "Lab, spotkanie 2: Walidacja, logowanie, role i ochrona"
+    ]
+  },
+  {
+    "objectID": "cwiczenia/spotkanie2.html#cors-kto-może-wywoływać-twoje-api-z-przeglądarki",
+    "href": "cwiczenia/spotkanie2.html#cors-kto-może-wywoływać-twoje-api-z-przeglądarki",
+    "title": "Lab, spotkanie 2: Walidacja, logowanie, role i ochrona",
+    "section": "3️⃣ CORS — kto może wywoływać Twoje API z przeglądarki",
+    "text": "3️⃣ CORS — kto może wywoływać Twoje API z przeglądarki\nDomyślnie przeglądarki blokują żądania JavaScript do innej domeny niż ta, z której strona została załadowana (Same-Origin Policy). Jeśli frontend (lab 10) ma żyć na innej domenie/porcie niż backend, musisz jawnie zezwolić:\nfrom fastapi.middleware.cors import CORSMiddleware\n\napp.add_middleware(\n    CORSMiddleware,\n    allow_origins=[\"http://localhost:3000\"],  # tylko Twoj frontend, NIE \"*\" na produkcji\n    allow_methods=[\"*\"],\n    allow_headers=[\"*\"],\n)\n\n\n\n\n\n\nImportantNigdy allow_origins=[“*”] razem z uwierzytelnianiem\n\n\n\n\"*\" (dowolna domena) w połączeniu z endpointami wymagającymi logowania otwiera drzwi dla ataków CSRF-podobnych z dowolnej złośliwej strony. Zawsze wymieniaj konkretne, zaufane domeny.\n\n\n\n✅ Mini-zadanie części IV\n\nDodaj białą listę dozwolonych kolumn do wszystkich endpointów z parametrem sortuj.\nDodaj rate limiting do /login (max 5 prób/minutę z jednego adresu IP).\nSkonfiguruj CORS dla http://localhost:3000 (przyda się w laboratorium o frontendzie).",
+    "crumbs": [
+      "Laboratoria (3 spotkania x 3h)",
+      "Lab, spotkanie 2: Walidacja, logowanie, role i ochrona"
+    ]
+  },
+  {
+    "objectID": "cwiczenia/spotkanie2.html#zadanie-na-koniec-spotkania",
+    "href": "cwiczenia/spotkanie2.html#zadanie-na-koniec-spotkania",
+    "title": "Lab, spotkanie 2: Walidacja, logowanie, role i ochrona",
+    "section": "✅ Zadanie na koniec spotkania",
+    "text": "✅ Zadanie na koniec spotkania\nZademonstruj prowadzącemu: rejestrację nowego użytkownika, logowanie zwracające token JWT, endpoint chroniony rolą (403 dla złej roli, sukces dla właściwej), oraz że próba SQL injection przez ?sortuj= jest odrzucana.\nDo oddania: link do repozytorium / commit hash.",
+    "crumbs": [
+      "Laboratoria (3 spotkania x 3h)",
+      "Lab, spotkanie 2: Walidacja, logowanie, role i ochrona"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie1.html",
+    "href": "lectures/spotkanie1.html",
+    "title": "Spotkanie 1: Architektura i protokół HTTP",
+    "section": "",
+    "text": "Po tej części powinieneś rozumieć, z jakich warstw składa się typowa aplikacja sieciowa, czym różni się od zwykłego programu działającego lokalnie, jak wygląda komunikacja klient–serwer oraz jakie są główne style projektowania API. Poznasz też projekt, który będziemy budować przez cały semestr na laboratoriach.\n\n\n\n\nAplikacja sieciowa (ang. network application) to program, którego części działają na różnych maszynach połączonych siecią i komunikują się ze sobą, wymieniając dane według ustalonego protokołu.\nKluczowa różnica względem programu lokalnego: stan i logika nie muszą żyć w tym samym procesie co interfejs użytkownika. Telefon żołnierza wysyłający zgłoszenie i serwer przechowujący dane o sprzęcie to dwa oddzielne programy, które nigdy nie współdzielą pamięci — jedyny sposób komunikacji to sieć.\n\n\n\nSystem rezerwacji (hotel, poligon, sala wykładowa)\nBankowość internetowa\nKomunikatory (WhatsApp, Signal)\nSystemy ewidencji sprzętu i logistyki\n\n\n\n\n\n\nNajpopularniejszy model architektury aplikacji sieciowej.\n\n\n\n\n\n\n\nRola\nZadanie\n\n\n\n\nKlient\nInicjuje żądanie, prezentuje wynik użytkownikowi (przeglądarka, aplikacja mobilna, inny serwer)\n\n\nSerwer\nNasłuchuje na żądania, przetwarza je, zwraca odpowiedź\n\n\n\n\nSerwer nie “dzwoni” sam do klienta bez powodu — to klient zawsze inicjuje rozmowę. (Wyjątki: WebSocket, powiadomienia push — omówimy przy okazji wykładu o skalowalności.)\n\n\n\nRozdzielenie klienta i serwera daje:\n\nniezależne skalowanie — można dodać kolejne serwery bez zmiany klienta,\nwielu klientów na jeden serwer — przeglądarka, aplikacja mobilna i inny system mogą korzystać z tego samego API,\naktualizacje bez przeinstalowywania — zmiana logiki na serwerze nie wymaga nic od użytkownika.\n\n\n\n\n\n\nTypowa aplikacja sieciowa dzieli się na trzy warstwy:\n\n\n\n\n\n\n\n\nWarstwa\nOdpowiada za\nPrzykład technologii\n\n\n\n\nPrezentacji (frontend)\nInterfejs użytkownika\nHTML/CSS/JS, aplikacja mobilna\n\n\nLogiki biznesowej (backend)\nReguły, walidację, przetwarzanie żądań\nPython (FastAPI), Java, Node.js\n\n\nDanych\nTrwałe przechowywanie informacji\nPostgreSQL, SQLite, MongoDB\n\n\n\n\n Schemat trójwarstwowy: Klient (frontend) ↔︎ API (backend) ↔︎ Baza danych\n\nTo ten sam podział, co poziomy ANSI/SPARC z kursów o bazach danych — tu warstwa “logiki” dodatkowo pośredniczy między światem zewnętrznym a bazą, zamiast pozwalać klientowi łączyć się z bazą bezpośrednio.\nDlaczego backend nigdy nie powinien pozwalać frontendowi łączyć się z bazą wprost? Bo wtedy każdy klient musiałby znać hasło do bazy, strukturę tabel i reguły biznesowe — a zmiana schematu bazy złamałaby każdą aplikację kliencką osobno.\n\n\n\n\nAby klient i serwer się zrozumiały, muszą mówić tym samym językiem — protokołem.\n\n\n\n\n\nWarstwa (uproszczony model)\nPrzykład protokołu\n\n\n\n\nAplikacji\nHTTP/HTTPS, FTP, SMTP\n\n\nTransportowa\nTCP, UDP\n\n\nSieciowa\nIP\n\n\n\nHTTP (HyperText Transfer Protocol) działa na bazie TCP — zanim popłynie choćby bajt danych HTTP, klient i serwer muszą nawiązać połączenie TCP (tzw. three-way handshake). HTTPS to HTTP owinięte w warstwę szyfrowania TLS.\nSzczegóły samego HTTP (metody, nagłówki, kody odpowiedzi) to temat części II tego spotkania — na razie tylko umiejscawiamy go w stosie.\n\n\n\n\n\nKiedy backend ma udostępnić swoje możliwości innym programom, robi to przez API (Application Programming Interface). Kilka konkurencyjnych stylów:\n\n\n\n\n\n\n\n\nStyl\nFormat danych\nCharakterystyka\n\n\n\n\nREST\nzwykle JSON\nzasoby adresowane przez URL, operacje przez metody HTTP — dominujący styl dziś\n\n\nSOAP\nXML\nsztywny kontrakt (WSDL), popularny w starszych systemach korporacyjnych/rządowych\n\n\nGraphQL\nJSON\nklient sam opisuje, jakich danych potrzebuje, w jednym zapytaniu\n\n\ngRPC\nbinarny (Protocol Buffers)\nbardzo szybki, typowany, głównie do komunikacji między mikroserwisami\n\n\nWebSocket\ndowolny\ndwukierunkowy, trwały kanał — do komunikacji w czasie rzeczywistym (czat, powiadomienia)\n\n\n\nW tym kursie skupiamy się na REST — to on zdominował publiczne API i będzie tym, co zbudujesz na laboratoriach.\n\n\n\nKażdy zasób (rzecz, którą aplikacja przechowuje) ma swój adres URL, a to, co chcemy z nim zrobić, wyrażamy metodą HTTP (GET = pobierz, POST = utwórz, PUT/PATCH = zmień, DELETE = usuń) — nie czasownikiem w samym adresie.\n\nPrzykład: zamiast GET /pobierzRezerwacje?id=5, w REST piszemy GET /rezerwacje/5. Adres opisuje co, metoda HTTP opisuje jak.\n\n\n\n\n\nPrzez 12 laboratoriów zbudujemy razem jeden, rosnący system: rezerwację poligonu/strzelnicy dla jednostki wojskowej.\n\n\n\n\n\n\n\n\n\nRola\nMoże\n\n\n\n\nPlanista poligonu\nzarządzać dostępnością poligonów, zatwierdzać/odrzucać rezerwacje\n\n\nDowódca jednostki\nrezerwować poligon dla swojego pododdziału\n\n\n(gość/niezalogowany)\ntylko przeglądać dostępność, bez rezerwacji\n\n\n\n\n\n\n\nPoligon — nazwa, lokalizacja, dostępne przedziały czasowe, typ (strzelnica, teren manewrowy…)\nJednostka — nazwa, dowódca\nRezerwacja — który poligon, która jednostka, od kiedy do kiedy, status (oczekująca, zatwierdzona, odrzucona)\n\n\n\n\nDwie jednostki nie mogą zarezerwować tego samego poligonu w nakładających się przedziałach czasu. To pozornie proste wymaganie wróci wielokrotnie — przy walidacji danych, przy autoryzacji (kto może zatwierdzić konflikt) i przy współbieżności (co gdy dwie rezerwacje przychodzą w tej samej sekundzie).\n\n💡 Zapamiętaj ten problem — będziemy go rozwiązywać stopniowo, warstwa po warstwie, przez cały semestr.\n\n\n\n\n\n\n\nAplikacja sieciowa rozdziela klienta i serwer, komunikujących się przez sieć według ustalonego protokołu.\nTypowy podział to trzy warstwy: prezentacji, logiki biznesowej, danych.\nHTTP to protokół aplikacyjny działający na TCP; HTTPS dodaje szyfrowanie TLS.\nREST to dominujący dziś styl API: zasoby jako adresy URL, operacje jako metody HTTP.\nSemestralny projekt: system rezerwacji poligonu — zaczynamy od środowiska pracy i pierwszego serwera na laboratorium 1.",
+    "crumbs": [
+      "Wykłady (3 spotkania x 90 min)",
+      "Spotkanie 1: Architektura i protokół HTTP"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie1.html#cele",
+    "href": "lectures/spotkanie1.html#cele",
+    "title": "Spotkanie 1: Architektura i protokół HTTP",
+    "section": "",
+    "text": "Po tej części powinieneś rozumieć, z jakich warstw składa się typowa aplikacja sieciowa, czym różni się od zwykłego programu działającego lokalnie, jak wygląda komunikacja klient–serwer oraz jakie są główne style projektowania API. Poznasz też projekt, który będziemy budować przez cały semestr na laboratoriach.",
+    "crumbs": [
+      "Wykłady (3 spotkania x 90 min)",
+      "Spotkanie 1: Architektura i protokół HTTP"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie1.html#czym-jest-aplikacja-sieciowa",
+    "href": "lectures/spotkanie1.html#czym-jest-aplikacja-sieciowa",
+    "title": "Spotkanie 1: Architektura i protokół HTTP",
+    "section": "",
+    "text": "Aplikacja sieciowa (ang. network application) to program, którego części działają na różnych maszynach połączonych siecią i komunikują się ze sobą, wymieniając dane według ustalonego protokołu.\nKluczowa różnica względem programu lokalnego: stan i logika nie muszą żyć w tym samym procesie co interfejs użytkownika. Telefon żołnierza wysyłający zgłoszenie i serwer przechowujący dane o sprzęcie to dwa oddzielne programy, które nigdy nie współdzielą pamięci — jedyny sposób komunikacji to sieć.\n\n\n\nSystem rezerwacji (hotel, poligon, sala wykładowa)\nBankowość internetowa\nKomunikatory (WhatsApp, Signal)\nSystemy ewidencji sprzętu i logistyki",
+    "crumbs": [
+      "Wykłady (3 spotkania x 90 min)",
+      "Spotkanie 1: Architektura i protokół HTTP"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie1.html#model-klientserwer",
+    "href": "lectures/spotkanie1.html#model-klientserwer",
+    "title": "Spotkanie 1: Architektura i protokół HTTP",
+    "section": "",
+    "text": "Najpopularniejszy model architektury aplikacji sieciowej.\n\n\n\n\n\n\n\nRola\nZadanie\n\n\n\n\nKlient\nInicjuje żądanie, prezentuje wynik użytkownikowi (przeglądarka, aplikacja mobilna, inny serwer)\n\n\nSerwer\nNasłuchuje na żądania, przetwarza je, zwraca odpowiedź\n\n\n\n\nSerwer nie “dzwoni” sam do klienta bez powodu — to klient zawsze inicjuje rozmowę. (Wyjątki: WebSocket, powiadomienia push — omówimy przy okazji wykładu o skalowalności.)\n\n\n\nRozdzielenie klienta i serwera daje:\n\nniezależne skalowanie — można dodać kolejne serwery bez zmiany klienta,\nwielu klientów na jeden serwer — przeglądarka, aplikacja mobilna i inny system mogą korzystać z tego samego API,\naktualizacje bez przeinstalowywania — zmiana logiki na serwerze nie wymaga nic od użytkownika.",
+    "crumbs": [
+      "Wykłady (3 spotkania x 90 min)",
+      "Spotkanie 1: Architektura i protokół HTTP"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie1.html#warstwy-aplikacji-sieciowej",
+    "href": "lectures/spotkanie1.html#warstwy-aplikacji-sieciowej",
+    "title": "Spotkanie 1: Architektura i protokół HTTP",
+    "section": "",
+    "text": "Typowa aplikacja sieciowa dzieli się na trzy warstwy:\n\n\n\n\n\n\n\n\nWarstwa\nOdpowiada za\nPrzykład technologii\n\n\n\n\nPrezentacji (frontend)\nInterfejs użytkownika\nHTML/CSS/JS, aplikacja mobilna\n\n\nLogiki biznesowej (backend)\nReguły, walidację, przetwarzanie żądań\nPython (FastAPI), Java, Node.js\n\n\nDanych\nTrwałe przechowywanie informacji\nPostgreSQL, SQLite, MongoDB\n\n\n\n\n Schemat trójwarstwowy: Klient (frontend) ↔︎ API (backend) ↔︎ Baza danych\n\nTo ten sam podział, co poziomy ANSI/SPARC z kursów o bazach danych — tu warstwa “logiki” dodatkowo pośredniczy między światem zewnętrznym a bazą, zamiast pozwalać klientowi łączyć się z bazą bezpośrednio.\nDlaczego backend nigdy nie powinien pozwalać frontendowi łączyć się z bazą wprost? Bo wtedy każdy klient musiałby znać hasło do bazy, strukturę tabel i reguły biznesowe — a zmiana schematu bazy złamałaby każdą aplikację kliencką osobno.",
+    "crumbs": [
+      "Wykłady (3 spotkania x 90 min)",
+      "Spotkanie 1: Architektura i protokół HTTP"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie1.html#protokoły-komunikacyjne",
+    "href": "lectures/spotkanie1.html#protokoły-komunikacyjne",
+    "title": "Spotkanie 1: Architektura i protokół HTTP",
+    "section": "",
+    "text": "Aby klient i serwer się zrozumiały, muszą mówić tym samym językiem — protokołem.\n\n\n\n\n\nWarstwa (uproszczony model)\nPrzykład protokołu\n\n\n\n\nAplikacji\nHTTP/HTTPS, FTP, SMTP\n\n\nTransportowa\nTCP, UDP\n\n\nSieciowa\nIP\n\n\n\nHTTP (HyperText Transfer Protocol) działa na bazie TCP — zanim popłynie choćby bajt danych HTTP, klient i serwer muszą nawiązać połączenie TCP (tzw. three-way handshake). HTTPS to HTTP owinięte w warstwę szyfrowania TLS.\nSzczegóły samego HTTP (metody, nagłówki, kody odpowiedzi) to temat części II tego spotkania — na razie tylko umiejscawiamy go w stosie.",
+    "crumbs": [
+      "Wykłady (3 spotkania x 90 min)",
+      "Spotkanie 1: Architektura i protokół HTTP"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie1.html#style-projektowania-api",
+    "href": "lectures/spotkanie1.html#style-projektowania-api",
+    "title": "Spotkanie 1: Architektura i protokół HTTP",
+    "section": "",
+    "text": "Kiedy backend ma udostępnić swoje możliwości innym programom, robi to przez API (Application Programming Interface). Kilka konkurencyjnych stylów:\n\n\n\n\n\n\n\n\nStyl\nFormat danych\nCharakterystyka\n\n\n\n\nREST\nzwykle JSON\nzasoby adresowane przez URL, operacje przez metody HTTP — dominujący styl dziś\n\n\nSOAP\nXML\nsztywny kontrakt (WSDL), popularny w starszych systemach korporacyjnych/rządowych\n\n\nGraphQL\nJSON\nklient sam opisuje, jakich danych potrzebuje, w jednym zapytaniu\n\n\ngRPC\nbinarny (Protocol Buffers)\nbardzo szybki, typowany, głównie do komunikacji między mikroserwisami\n\n\nWebSocket\ndowolny\ndwukierunkowy, trwały kanał — do komunikacji w czasie rzeczywistym (czat, powiadomienia)\n\n\n\nW tym kursie skupiamy się na REST — to on zdominował publiczne API i będzie tym, co zbudujesz na laboratoriach.\n\n\n\nKażdy zasób (rzecz, którą aplikacja przechowuje) ma swój adres URL, a to, co chcemy z nim zrobić, wyrażamy metodą HTTP (GET = pobierz, POST = utwórz, PUT/PATCH = zmień, DELETE = usuń) — nie czasownikiem w samym adresie.\n\nPrzykład: zamiast GET /pobierzRezerwacje?id=5, w REST piszemy GET /rezerwacje/5. Adres opisuje co, metoda HTTP opisuje jak.",
+    "crumbs": [
+      "Wykłady (3 spotkania x 90 min)",
+      "Spotkanie 1: Architektura i protokół HTTP"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie1.html#projekt-semestralny-system-rezerwacji-poligonu",
+    "href": "lectures/spotkanie1.html#projekt-semestralny-system-rezerwacji-poligonu",
+    "title": "Spotkanie 1: Architektura i protokół HTTP",
+    "section": "",
+    "text": "Przez 12 laboratoriów zbudujemy razem jeden, rosnący system: rezerwację poligonu/strzelnicy dla jednostki wojskowej.\n\n\n\n\n\n\n\n\n\nRola\nMoże\n\n\n\n\nPlanista poligonu\nzarządzać dostępnością poligonów, zatwierdzać/odrzucać rezerwacje\n\n\nDowódca jednostki\nrezerwować poligon dla swojego pododdziału\n\n\n(gość/niezalogowany)\ntylko przeglądać dostępność, bez rezerwacji\n\n\n\n\n\n\n\nPoligon — nazwa, lokalizacja, dostępne przedziały czasowe, typ (strzelnica, teren manewrowy…)\nJednostka — nazwa, dowódca\nRezerwacja — który poligon, która jednostka, od kiedy do kiedy, status (oczekująca, zatwierdzona, odrzucona)\n\n\n\n\nDwie jednostki nie mogą zarezerwować tego samego poligonu w nakładających się przedziałach czasu. To pozornie proste wymaganie wróci wielokrotnie — przy walidacji danych, przy autoryzacji (kto może zatwierdzić konflikt) i przy współbieżności (co gdy dwie rezerwacje przychodzą w tej samej sekundzie).\n\n💡 Zapamiętaj ten problem — będziemy go rozwiązywać stopniowo, warstwa po warstwie, przez cały semestr.",
+    "crumbs": [
+      "Wykłady (3 spotkania x 90 min)",
+      "Spotkanie 1: Architektura i protokół HTTP"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie1.html#podsumowanie-części-i",
+    "href": "lectures/spotkanie1.html#podsumowanie-części-i",
+    "title": "Spotkanie 1: Architektura i protokół HTTP",
+    "section": "",
+    "text": "Aplikacja sieciowa rozdziela klienta i serwer, komunikujących się przez sieć według ustalonego protokołu.\nTypowy podział to trzy warstwy: prezentacji, logiki biznesowej, danych.\nHTTP to protokół aplikacyjny działający na TCP; HTTPS dodaje szyfrowanie TLS.\nREST to dominujący dziś styl API: zasoby jako adresy URL, operacje jako metody HTTP.\nSemestralny projekt: system rezerwacji poligonu — zaczynamy od środowiska pracy i pierwszego serwera na laboratorium 1.",
+    "crumbs": [
+      "Wykłady (3 spotkania x 90 min)",
+      "Spotkanie 1: Architektura i protokół HTTP"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie1.html#cele-1",
+    "href": "lectures/spotkanie1.html#cele-1",
+    "title": "Spotkanie 1: Architektura i protokół HTTP",
+    "section": "🎯 Cele",
+    "text": "🎯 Cele\nPo tej części będziesz rozumieć strukturę żądania i odpowiedzi HTTP, znał najważniejsze metody i kody statusu, oraz wiedział, dlaczego HTTP jest protokołem “bezstanowym” i co to oznacza w praktyce dla projektowania aplikacji.",
+    "crumbs": [
+      "Wykłady (3 spotkania x 90 min)",
+      "Spotkanie 1: Architektura i protokół HTTP"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie1.html#anatomia-żądania-http",
+    "href": "lectures/spotkanie1.html#anatomia-żądania-http",
+    "title": "Spotkanie 1: Architektura i protokół HTTP",
+    "section": "1️⃣ Anatomia żądania HTTP",
+    "text": "1️⃣ Anatomia żądania HTTP\nKiedy przeglądarka (albo curl, albo Wasz kod) wysyła żądanie, wygląda ono (uproszczone) tak:\nGET /poligony/5 HTTP/1.1\nHost: sebastianzajac.pl\nAccept: application/json\nAuthorization: Bearer eyJhbGc...\n\n(puste ciało — GET zwykle go nie ma)\n\n\n\n\n\n\n\nElement\nZnaczenie\n\n\n\n\nLinia startowa\nmetoda + ścieżka + wersja protokołu\n\n\nNagłówki (headers)\nmetadane: co akceptujemy, kim jesteśmy, jaki format wysyłamy\n\n\nCiało (body)\nwłaściwe dane (przy GET zwykle puste, przy POST/PUT — tak)",
+    "crumbs": [
+      "Wykłady (3 spotkania x 90 min)",
+      "Spotkanie 1: Architektura i protokół HTTP"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie1.html#metody-http-czasowniki-rest-a",
+    "href": "lectures/spotkanie1.html#metody-http-czasowniki-rest-a",
+    "title": "Spotkanie 1: Architektura i protokół HTTP",
+    "section": "2️⃣ Metody HTTP — czasowniki REST-a",
+    "text": "2️⃣ Metody HTTP — czasowniki REST-a\n\n\n\nMetoda\nZnaczenie\nMa ciało?\nBezpieczna?*\nIdempotentna?**\n\n\n\n\nGET\npobierz zasób\nnie\ntak\ntak\n\n\nPOST\nutwórz nowy zasób\ntak\nnie\nnie\n\n\nPUT\nzastąp cały zasób\ntak\nnie\ntak\n\n\nPATCH\nzmodyfikuj część zasobu\ntak\nnie\nnie (zwykle)\n\n\nDELETE\nusuń zasób\nnie\nnie\ntak\n\n\n\n* Bezpieczna (safe) = nie zmienia stanu serwera — można ją wywołać wielokrotnie bez skutków ubocznych (przeglądarka może np. prefetchować linki GET). ** Idempotentna = wielokrotne wykonanie daje ten sam efekt co jednokrotne. DELETE /poligony/5 wywołane dwa razy nadal kończy się brakiem poligonu 5 — drugie wywołanie nic nowego nie psuje (może zwrócić 404, ale stan systemu jest identyczny). POST nie jest idempotentny: dwukrotne wysłanie tworzy dwa zasoby.\n\n⚠️ To rozróżnienie ma praktyczne znaczenie: jeśli klient nie dostał odpowiedzi (timeout sieciowy) i nie wie, czy żądanie dotarło, bezpiecznie może powtórzyć PUT/DELETE, ale powtórzenie POST może utworzyć duplikat.",
+    "crumbs": [
+      "Wykłady (3 spotkania x 90 min)",
+      "Spotkanie 1: Architektura i protokół HTTP"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie1.html#kody-statusu-pięć-rodzin",
+    "href": "lectures/spotkanie1.html#kody-statusu-pięć-rodzin",
+    "title": "Spotkanie 1: Architektura i protokół HTTP",
+    "section": "3️⃣ Kody statusu — pięć rodzin",
+    "text": "3️⃣ Kody statusu — pięć rodzin\n\n\n\n\n\n\n\n\nZakres\nRodzina\nPrzykłady\n\n\n\n\n1xx\nInformacyjne\nrzadko używane bezpośrednio w API\n\n\n2xx\nSukces\n200 OK, 201 Created, 204 No Content\n\n\n3xx\nPrzekierowanie\n301 Moved Permanently, 304 Not Modified\n\n\n4xx\nBłąd klienta\n400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found\n\n\n5xx\nBłąd serwera\n500 Internal Server Error, 503 Service Unavailable\n\n\n\n\n🔹 Rozróżnienie, które myli początkujących: 401 vs 403\n\n401 Unauthorized — “nie wiem, kim jesteś” (brak albo niepoprawne uwierzytelnienie).\n403 Forbidden — “wiem, kim jesteś, ale nie masz uprawnień do tej operacji”.\n\nPrzykład z naszego projektu: żołnierz bez zalogowania próbujący zobaczyć /rezerwacje → 401. Zalogowany żołnierz próbujący zatwierdzić rezerwację (uprawnienie tylko planisty) → 403.",
+    "crumbs": [
+      "Wykłady (3 spotkania x 90 min)",
+      "Spotkanie 1: Architektura i protokół HTTP"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie1.html#nagłówki-które-będziecie-używać-najczęściej",
+    "href": "lectures/spotkanie1.html#nagłówki-które-będziecie-używać-najczęściej",
+    "title": "Spotkanie 1: Architektura i protokół HTTP",
+    "section": "4️⃣ Nagłówki, które będziecie używać najczęściej",
+    "text": "4️⃣ Nagłówki, które będziecie używać najczęściej\n\n\n\n\n\n\n\nNagłówek\nRola\n\n\n\n\nContent-Type\njaki format ma ciało żądania/odpowiedzi (application/json)\n\n\nAuthorization\ndane uwierzytelniające (Bearer &lt;token&gt;) — wracamy do tego przy bezpieczeństwie\n\n\nAccept\njaki format klient chce dostać z powrotem\n\n\nCache-Control\njak długo/czy wolno cache’ować odpowiedź",
+    "crumbs": [
+      "Wykłady (3 spotkania x 90 min)",
+      "Spotkanie 1: Architektura i protokół HTTP"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie1.html#http-jest-bezstanowy-co-to-znaczy-naprawdę",
+    "href": "lectures/spotkanie1.html#http-jest-bezstanowy-co-to-znaczy-naprawdę",
+    "title": "Spotkanie 1: Architektura i protokół HTTP",
+    "section": "5️⃣ HTTP jest bezstanowy — co to znaczy naprawdę",
+    "text": "5️⃣ HTTP jest bezstanowy — co to znaczy naprawdę\nSerwer nie pamięta niczego między dwoma żądaniami tego samego klienta — każde żądanie musi nieść ze sobą wszystko, czego serwer potrzebuje, żeby je obsłużyć (np. token uwierzytelniający w nagłówku, nie “zapamiętane” gdzieś po stronie serwera).\n\n💡 To dlaczego logowanie polega na tym, że klient za każdym razem wysyła token (w Authorization), a nie że serwer “pamięta”, że kogoś już zalogował 5 minut temu. Do mechanizmu tokenów wrócimy przy wykładzie o bezpieczeństwie.\n\n\n\n\n\n\n\nNoteA cookies i sesje?\n\n\n\nHistorycznie serwery symulowały stan przez cookies + sesje po stronie serwera (Set-Cookie → przeglądarka odsyła ten sam identyfikator przy każdym żądaniu → serwer odnajduje zapisany stan w swojej pamięci/bazie). To dalej działa i bywa używane, ale w architekturach REST/API (szczególnie gdy klientem nie jest przeglądarka, tylko np. aplikacja mobilna) tokeny bezstanowe (JWT) są dziś częstszym wyborem — nie wymagają, żeby serwer pamiętał cokolwiek o sesji.",
+    "crumbs": [
+      "Wykłady (3 spotkania x 90 min)",
+      "Spotkanie 1: Architektura i protokół HTTP"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie1.html#cache-kiedy-nie-pytać-serwera-drugi-raz",
+    "href": "lectures/spotkanie1.html#cache-kiedy-nie-pytać-serwera-drugi-raz",
+    "title": "Spotkanie 1: Architektura i protokół HTTP",
+    "section": "6️⃣ Cache — kiedy nie pytać serwera drugi raz",
+    "text": "6️⃣ Cache — kiedy nie pytać serwera drugi raz\nCache-Control: max-age=3600 mówi klientowi (albo pośredniczącemu proxy): “ta odpowiedź jest ważna przez godzinę, nie pytaj mnie ponownie”. Dobrze zaprojektowane API rozróżnia zasoby, które warto cache’ować (lista dostępnych poligonów, zmienia się rzadko) od tych, których nie wolno (stan bieżącej rezerwacji — musi być zawsze aktualny).",
+    "crumbs": [
+      "Wykłady (3 spotkania x 90 min)",
+      "Spotkanie 1: Architektura i protokół HTTP"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie1.html#podsumowanie-części-ii",
+    "href": "lectures/spotkanie1.html#podsumowanie-części-ii",
+    "title": "Spotkanie 1: Architektura i protokół HTTP",
+    "section": "🧾 Podsumowanie części II",
+    "text": "🧾 Podsumowanie części II\n\nŻądanie HTTP = linia startowa (metoda + ścieżka) + nagłówki + opcjonalne ciało.\nMetody różnią się tym, czy są bezpieczne i idempotentne — to ma realne konsekwencje przy błędach sieciowych.\nKody 4xx to błąd po stronie klienta, 5xx — po stronie serwera; 401 ≠ 403.\nHTTP jest bezstanowy — każde żądanie musi być samowystarczalne.",
+    "crumbs": [
+      "Wykłady (3 spotkania x 90 min)",
+      "Spotkanie 1: Architektura i protokół HTTP"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie1.html#źródła",
+    "href": "lectures/spotkanie1.html#źródła",
+    "title": "Spotkanie 1: Architektura i protokół HTTP",
+    "section": "📚 Źródła",
+    "text": "📚 Źródła\n\nR. Fielding, Architectural Styles and the Design of Network-based Software Architectures\nMDN Web Docs — An overview of HTTP, HTTP request methods, HTTP response status codes\nRFC 9110 — HTTP Semantics\nDokumentacja FastAPI (framework używany na laboratoriach)",
+    "crumbs": [
+      "Wykłady (3 spotkania x 90 min)",
+      "Spotkanie 1: Architektura i protokół HTTP"
     ]
   }
 ]

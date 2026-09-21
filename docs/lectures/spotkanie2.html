@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Spotkanie 2: Projektowanie API i bezpieczeństwo – Projektowanie Aplikacji Sieciowych</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-94ae530b1fc9924793afbc3bb7de9d3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../style.css">
+</head>
+
+<body class="nav-sidebar docked quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/spotkanie1.html">Wykłady (3 spotkania x 90 min)</a></li><li class="breadcrumb-item"><a href="../lectures/spotkanie2.html">Spotkanie 2: Projektowanie API i bezpieczeństwo</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Projektowanie Aplikacji Sieciowych</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Informacje ogólne</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Wykłady (3 spotkania x 90 min)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/spotkanie1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Spotkanie 1: Architektura i protokół HTTP</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/spotkanie2.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Spotkanie 2: Projektowanie API i bezpieczeństwo</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Laboratoria (3 spotkania x 3h)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cwiczenia/spotkanie1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab, spotkanie 1: Od zera do pełnego CRUD</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cwiczenia/spotkanie2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab, spotkanie 2: Walidacja, logowanie, role i ochrona</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title"><strong>Sections</strong></h2>
+   
+  <ul class="collapse">
+  <li><a href="#sprawdź-się-ze-spotkania-1" id="toc-sprawdź-się-ze-spotkania-1" class="nav-link active" data-scroll-target="#sprawdź-się-ze-spotkania-1">✅ Sprawdź się ze spotkania 1</a></li>
+  <li><a href="#część-i-projektowanie-api-rest" id="toc-część-i-projektowanie-api-rest" class="nav-link" data-scroll-target="#część-i-projektowanie-api-rest">🧩 Część I — Projektowanie API REST</a>
+  <ul class="collapse">
+  <li><a href="#cele" id="toc-cele" class="nav-link" data-scroll-target="#cele">🎯 Cele</a></li>
+  <li><a href="#zasoby-nie-czynności" id="toc-zasoby-nie-czynności" class="nav-link" data-scroll-target="#zasoby-nie-czynności">1️⃣ Zasoby, nie czynności</a></li>
+  <li><a href="#zasoby-zagnieżdżone" id="toc-zasoby-zagnieżdżone" class="nav-link" data-scroll-target="#zasoby-zagnieżdżone">2️⃣ Zasoby zagnieżdżone</a></li>
+  <li><a href="#filtrowanie-sortowanie-paginacja-przez-query-params" id="toc-filtrowanie-sortowanie-paginacja-przez-query-params" class="nav-link" data-scroll-target="#filtrowanie-sortowanie-paginacja-przez-query-params">3️⃣ Filtrowanie, sortowanie, paginacja — przez query params</a></li>
+  <li><a href="#wersjonowanie-api" id="toc-wersjonowanie-api" class="nav-link" data-scroll-target="#wersjonowanie-api">4️⃣ Wersjonowanie API</a></li>
+  <li><a href="#openapi-dokumentacja-która-się-nie-starzeje" id="toc-openapi-dokumentacja-która-się-nie-starzeje" class="nav-link" data-scroll-target="#openapi-dokumentacja-która-się-nie-starzeje">5️⃣ OpenAPI — dokumentacja, która się nie starzeje</a></li>
+  <li><a href="#spójna-struktura-błędów" id="toc-spójna-struktura-błędów" class="nav-link" data-scroll-target="#spójna-struktura-błędów">6️⃣ Spójna struktura błędów</a></li>
+  <li><a href="#podsumowanie-części-i" id="toc-podsumowanie-części-i" class="nav-link" data-scroll-target="#podsumowanie-części-i">🧾 Podsumowanie części I</a></li>
+  </ul></li>
+  <li><a href="#część-ii-bezpieczeństwo-aplikacji-sieciowych" id="toc-część-ii-bezpieczeństwo-aplikacji-sieciowych" class="nav-link" data-scroll-target="#część-ii-bezpieczeństwo-aplikacji-sieciowych">🔒 Część II — Bezpieczeństwo aplikacji sieciowych</a>
+  <ul class="collapse">
+  <li><a href="#cele-1" id="toc-cele-1" class="nav-link" data-scroll-target="#cele-1">🎯 Cele</a></li>
+  <li><a href="#uwierzytelnianie-vs-autoryzacja" id="toc-uwierzytelnianie-vs-autoryzacja" class="nav-link" data-scroll-target="#uwierzytelnianie-vs-autoryzacja">1️⃣ Uwierzytelnianie vs autoryzacja</a></li>
+  <li><a href="#jak-przechowywać-hasła-nigdy-jawnym-tekstem" id="toc-jak-przechowywać-hasła-nigdy-jawnym-tekstem" class="nav-link" data-scroll-target="#jak-przechowywać-hasła-nigdy-jawnym-tekstem">2️⃣ Jak przechowywać hasła — nigdy jawnym tekstem</a></li>
+  <li><a href="#sesje-vs-tokeny-dwa-modele-uwierzytelniania" id="toc-sesje-vs-tokeny-dwa-modele-uwierzytelniania" class="nav-link" data-scroll-target="#sesje-vs-tokeny-dwa-modele-uwierzytelniania">3️⃣ Sesje vs tokeny — dwa modele uwierzytelniania</a></li>
+  <li><a href="#anatomia-jwt" id="toc-anatomia-jwt" class="nav-link" data-scroll-target="#anatomia-jwt">4️⃣ Anatomia JWT</a></li>
+  <li><a href="#owasp-top-10-trzy-podatności-które-napotkacie-w-laboratoriach" id="toc-owasp-top-10-trzy-podatności-które-napotkacie-w-laboratoriach" class="nav-link" data-scroll-target="#owasp-top-10-trzy-podatności-które-napotkacie-w-laboratoriach">5️⃣ OWASP Top 10 — trzy podatności, które napotkacie w laboratoriach</a></li>
+  <li><a href="#httpstls-dlaczego-zawsze" id="toc-httpstls-dlaczego-zawsze" class="nav-link" data-scroll-target="#httpstls-dlaczego-zawsze">6️⃣ HTTPS/TLS — dlaczego zawsze</a></li>
+  <li><a href="#podsumowanie-części-ii" id="toc-podsumowanie-części-ii" class="nav-link" data-scroll-target="#podsumowanie-części-ii">🧾 Podsumowanie części II</a></li>
+  <li><a href="#źródła" id="toc-źródła" class="nav-link" data-scroll-target="#źródła">📚 Źródła</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/spotkanie1.html">Wykłady (3 spotkania x 90 min)</a></li><li class="breadcrumb-item"><a href="../lectures/spotkanie2.html">Spotkanie 2: Projektowanie API i bezpieczeństwo</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Spotkanie 2: Projektowanie API i bezpieczeństwo</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="sprawdź-się-ze-spotkania-1" class="level2">
+<h2 class="anchored" data-anchor-id="sprawdź-się-ze-spotkania-1">✅ Sprawdź się ze spotkania 1</h2>
+<div id="pas-quiz">
+
+</div>
+<script src="../assets/js/quiz-engine.js"></script>
+<script>
+CourseQuiz.mount(document.getElementById('pas-quiz'), {
+  course: "pas2026",
+  lecture: "spotkanie2",
+  title: "Spotkanie 1: Architektura i protokół HTTP",
+  submitUrl: "https://sebastianzajac.pl/rsod-quiz/submit.php",
+  questions: [
+    {
+      id: "q1", points: 1, diff: "bardzo łatwe",
+      text: "Kto zawsze inicjuje komunikację w modelu klient-serwer (poza wyjątkami jak WebSocket)?",
+      options: [
+        {v:"A", t:"Serwer"},
+        {v:"B", t:"Klient"},
+        {v:"C", t:"Oboje jednocześnie"},
+        {v:"D", t:"Zależy od implementacji bazy danych"}
+      ]
+    },
+    {
+      id: "q2", points: 1, diff: "łatwe",
+      text: "Które trzy warstwy tworzą typową aplikację sieciową?",
+      options: [
+        {v:"A", t:"Sieciowa, transportowa, fizyczna"},
+        {v:"B", t:"Prezentacji, logiki biznesowej, danych"},
+        {v:"C", t:"Klient, router, serwer"},
+        {v:"D", t:"HTTP, TCP, IP"}
+      ]
+    },
+    {
+      id: "q3", points: 2, diff: "średnie",
+      text: "Czym różni się 401 od 403?",
+      options: [
+        {v:"A", t:"To synonimy, oba znaczą brak dostępu"},
+        {v:"B", t:"401 = nie wiadomo kim jesteś (brak/zły login), 403 = wiadomo kim jesteś, ale brak uprawnień"},
+        {v:"C", t:"401 dotyczy tylko GET, 403 tylko POST"},
+        {v:"D", t:"403 jest starszą wersją 401"}
+      ]
+    },
+    {
+      id: "q4", points: 2, diff: "trudne",
+      text: "Dlaczego HTTP nazywamy protokołem bezstanowym?",
+      options: [
+        {v:"A", t:"Bo nie obsługuje żadnych danych"},
+        {v:"B", t:"Bo serwer nie pamięta niczego między żądaniami — każde musi nieść potrzebne dane samo"},
+        {v:"C", t:"Bo działa tylko na jednym porcie"},
+        {v:"D", t:"Bo nie wspiera szyfrowania"}
+      ]
+    },
+    {
+      id: "q5", points: 3, diff: "wnioskowanie",
+      text: "Klient wysyła POST /rezerwacje, ale traci połączenie zanim dostanie odpowiedź — nie wie, czy żądanie dotarło do serwera. Czy bezpiecznie może po prostu wysłać ten sam POST ponownie?",
+      options: [
+        {v:"A", t:"Tak, POST zawsze można bezpiecznie powtórzyć"},
+        {v:"B", t:"Nie — POST nie jest idempotentny, powtórzenie może utworzyć DRUGĄ, zduplikowaną rezerwację"},
+        {v:"C", t:"Tak, bo HTTP gwarantuje brak duplikatów"},
+        {v:"D", t:"Nie da się tego ocenić bez znajomości nagłówków"}
+      ]
+    }
+  ]
+});
+</script>
+<hr>
+</section>
+<section id="część-i-projektowanie-api-rest" class="level1">
+<h1>🧩 Część I — Projektowanie API REST</h1>
+<section id="cele" class="level2">
+<h2 class="anchored" data-anchor-id="cele">🎯 Cele</h2>
+<p>Nauczysz się projektować adresy URL i strukturę odpowiedzi API tak, żeby były przewidywalne i łatwe w użyciu — oraz poznasz, jak FastAPI generuje dokumentację OpenAPI automatycznie z Waszego kodu.</p>
+<hr>
+</section>
+<section id="zasoby-nie-czynności" class="level2">
+<h2 class="anchored" data-anchor-id="zasoby-nie-czynności">1️⃣ Zasoby, nie czynności</h2>
+<p>Adres URL w REST opisuje <strong>rzecz</strong> (zasób), nie akcję — akcję wyraża metoda HTTP (spotkanie 1, część II). Dobra konwencja nazewnicza:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Źle</th>
+<th>Dobrze</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>/getPoligony</code></td>
+<td><code>GET /poligony</code></td>
+</tr>
+<tr class="even">
+<td><code>/utworzRezerwacje</code></td>
+<td><code>POST /rezerwacje</code></td>
+</tr>
+<tr class="odd">
+<td><code>/poligon/usun/5</code></td>
+<td><code>DELETE /poligony/5</code></td>
+</tr>
+</tbody>
+</table>
+<p>Zasady:</p>
+<ul>
+<li><strong>Rzeczowniki, nie czasowniki</strong> w ścieżce.</li>
+<li><strong>Liczba mnoga</strong> dla kolekcji: <code>/poligony</code>, nie <code>/poligon</code>.</li>
+<li><strong>Małe litery</strong>, myślniki zamiast podkreślników w wieloczłonowych nazwach.</li>
+</ul>
+</section>
+<section id="zasoby-zagnieżdżone" class="level2">
+<h2 class="anchored" data-anchor-id="zasoby-zagnieżdżone">2️⃣ Zasoby zagnieżdżone</h2>
+<p>Kiedy jeden zasób “należy” logicznie do drugiego:</p>
+<pre><code>GET /poligony/5/rezerwacje        -- rezerwacje na poligonie 5
+POST /poligony/5/rezerwacje       -- nowa rezerwacja na poligonie 5
+GET /jednostki/3/rezerwacje       -- rezerwacje jednostki 3</code></pre>
+<blockquote class="blockquote">
+<p>⚠️ Nie zagnieżdżaj głębiej niż 2 poziomy (<code>/a/1/b/2/c/3</code> jest już nieczytelne) — jeśli potrzebujesz głębszego zagnieżdżenia, rozważ osobny, płaski endpoint z filtrowaniem przez query params zamiast ścieżki.</p>
+</blockquote>
+</section>
+<section id="filtrowanie-sortowanie-paginacja-przez-query-params" class="level2">
+<h2 class="anchored" data-anchor-id="filtrowanie-sortowanie-paginacja-przez-query-params">3️⃣ Filtrowanie, sortowanie, paginacja — przez query params</h2>
+<pre><code>GET /rezerwacje?status=zatwierdzona          -- filtrowanie
+GET /rezerwacje?sortuj=data&amp;kierunek=desc    -- sortowanie
+GET /rezerwacje?strona=2&amp;na_strone=20         -- paginacja</code></pre>
+<p>Query params (po <code>?</code>) nadają się do <strong>opcjonalnych</strong> modyfikatorów zapytania — ścieżka (<code>/rezerwacje</code>) zostaje ta sama niezależnie od tego, jak filtrujesz czy sortujesz wynik.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Dlaczego paginacja jest ważna, nawet w małym projekcie?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>GET /rezerwacje</code> bez paginacji, gdy tabela urośnie do 100 000 wierszy, zwróci gigantyczną odpowiedź, która obciąży i serwer, i klienta. Dobra praktyka: <strong>zawsze</strong> projektuj endpointy listujące z myślą o paginacji, nawet jeśli na start danych jest mało.</p>
+</div>
+</div>
+</section>
+<section id="wersjonowanie-api" class="level2">
+<h2 class="anchored" data-anchor-id="wersjonowanie-api">4️⃣ Wersjonowanie API</h2>
+<p>Kiedy zmieniasz kształt API w sposób, który złamałby istniejących klientów (np. zmieniasz nazwę pola), potrzebujesz wersjonowania:</p>
+<pre><code>/api/v1/poligony
+/api/v2/poligony</code></pre>
+<p>Alternatywa: wersjonowanie przez nagłówek (<code>Accept: application/vnd.api.v2+json</code>) — rzadziej spotykane w praktyce, ale czystsze koncepcyjnie. W tym kursie użyjemy prostszego podejścia z prefiksem <code>/api/v1/</code> w ścieżce.</p>
+</section>
+<section id="openapi-dokumentacja-która-się-nie-starzeje" class="level2">
+<h2 class="anchored" data-anchor-id="openapi-dokumentacja-która-się-nie-starzeje">5️⃣ OpenAPI — dokumentacja, która się nie starzeje</h2>
+<p>Pamiętacie <code>/docs</code> z laboratorium 1? To nie przypadek, że działa automatycznie — FastAPI <strong>generuje specyfikację OpenAPI</strong> (JSON opisujący każdy endpoint, jego parametry, kształt odpowiedzi) bezpośrednio z Waszego kodu (adnotacji typów, modeli Pydantic). Dostępna jest pod <code>/openapi.json</code>.</p>
+<p><strong>Dlaczego to ważne</strong>: dokumentacja pisana ręcznie (osobny plik Word/Markdown) <strong>zawsze</strong> z czasem rozjeżdża się z rzeczywistym kodem — ktoś zmienia endpoint i zapomina zaktualizować opis. Dokumentacja generowana z kodu <strong>nie może</strong> się rozjechać, bo to dosłownie ten sam kod.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="at">@app.get</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"/poligony/</span><span class="sc">{poligon_id}</span><span class="st">"</span>,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    response_model<span class="op">=</span>Poligon,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    summary<span class="op">=</span><span class="st">"Pobierz jeden poligon po ID"</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    description<span class="op">=</span><span class="st">"Zwraca 404, jesli poligon o podanym ID nie istnieje."</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> pobierz_poligon(poligon_id: <span class="bu">int</span>):</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    ...</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Parametry <code>summary</code>/<code>description</code> trafiają bezpośrednio do <code>/docs</code> — dobra dokumentacja API to część kodu, nie osobny dokument.</p>
+</section>
+<section id="spójna-struktura-błędów" class="level2">
+<h2 class="anchored" data-anchor-id="spójna-struktura-błędów">6️⃣ Spójna struktura błędów</h2>
+<p>Zamiast każdy endpoint zwracający błędy w innym formacie, warto ustalić jeden wzorzec:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"detail"</span><span class="fu">:</span> <span class="st">"Poligon nie znaleziony"</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>FastAPI robi to domyślnie dla <code>HTTPException</code> (dokładnie ten kształt, który widzieliście już w laboratoriach) — trzymajcie się tego wzorca konsekwentnie we wszystkich endpointach.</p>
+<hr>
+</section>
+<section id="podsumowanie-części-i" class="level2">
+<h2 class="anchored" data-anchor-id="podsumowanie-części-i">🧾 Podsumowanie części I</h2>
+<ul>
+<li>URL opisuje zasób (rzeczownik, liczba mnoga), metoda HTTP opisuje akcję.</li>
+<li>Zagnieżdżaj zasoby maksymalnie na 2 poziomy; filtruj/sortuj/paginuj przez query params.</li>
+<li>Wersjonuj API przez prefiks ścieżki, gdy zmiana złamałaby istniejących klientów.</li>
+<li>OpenAPI/Swagger generowane z kodu nigdy się nie starzeje — w odróżnieniu od ręcznie pisanej dokumentacji.</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="część-ii-bezpieczeństwo-aplikacji-sieciowych" class="level1">
+<h1>🔒 Część II — Bezpieczeństwo aplikacji sieciowych</h1>
+<section id="cele-1" class="level2">
+<h2 class="anchored" data-anchor-id="cele-1">🎯 Cele</h2>
+<p>Poznasz różnicę między uwierzytelnianiem a autoryzacją, zrozumiesz jak działają tokeny JWT, oraz poznasz najważniejsze podatności z listy OWASP Top 10 i jak się przed nimi bronić — wiedzę, którą zastosujesz praktycznie w kolejnych laboratoriach.</p>
+<hr>
+</section>
+<section id="uwierzytelnianie-vs-autoryzacja" class="level2">
+<h2 class="anchored" data-anchor-id="uwierzytelnianie-vs-autoryzacja">1️⃣ Uwierzytelnianie vs autoryzacja</h2>
+<p>To dwa <strong>różne</strong> pytania, często mylone:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 29%">
+<col style="width: 37%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Pytanie</th>
+<th>Termin</th>
+<th>Przykład</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Kim jesteś?</strong></td>
+<td>Uwierzytelnianie (<em>authentication</em>)</td>
+<td>login + hasło, token</td>
+</tr>
+<tr class="even">
+<td><strong>Co wolno Ci zrobić?</strong></td>
+<td>Autoryzacja (<em>authorization</em>)</td>
+<td>planista może zatwierdzać rezerwacje, żołnierz — nie</td>
+</tr>
+</tbody>
+</table>
+<p>System może <strong>wiedzieć, kim jesteś</strong> (uwierzytelniony), ale mimo to <strong>odmówić Ci operacji</strong> (brak autoryzacji) — to dokładnie różnica między <code>401</code> a <code>403</code> ze spotkania 1.</p>
+</section>
+<section id="jak-przechowywać-hasła-nigdy-jawnym-tekstem" class="level2">
+<h2 class="anchored" data-anchor-id="jak-przechowywać-hasła-nigdy-jawnym-tekstem">2️⃣ Jak przechowywać hasła — nigdy jawnym tekstem</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># NIGDY:</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> podane_haslo <span class="op">==</span> uzytkownik.haslo:  <span class="co"># haslo w bazie jako czysty tekst</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># ZAWSZE: hashowanie z "solą"</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> bcrypt</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>hash_hasla <span class="op">=</span> bcrypt.hashpw(haslo.encode(), bcrypt.gensalt())</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co"># ... zapisz hash_hasla w bazie, NIGDY samego hasla</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co"># przy logowaniu:</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>bcrypt.checkpw(podane_haslo.encode(), hash_hasla)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>bcrypt</code> (i podobne: <code>argon2</code>, <code>scrypt</code>) to <strong>funkcje jednokierunkowe</strong> — z hasha nie da się odtworzyć hasła, a każde wywołanie z “solą” (losowym dodatkiem) daje inny wynik nawet dla tego samego hasła, co chroni przed atakami tęczowych tablic (<em>rainbow tables</em>). Praktykę tę zastosujecie w kolejnych laboratoriach.</p>
+</section>
+<section id="sesje-vs-tokeny-dwa-modele-uwierzytelniania" class="level2">
+<h2 class="anchored" data-anchor-id="sesje-vs-tokeny-dwa-modele-uwierzytelniania">3️⃣ Sesje vs tokeny — dwa modele uwierzytelniania</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Sesje (cookie-based)</th>
+<th>Tokeny (JWT)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Gdzie żyje stan</td>
+<td>po stronie serwera (baza sesji)</td>
+<td>w samym tokenie, po stronie klienta</td>
+</tr>
+<tr class="even">
+<td>Skalowanie na wiele serwerów</td>
+<td>wymaga współdzielonej bazy sesji</td>
+<td>trywialne — każdy serwer sam zweryfikuje token</td>
+</tr>
+<tr class="odd">
+<td>Unieważnienie przed wygaśnięciem</td>
+<td>łatwe (usuń z bazy)</td>
+<td>trudniejsze (token jest ważny, dopóki nie wygaśnie)</td>
+</tr>
+</tbody>
+</table>
+<p>W tym kursie używamy <strong>JWT</strong> (JSON Web Token) — pasuje do architektury bezstanowej ze spotkania 1.</p>
+</section>
+<section id="anatomia-jwt" class="level2">
+<h2 class="anchored" data-anchor-id="anatomia-jwt">4️⃣ Anatomia JWT</h2>
+<p>Token JWT to trzy części oddzielone kropkami: <code>header.payload.signature</code></p>
+<pre><code>eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5rb3dhbHNraSIsInJvbGEiOiJkb3dvZGNhIn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c</code></pre>
+<ul>
+<li><strong>Header</strong> — jaki algorytm podpisu (np. <code>HS256</code>).</li>
+<li><strong>Payload</strong> — dane (np. <code>{"sub": "jankowalski", "rola": "dowodca", "exp": 1735689600}</code>) — <strong>czytelne dla każdego</strong> (to tylko Base64, nie szyfrowanie!), więc <strong>nigdy</strong> nie wkładajcie tam haseł czy innych sekretów.</li>
+<li><strong>Signature</strong> — podpis kryptograficzny, weryfikowany kluczem znanym tylko serwerowi — to on gwarantuje, że nikt nie sfałszował payloadu.</li>
+</ul>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>JWT jest podpisany, nie zaszyfrowany
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Każdy, kto przechwyci token, może <strong>odczytać</strong> jego zawartość (Base64 to nie szyfrowanie) — nie może jej jednak <strong>zmienić</strong> niezauważenie, bo podpis by się nie zgadzał. Wniosek: JWT chroni przed fałszowaniem danych, nie przed ich odczytaniem — transport tokenu musi iść przez HTTPS, żeby nikt po drodze go nie podsłuchał.</p>
+</div>
+</div>
+</section>
+<section id="owasp-top-10-trzy-podatności-które-napotkacie-w-laboratoriach" class="level2">
+<h2 class="anchored" data-anchor-id="owasp-top-10-trzy-podatności-które-napotkacie-w-laboratoriach">5️⃣ OWASP Top 10 — trzy podatności, które napotkacie w laboratoriach</h2>
+<section id="sql-injection" class="level3">
+<h3 class="anchored" data-anchor-id="sql-injection">SQL Injection</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># PODATNE:</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>conn.execute(<span class="ss">f"SELECT * FROM uzytkownicy WHERE login = '</span><span class="sc">{</span>login<span class="sc">}</span><span class="ss">'"</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># atakujacy wpisuje: login = "' OR '1'='1"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Obrona: <strong>zawsze</strong> parametryzowane zapytania (widzieliście to już przy bazie danych) — <code>conn.execute("... WHERE login = ?", (login,))</code>.</p>
+</section>
+<section id="xss-cross-site-scripting" class="level3">
+<h3 class="anchored" data-anchor-id="xss-cross-site-scripting">XSS (Cross-Site Scripting)</h3>
+<p>Atakujący wstrzykuje złośliwy JavaScript do danych, które potem są wyświetlane innemu użytkownikowi bez odpowiedniego oczyszczenia (np. komentarz zawierający <code>&lt;script&gt;...&lt;/script&gt;</code>, wyświetlony bez escapowania w przeglądarce ofiary).</p>
+<p>Obrona: nowoczesne frameworki frontendowe (React i podobne) domyślnie escapują dane przy renderowaniu — problem pojawia się głównie, gdy ktoś świadomie to wyłączy (<code>dangerouslySetInnerHTML</code> i podobne).</p>
+</section>
+<section id="csrf-cross-site-request-forgery" class="level3">
+<h3 class="anchored" data-anchor-id="csrf-cross-site-request-forgery">CSRF (Cross-Site Request Forgery)</h3>
+<p>Atakujący nakłania przeglądarkę ofiary (zalogowanej w Waszej aplikacji) do wysłania żądania bez jej wiedzy (np. przez ukryty formularz na złośliwej stronie). Ponieważ przeglądarka automatycznie dołącza cookies do żądań, serwer “widzi” żądanie jako uwierzytelnione.</p>
+<p>Obrona: API oparte o JWT w nagłówku <code>Authorization</code> (nie w cookies) jest <strong>z natury odporne</strong> na klasyczny CSRF — atakująca strona nie ma dostępu do tokenu przechowywanego przez Waszą aplikację (np. w pamięci JS), więc nie może go dołączyć do sfałszowanego żądania.</p>
+</section>
+</section>
+<section id="httpstls-dlaczego-zawsze" class="level2">
+<h2 class="anchored" data-anchor-id="httpstls-dlaczego-zawsze">6️⃣ HTTPS/TLS — dlaczego zawsze</h2>
+<p>Bez TLS każdy w tej samej sieci (Wi-Fi w kawiarni, router po drodze) może odczytać <strong>cały</strong> ruch — łącznie z tokenami JWT i hasłami przesyłanymi przy logowaniu. TLS szyfruje transport między klientem a serwerem — to warunek konieczny, nie opcjonalny dodatek, dla każdej aplikacji przyjmującej dane logowania.</p>
+<hr>
+</section>
+<section id="podsumowanie-części-ii" class="level2">
+<h2 class="anchored" data-anchor-id="podsumowanie-części-ii">🧾 Podsumowanie części II</h2>
+<ul>
+<li>Uwierzytelnianie = kim jesteś; autoryzacja = co wolno Ci zrobić — to dwa osobne mechanizmy.</li>
+<li>Hasła zawsze hashowane (bcrypt/argon2), nigdy przechowywane jawnym tekstem.</li>
+<li>JWT jest podpisany (integralność), nie zaszyfrowany (poufność) — payload jest czytelny dla każdego.</li>
+<li>SQL injection, XSS, CSRF — trzy klasyczne podatności; parametryzowane zapytania, escapowanie i tokeny w nagłówku to podstawowa obrona.</li>
+</ul>
+</section>
+<section id="źródła" class="level2">
+<h2 class="anchored" data-anchor-id="źródła">📚 Źródła</h2>
+<ul>
+<li>Dokumentacja FastAPI — <em>Path Operations</em>, <em>OpenAPI</em>, <em>Security</em></li>
+<li>M. Masse, <em>REST API Design Rulebook</em></li>
+<li>OWASP Top 10 (owasp.org)</li>
+<li>RFC 7519 — <em>JSON Web Token (JWT)</em></li>
+</ul>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/sebkaz-teaching\.github\.io\/pas2026");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>Copyright 2026, Sebastian Zając</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
