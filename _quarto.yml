@@ -1,6 +1,31 @@
 project:
   type: website
   output-dir: docs
+  # Reveal each lecture/lab week by week: comment OUT its "!..." line
+  # below (so it renders) once it's taught, then uncomment the matching
+  # entry in website.sidebar.contents further down. Doing only one of
+  # the two either publishes an unlisted page (still reachable by a
+  # direct URL) or links to a page that doesn't exist yet.
+  render:
+    - "*.qmd"
+    - "lectures/*.qmd"
+    - "cwiczenia/*.qmd"
+    - "!lectures/wyklad2.qmd"
+    - "!lectures/wyklad3.qmd"
+    - "!lectures/wyklad4.qmd"
+    - "!lectures/wyklad5.qmd"
+    - "!lectures/wyklad6.qmd"
+    - "!cwiczenia/cw2.qmd"
+    - "!cwiczenia/cw3.qmd"
+    - "!cwiczenia/cw4.qmd"
+    - "!cwiczenia/cw5.qmd"
+    - "!cwiczenia/cw6.qmd"
+    - "!cwiczenia/cw7.qmd"
+    - "!cwiczenia/cw8.qmd"
+    - "!cwiczenia/cw9.qmd"
+    - "!cwiczenia/cw10.qmd"
+    - "!cwiczenia/cw11.qmd"
+    - "!cwiczenia/cw12.qmd"
 
 website:
   title: Projektowanie Aplikacji Sieciowych
@@ -10,6 +35,28 @@ website:
     style: "docked"
     contents:
       - index.qmd
+      - section: "Wykłady"
+        contents:
+          - lectures/wyklad1.qmd
+          # - lectures/wyklad2.qmd
+          # - lectures/wyklad3.qmd
+          # - lectures/wyklad4.qmd
+          # - lectures/wyklad5.qmd
+          # - lectures/wyklad6.qmd
+      - section: "Laboratoria"
+        contents:
+          - cwiczenia/cw1.qmd
+          # - cwiczenia/cw2.qmd
+          # - cwiczenia/cw3.qmd
+          # - cwiczenia/cw4.qmd
+          # - cwiczenia/cw5.qmd
+          # - cwiczenia/cw6.qmd
+          # - cwiczenia/cw7.qmd
+          # - cwiczenia/cw8.qmd
+          # - cwiczenia/cw9.qmd
+          # - cwiczenia/cw10.qmd
+          # - cwiczenia/cw11.qmd
+          # - cwiczenia/cw12.qmd
   page-footer: "Copyright 2026, Sebastian Zając"
 format:
   html:

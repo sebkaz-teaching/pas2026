@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Informacje ogólne – Projektowanie Aplikacji Sieciowych</title>
+<title>Lab 1: Środowisko pracy i pierwszy serwer – Projektowanie Aplikacji Sieciowych</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -26,25 +26,60 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-94ae530b1fc9924793afbc3bb7de9d3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-94ae530b1fc9924793afbc3bb7de9d3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -74,7 +109,7 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../style.css">
 </head>
 
 <body class="nav-sidebar docked quarto-light">
@@ -86,7 +121,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Informacje ogólne</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../cwiczenia/cw1.html">Laboratoria</a></li><li class="breadcrumb-item"><a href="../cwiczenia/cw1.html">Lab 1: Środowisko pracy i pierwszy serwer</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -101,7 +136,7 @@ ul.task-list li input[type="checkbox"] {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Projektowanie Aplikacji Sieciowych</a> 
+      <a href="../">Projektowanie Aplikacji Sieciowych</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -113,7 +148,7 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Informacje ogólne</span></a>
   </div>
 </li>
@@ -128,7 +163,7 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/wyklad1.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/wyklad1.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Architektura aplikacji sieciowych</span></a>
   </div>
 </li>
@@ -145,7 +180,7 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./cwiczenia/cw1.html" class="sidebar-item-text sidebar-link">
+  <a href="../cwiczenia/cw1.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Lab 1: Środowisko pracy i pierwszy serwer</span></a>
   </div>
 </li>
@@ -161,17 +196,25 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title"><strong>Sections</strong></h2>
    
   <ul class="collapse">
-  <li><a href="#projektowanie-aplikacji-sieciowych" id="toc-projektowanie-aplikacji-sieciowych" class="nav-link active" data-scroll-target="#projektowanie-aplikacji-sieciowych">Projektowanie Aplikacji Sieciowych</a></li>
-  <li><a href="#kalendarz" id="toc-kalendarz" class="nav-link" data-scroll-target="#kalendarz">Kalendarz</a></li>
+  <li><a href="#laboratorium-1-środowisko-pracy-i-pierwszy-serwer" id="toc-laboratorium-1-środowisko-pracy-i-pierwszy-serwer" class="nav-link active" data-scroll-target="#laboratorium-1-środowisko-pracy-i-pierwszy-serwer">🛠️ Laboratorium 1: Środowisko pracy i pierwszy serwer</a>
+  <ul class="collapse">
+  <li><a href="#cel" id="toc-cel" class="nav-link" data-scroll-target="#cel">🎯 Cel</a></li>
+  <li><a href="#środowisko" id="toc-środowisko" class="nav-link" data-scroll-target="#środowisko">1️⃣ Środowisko</a></li>
+  <li><a href="#pierwszy-serwer" id="toc-pierwszy-serwer" class="nav-link" data-scroll-target="#pierwszy-serwer">2️⃣ Pierwszy serwer</a></li>
+  <li><a href="#automatyczna-dokumentacja-korzyść-od-razu" id="toc-automatyczna-dokumentacja-korzyść-od-razu" class="nav-link" data-scroll-target="#automatyczna-dokumentacja-korzyść-od-razu">3️⃣ Automatyczna dokumentacja — korzyść od razu</a></li>
+  <li><a href="#drugi-endpoint-zapowiedź-projektu" id="toc-drugi-endpoint-zapowiedź-projektu" class="nav-link" data-scroll-target="#drugi-endpoint-zapowiedź-projektu">4️⃣ Drugi endpoint — zapowiedź projektu</a></li>
+  <li><a href="#repozytorium" id="toc-repozytorium" class="nav-link" data-scroll-target="#repozytorium">5️⃣ Repozytorium</a></li>
+  <li><a href="#zadanie-na-koniec-laboratorium" id="toc-zadanie-na-koniec-laboratorium" class="nav-link" data-scroll-target="#zadanie-na-koniec-laboratorium">✅ Zadanie na koniec laboratorium</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../cwiczenia/cw1.html">Laboratoria</a></li><li class="breadcrumb-item"><a href="../cwiczenia/cw1.html">Lab 1: Środowisko pracy i pierwszy serwer</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Informacje ogólne</h1>
+<h1 class="title">Lab 1: Środowisko pracy i pierwszy serwer</h1>
 </div>
 
 
@@ -188,25 +231,94 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="projektowanie-aplikacji-sieciowych" class="level2">
-<h2 class="anchored" data-anchor-id="projektowanie-aplikacji-sieciowych">Projektowanie Aplikacji Sieciowych</h2>
-<p>Kod:</p>
-<p>Semestr: zimowy</p>
+<section id="laboratorium-1-środowisko-pracy-i-pierwszy-serwer" class="level1">
+<h1>🛠️ Laboratorium 1: Środowisko pracy i pierwszy serwer</h1>
+<section id="cel" class="level2">
+<h2 class="anchored" data-anchor-id="cel">🎯 Cel</h2>
+<p>Postawić działający serwer HTTP w Pythonie i zobaczyć swój pierwszy endpoint w przeglądarce. To fundament, na którym przez 12 laboratoriów zbudujemy system rezerwacji poligonu.</p>
+<hr>
 </section>
-<section id="kalendarz" class="level2">
-<h2 class="anchored" data-anchor-id="kalendarz">Kalendarz</h2>
-<!-- TODO: uzupełnić na podstawie https://wel.wat.edu.pl/planyzajec/zima/dr__Zajac_Sebastian.htm -->
-<section id="wykład-dla-grup" class="level3">
-<h3 class="anchored" data-anchor-id="wykład-dla-grup">Wykład dla grup:</h3>
-<ol type="1">
-<li>TODO: dzień tygodnia, godzina, sala</li>
-</ol>
+<section id="środowisko" class="level2">
+<h2 class="anchored" data-anchor-id="środowisko">1️⃣ Środowisko</h2>
+<p>Będziemy używać <strong>Python 3.11+</strong>, <strong>FastAPI</strong> (framework webowy) i <strong>uvicorn</strong> (serwer, który faktycznie uruchamia aplikację).</p>
+<section id="wirtualne-środowisko" class="level3">
+<h3 class="anchored" data-anchor-id="wirtualne-środowisko">🔹 Wirtualne środowisko</h3>
+<p>Zawsze pracuj w izolowanym środowisku — nigdy nie instaluj pakietów globalnie.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> venv .venv</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .venv/bin/activate      <span class="co"># macOS/Linux</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># .venv\Scripts\activate       # Windows</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install fastapi uvicorn<span class="pp">[</span><span class="ss">standard</span><span class="pp">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<blockquote class="blockquote">
+<p>💡 <code>.venv/</code> nigdy nie trafia do repozytorium git — dodaj go do <code>.gitignore</code>.</p>
+</blockquote>
+<hr>
 </section>
-<section id="laboratorium-dla-grup" class="level3">
-<h3 class="anchored" data-anchor-id="laboratorium-dla-grup">Laboratorium dla grup:</h3>
+</section>
+<section id="pierwszy-serwer" class="level2">
+<h2 class="anchored" data-anchor-id="pierwszy-serwer">2️⃣ Pierwszy serwer</h2>
+<p>Utwórz plik <code>main.py</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastapi <span class="im">import</span> FastAPI</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> FastAPI(title<span class="op">=</span><span class="st">"System rezerwacji poligonu"</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="at">@app.get</span>(<span class="st">"/"</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> root():</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">"komunikat"</span>: <span class="st">"System rezerwacji poligonu dziala"</span>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Uruchom:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uvicorn</span> main:app <span class="at">--reload</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><code>main</code> — nazwa pliku (<code>main.py</code>),</li>
+<li><code>app</code> — nazwa obiektu <code>FastAPI()</code> w tym pliku,</li>
+<li><code>--reload</code> — serwer automatycznie restartuje się po zapisaniu zmian (tylko do pracy deweloperskiej, nigdy na produkcji).</li>
+</ul>
+<p>Otwórz w przeglądarce <strong>http://127.0.0.1:8000/</strong> — powinieneś zobaczyć:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span><span class="dt">"komunikat"</span><span class="fu">:</span> <span class="st">"System rezerwacji poligonu dziala"</span><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
+<section id="automatyczna-dokumentacja-korzyść-od-razu" class="level2">
+<h2 class="anchored" data-anchor-id="automatyczna-dokumentacja-korzyść-od-razu">3️⃣ Automatyczna dokumentacja — korzyść od razu</h2>
+<p>FastAPI, bez dodatkowej pracy z Twojej strony, generuje interaktywną dokumentację API. Otwórz:</p>
+<ul>
+<li><strong>http://127.0.0.1:8000/docs</strong> — interfejs Swagger UI, w którym możesz od razu klikać i testować endpointy.</li>
+<li><strong>http://127.0.0.1:8000/redoc</strong> — alternatywny, bardziej “dokumentacyjny” widok.</li>
+</ul>
+<blockquote class="blockquote">
+<p>🧠 Do tego mechanizmu wrócimy dokładniej w wykładzie 3 (projektowanie API) i laboratorium 9 — dziś zapamiętaj tylko, że istnieje i że jest darmowy.</p>
+</blockquote>
+<hr>
+</section>
+<section id="drugi-endpoint-zapowiedź-projektu" class="level2">
+<h2 class="anchored" data-anchor-id="drugi-endpoint-zapowiedź-projektu">4️⃣ Drugi endpoint — zapowiedź projektu</h2>
+<p>Dodaj do <code>main.py</code> endpoint, który na razie zwraca dane na sztywno (żadnej bazy jeszcze nie mamy — to dopiero lab 3):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="at">@app.get</span>(<span class="st">"/poligony"</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lista_poligonow():</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        {<span class="st">"id"</span>: <span class="dv">1</span>, <span class="st">"nazwa"</span>: <span class="st">"Poligon Nowa Dęba"</span>, <span class="st">"typ"</span>: <span class="st">"strzelnica"</span>},</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        {<span class="st">"id"</span>: <span class="dv">2</span>, <span class="st">"nazwa"</span>: <span class="st">"Poligon Drawsko"</span>, <span class="st">"typ"</span>: <span class="st">"teren manewrowy"</span>},</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    ]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Sprawdź <code>http://127.0.0.1:8000/poligony</code> w przeglądarce oraz w <code>/docs</code> — zobacz, jak Swagger sam wykrył nowy endpoint.</p>
+<hr>
+</section>
+<section id="repozytorium" class="level2">
+<h2 class="anchored" data-anchor-id="repozytorium">5️⃣ Repozytorium</h2>
+<p>Załóż repozytorium git dla swojego projektu (osobne od materiałów kursu):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> init</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">".venv/\n__pycache__/\n*.pyc"</span> <span class="op">&gt;</span> .gitignore</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add main.py .gitignore</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Init: pierwszy serwer FastAPI"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Ten projekt będzie rósł przez cały semestr — każde kolejne laboratorium to nowy commit.</p>
+<hr>
+</section>
+<section id="zadanie-na-koniec-laboratorium" class="level2">
+<h2 class="anchored" data-anchor-id="zadanie-na-koniec-laboratorium">✅ Zadanie na koniec laboratorium</h2>
 <ol type="1">
-<li>TODO: dzień tygodnia, godzina, sala</li>
+<li>Dodaj trzeci endpoint <code>GET /jednostki</code>, zwracający sztywną listę 2-3 jednostek wojskowych (nazwa, garnizon).</li>
+<li>Sprawdź go w <code>/docs</code>.</li>
+<li>Zacommituj zmiany z sensowną wiadomością.</li>
 </ol>
+<p><strong>Do oddania:</strong> link do repozytorium (lub commit hash) — prowadzący sprawdza na następnych zajęciach.</p>
 
 
 </section>

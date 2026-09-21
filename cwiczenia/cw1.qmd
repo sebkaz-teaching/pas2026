@@ -1,0 +1,115 @@
+---
+title: "Lab 1: Środowisko pracy i pierwszy serwer"
+---
+
+# 🛠️ Laboratorium 1: Środowisko pracy i pierwszy serwer
+
+## 🎯 Cel
+
+Postawić działający serwer HTTP w Pythonie i zobaczyć swój pierwszy endpoint w przeglądarce. To fundament, na którym przez 12 laboratoriów zbudujemy system rezerwacji poligonu.
+
+---
+
+## 1️⃣ Środowisko
+
+Będziemy używać **Python 3.11+**, **FastAPI** (framework webowy) i **uvicorn** (serwer, który faktycznie uruchamia aplikację).
+
+### 🔹 Wirtualne środowisko
+
+Zawsze pracuj w izolowanym środowisku — nigdy nie instaluj pakietów globalnie.
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate      # macOS/Linux
+# .venv\Scripts\activate       # Windows
+
+pip install fastapi uvicorn[standard]
+```
+
+> 💡 `.venv/` nigdy nie trafia do repozytorium git — dodaj go do `.gitignore`.
+
+---
+
+## 2️⃣ Pierwszy serwer
+
+Utwórz plik `main.py`:
+
+```python
+from fastapi import FastAPI
+
+app = FastAPI(title="System rezerwacji poligonu")
+
+
+@app.get("/")
+def root():
+    return {"komunikat": "System rezerwacji poligonu dziala"}
+```
+
+Uruchom:
+
+```bash
+uvicorn main:app --reload
+```
+
+- `main` — nazwa pliku (`main.py`),
+- `app` — nazwa obiektu `FastAPI()` w tym pliku,
+- `--reload` — serwer automatycznie restartuje się po zapisaniu zmian (tylko do pracy deweloperskiej, nigdy na produkcji).
+
+Otwórz w przeglądarce **http://127.0.0.1:8000/** — powinieneś zobaczyć:
+
+```json
+{"komunikat": "System rezerwacji poligonu dziala"}
+```
+
+---
+
+## 3️⃣ Automatyczna dokumentacja — korzyść od razu
+
+FastAPI, bez dodatkowej pracy z Twojej strony, generuje interaktywną dokumentację API. Otwórz:
+
+- **http://127.0.0.1:8000/docs** — interfejs Swagger UI, w którym możesz od razu klikać i testować endpointy.
+- **http://127.0.0.1:8000/redoc** — alternatywny, bardziej "dokumentacyjny" widok.
+
+> 🧠 Do tego mechanizmu wrócimy dokładniej w wykładzie 3 (projektowanie API) i laboratorium 9 — dziś zapamiętaj tylko, że istnieje i że jest darmowy.
+
+---
+
+## 4️⃣ Drugi endpoint — zapowiedź projektu
+
+Dodaj do `main.py` endpoint, który na razie zwraca dane na sztywno (żadnej bazy jeszcze nie mamy — to dopiero lab 3):
+
+```python
+@app.get("/poligony")
+def lista_poligonow():
+    return [
+        {"id": 1, "nazwa": "Poligon Nowa Dęba", "typ": "strzelnica"},
+        {"id": 2, "nazwa": "Poligon Drawsko", "typ": "teren manewrowy"},
+    ]
+```
+
+Sprawdź `http://127.0.0.1:8000/poligony` w przeglądarce oraz w `/docs` — zobacz, jak Swagger sam wykrył nowy endpoint.
+
+---
+
+## 5️⃣ Repozytorium
+
+Załóż repozytorium git dla swojego projektu (osobne od materiałów kursu):
+
+```bash
+git init
+echo ".venv/\n__pycache__/\n*.pyc" > .gitignore
+git add main.py .gitignore
+git commit -m "Init: pierwszy serwer FastAPI"
+```
+
+Ten projekt będzie rósł przez cały semestr — każde kolejne laboratorium to nowy commit.
+
+---
+
+## ✅ Zadanie na koniec laboratorium
+
+1. Dodaj trzeci endpoint `GET /jednostki`, zwracający sztywną listę 2-3 jednostek wojskowych (nazwa, garnizon).
+2. Sprawdź go w `/docs`.
+3. Zacommituj zmiany z sensowną wiadomością.
+
+**Do oddania:** link do repozytorium (lub commit hash) — prowadzący sprawdza na następnych zajęciach.
