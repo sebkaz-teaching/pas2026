@@ -1,0 +1,291 @@
+---
+title: "Spotkanie 3: Skalowalność i wdrażanie"
+---
+
+## ✅ Sprawdź się ze spotkania 2
+
+<div id="pas-quiz"></div>
+<script src="../assets/js/quiz-engine.js"></script>
+<script>
+CourseQuiz.mount(document.getElementById('pas-quiz'), {
+  course: "pas2026",
+  lecture: "spotkanie3",
+  title: "Spotkanie 2: Projektowanie API i bezpieczeństwo",
+  submitUrl: "https://sebastianzajac.pl/rsod-quiz/submit.php",
+  questions: [
+    {
+      id: "q1", points: 1, diff: "bardzo łatwe",
+      text: "Który adres jest zgodny z konwencją REST dla listy poligonów?",
+      options: [
+        {v:"A", t:"/getPoligony"},
+        {v:"B", t:"/poligony"},
+        {v:"C", t:"/poligon/lista"},
+        {v:"D", t:"/API/POLIGON"}
+      ]
+    },
+    {
+      id: "q2", points: 1, diff: "łatwe",
+      text: "Czym różni się autoryzacja od uwierzytelniania?",
+      options: [
+        {v:"A", t:"To synonimy"},
+        {v:"B", t:"Uwierzytelnianie odpowiada 'kim jesteś', autoryzacja — 'co wolno Ci zrobić'"},
+        {v:"C", t:"Autoryzacja dotyczy tylko haseł, uwierzytelnianie — tokenów"},
+        {v:"D", t:"Autoryzacja jest starszym mechanizmem, zastąpionym przez uwierzytelnianie"}
+      ]
+    },
+    {
+      id: "q3", points: 2, diff: "średnie",
+      text: "Dlaczego dokumentacja OpenAPI generowana z kodu jest lepsza od osobnego pliku z opisem API?",
+      options: [
+        {v:"A", t:"Bo jest ładniejsza wizualnie"},
+        {v:"B", t:"Bo nie może się rozjechać z rzeczywistym kodem — to dosłownie ten sam kod"},
+        {v:"C", t:"Bo działa szybciej"},
+        {v:"D", t:"Nie ma żadnej różnicy"}
+      ]
+    },
+    {
+      id: "q4", points: 2, diff: "trudne",
+      text: "Czy token JWT jest zaszyfrowany?",
+      options: [
+        {v:"A", t:"Tak, nikt bez klucza nie odczyta jego zawartości"},
+        {v:"B", t:"Nie — jest podpisany (chroni przed fałszowaniem), ale payload jest czytelny dla każdego (to tylko Base64)"},
+        {v:"C", t:"Zależy od długości tokenu"},
+        {v:"D", t:"Tylko header jest zaszyfrowany, payload nie"}
+      ]
+    },
+    {
+      id: "q5", points: 3, diff: "wnioskowanie",
+      text: "Endpoint GET /rezerwacje?sortuj=nazwa wstawia wartość parametru 'sortuj' bezpośrednio (przez sklejanie stringów) jako nazwę kolumny w klauzuli ORDER BY zapytania SQL. Jakie zagrożenie to stwarza, i czy zwykłe parametryzowane zapytanie (?, jak przy WHERE) to naprawi?",
+      options: [
+        {v:"A", t:"Żadne zagrożenie — ORDER BY nie dotyczy bezpieczeństwa"},
+        {v:"B", t:"SQL injection przez nazwę kolumny; parametryzacja (?) NIE rozwiąże tego — placeholdery działają dla wartości, nie nazw kolumn, więc trzeba ręcznie zweryfikować nazwę względem białej listy dozwolonych kolumn"},
+        {v:"C", t:"To XSS, nie SQL injection, więc parametryzacja w ogóle nie jest tu istotna"},
+        {v:"D", t:"Parametryzowane zapytanie zawsze rozwiązuje każdy problem z SQL injection, niezależnie od miejsca w zapytaniu"}
+      ]
+    }
+  ]
+});
+</script>
+
+---
+
+# 📈 Część I — Skalowalność i architektura rozproszona
+
+## 🎯 Cele
+
+Poznasz podstawowe techniki skalowania aplikacji sieciowych (load balancing, cache,
+kolejki) oraz różnicę między architekturą monolityczną a mikroserwisową — z myślą o
+tym, kiedy dana technika w ogóle ma sens (nie każdy projekt potrzebuje mikroserwisów).
+
+---
+
+## 1️⃣ Skalowanie pionowe vs poziome
+
+| | Skalowanie pionowe (*vertical*) | Skalowanie poziome (*horizontal*) |
+|---|---|---|
+| Jak | mocniejszy serwer (więcej RAM/CPU) | więcej serwerów równolegle |
+| Limit | fizyczny sufit sprzętu | teoretycznie brak |
+| Złożoność | prosta — nic w kodzie się nie zmienia | wymaga architektury bezstanowej (pamiętacie HTTP ze spotkania 1?) |
+
+Aplikacja bezstanowa (jak ta, którą budujecie z JWT zamiast sesji serwerowych) skaluje
+się poziomo **bez zmian w kodzie** — dowolny serwer może obsłużyć dowolne żądanie,
+bo żaden nie musi "pamiętać" niczego o kliencie z poprzedniego żądania.
+
+## 2️⃣ Load balancer — rozdzielanie ruchu
+
+**Load balancer** stoi przed wieloma kopiami Waszej aplikacji i rozdziela
+przychodzące żądania między nie (np. round-robin — po kolei, albo według obciążenia).
+
+```
+Klient → Load Balancer → [Serwer A, Serwer B, Serwer C] → wspólna baza danych
+```
+
+::: {.callout-important}
+## Dlaczego to wymaga architektury bezstanowej
+Gdyby serwer A "pamiętał" sesję zalogowanego użytkownika w swojej pamięci lokalnej, a
+load balancer wysłał kolejne żądanie tego samego użytkownika do serwera B — serwer B
+nie miałby pojęcia, kim jest ten użytkownik. To dokładnie dlatego JWT (token niosący
+całą potrzebną informację w sobie, weryfikowalny przez **każdy** serwer niezależnie)
+pasuje tak dobrze do architektur skalowanych poziomo.
+:::
+
+## 3️⃣ Cache — nie licz tego samego dwa razy
+
+Jeśli `GET /poligony` zwraca te same dane tysiąc razy na minutę, a dane zmieniają się
+raz dziennie, po co odpytywać bazę za każdym razem? **Cache** (np. Redis — szybka baza
+w pamięci RAM) przechowuje gotową odpowiedź i serwuje ją bez dotykania właściwej bazy
+danych, dopóki dane się nie zmienią.
+
+```
+Klient → Serwer → sprawdź cache → jest? zwróć od razu
+                                → nie ma? zapytaj baze, zapisz wynik w cache, zwróc
+```
+
+## 4️⃣ Kolejki komunikatów — odkładanie pracy na później
+
+Nie każda operacja musi zakończyć się **od razu**, zanim serwer odpowie klientowi.
+Przykład: zatwierdzenie rezerwacji mogłoby wysyłać e-mail powiadomienia — ale klient
+nie musi czekać, aż e-mail faktycznie wyjdzie.
+
+```
+POST /rezerwacje/5/zatwierdz
+  → zapisz w bazie (szybko)
+  → wrzuć zadanie "wyslij powiadomienie" na kolejke (np. RabbitMQ)
+  → odpowiedz klientowi od razu (201)
+  → osobny proces w tle odbiera z kolejki i wysyla e-mail, kiedy moze
+```
+
+To rozdziela "co musi się stać natychmiast" od "co może poczekać kilka sekund" —
+klient dostaje szybką odpowiedź niezależnie od tego, jak wolny jest serwer pocztowy.
+
+## 5️⃣ Monolit vs mikroserwisy
+
+| | Monolit | Mikroserwisy |
+|---|---|---|
+| Struktura | jedna aplikacja, jeden proces | wiele małych, niezależnych usług |
+| Wdrażanie | całość naraz | każda usługa osobno |
+| Złożoność operacyjna | niska | wysoka (sieć między usługami, monitoring, ...) |
+| Kiedy sensowne | mały/średni zespół, projekt jak nasz | duża organizacja, wiele zespołów pracujących niezależnie |
+
+::: {.callout-note}
+## Nasz projekt jest (świadomie) monolitem
+System rezerwacji poligonu, który budujecie, to jedna aplikacja FastAPI — i to jest
+**poprawna** decyzja dla tej skali, nie kompromis czy uproszczenie "bo to tylko
+zajęcia". Mikroserwisy rozwiązują problem **organizacyjny** (setki programistów
+pracujących nad jednym systemem, potrzebujących niezależnego wdrażania) — nie problem
+techniczny małej aplikacji. Rozbicie tego projektu na mikroserwisy dodałoby złożoność
+bez żadnej korzyści przy obecnej skali.
+:::
+
+## 6️⃣ CDN — bliżej użytkownika
+
+**CDN** (*Content Delivery Network*) to sieć serwerów rozmieszczonych geograficznie,
+serwujących statyczne pliki (obrazy, CSS, JS) z lokalizacji najbliższej użytkownikowi
+— zamiast każdego żądania lecącego przez pół świata do jednego centralnego serwera.
+
+---
+
+## 🧾 Podsumowanie części I
+
+- Skalowanie poziome (więcej serwerów) wymaga architektury bezstanowej — to dlatego dbaliśmy o to od spotkania 1.
+- Cache oszczędza powtarzalną pracę; kolejki odkładają nie-krytyczną pracę na później.
+- Monolit vs mikroserwisy to decyzja organizacyjna, nie techniczna — mikroserwisy nie są "lepsze z zasady".
+
+---
+
+# 🚀 Część II — Wdrażanie i utrzymanie
+
+## 🎯 Cele
+
+Poznasz podstawy konteneryzacji (Docker), automatyzacji wdrożeń (CI/CD) oraz
+monitorowania działającej aplikacji — ostatni krok między "działa na moim
+komputerze" a "działa dla prawdziwych użytkowników".
+
+---
+
+## 1️⃣ "Działa u mnie" — problem, który rozwiązuje Docker
+
+Klasyczny problem: aplikacja działa na Waszym laptopie, ale nie na serwerze
+kolegi/produkcji — bo inna wersja Pythona, brakująca biblioteka systemowa, inny
+system operacyjny. **Docker** pakuje aplikację **razem z całym środowiskiem**
+potrzebnym do jej uruchomienia w jeden, przenośny obraz.
+
+```dockerfile
+FROM python:3.12-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+COPY . .
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+```
+
+`docker build` tworzy obraz z tego przepisu; `docker run` uruchamia go — identycznie
+na Waszym laptopie, na serwerze kolegi, i na produkcji.
+
+## 2️⃣ docker-compose — wiele kontenerów naraz
+
+Prawdziwa aplikacja to zwykle więcej niż jeden kontener (aplikacja + baza danych +
+cache). `docker-compose.yml` opisuje je wszystkie razem:
+
+```yaml
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_PASSWORD: haslo
+```
+
+`docker-compose up` startuje całą architekturę jedną komendą.
+
+## 3️⃣ CI/CD — automatyzacja od commita do produkcji
+
+**CI** (*Continuous Integration*) — każdy commit automatycznie uruchamia testy,
+zanim ktokolwiek ręcznie sprawdzi, czy kod działa. **CD** (*Continuous Deployment*) —
+jeśli testy przejdą, kod automatycznie trafia na serwer produkcyjny, bez ręcznego
+wgrywania plików.
+
+```yaml
+# .github/workflows/deploy.yml (uproszczone)
+on: [push]
+jobs:
+  test-and-deploy:
+    steps:
+      - run: pytest
+      - run: docker build -t moja-app .
+      - run: ./deploy.sh   # tylko jesli testy przeszly
+```
+
+::: {.callout-tip}
+## Dlaczego to ważne, nawet w małym projekcie zaliczeniowym?
+Ręczne wdrażanie ("skopiuj pliki przez FTP, zrestartuj serwer") jest podatne na
+pomyłki i nie skaluje się na zespół więcej niż jednej osoby. Automatyzacja tego
+procesu — nawet najprostsza — to nawyk warty wyrobienia od pierwszego projektu.
+:::
+
+## 4️⃣ Monitorowanie i logowanie
+
+Wdrożona aplikacja, w przeciwieństwie do tej na Waszym laptopie, **nie ma nikogo
+patrzącego na terminal**, gdy coś pójdzie źle. Dlatego potrzebuje:
+
+- **Logów** — zapisu tego, co się dzieje (`logging` w Pythonie zamiast `print`),
+- **Monitoringu** — automatycznego alarmowania, gdy coś nie działa (np. serwer nie
+  odpowiada, błędy `500` rosną gwałtownie).
+
+```python
+import logging
+logger = logging.getLogger(__name__)
+
+@app.post("/rezerwacje")
+def utworz_rezerwacje(rez: RezerwacjaCreate):
+    logger.info(f"Nowa rezerwacja: poligon={rez.poligon_id}, jednostka={rez.jednostka_id}")
+    ...
+```
+
+---
+
+## 🧾 Podsumowanie części II
+
+- Docker pakuje aplikację z jej środowiskiem — eliminuje "działa u mnie, nie działa tam".
+- docker-compose orkiestruje wiele kontenerów (aplikacja + baza) jedną komendą.
+- CI/CD automatyzuje testowanie i wdrażanie — mniej miejsca na błąd ludzki.
+- Logi i monitoring to oczy zespołu nad aplikacją, której nikt ręcznie nie obserwuje.
+
+## 🎓 Podsumowanie całego kursu
+
+Od architektury klient-serwer, przez projektowanie API i bezpieczeństwo, po
+skalowanie i wdrażanie — pokryliście pełny cykl życia aplikacji sieciowej. System
+rezerwacji poligonu, który zbudowaliście na laboratoriach, przeszedł dokładnie tę
+samą drogę, którą przechodzi każda prawdziwa aplikacja produkcyjna: od pierwszego
+`Hello World` do (docelowo) wdrożonego, monitorowanego systemu.
+
+## 📚 Źródła
+
+- M. Kleppmann, *Designing Data-Intensive Applications* (rozdziały o skalowaniu i replikacji)
+- Docker — oficjalna dokumentacja, *Get Started*
+- GitHub Actions — oficjalna dokumentacja

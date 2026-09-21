@@ -1,0 +1,281 @@
+---
+title: "Lab, spotkanie 3: Dokumentacja, frontend, Docker i wdrożenie"
+---
+
+# 🛠️ Laboratorium — Spotkanie 3 (3h)
+
+Ostatnie cztery części: dopinamy dokumentację i testy, dodajemy prosty frontend,
+konteneryzujemy całość, i kończymy wdrożeniem oraz prezentacją gotowego systemu.
+
+---
+
+# Część I — Dokumentacja API i testowanie
+
+## 🎯 Cel
+
+Wzbogacić automatyczną dokumentację OpenAPI o opisy i przykłady, oraz napisać
+pierwsze automatyczne testy API zamiast ręcznego klikania w `/docs` za każdym razem.
+
+## 1️⃣ Wzbogacanie dokumentacji
+
+```python
+@app.post(
+    "/rezerwacje",
+    status_code=201,
+    summary="Utworz nowa rezerwacje poligonu",
+    description="Sprawdza konflikt terminow na tym samym poligonie przed zapisem.",
+    responses={
+        409: {"description": "Konflikt terminow — poligon juz zarezerwowany w tym czasie"},
+        422: {"description": "Nieprawidlowe dane (np. data_od po data_do)"},
+    },
+)
+def utworz_rezerwacje(rez: RezerwacjaCreate):
+    ...
+```
+
+Parametr `responses` opisuje **niestandardowe** kody błędów w dokumentacji — bez
+niego `/docs` pokazuje tylko domyślny `200`/`422`, nie wiedząc nic o Waszych własnych
+`HTTPException`.
+
+## 2️⃣ Testy automatyczne — `TestClient`
+
+```bash
+pip install pytest httpx
+```
+
+FastAPI udostępnia `TestClient`, który wywołuje endpointy **bez uruchamiania
+prawdziwego serwera** — testy są szybkie i powtarzalne.
+
+```python
+# test_api.py
+from fastapi.testclient import TestClient
+from main import app
+
+client = TestClient(app)
+
+def test_lista_poligonow_pusta_na_starcie():
+    odpowiedz = client.get("/poligony")
+    assert odpowiedz.status_code == 200
+
+def test_tworzenie_rezerwacji_z_konfliktem():
+    client.post("/rezerwacje", json={
+        "poligon_id": 1, "jednostka_id": 1,
+        "data_od": "2026-05-01T08:00:00", "data_do": "2026-05-01T12:00:00",
+    })
+    odpowiedz = client.post("/rezerwacje", json={
+        "poligon_id": 1, "jednostka_id": 2,
+        "data_od": "2026-05-01T10:00:00", "data_do": "2026-05-01T14:00:00",
+    })
+    assert odpowiedz.status_code == 409
+```
+
+Uruchom: `pytest -v`. Zwróć uwagę, że drugi test **odtwarza dokładnie** scenariusz,
+który wcześniej sprawdzaliście ręcznie w `/docs` — automatyzacja tego, co robiliście
+ręcznie, to główna korzyść testów.
+
+### ✅ Mini-zadanie części I
+
+Napisz test sprawdzający, że `DELETE /poligony/{id}` bez tokenu (albo z tokenem roli
+`dowodca`) zwraca odpowiedni kod błędu.
+
+---
+
+# Część II — Prosty frontend
+
+## 🎯 Cel
+
+Napisać minimalny frontend (HTML + JavaScript, bez frameworków) konsumujący
+Wasze REST API — żeby zobaczyć system z perspektywy klienta, nie tylko `/docs`.
+
+## 1️⃣ Statyczny HTML + `fetch`
+
+```html
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+<head><title>Rezerwacja poligonu</title></head>
+<body>
+  <h1>Dostepne poligony</h1>
+  <ul id="lista-poligonow"></ul>
+
+  <script>
+    async function zaladujPoligony() {
+      const odpowiedz = await fetch("http://localhost:8000/poligony");
+      const poligony = await odpowiedz.json();
+
+      const lista = document.getElementById("lista-poligonow");
+      poligony.forEach(p => {
+        const el = document.createElement("li");
+        el.textContent = `${p.nazwa} (${p.typ})`;
+        lista.appendChild(el);
+      });
+    }
+
+    zaladujPoligony();
+  </script>
+</body>
+</html>
+```
+
+Otwórz ten plik bezpośrednio w przeglądarce (albo przez prosty serwer statyczny,
+np. `python3 -m http.server 3000`) — to dokładnie ten scenariusz "frontend na innym
+porcie niż backend", dla którego skonfigurowaliście CORS wcześniej.
+
+## 2️⃣ Formularz — `POST` z frontendu
+
+```html
+<form id="formularz-rezerwacji">
+  <input name="poligon_id" placeholder="ID poligonu" required>
+  <input name="jednostka_id" placeholder="ID jednostki" required>
+  <input name="data_od" type="datetime-local" required>
+  <input name="data_do" type="datetime-local" required>
+  <button type="submit">Zarezerwuj</button>
+</form>
+
+<script>
+document.getElementById("formularz-rezerwacji").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const dane = Object.fromEntries(new FormData(e.target));
+
+  const odpowiedz = await fetch("http://localhost:8000/rezerwacje", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(dane),
+  });
+
+  if (odpowiedz.status === 409) {
+    alert("Konflikt terminow na tym poligonie!");
+  } else if (odpowiedz.ok) {
+    alert("Rezerwacja utworzona!");
+  }
+});
+</script>
+```
+
+### ✅ Mini-zadanie części II
+
+Dodaj obsługę logowania: formularz login/hasło, zapisanie zwróconego tokenu JWT
+(np. w `localStorage`), i dołączanie go w nagłówku `Authorization: Bearer <token>`
+przy kolejnych żądaniach (np. `POST /rezerwacje/{id}/zatwierdz`).
+
+---
+
+# Część III — Konteneryzacja
+
+## 🎯 Cel
+
+Zapakować aplikację (backend + baza) w kontenery Docker, żeby uruchamiała się
+identycznie na dowolnym komputerze, bez ręcznej instalacji Pythona i zależności.
+
+## 1️⃣ `Dockerfile` dla backendu
+
+```dockerfile
+FROM python:3.12-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+```
+
+```bash
+pip freeze > requirements.txt   # zapisz dokladne wersje uzywanych bibliotek
+docker build -t rezerwacja-poligonu .
+docker run -p 8000:8000 rezerwacja-poligonu
+```
+
+## 2️⃣ `docker-compose.yml`
+
+```yaml
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./poligony.db:/app/poligony.db
+```
+
+`volumes` mapuje plik bazy SQLite z Waszego dysku do wnętrza kontenera — bez tego
+dane zniknęłyby przy każdym restarcie kontenera (kontenery są domyślnie
+**efemeryczne**: to, co zapiszesz wewnątrz, ginie, gdy kontener zostaje usunięty).
+
+```bash
+docker-compose up
+```
+
+### ✅ Mini-zadanie części III
+
+Sprawdź, że po `docker-compose down` i `docker-compose up` ponownie, dane w bazie
+**przetrwały** (dzięki `volumes`). Zrób też test przeciwny: usuń sekcję `volumes` i
+sprawdź, że dane **znikają** — zrozum na własne oczy, po co ten wpis istnieje.
+
+---
+
+# Część IV — Wdrożenie i prezentacja
+
+## 🎯 Cel
+
+Uruchomić gotowy system poza własnym laptopem (choćby lokalnie przez Docker
+Compose z założeniem "jakby to był serwer produkcyjny") i przygotować krótką
+prezentację całego projektu.
+
+## 1️⃣ Zmienne środowiskowe zamiast wartości na sztywno
+
+Przed jakimkolwiek wdrożeniem, wynieś sekrety (klucz JWT, hasła) z kodu:
+
+```python
+import os
+
+SECRET_KEY = os.environ.get("JWT_SECRET_KEY", "tylko-do-developmentu")
+```
+
+```yaml
+# docker-compose.yml
+services:
+  api:
+    build: .
+    environment:
+      JWT_SECRET_KEY: "prawdziwy-losowy-sekret-nigdy-w-kodzie"
+```
+
+::: {.callout-important}
+## Nigdy nie commituj prawdziwych sekretów do gita
+Klucz JWT, hasła do bazy, tokeny API — wszystko to powinno żyć w zmiennych
+środowiskowych (albo w pliku `.env` dodanym do `.gitignore`), nigdy bezpośrednio w
+kodzie źródłowym trafiającym do repozytorium.
+:::
+
+## 2️⃣ Checklist przed "wdrożeniem"
+
+- [ ] Wszystkie sekrety w zmiennych środowiskowych, nie w kodzie.
+- [ ] `docker-compose up` stawia cały system jedną komendą.
+- [ ] Dane przetrwają restart kontenera (`volumes`).
+- [ ] `/docs` pokazuje kompletną, opisaną dokumentację API.
+- [ ] Podstawowe testy (`pytest`) przechodzą.
+- [ ] CORS skonfigurowany dla adresu, na którym żyje frontend.
+
+## 3️⃣ Prezentacja końcowa
+
+Przygotuj 10-minutową prezentację swojego systemu, pokazującą:
+
+1. Architekturę (diagram: frontend → API → baza, ew. z autoryzacją).
+2. Demo na żywo: rejestracja, logowanie, tworzenie rezerwacji, próba konfliktu (409),
+   próba operacji bez uprawnień (403).
+3. Jedną decyzję projektową, którą podjąłeś/aś samodzielnie (np. dodatkowy endpoint,
+   inny format błędów, dodatkowa walidacja) i dlaczego.
+
+---
+
+## ✅ Zadanie na koniec spotkania (i kursu)
+
+Zaprezentuj działający system: żywe demo pełnego przepływu (rejestracja → logowanie
+→ rezerwacja → próba konfliktu → zatwierdzenie przez planistę), uruchomiony przez
+`docker-compose up`.
+
+**Do oddania:** link do repozytorium, `docker-compose.yml`, oraz krótkie README
+opisujące jak uruchomić projekt od zera.

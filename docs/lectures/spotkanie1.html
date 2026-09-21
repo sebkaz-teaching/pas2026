@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Architektura aplikacji sieciowych – Projektowanie Aplikacji Sieciowych</title>
+<title>Spotkanie 1: Architektura i protokół HTTP – Projektowanie Aplikacji Sieciowych</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -86,7 +86,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/wyklad1.html">Wykłady</a></li><li class="breadcrumb-item"><a href="../lectures/wyklad1.html">Architektura aplikacji sieciowych</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/spotkanie1.html">Wykłady (3 spotkania x 90 min)</a></li><li class="breadcrumb-item"><a href="../lectures/spotkanie1.html">Spotkanie 1: Architektura i protokół HTTP</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -120,7 +120,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
- <span class="menu-text">Wykłady</span></a>
+ <span class="menu-text">Wykłady (3 spotkania x 90 min)</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -128,8 +128,8 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/wyklad1.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Architektura aplikacji sieciowych</span></a>
+  <a href="../lectures/spotkanie1.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Spotkanie 1: Architektura i protokół HTTP</span></a>
   </div>
 </li>
       </ul>
@@ -137,7 +137,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
- <span class="menu-text">Laboratoria</span></a>
+ <span class="menu-text">Laboratoria (3 spotkania x 3h)</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -145,8 +145,8 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../cwiczenia/cw1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lab 1: Środowisko pracy i pierwszy serwer</span></a>
+  <a href="../cwiczenia/spotkanie1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab, spotkanie 1: Od zera do pełnego CRUD</span></a>
   </div>
 </li>
       </ul>
@@ -161,17 +161,28 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title"><strong>Sections</strong></h2>
    
   <ul class="collapse">
-  <li><a href="#wykład-1-architektura-aplikacji-sieciowych" id="toc-wykład-1-architektura-aplikacji-sieciowych" class="nav-link active" data-scroll-target="#wykład-1-architektura-aplikacji-sieciowych">🌐 Wykład 1: Architektura aplikacji sieciowych</a>
+  <li><a href="#część-i-architektura-aplikacji-sieciowych" id="toc-część-i-architektura-aplikacji-sieciowych" class="nav-link active" data-scroll-target="#część-i-architektura-aplikacji-sieciowych">🌐 Część I — Architektura aplikacji sieciowych</a>
   <ul class="collapse">
-  <li><a href="#cele-wykładu" id="toc-cele-wykładu" class="nav-link" data-scroll-target="#cele-wykładu">🎯 Cele wykładu</a></li>
+  <li><a href="#cele" id="toc-cele" class="nav-link" data-scroll-target="#cele">🎯 Cele</a></li>
   <li><a href="#czym-jest-aplikacja-sieciowa" id="toc-czym-jest-aplikacja-sieciowa" class="nav-link" data-scroll-target="#czym-jest-aplikacja-sieciowa">1️⃣ Czym jest aplikacja sieciowa?</a></li>
   <li><a href="#model-klientserwer" id="toc-model-klientserwer" class="nav-link" data-scroll-target="#model-klientserwer">2️⃣ Model klient–serwer</a></li>
   <li><a href="#warstwy-aplikacji-sieciowej" id="toc-warstwy-aplikacji-sieciowej" class="nav-link" data-scroll-target="#warstwy-aplikacji-sieciowej">3️⃣ Warstwy aplikacji sieciowej</a></li>
   <li><a href="#protokoły-komunikacyjne" id="toc-protokoły-komunikacyjne" class="nav-link" data-scroll-target="#protokoły-komunikacyjne">4️⃣ Protokoły komunikacyjne</a></li>
   <li><a href="#style-projektowania-api" id="toc-style-projektowania-api" class="nav-link" data-scroll-target="#style-projektowania-api">5️⃣ Style projektowania API</a></li>
   <li><a href="#projekt-semestralny-system-rezerwacji-poligonu" id="toc-projekt-semestralny-system-rezerwacji-poligonu" class="nav-link" data-scroll-target="#projekt-semestralny-system-rezerwacji-poligonu">6️⃣ Projekt semestralny: system rezerwacji poligonu</a></li>
-  <li><a href="#podsumowanie" id="toc-podsumowanie" class="nav-link" data-scroll-target="#podsumowanie">🧾 Podsumowanie</a></li>
-  <li><a href="#źródła-i-literatura" id="toc-źródła-i-literatura" class="nav-link" data-scroll-target="#źródła-i-literatura">📚 Źródła i literatura</a></li>
+  <li><a href="#podsumowanie-części-i" id="toc-podsumowanie-części-i" class="nav-link" data-scroll-target="#podsumowanie-części-i">🧾 Podsumowanie części I</a></li>
+  </ul></li>
+  <li><a href="#część-ii-protokół-http-w-szczegółach" id="toc-część-ii-protokół-http-w-szczegółach" class="nav-link" data-scroll-target="#część-ii-protokół-http-w-szczegółach">📡 Część II — Protokół HTTP w szczegółach</a>
+  <ul class="collapse">
+  <li><a href="#cele-1" id="toc-cele-1" class="nav-link" data-scroll-target="#cele-1">🎯 Cele</a></li>
+  <li><a href="#anatomia-żądania-http" id="toc-anatomia-żądania-http" class="nav-link" data-scroll-target="#anatomia-żądania-http">1️⃣ Anatomia żądania HTTP</a></li>
+  <li><a href="#metody-http-czasowniki-rest-a" id="toc-metody-http-czasowniki-rest-a" class="nav-link" data-scroll-target="#metody-http-czasowniki-rest-a">2️⃣ Metody HTTP — czasowniki REST-a</a></li>
+  <li><a href="#kody-statusu-pięć-rodzin" id="toc-kody-statusu-pięć-rodzin" class="nav-link" data-scroll-target="#kody-statusu-pięć-rodzin">3️⃣ Kody statusu — pięć rodzin</a></li>
+  <li><a href="#nagłówki-które-będziecie-używać-najczęściej" id="toc-nagłówki-które-będziecie-używać-najczęściej" class="nav-link" data-scroll-target="#nagłówki-które-będziecie-używać-najczęściej">4️⃣ Nagłówki, które będziecie używać najczęściej</a></li>
+  <li><a href="#http-jest-bezstanowy-co-to-znaczy-naprawdę" id="toc-http-jest-bezstanowy-co-to-znaczy-naprawdę" class="nav-link" data-scroll-target="#http-jest-bezstanowy-co-to-znaczy-naprawdę">5️⃣ HTTP jest bezstanowy — co to znaczy naprawdę</a></li>
+  <li><a href="#cache-kiedy-nie-pytać-serwera-drugi-raz" id="toc-cache-kiedy-nie-pytać-serwera-drugi-raz" class="nav-link" data-scroll-target="#cache-kiedy-nie-pytać-serwera-drugi-raz">6️⃣ Cache — kiedy nie pytać serwera drugi raz</a></li>
+  <li><a href="#podsumowanie-części-ii" id="toc-podsumowanie-części-ii" class="nav-link" data-scroll-target="#podsumowanie-części-ii">🧾 Podsumowanie części II</a></li>
+  <li><a href="#źródła" id="toc-źródła" class="nav-link" data-scroll-target="#źródła">📚 Źródła</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -179,9 +190,9 @@ ul.task-list li input[type="checkbox"] {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/wyklad1.html">Wykłady</a></li><li class="breadcrumb-item"><a href="../lectures/wyklad1.html">Architektura aplikacji sieciowych</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/spotkanie1.html">Wykłady (3 spotkania x 90 min)</a></li><li class="breadcrumb-item"><a href="../lectures/spotkanie1.html">Spotkanie 1: Architektura i protokół HTTP</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Architektura aplikacji sieciowych</h1>
+<h1 class="title">Spotkanie 1: Architektura i protokół HTTP</h1>
 </div>
 
 
@@ -198,11 +209,11 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="wykład-1-architektura-aplikacji-sieciowych" class="level1">
-<h1>🌐 Wykład 1: Architektura aplikacji sieciowych</h1>
-<section id="cele-wykładu" class="level2">
-<h2 class="anchored" data-anchor-id="cele-wykładu">🎯 Cele wykładu</h2>
-<p>Po tym wykładzie powinieneś rozumieć, z jakich warstw składa się typowa aplikacja sieciowa, czym różni się od zwykłego programu działającego lokalnie, jak wygląda komunikacja klient–serwer oraz jakie są główne style projektowania API. Poznasz też projekt, który będziemy budować przez cały semestr na laboratoriach.</p>
+<section id="część-i-architektura-aplikacji-sieciowych" class="level1">
+<h1>🌐 Część I — Architektura aplikacji sieciowych</h1>
+<section id="cele" class="level2">
+<h2 class="anchored" data-anchor-id="cele">🎯 Cele</h2>
+<p>Po tej części powinieneś rozumieć, z jakich warstw składa się typowa aplikacja sieciowa, czym różni się od zwykłego programu działającego lokalnie, jak wygląda komunikacja klient–serwer oraz jakie są główne style projektowania API. Poznasz też projekt, który będziemy budować przez cały semestr na laboratoriach.</p>
 <hr>
 </section>
 <section id="czym-jest-aplikacja-sieciowa" class="level2">
@@ -328,7 +339,7 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 <p>HTTP (HyperText Transfer Protocol) działa na bazie TCP — zanim popłynie choćby bajt danych HTTP, klient i serwer muszą nawiązać połączenie TCP (tzw. three-way handshake). HTTPS to HTTP owinięte w warstwę szyfrowania TLS.</p>
-<p>Szczegóły samego HTTP (metody, nagłówki, kody odpowiedzi) to temat całego następnego wykładu — dziś tylko umiejscawiamy go w stosie.</p>
+<p>Szczegóły samego HTTP (metody, nagłówki, kody odpowiedzi) to temat części II tego spotkania — na razie tylko umiejscawiamy go w stosie.</p>
 <hr>
 </section>
 </section>
@@ -418,8 +429,8 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 </section>
-<section id="główne-zasoby-na-razie-koncepcyjnie-do-api-dojdziemy-w-wykładzie-3" class="level3">
-<h3 class="anchored" data-anchor-id="główne-zasoby-na-razie-koncepcyjnie-do-api-dojdziemy-w-wykładzie-3">🔹 Główne zasoby (na razie koncepcyjnie — do API dojdziemy w wykładzie 3)</h3>
+<section id="główne-zasoby-na-razie-koncepcyjnie-do-api-dojdziemy-w-części-ii-dzisiejszego-spotkania" class="level3">
+<h3 class="anchored" data-anchor-id="główne-zasoby-na-razie-koncepcyjnie-do-api-dojdziemy-w-części-ii-dzisiejszego-spotkania">🔹 Główne zasoby (na razie koncepcyjnie — do API dojdziemy w części II dzisiejszego spotkania)</h3>
 <ul>
 <li><strong>Poligon</strong> — nazwa, lokalizacja, dostępne przedziały czasowe, typ (strzelnica, teren manewrowy…)</li>
 <li><strong>Jednostka</strong> — nazwa, dowódca</li>
@@ -428,15 +439,15 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="kluczowy-problem-projektowy" class="level3">
 <h3 class="anchored" data-anchor-id="kluczowy-problem-projektowy">🔹 Kluczowy problem projektowy</h3>
-<p>Dwie jednostki nie mogą zarezerwować tego samego poligonu w nakładających się przedziałach czasu. To pozornie proste wymaganie wróci wielokrotnie — przy walidacji danych (wykład/lab o błędach), przy autoryzacji (kto może zatwierdzić konflikt) i przy współbieżności (co gdy dwie rezerwacje przychodzą w tej samej sekundzie).</p>
+<p>Dwie jednostki nie mogą zarezerwować tego samego poligonu w nakładających się przedziałach czasu. To pozornie proste wymaganie wróci wielokrotnie — przy walidacji danych, przy autoryzacji (kto może zatwierdzić konflikt) i przy współbieżności (co gdy dwie rezerwacje przychodzą w tej samej sekundzie).</p>
 <blockquote class="blockquote">
 <p>💡 Zapamiętaj ten problem — będziemy go rozwiązywać stopniowo, warstwa po warstwie, przez cały semestr.</p>
 </blockquote>
 <hr>
 </section>
 </section>
-<section id="podsumowanie" class="level2">
-<h2 class="anchored" data-anchor-id="podsumowanie">🧾 Podsumowanie</h2>
+<section id="podsumowanie-części-i" class="level2">
+<h2 class="anchored" data-anchor-id="podsumowanie-części-i">🧾 Podsumowanie części I</h2>
 <ul>
 <li>Aplikacja sieciowa rozdziela klienta i serwer, komunikujących się przez sieć według ustalonego protokołu.</li>
 <li>Typowy podział to trzy warstwy: prezentacji, logiki biznesowej, danych.</li>
@@ -444,12 +455,232 @@ ul.task-list li input[type="checkbox"] {
 <li>REST to dominujący dziś styl API: zasoby jako adresy URL, operacje jako metody HTTP.</li>
 <li>Semestralny projekt: system rezerwacji poligonu — zaczynamy od środowiska pracy i pierwszego serwera na laboratorium 1.</li>
 </ul>
+<hr>
 </section>
-<section id="źródła-i-literatura" class="level2">
-<h2 class="anchored" data-anchor-id="źródła-i-literatura">📚 Źródła i literatura</h2>
+</section>
+<section id="część-ii-protokół-http-w-szczegółach" class="level1">
+<h1>📡 Część II — Protokół HTTP w szczegółach</h1>
+<section id="cele-1" class="level2">
+<h2 class="anchored" data-anchor-id="cele-1">🎯 Cele</h2>
+<p>Po tej części będziesz rozumieć strukturę żądania i odpowiedzi HTTP, znał najważniejsze metody i kody statusu, oraz wiedział, dlaczego HTTP jest protokołem “bezstanowym” i co to oznacza w praktyce dla projektowania aplikacji.</p>
+<hr>
+</section>
+<section id="anatomia-żądania-http" class="level2">
+<h2 class="anchored" data-anchor-id="anatomia-żądania-http">1️⃣ Anatomia żądania HTTP</h2>
+<p>Kiedy przeglądarka (albo <code>curl</code>, albo Wasz kod) wysyła żądanie, wygląda ono (uproszczone) tak:</p>
+<pre><code>GET /poligony/5 HTTP/1.1
+Host: sebastianzajac.pl
+Accept: application/json
+Authorization: Bearer eyJhbGc...
+
+(puste ciało — GET zwykle go nie ma)</code></pre>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 45%">
+<col style="width: 55%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Element</th>
+<th>Znaczenie</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Linia startowa</strong></td>
+<td>metoda + ścieżka + wersja protokołu</td>
+</tr>
+<tr class="even">
+<td><strong>Nagłówki (headers)</strong></td>
+<td>metadane: co akceptujemy, kim jesteśmy, jaki format wysyłamy</td>
+</tr>
+<tr class="odd">
+<td><strong>Ciało (body)</strong></td>
+<td>właściwe dane (przy GET zwykle puste, przy POST/PUT — tak)</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="metody-http-czasowniki-rest-a" class="level2">
+<h2 class="anchored" data-anchor-id="metody-http-czasowniki-rest-a">2️⃣ Metody HTTP — czasowniki REST-a</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Metoda</th>
+<th>Znaczenie</th>
+<th>Ma ciało?</th>
+<th>Bezpieczna?*</th>
+<th>Idempotentna?**</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>GET</code></td>
+<td>pobierz zasób</td>
+<td>nie</td>
+<td>tak</td>
+<td>tak</td>
+</tr>
+<tr class="even">
+<td><code>POST</code></td>
+<td>utwórz nowy zasób</td>
+<td>tak</td>
+<td>nie</td>
+<td>nie</td>
+</tr>
+<tr class="odd">
+<td><code>PUT</code></td>
+<td>zastąp cały zasób</td>
+<td>tak</td>
+<td>nie</td>
+<td>tak</td>
+</tr>
+<tr class="even">
+<td><code>PATCH</code></td>
+<td>zmodyfikuj część zasobu</td>
+<td>tak</td>
+<td>nie</td>
+<td>nie (zwykle)</td>
+</tr>
+<tr class="odd">
+<td><code>DELETE</code></td>
+<td>usuń zasób</td>
+<td>nie</td>
+<td>nie</td>
+<td>tak</td>
+</tr>
+</tbody>
+</table>
+<p>* <strong>Bezpieczna</strong> (<em>safe</em>) = nie zmienia stanu serwera — można ją wywołać wielokrotnie bez skutków ubocznych (przeglądarka może np. prefetchować linki GET). ** <strong>Idempotentna</strong> = wielokrotne wykonanie daje ten sam efekt co jednokrotne. <code>DELETE /poligony/5</code> wywołane dwa razy nadal kończy się brakiem poligonu 5 — drugie wywołanie nic nowego nie psuje (może zwrócić 404, ale stan systemu jest identyczny). <code>POST</code> nie jest idempotentny: dwukrotne wysłanie tworzy <strong>dwa</strong> zasoby.</p>
+<blockquote class="blockquote">
+<p>⚠️ To rozróżnienie ma praktyczne znaczenie: jeśli klient nie dostał odpowiedzi (timeout sieciowy) i <strong>nie wie</strong>, czy żądanie dotarło, bezpiecznie może powtórzyć <code>PUT</code>/<code>DELETE</code>, ale powtórzenie <code>POST</code> może utworzyć duplikat.</p>
+</blockquote>
+</section>
+<section id="kody-statusu-pięć-rodzin" class="level2">
+<h2 class="anchored" data-anchor-id="kody-statusu-pięć-rodzin">3️⃣ Kody statusu — pięć rodzin</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 28%">
+<col style="width: 32%">
+<col style="width: 39%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Zakres</th>
+<th>Rodzina</th>
+<th>Przykłady</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>1xx</code></td>
+<td>Informacyjne</td>
+<td>rzadko używane bezpośrednio w API</td>
+</tr>
+<tr class="even">
+<td><code>2xx</code></td>
+<td>Sukces</td>
+<td><code>200 OK</code>, <code>201 Created</code>, <code>204 No Content</code></td>
+</tr>
+<tr class="odd">
+<td><code>3xx</code></td>
+<td>Przekierowanie</td>
+<td><code>301 Moved Permanently</code>, <code>304 Not Modified</code></td>
+</tr>
+<tr class="even">
+<td><code>4xx</code></td>
+<td>Błąd klienta</td>
+<td><code>400 Bad Request</code>, <code>401 Unauthorized</code>, <code>403 Forbidden</code>, <code>404 Not Found</code></td>
+</tr>
+<tr class="odd">
+<td><code>5xx</code></td>
+<td>Błąd serwera</td>
+<td><code>500 Internal Server Error</code>, <code>503 Service Unavailable</code></td>
+</tr>
+</tbody>
+</table>
+<section id="rozróżnienie-które-myli-początkujących-401-vs-403" class="level3">
+<h3 class="anchored" data-anchor-id="rozróżnienie-które-myli-początkujących-401-vs-403">🔹 Rozróżnienie, które myli początkujących: 401 vs 403</h3>
 <ul>
-<li>R. Fielding, <em>Architectural Styles and the Design of Network-based Software Architectures</em> (praca doktorska wprowadzająca REST)</li>
-<li>MDN Web Docs — <em>An overview of HTTP</em></li>
+<li><strong>401 Unauthorized</strong> — “nie wiem, kim jesteś” (brak albo niepoprawne uwierzytelnienie).</li>
+<li><strong>403 Forbidden</strong> — “wiem, kim jesteś, ale nie masz uprawnień do tej operacji”.</li>
+</ul>
+<p>Przykład z naszego projektu: żołnierz bez zalogowania próbujący zobaczyć <code>/rezerwacje</code> → <code>401</code>. Zalogowany żołnierz próbujący <strong>zatwierdzić</strong> rezerwację (uprawnienie tylko planisty) → <code>403</code>.</p>
+</section>
+</section>
+<section id="nagłówki-które-będziecie-używać-najczęściej" class="level2">
+<h2 class="anchored" data-anchor-id="nagłówki-które-będziecie-używać-najczęściej">4️⃣ Nagłówki, które będziecie używać najczęściej</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 62%">
+<col style="width: 37%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Nagłówek</th>
+<th>Rola</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Content-Type</code></td>
+<td>jaki format ma ciało żądania/odpowiedzi (<code>application/json</code>)</td>
+</tr>
+<tr class="even">
+<td><code>Authorization</code></td>
+<td>dane uwierzytelniające (<code>Bearer &lt;token&gt;</code>) — wracamy do tego przy bezpieczeństwie</td>
+</tr>
+<tr class="odd">
+<td><code>Accept</code></td>
+<td>jaki format klient chce dostać z powrotem</td>
+</tr>
+<tr class="even">
+<td><code>Cache-Control</code></td>
+<td>jak długo/czy wolno cache’ować odpowiedź</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="http-jest-bezstanowy-co-to-znaczy-naprawdę" class="level2">
+<h2 class="anchored" data-anchor-id="http-jest-bezstanowy-co-to-znaczy-naprawdę">5️⃣ HTTP jest bezstanowy — co to znaczy naprawdę</h2>
+<p>Serwer <strong>nie pamięta</strong> niczego między dwoma żądaniami tego samego klienta — każde żądanie musi nieść ze sobą wszystko, czego serwer potrzebuje, żeby je obsłużyć (np. token uwierzytelniający w nagłówku, nie “zapamiętane” gdzieś po stronie serwera).</p>
+<blockquote class="blockquote">
+<p>💡 To dlaczego logowanie polega na tym, że klient <strong>za każdym razem</strong> wysyła token (w <code>Authorization</code>), a nie że serwer “pamięta”, że kogoś już zalogował 5 minut temu. Do mechanizmu tokenów wrócimy przy wykładzie o bezpieczeństwie.</p>
+</blockquote>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>A cookies i sesje?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Historycznie serwery <strong>symulowały</strong> stan przez cookies + sesje po stronie serwera (<code>Set-Cookie</code> → przeglądarka odsyła ten sam identyfikator przy każdym żądaniu → serwer odnajduje zapisany stan w swojej pamięci/bazie). To dalej działa i bywa używane, ale w architekturach REST/API (szczególnie gdy klientem nie jest przeglądarka, tylko np. aplikacja mobilna) <strong>tokeny bezstanowe (JWT)</strong> są dziś częstszym wyborem — nie wymagają, żeby serwer pamiętał cokolwiek o sesji.</p>
+</div>
+</div>
+</section>
+<section id="cache-kiedy-nie-pytać-serwera-drugi-raz" class="level2">
+<h2 class="anchored" data-anchor-id="cache-kiedy-nie-pytać-serwera-drugi-raz">6️⃣ Cache — kiedy nie pytać serwera drugi raz</h2>
+<p><code>Cache-Control: max-age=3600</code> mówi klientowi (albo pośredniczącemu proxy): “ta odpowiedź jest ważna przez godzinę, nie pytaj mnie ponownie”. Dobrze zaprojektowane API rozróżnia zasoby, które <strong>warto</strong> cache’ować (lista dostępnych poligonów, zmienia się rzadko) od tych, których <strong>nie wolno</strong> (stan bieżącej rezerwacji — musi być zawsze aktualny).</p>
+<hr>
+</section>
+<section id="podsumowanie-części-ii" class="level2">
+<h2 class="anchored" data-anchor-id="podsumowanie-części-ii">🧾 Podsumowanie części II</h2>
+<ul>
+<li>Żądanie HTTP = linia startowa (metoda + ścieżka) + nagłówki + opcjonalne ciało.</li>
+<li>Metody różnią się tym, czy są bezpieczne i idempotentne — to ma realne konsekwencje przy błędach sieciowych.</li>
+<li>Kody 4xx to błąd po stronie klienta, 5xx — po stronie serwera; 401 ≠ 403.</li>
+<li>HTTP jest bezstanowy — każde żądanie musi być samowystarczalne.</li>
+</ul>
+</section>
+<section id="źródła" class="level2">
+<h2 class="anchored" data-anchor-id="źródła">📚 Źródła</h2>
+<ul>
+<li>R. Fielding, <em>Architectural Styles and the Design of Network-based Software Architectures</em></li>
+<li>MDN Web Docs — <em>An overview of HTTP</em>, <em>HTTP request methods</em>, <em>HTTP response status codes</em></li>
+<li>RFC 9110 — <em>HTTP Semantics</em></li>
 <li>Dokumentacja FastAPI (framework używany na laboratoriach)</li>
 </ul>
 

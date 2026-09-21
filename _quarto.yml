@@ -1,31 +1,23 @@
 project:
   type: website
   output-dir: docs
-  # Reveal each lecture/lab week by week: comment OUT its "!..." line
-  # below (so it renders) once it's taught, then uncomment the matching
-  # entry in website.sidebar.contents further down. Doing only one of
-  # the two either publishes an unlisted page (still reachable by a
-  # direct URL) or links to a page that doesn't exist yet.
+  # Reveal each meeting week by week: comment OUT its "!..." line below
+  # (so it renders) once it's taught, then uncomment the matching entry
+  # in website.sidebar.contents further down. Doing only one of the two
+  # either publishes an unlisted page (still reachable by a direct URL)
+  # or links to a page that doesn't exist yet.
+  #
+  # Lectures: 3 meetings x 90 min (2x45), each covering 2 of the
+  # original 6 topics. Labs: 3 meetings x 3h (4x45), each covering 4 of
+  # the original 12 lab topics.
   render:
     - "*.qmd"
     - "lectures/*.qmd"
     - "cwiczenia/*.qmd"
-    - "!lectures/wyklad2.qmd"
-    - "!lectures/wyklad3.qmd"
-    - "!lectures/wyklad4.qmd"
-    - "!lectures/wyklad5.qmd"
-    - "!lectures/wyklad6.qmd"
-    - "!cwiczenia/cw2.qmd"
-    - "!cwiczenia/cw3.qmd"
-    - "!cwiczenia/cw4.qmd"
-    - "!cwiczenia/cw5.qmd"
-    - "!cwiczenia/cw6.qmd"
-    - "!cwiczenia/cw7.qmd"
-    - "!cwiczenia/cw8.qmd"
-    - "!cwiczenia/cw9.qmd"
-    - "!cwiczenia/cw10.qmd"
-    - "!cwiczenia/cw11.qmd"
-    - "!cwiczenia/cw12.qmd"
+    - "!lectures/spotkanie2.qmd"
+    - "!lectures/spotkanie3.qmd"
+    - "!cwiczenia/spotkanie2.qmd"
+    - "!cwiczenia/spotkanie3.qmd"
 
 website:
   title: Projektowanie Aplikacji Sieciowych
@@ -35,28 +27,16 @@ website:
     style: "docked"
     contents:
       - index.qmd
-      - section: "Wykłady"
+      - section: "Wykłady (3 spotkania x 90 min)"
         contents:
-          - lectures/wyklad1.qmd
-          # - lectures/wyklad2.qmd
-          # - lectures/wyklad3.qmd
-          # - lectures/wyklad4.qmd
-          # - lectures/wyklad5.qmd
-          # - lectures/wyklad6.qmd
-      - section: "Laboratoria"
+          - lectures/spotkanie1.qmd
+          # - lectures/spotkanie2.qmd
+          # - lectures/spotkanie3.qmd
+      - section: "Laboratoria (3 spotkania x 3h)"
         contents:
-          - cwiczenia/cw1.qmd
-          # - cwiczenia/cw2.qmd
-          # - cwiczenia/cw3.qmd
-          # - cwiczenia/cw4.qmd
-          # - cwiczenia/cw5.qmd
-          # - cwiczenia/cw6.qmd
-          # - cwiczenia/cw7.qmd
-          # - cwiczenia/cw8.qmd
-          # - cwiczenia/cw9.qmd
-          # - cwiczenia/cw10.qmd
-          # - cwiczenia/cw11.qmd
-          # - cwiczenia/cw12.qmd
+          - cwiczenia/spotkanie1.qmd
+          # - cwiczenia/spotkanie2.qmd
+          # - cwiczenia/spotkanie3.qmd
   page-footer: "Copyright 2026, Sebastian Zając"
 format:
   html:

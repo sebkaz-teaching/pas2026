@@ -1,0 +1,350 @@
+---
+title: "Lab, spotkanie 2: Walidacja, logowanie, role i ochrona"
+---
+
+# 🛠️ Laboratorium — Spotkanie 2 (3h)
+
+Cztery części: dopinamy walidację danych, dodajemy prawdziwych użytkowników z
+hasłami, uwierzytelnianie przez JWT z rolami, i na koniec łatamy dziury
+bezpieczeństwa, które w tym momencie ma każdy niedbale napisany serwer.
+
+---
+
+# Część I — Walidacja danych i obsługa błędów
+
+## 🎯 Cel
+
+Wzmocnić walidację ponad to, co Pydantic robi domyślnie (typy) — dodać reguły
+biznesowe (np. `data_od` musi być przed `data_do`) i ujednolicić sposób zgłaszania
+błędów w całym API.
+
+## 1️⃣ Walidacja na poziomie pola — `Field`
+
+```python
+from pydantic import BaseModel, Field
+
+class PoligonCreate(BaseModel):
+    nazwa: str = Field(min_length=2, max_length=100)
+    lokalizacja: str = Field(min_length=2)
+    typ: str
+    dostepny: bool = True
+```
+
+`Field` pozwala dodać ograniczenia (długość, zakres liczbowy) bez pisania własnego
+kodu sprawdzającego — Pydantic zwróci `422` z czytelnym opisem, zanim Twoja funkcja
+w ogóle zobaczy dane.
+
+## 2️⃣ Walidacja reguł biznesowych — `model_validator`
+
+Reguła "`data_od` musi być przed `data_do`" dotyczy **relacji między dwoma polami**,
+nie pojedynczego pola — potrzebuje własnego walidatora:
+
+```python
+from pydantic import model_validator
+from datetime import datetime
+
+class RezerwacjaCreate(BaseModel):
+    poligon_id: int
+    jednostka_id: int
+    data_od: str
+    data_do: str
+
+    @model_validator(mode="after")
+    def sprawdz_zakres_dat(self):
+        if datetime.fromisoformat(self.data_od) >= datetime.fromisoformat(self.data_do):
+            raise ValueError("data_od musi byc wczesniejsza niz data_do")
+        return self
+```
+
+Taki błąd Pydantic zamienia automatycznie na `422` — spójnie z resztą walidacji.
+
+## 3️⃣ Spójne kody błędów w całym API
+
+Ustal (i trzymaj się) konwencji:
+
+| Sytuacja | Kod |
+|----------|-----|
+| Dane niepoprawnego typu/kształtu | `422` (automatycznie od Pydantic) |
+| Zasób nie istnieje | `404` |
+| Poprawne dane, ale konflikt ze stanem (duplikat, nakładający się termin) | `409` |
+| Brak uprawnień | `403` |
+| Brak uwierzytelnienia | `401` |
+
+### ✅ Mini-zadanie części I
+
+Dodaj `model_validator` sprawdzający, że `data_od` rezerwacji nie jest **w
+przeszłości** (porównaj z `datetime.now()`). Sprawdź, że próba rezerwacji poligonu na
+wczoraj zwraca `422` z czytelnym komunikatem.
+
+---
+
+# Część II — Rejestracja i logowanie
+
+## 🎯 Cel
+
+Dodać prawdziwych użytkowników: tabelę w bazie, bezpieczne hashowanie haseł, i
+pierwsze dwa endpointy uwierzytelniania: `/register` i `/login`.
+
+## 1️⃣ Tabela użytkowników
+
+```sql
+CREATE TABLE IF NOT EXISTS uzytkownicy (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    login TEXT NOT NULL UNIQUE,
+    hash_hasla TEXT NOT NULL,
+    rola TEXT NOT NULL DEFAULT 'dowodca'  -- 'dowodca' albo 'planista'
+);
+```
+
+## 2️⃣ Hashowanie haseł — nigdy jawnym tekstem
+
+```bash
+pip install bcrypt
+```
+
+```python
+import bcrypt
+
+def zahashuj_haslo(haslo: str) -> str:
+    return bcrypt.hashpw(haslo.encode(), bcrypt.gensalt()).decode()
+
+def sprawdz_haslo(haslo: str, hash_z_bazy: str) -> bool:
+    return bcrypt.checkpw(haslo.encode(), hash_z_bazy.encode())
+```
+
+## 3️⃣ Endpoint `/register`
+
+```python
+class RejestracjaRequest(BaseModel):
+    login: str
+    haslo: str = Field(min_length=8)
+    rola: str = "dowodca"
+
+@app.post("/register", status_code=201)
+def rejestracja(dane: RejestracjaRequest):
+    with get_db() as conn:
+        istniejacy = conn.execute("SELECT id FROM uzytkownicy WHERE login = ?", (dane.login,)).fetchone()
+        if istniejacy:
+            raise HTTPException(status_code=409, detail="Login juz zajety")
+        cursor = conn.execute(
+            "INSERT INTO uzytkownicy (login, hash_hasla, rola) VALUES (?, ?, ?)",
+            (dane.login, zahashuj_haslo(dane.haslo), dane.rola),
+        )
+        conn.commit()
+        return {"id": cursor.lastrowid, "login": dane.login, "rola": dane.rola}
+```
+
+## 4️⃣ Endpoint `/login` (na razie bez tokenu — dopiero część III)
+
+```python
+class LoginRequest(BaseModel):
+    login: str
+    haslo: str
+
+@app.post("/login")
+def login(dane: LoginRequest):
+    with get_db() as conn:
+        uzytkownik = conn.execute("SELECT * FROM uzytkownicy WHERE login = ?", (dane.login,)).fetchone()
+        if not uzytkownik or not sprawdz_haslo(dane.haslo, uzytkownik["hash_hasla"]):
+            raise HTTPException(status_code=401, detail="Nieprawidlowy login lub haslo")
+        return {"komunikat": "Zalogowano", "rola": uzytkownik["rola"]}
+```
+
+Zwróć uwagę: komunikat błędu jest **celowo taki sam** niezależnie od tego, czy zły
+jest login, czy hasło ("Nieprawidlowy login lub haslo") — gdyby rozróżniać ("login nie
+istnieje" vs "złe hasło"), atakujący mógłby w ten sposób sprawdzać, które loginy
+istnieją w systemie.
+
+### ✅ Mini-zadanie części II
+
+Dodaj walidację, że `login` ma co najmniej 3 znaki i składa się tylko z liter/cyfr
+(np. przez `Field(pattern=...)` albo `model_validator`).
+
+---
+
+# Część III — JWT i autoryzacja ról
+
+## 🎯 Cel
+
+Zamienić `/login` z części II na wydawanie prawdziwego tokenu JWT, i zabezpieczyć
+wybrane endpointy tak, żeby wymagały konkretnej roli (np. tylko planista może
+zatwierdzać rezerwacje).
+
+## 1️⃣ Generowanie tokenu
+
+```bash
+pip install python-jose[cryptography]
+```
+
+```python
+from jose import jwt
+from datetime import datetime, timedelta
+
+SECRET_KEY = "zmien-mnie-w-prawdziwym-projekcie"  # docelowo: zmienna srodowiskowa!
+ALGORITHM = "HS256"
+
+def utworz_token(login: str, rola: str) -> str:
+    dane = {
+        "sub": login,
+        "rola": rola,
+        "exp": datetime.utcnow() + timedelta(hours=8),
+    }
+    return jwt.encode(dane, SECRET_KEY, algorithm=ALGORITHM)
+```
+
+Zaktualizuj `/login`, żeby zwracał token zamiast samego komunikatu:
+
+```python
+@app.post("/login")
+def login(dane: LoginRequest):
+    # ... weryfikacja jak w czesci II ...
+    token = utworz_token(uzytkownik["login"], uzytkownik["rola"])
+    return {"access_token": token, "token_type": "bearer"}
+```
+
+## 2️⃣ Weryfikacja tokenu — `Depends`
+
+FastAPI ma wbudowany mechanizm **wstrzykiwania zależności** (`Depends`) — idealny do
+"za każdym razem zweryfikuj token, zanim wykonasz właściwą logikę endpointu":
+
+```python
+from fastapi import Depends
+from fastapi.security import OAuth2PasswordBearer
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
+
+def pobierz_biezacego_uzytkownika(token: str = Depends(oauth2_scheme)) -> dict:
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        return {"login": payload["sub"], "rola": payload["rola"]}
+    except Exception:
+        raise HTTPException(status_code=401, detail="Nieprawidlowy lub wygasly token")
+```
+
+Dowolny endpoint dostaje uwierzytelnionego użytkownika, dopisując jeden parametr:
+
+```python
+@app.get("/rezerwacje")
+def lista_rezerwacji(uzytkownik: dict = Depends(pobierz_biezacego_uzytkownika)):
+    ...
+```
+
+## 3️⃣ Autoryzacja — wymagaj konkretnej roli
+
+```python
+def wymagaj_roli(wymagana_rola: str):
+    def sprawdz(uzytkownik: dict = Depends(pobierz_biezacego_uzytkownika)) -> dict:
+        if uzytkownik["rola"] != wymagana_rola:
+            raise HTTPException(status_code=403, detail="Brak uprawnien do tej operacji")
+        return uzytkownik
+    return sprawdz
+
+
+@app.post("/rezerwacje/{rez_id}/zatwierdz")
+def zatwierdz_rezerwacje(rez_id: int, uzytkownik: dict = Depends(wymagaj_roli("planista"))):
+    ...
+```
+
+`wymagaj_roli("planista")` to **fabryka zależności** — funkcja zwracająca funkcję,
+dopasowaną do konkretnej roli. Dzięki temu jeden mechanizm obsługuje dowolną liczbę
+ról bez powtarzania kodu.
+
+### ✅ Mini-zadanie części III
+
+Zabezpiecz `DELETE /poligony/{id}` tak, żeby tylko `planista` mógł usuwać poligony —
+`dowodca` próbujący to zrobić powinien dostać `403`.
+
+---
+
+# Część IV — Ochrona przed atakami
+
+## 🎯 Cel
+
+Zamknąć trzy luki bezpieczeństwa, które są łatwe do przeoczenia w kodzie napisanym
+"na szybko": brak walidacji nazw kolumn w sortowaniu, brak limitu żądań, i brak
+kontroli CORS.
+
+## 1️⃣ SQL injection przez nazwę kolumny — luka, której nie łata `?`
+
+```python
+# PODATNE — mimo ze reszta zapytania jest parametryzowana!
+@app.get("/rezerwacje")
+def lista(sortuj: str = "data_od"):
+    return conn.execute(f"SELECT * FROM rezerwacje ORDER BY {sortuj}").fetchall()
+```
+
+Placeholdery (`?`) działają tylko dla **wartości**, nie dla nazw kolumn/tabel —
+`sortuj` wstawiony przez f-string pozwala atakującemu wpisać dowolny SQL. Obrona:
+**biała lista** dozwolonych wartości.
+
+```python
+DOZWOLONE_KOLUMNY = {"data_od", "data_do", "status"}
+
+@app.get("/rezerwacje")
+def lista(sortuj: str = "data_od"):
+    if sortuj not in DOZWOLONE_KOLUMNY:
+        raise HTTPException(status_code=400, detail="Nieprawidlowa kolumna sortowania")
+    return conn.execute(f"SELECT * FROM rezerwacje ORDER BY {sortuj}").fetchall()
+```
+
+## 2️⃣ Rate limiting — ogranicz liczbę żądań
+
+Bez limitu, ktoś może próbować zalogować się tysiące razy na sekundę (atak
+*brute-force* na hasło) albo po prostu zasypać serwer żądaniami.
+
+```bash
+pip install slowapi
+```
+
+```python
+from slowapi import Limiter
+from slowapi.util import get_remote_address
+
+limiter = Limiter(key_func=get_remote_address)
+app.state.limiter = limiter
+
+@app.post("/login")
+@limiter.limit("5/minute")
+def login(request: Request, dane: LoginRequest):
+    ...
+```
+
+## 3️⃣ CORS — kto może wywoływać Twoje API z przeglądarki
+
+Domyślnie przeglądarki **blokują** żądania JavaScript do innej domeny niż ta, z
+której strona została załadowana (*Same-Origin Policy*). Jeśli frontend (lab 10) ma
+żyć na innej domenie/porcie niż backend, musisz jawnie zezwolić:
+
+```python
+from fastapi.middleware.cors import CORSMiddleware
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # tylko Twoj frontend, NIE "*" na produkcji
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+```
+
+::: {.callout-important}
+## Nigdy allow_origins=["*"] razem z uwierzytelnianiem
+`"*"` (dowolna domena) w połączeniu z endpointami wymagającymi logowania otwiera
+drzwi dla ataków CSRF-podobnych z dowolnej złośliwej strony. Zawsze wymieniaj
+konkretne, zaufane domeny.
+:::
+
+### ✅ Mini-zadanie części IV
+
+1. Dodaj białą listę dozwolonych kolumn do wszystkich endpointów z parametrem `sortuj`.
+2. Dodaj rate limiting do `/login` (max 5 prób/minutę z jednego adresu IP).
+3. Skonfiguruj CORS dla `http://localhost:3000` (przyda się w laboratorium o frontendzie).
+
+---
+
+## ✅ Zadanie na koniec spotkania
+
+Zademonstruj prowadzącemu: rejestrację nowego użytkownika, logowanie zwracające
+token JWT, endpoint chroniony rolą (403 dla złej roli, sukces dla właściwej), oraz
+że próba SQL injection przez `?sortuj=` jest odrzucana.
+
+**Do oddania:** link do repozytorium / commit hash.

@@ -1,0 +1,481 @@
+---
+title: "Lab, spotkanie 1: Od zera do pełnego CRUD"
+---
+
+# 🛠️ Laboratorium — Spotkanie 1 (3h)
+
+Cztery części, jedna sesja: stawiamy pierwszy serwer, dodajemy prawdziwy model
+danych, podłączamy bazę i kończymy pełnym CRUD-em plus pierwszą wersją rezerwacji.
+Każda część to ok. 45 minut praktycznej pracy.
+
+---
+
+# Część I — Środowisko pracy i pierwszy serwer
+
+## 🎯 Cel
+
+Postawić działający serwer HTTP w Pythonie i zobaczyć swój pierwszy endpoint w przeglądarce. To fundament, na którym przez całe laboratorium (i resztę semestru) zbudujemy system rezerwacji poligonu.
+
+## 1️⃣ Środowisko
+
+Będziemy używać **Python 3.11+**, **FastAPI** (framework webowy) i **uvicorn** (serwer, który faktycznie uruchamia aplikację).
+
+### 🔹 Wirtualne środowisko
+
+Zawsze pracuj w izolowanym środowisku — nigdy nie instaluj pakietów globalnie.
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate      # macOS/Linux
+# .venv\Scripts\activate       # Windows
+
+pip install fastapi uvicorn[standard]
+```
+
+> 💡 `.venv/` nigdy nie trafia do repozytorium git — dodaj go do `.gitignore`.
+
+## 2️⃣ Pierwszy serwer
+
+Utwórz plik `main.py`:
+
+```python
+from fastapi import FastAPI
+
+app = FastAPI(title="System rezerwacji poligonu")
+
+
+@app.get("/")
+def root():
+    return {"komunikat": "System rezerwacji poligonu dziala"}
+```
+
+Uruchom:
+
+```bash
+uvicorn main:app --reload
+```
+
+- `main` — nazwa pliku (`main.py`),
+- `app` — nazwa obiektu `FastAPI()` w tym pliku,
+- `--reload` — serwer automatycznie restartuje się po zapisaniu zmian (tylko do pracy deweloperskiej, nigdy na produkcji).
+
+Otwórz w przeglądarce **http://127.0.0.1:8000/** — powinieneś zobaczyć:
+
+```json
+{"komunikat": "System rezerwacji poligonu dziala"}
+```
+
+## 3️⃣ Automatyczna dokumentacja — korzyść od razu
+
+FastAPI, bez dodatkowej pracy z Twojej strony, generuje interaktywną dokumentację API. Otwórz:
+
+- **http://127.0.0.1:8000/docs** — interfejs Swagger UI, w którym możesz od razu klikać i testować endpointy.
+- **http://127.0.0.1:8000/redoc** — alternatywny, bardziej "dokumentacyjny" widok.
+
+> 🧠 Do tego mechanizmu wrócimy dokładniej przy projektowaniu API (spotkanie 2) i przy dokumentowaniu API (spotkanie laboratoryjne 3) — dziś zapamiętaj tylko, że istnieje i że jest darmowy.
+
+## 4️⃣ Drugi endpoint — zapowiedź projektu
+
+Dodaj do `main.py` endpoint, który na razie zwraca dane na sztywno (żadnej bazy jeszcze nie mamy — to dopiero część III dzisiejszego spotkania):
+
+```python
+@app.get("/poligony")
+def lista_poligonow():
+    return [
+        {"id": 1, "nazwa": "Poligon Nowa Dęba", "typ": "strzelnica"},
+        {"id": 2, "nazwa": "Poligon Drawsko", "typ": "teren manewrowy"},
+    ]
+```
+
+Sprawdź `http://127.0.0.1:8000/poligony` w przeglądarce oraz w `/docs` — zobacz, jak Swagger sam wykrył nowy endpoint.
+
+## 5️⃣ Repozytorium
+
+Załóż repozytorium git dla swojego projektu (osobne od materiałów kursu):
+
+```bash
+git init
+echo ".venv/\n__pycache__/\n*.pyc" > .gitignore
+git add main.py .gitignore
+git commit -m "Init: pierwszy serwer FastAPI"
+```
+
+Ten projekt będzie rósł przez cały semestr — każda kolejna część to nowy commit.
+
+---
+
+# Część II — Pierwszy prawdziwy endpoint REST
+
+## 🎯 Cel
+
+Zastąpić sztywno wpisane listy z części I prawdziwym modelem danych (Pydantic) i
+zaimplementować pierwsze operacje REST na zasobie `Poligon`: `GET` (lista, jeden) i
+`POST` (utworzenie). Dane na razie żyją w pamięci procesu (lista Pythona) — baza
+danych to dopiero część III.
+
+## 1️⃣ Model danych — Pydantic
+
+FastAPI używa biblioteki **Pydantic** do opisu kształtu danych i automatycznej
+walidacji. Zamiast zwracać gołe słowniki jak w części I, zdefiniuj klasę:
+
+```python
+from pydantic import BaseModel
+
+class Poligon(BaseModel):
+    id: int
+    nazwa: str
+    lokalizacja: str
+    typ: str  # "strzelnica" albo "teren manewrowy"
+```
+
+Pydantic automatycznie sprawdzi, czy przychodzące dane pasują do tych typów — jeśli
+klient wyśle `id` jako tekst zamiast liczby, dostanie czytelny błąd `422`, zanim
+Twój kod w ogóle zobaczy te dane.
+
+## 2️⃣ Dane w pamięci (na razie)
+
+```python
+poligony: list[Poligon] = [
+    Poligon(id=1, nazwa="Poligon Nowa Deba", lokalizacja="Nowa Deba", typ="strzelnica"),
+    Poligon(id=2, nazwa="Poligon Drawsko", lokalizacja="Drawsko Pomorskie", typ="teren manewrowy"),
+]
+```
+
+## 3️⃣ GET — lista i pojedynczy zasób
+
+```python
+from fastapi import FastAPI, HTTPException
+
+app = FastAPI(title="System rezerwacji poligonu")
+
+@app.get("/poligony", response_model=list[Poligon])
+def lista_poligonow():
+    return poligony
+
+
+@app.get("/poligony/{poligon_id}", response_model=Poligon)
+def pobierz_poligon(poligon_id: int):
+    for p in poligony:
+        if p.id == poligon_id:
+            return p
+    raise HTTPException(status_code=404, detail="Poligon nie znaleziony")
+```
+
+`{poligon_id}` w ścieżce to **path parameter** — FastAPI automatycznie wyciąga go z
+URL-a i konwertuje na `int` (dzięki adnotacji typu w parametrze funkcji). Spróbuj
+wywołać `/poligony/abc` — zobaczysz błąd walidacji zamiast crashu.
+
+`response_model=Poligon` mówi FastAPI, jakiego kształtu odpowiedzi się spodziewać —
+to też trafia do automatycznej dokumentacji w `/docs`.
+
+## 4️⃣ POST — tworzenie nowego zasobu
+
+```python
+@app.post("/poligony", response_model=Poligon, status_code=201)
+def utworz_poligon(poligon: Poligon):
+    for p in poligony:
+        if p.id == poligon.id:
+            raise HTTPException(status_code=409, detail="Poligon o tym ID juz istnieje")
+    poligony.append(poligon)
+    return poligon
+```
+
+Zwróć uwagę na `status_code=201` — zgodnie ze spotkaniem 1 (część II wykładu),
+tworzenie zasobu powinno zwracać `201 Created`, nie domyślne `200 OK`. `409 Conflict`
+to kod statusu na sytuację "żądanie jest poprawne, ale koliduje z obecnym stanem" —
+dokładnie pasuje do "ID już zajęte".
+
+Sprawdź w `/docs`: kliknij "Try it out" przy `POST /poligony` i wyślij nowy poligon —
+zobaczysz go od razu w `GET /poligony`.
+
+## 5️⃣ Query parameters — filtrowanie listy
+
+```python
+@app.get("/poligony", response_model=list[Poligon])
+def lista_poligonow(typ: str | None = None):
+    if typ is None:
+        return poligony
+    return [p for p in poligony if p.typ == typ]
+```
+
+Parametr `typ`, którego **nie ma** w ścieżce URL (`/poligony`), a jest w liście
+argumentów funkcji, FastAPI automatycznie traktuje jako **query parameter**:
+`/poligony?typ=strzelnica`. `str | None = None` oznacza "opcjonalny, domyślnie brak
+filtra".
+
+### ✅ Mini-zadanie części II
+
+Dodaj model `Jednostka` (pola: `id`, `nazwa`, `garnizon`) i analogiczne endpointy
+`GET /jednostki`, `GET /jednostki/{id}`, `POST /jednostki`.
+
+---
+
+# Część III — Podłączenie bazy danych
+
+## 🎯 Cel
+
+Zastąpić listę w pamięci (część I-II) prawdziwą bazą SQLite — dane mają
+przetrwać restart serwera. Używamy modułu `sqlite3` z biblioteki standardowej Pythona
+(bez ORM-a) — chodzi o projektowanie API, nie o naukę nowego narzędzia do baz danych,
+którą już znacie z innych kursów.
+
+## 1️⃣ Schemat bazy
+
+Utwórz plik `schema.sql`:
+
+```sql
+CREATE TABLE IF NOT EXISTS poligony (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nazwa TEXT NOT NULL,
+    lokalizacja TEXT NOT NULL,
+    typ TEXT NOT NULL,
+    dostepny INTEGER NOT NULL DEFAULT 1
+);
+
+CREATE TABLE IF NOT EXISTS jednostki (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nazwa TEXT NOT NULL,
+    garnizon TEXT NOT NULL
+);
+```
+
+`dostepny INTEGER` zamiast `BOOLEAN` — SQLite nie ma natywnego typu logicznego,
+konwencja to `0`/`1` (dokładnie to, co już znacie z kursów o bazach danych).
+
+## 2️⃣ Połączenie z bazą w FastAPI
+
+```python
+import sqlite3
+from contextlib import contextmanager
+
+DB_PATH = "poligony.db"
+
+def init_db():
+    with sqlite3.connect(DB_PATH) as conn:
+        with open("schema.sql") as f:
+            conn.executescript(f.read())
+
+@contextmanager
+def get_db():
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row  # dostep do kolumn po nazwie, nie tylko indeksie
+    try:
+        yield conn
+    finally:
+        conn.close()
+```
+
+`conn.row_factory = sqlite3.Row` sprawia, że wiersze zwrócone z zapytań zachowują się
+trochę jak słowniki (`row["nazwa"]`), zamiast gołych krotek (`row[1]`) — dużo
+czytelniej przy konwersji na model Pydantic.
+
+Wywołaj `init_db()` raz, przy starcie aplikacji:
+
+```python
+@app.on_event("startup")
+def startup():
+    init_db()
+```
+
+## 3️⃣ GET z bazy zamiast z listy
+
+```python
+@app.get("/poligony", response_model=list[Poligon])
+def lista_poligonow(typ: str | None = None):
+    with get_db() as conn:
+        if typ:
+            rows = conn.execute("SELECT * FROM poligony WHERE typ = ?", (typ,)).fetchall()
+        else:
+            rows = conn.execute("SELECT * FROM poligony").fetchall()
+        return [Poligon(**dict(row)) for row in rows]
+```
+
+::: {.callout-important}
+## Zawsze parametryzowane zapytania — nigdy sklejanie stringów
+```python
+# NIGDY TAK:
+conn.execute(f"SELECT * FROM poligony WHERE typ = '{typ}'")
+
+# ZAWSZE TAK:
+conn.execute("SELECT * FROM poligony WHERE typ = ?", (typ,))
+```
+Sklejanie zapytań SQL z danych wejściowych użytkownika to klasyczna podatność **SQL
+injection** — do tego wrócimy dokładniej na spotkaniu 2 (część II, bezpieczeństwo),
+ale zasada obowiązuje od pierwszego zapytania, które napiszecie.
+:::
+
+## 4️⃣ POST — zapis do bazy
+
+```python
+@app.post("/poligony", response_model=Poligon, status_code=201)
+def utworz_poligon(poligon: PoligonCreate):  # model bez pola id -- baza je nada
+    with get_db() as conn:
+        cursor = conn.execute(
+            "INSERT INTO poligony (nazwa, lokalizacja, typ, dostepny) VALUES (?, ?, ?, ?)",
+            (poligon.nazwa, poligon.lokalizacja, poligon.typ, int(poligon.dostepny)),
+        )
+        conn.commit()
+        nowy_id = cursor.lastrowid
+        return Poligon(id=nowy_id, **poligon.model_dump())
+```
+
+Zwróć uwagę na nowy model `PoligonCreate` (bez pola `id`) — klient tworzący zasób nie
+powinien sam nadawać mu ID, robi to baza (`AUTOINCREMENT`). To częsty wzorzec w
+projektowaniu API: osobny model dla "danych wejściowych przy tworzeniu" i osobny dla
+"pełnego zasobu zwracanego klientowi".
+
+```python
+class PoligonCreate(BaseModel):
+    nazwa: str
+    lokalizacja: str
+    typ: str
+    dostepny: bool = True
+```
+
+### ✅ Mini-zadanie części III
+
+1. Rozbuduj schemat o tabelę `jednostki` (już w `schema.sql` powyżej) i migruj
+   endpointy `/jednostki` na bazę, analogicznie do `/poligony`.
+2. Napisz mały skrypt `seed.py`, wypełniający bazę kilkoma przykładowymi
+   poligonami i jednostkami.
+3. Sprawdź, że dane **przetrwają restart** serwera.
+
+---
+
+# Część IV — Pełny CRUD i pierwsze rezerwacje
+
+## 🎯 Cel
+
+Dodać brakujące operacje (`PUT`, `PATCH`, `DELETE`) do zasobów z części III i
+wprowadzić trzeci, kluczowy zasób projektu: `Rezerwacja` — z pierwszą wersją
+sprawdzania konfliktu terminów, zapowiedzianego jeszcze na spotkaniu 1 (wykład).
+
+## 1️⃣ PUT — zastąp cały zasób
+
+```python
+@app.put("/poligony/{poligon_id}", response_model=Poligon)
+def zaktualizuj_poligon(poligon_id: int, poligon: PoligonCreate):
+    with get_db() as conn:
+        cursor = conn.execute(
+            "UPDATE poligony SET nazwa=?, lokalizacja=?, typ=?, dostepny=? WHERE id=?",
+            (poligon.nazwa, poligon.lokalizacja, poligon.typ, int(poligon.dostepny), poligon_id),
+        )
+        conn.commit()
+        if cursor.rowcount == 0:
+            raise HTTPException(status_code=404, detail="Poligon nie znaleziony")
+        return Poligon(id=poligon_id, **poligon.model_dump())
+```
+
+Zgodnie ze spotkaniem 1 (część II wykładu), `PUT` zastępuje **cały** zasób — klient
+musi przysłać wszystkie pola, nawet te, których nie zmienia. Stąd `PATCH` na
+częściowe aktualizacje:
+
+```python
+class PoligonPatch(BaseModel):
+    nazwa: str | None = None
+    lokalizacja: str | None = None
+    typ: str | None = None
+    dostepny: bool | None = None
+
+@app.patch("/poligony/{poligon_id}", response_model=Poligon)
+def czesciowa_aktualizacja(poligon_id: int, zmiany: PoligonPatch):
+    pola_do_zmiany = zmiany.model_dump(exclude_unset=True)  # tylko pola faktycznie przeslane
+    if not pola_do_zmiany:
+        raise HTTPException(status_code=400, detail="Brak pol do aktualizacji")
+    # zbuduj dynamiczne zapytanie UPDATE tylko dla przeslanych pol
+    ...
+```
+
+`exclude_unset=True` to klucz do poprawnego `PATCH`-a: rozróżnia "klient nie przysłał
+tego pola" od "klient przysłał `null`" — bez tego nie dałoby się odróżnić "nie
+zmieniaj tego pola" od "ustaw je na puste".
+
+## 2️⃣ DELETE
+
+```python
+@app.delete("/poligony/{poligon_id}", status_code=204)
+def usun_poligon(poligon_id: int):
+    with get_db() as conn:
+        cursor = conn.execute("DELETE FROM poligony WHERE id=?", (poligon_id,))
+        conn.commit()
+        if cursor.rowcount == 0:
+            raise HTTPException(status_code=404, detail="Poligon nie znaleziony")
+```
+
+`204 No Content` — sukces, ale świadomie **bez ciała odpowiedzi** (nie ma czego
+zwracać, zasób już nie istnieje). FastAPI z `status_code=204` automatycznie nie
+wysyła ciała, nawet jeśli funkcja by coś zwróciła.
+
+## 3️⃣ Zasób `Rezerwacja` — model i tabela
+
+```sql
+CREATE TABLE IF NOT EXISTS rezerwacje (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    poligon_id INTEGER NOT NULL REFERENCES poligony(id),
+    jednostka_id INTEGER NOT NULL REFERENCES jednostki(id),
+    data_od TEXT NOT NULL,   -- ISO 8601: "2026-03-10T08:00:00"
+    data_do TEXT NOT NULL,
+    status TEXT NOT NULL DEFAULT 'oczekujaca'  -- oczekujaca / zatwierdzona / odrzucona
+);
+```
+
+```python
+class RezerwacjaCreate(BaseModel):
+    poligon_id: int
+    jednostka_id: int
+    data_od: str
+    data_do: str
+```
+
+## 4️⃣ Sprawdzanie konfliktu terminów — pierwsza wersja
+
+To dokładnie problem zapowiedziany na spotkaniu 1: dwie jednostki nie mogą
+zarezerwować tego samego poligonu w nakładających się terminach.
+
+```python
+def sprawdz_konflikt(conn, poligon_id: int, data_od: str, data_do: str) -> bool:
+    wiersze = conn.execute(
+        """
+        SELECT id FROM rezerwacje
+        WHERE poligon_id = ?
+          AND status != 'odrzucona'
+          AND data_od < ?
+          AND data_do > ?
+        """,
+        (poligon_id, data_do, data_od),
+    ).fetchall()
+    return len(wiersze) > 0
+
+
+@app.post("/rezerwacje", status_code=201)
+def utworz_rezerwacje(rez: RezerwacjaCreate):
+    with get_db() as conn:
+        if sprawdz_konflikt(conn, rez.poligon_id, rez.data_od, rez.data_do):
+            raise HTTPException(status_code=409, detail="Konflikt terminow na tym poligonie")
+        cursor = conn.execute(
+            "INSERT INTO rezerwacje (poligon_id, jednostka_id, data_od, data_do) VALUES (?, ?, ?, ?)",
+            (rez.poligon_id, rez.jednostka_id, rez.data_od, rez.data_do),
+        )
+        conn.commit()
+        return {"id": cursor.lastrowid, **rez.model_dump(), "status": "oczekujaca"}
+```
+
+Warunek `data_od < ? AND data_do > ?` to klasyczny test nakładania się dwóch
+przedziałów czasowych: dwa przedziały **nie** nakładają się tylko wtedy, gdy jeden
+kończy się przed rozpoczęciem drugiego. Zanegowanie tego warunku (logicznie — de
+Morgan) daje właśnie powyższe zapytanie.
+
+`409 Conflict` (nie `400 Bad Request`!) — dane są poprawnie sformułowane, problem to
+konflikt ze **stanem systemu**, dokładnie jak w części II z duplikatem ID.
+
+---
+
+## ✅ Zadanie na koniec spotkania
+
+1. Dokończ `PATCH /poligony/{id}` (dynamiczne zapytanie `UPDATE` tylko dla przesłanych pól).
+2. Dodaj `GET /rezerwacje` z filtrowaniem po `poligon_id` i `status` (query params).
+3. Napisz test ręczny w `/docs`: spróbuj utworzyć dwie rezerwacje na ten sam poligon w nakładających się terminach — sprawdź, że druga dostaje `409`.
+4. Napisz też test **negatywny**: dwie rezerwacje na ten sam poligon w terminach, które **się nie nakładają** — obie powinny się udać.
+5. Zacommituj zmiany — dodaj `poligony.db` do `.gitignore`.
+
+**Do oddania:** link do repozytorium / commit hash — prowadzący sprawdza na następnym spotkaniu.
