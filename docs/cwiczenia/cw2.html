@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Architektura aplikacji sieciowych – Projektowanie Aplikacji Sieciowych</title>
+<title>Lab 2: Pierwszy prawdziwy endpoint REST – Projektowanie Aplikacji Sieciowych</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -25,6 +25,41 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -86,7 +121,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/wyklad1.html">Wykłady</a></li><li class="breadcrumb-item"><a href="../lectures/wyklad1.html">Architektura aplikacji sieciowych</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../cwiczenia/cw1.html">Laboratoria</a></li><li class="breadcrumb-item"><a href="../cwiczenia/cw2.html">Lab 2: Pierwszy prawdziwy endpoint REST</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -128,7 +163,7 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/wyklad1.html" class="sidebar-item-text sidebar-link active">
+  <a href="../lectures/wyklad1.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Architektura aplikacji sieciowych</span></a>
   </div>
 </li>
@@ -157,7 +192,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../cwiczenia/cw2.html" class="sidebar-item-text sidebar-link">
+  <a href="../cwiczenia/cw2.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Lab 2: Pierwszy prawdziwy endpoint REST</span></a>
   </div>
 </li>
@@ -173,17 +208,15 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title"><strong>Sections</strong></h2>
    
   <ul class="collapse">
-  <li><a href="#wykład-1-architektura-aplikacji-sieciowych" id="toc-wykład-1-architektura-aplikacji-sieciowych" class="nav-link active" data-scroll-target="#wykład-1-architektura-aplikacji-sieciowych">🌐 Wykład 1: Architektura aplikacji sieciowych</a>
+  <li><a href="#laboratorium-2-pierwszy-prawdziwy-endpoint-rest" id="toc-laboratorium-2-pierwszy-prawdziwy-endpoint-rest" class="nav-link active" data-scroll-target="#laboratorium-2-pierwszy-prawdziwy-endpoint-rest">🛠️ Laboratorium 2: Pierwszy prawdziwy endpoint REST</a>
   <ul class="collapse">
-  <li><a href="#cele-wykładu" id="toc-cele-wykładu" class="nav-link" data-scroll-target="#cele-wykładu">🎯 Cele wykładu</a></li>
-  <li><a href="#czym-jest-aplikacja-sieciowa" id="toc-czym-jest-aplikacja-sieciowa" class="nav-link" data-scroll-target="#czym-jest-aplikacja-sieciowa">1️⃣ Czym jest aplikacja sieciowa?</a></li>
-  <li><a href="#model-klientserwer" id="toc-model-klientserwer" class="nav-link" data-scroll-target="#model-klientserwer">2️⃣ Model klient–serwer</a></li>
-  <li><a href="#warstwy-aplikacji-sieciowej" id="toc-warstwy-aplikacji-sieciowej" class="nav-link" data-scroll-target="#warstwy-aplikacji-sieciowej">3️⃣ Warstwy aplikacji sieciowej</a></li>
-  <li><a href="#protokoły-komunikacyjne" id="toc-protokoły-komunikacyjne" class="nav-link" data-scroll-target="#protokoły-komunikacyjne">4️⃣ Protokoły komunikacyjne</a></li>
-  <li><a href="#style-projektowania-api" id="toc-style-projektowania-api" class="nav-link" data-scroll-target="#style-projektowania-api">5️⃣ Style projektowania API</a></li>
-  <li><a href="#projekt-semestralny-system-rezerwacji-poligonu" id="toc-projekt-semestralny-system-rezerwacji-poligonu" class="nav-link" data-scroll-target="#projekt-semestralny-system-rezerwacji-poligonu">6️⃣ Projekt semestralny: system rezerwacji poligonu</a></li>
-  <li><a href="#podsumowanie" id="toc-podsumowanie" class="nav-link" data-scroll-target="#podsumowanie">🧾 Podsumowanie</a></li>
-  <li><a href="#źródła-i-literatura" id="toc-źródła-i-literatura" class="nav-link" data-scroll-target="#źródła-i-literatura">📚 Źródła i literatura</a></li>
+  <li><a href="#cel" id="toc-cel" class="nav-link" data-scroll-target="#cel">🎯 Cel</a></li>
+  <li><a href="#model-danych-pydantic" id="toc-model-danych-pydantic" class="nav-link" data-scroll-target="#model-danych-pydantic">1️⃣ Model danych — Pydantic</a></li>
+  <li><a href="#dane-w-pamięci-na-razie" id="toc-dane-w-pamięci-na-razie" class="nav-link" data-scroll-target="#dane-w-pamięci-na-razie">2️⃣ Dane w pamięci (na razie)</a></li>
+  <li><a href="#get-lista-i-pojedynczy-zasób" id="toc-get-lista-i-pojedynczy-zasób" class="nav-link" data-scroll-target="#get-lista-i-pojedynczy-zasób">3️⃣ GET — lista i pojedynczy zasób</a></li>
+  <li><a href="#post-tworzenie-nowego-zasobu" id="toc-post-tworzenie-nowego-zasobu" class="nav-link" data-scroll-target="#post-tworzenie-nowego-zasobu">4️⃣ POST — tworzenie nowego zasobu</a></li>
+  <li><a href="#query-parameters-filtrowanie-listy" id="toc-query-parameters-filtrowanie-listy" class="nav-link" data-scroll-target="#query-parameters-filtrowanie-listy">5️⃣ Query parameters — filtrowanie listy</a></li>
+  <li><a href="#zadanie-na-koniec-laboratorium" id="toc-zadanie-na-koniec-laboratorium" class="nav-link" data-scroll-target="#zadanie-na-koniec-laboratorium">✅ Zadanie na koniec laboratorium</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -191,9 +224,9 @@ ul.task-list li input[type="checkbox"] {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/wyklad1.html">Wykłady</a></li><li class="breadcrumb-item"><a href="../lectures/wyklad1.html">Architektura aplikacji sieciowych</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../cwiczenia/cw1.html">Laboratoria</a></li><li class="breadcrumb-item"><a href="../cwiczenia/cw2.html">Lab 2: Pierwszy prawdziwy endpoint REST</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Architektura aplikacji sieciowych</h1>
+<h1 class="title">Lab 2: Pierwszy prawdziwy endpoint REST</h1>
 </div>
 
 
@@ -210,260 +243,82 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="wykład-1-architektura-aplikacji-sieciowych" class="level1">
-<h1>🌐 Wykład 1: Architektura aplikacji sieciowych</h1>
-<section id="cele-wykładu" class="level2">
-<h2 class="anchored" data-anchor-id="cele-wykładu">🎯 Cele wykładu</h2>
-<p>Po tym wykładzie powinieneś rozumieć, z jakich warstw składa się typowa aplikacja sieciowa, czym różni się od zwykłego programu działającego lokalnie, jak wygląda komunikacja klient–serwer oraz jakie są główne style projektowania API. Poznasz też projekt, który będziemy budować przez cały semestr na laboratoriach.</p>
+<section id="laboratorium-2-pierwszy-prawdziwy-endpoint-rest" class="level1">
+<h1>🛠️ Laboratorium 2: Pierwszy prawdziwy endpoint REST</h1>
+<section id="cel" class="level2">
+<h2 class="anchored" data-anchor-id="cel">🎯 Cel</h2>
+<p>Zastąpić sztywno wpisane listy z laboratorium 1 prawdziwym modelem danych (Pydantic) i zaimplementować pierwsze operacje REST na zasobie <code>Poligon</code>: <code>GET</code> (lista, jeden) i <code>POST</code> (utworzenie). Dane na razie żyją w pamięci procesu (lista Pythona) — baza danych to dopiero laboratorium 3.</p>
 <hr>
 </section>
-<section id="czym-jest-aplikacja-sieciowa" class="level2">
-<h2 class="anchored" data-anchor-id="czym-jest-aplikacja-sieciowa">1️⃣ Czym jest aplikacja sieciowa?</h2>
-<p>Aplikacja sieciowa (ang. <em>network application</em>) to program, którego części działają na różnych maszynach połączonych siecią i komunikują się ze sobą, wymieniając dane według ustalonego protokołu.</p>
-<p>Kluczowa różnica względem programu lokalnego: <strong>stan i logika nie muszą żyć w tym samym procesie co interfejs użytkownika</strong>. Telefon żołnierza wysyłający zgłoszenie i serwer przechowujący dane o sprzęcie to dwa oddzielne programy, które nigdy nie współdzielą pamięci — jedyny sposób komunikacji to sieć.</p>
-<section id="przykłady-aplikacji-sieciowych" class="level3">
-<h3 class="anchored" data-anchor-id="przykłady-aplikacji-sieciowych">🔹 Przykłady aplikacji sieciowych</h3>
-<ul>
-<li>System rezerwacji (hotel, poligon, sala wykładowa)</li>
-<li>Bankowość internetowa</li>
-<li>Komunikatory (WhatsApp, Signal)</li>
-<li>Systemy ewidencji sprzętu i logistyki</li>
-</ul>
-<hr>
+<section id="model-danych-pydantic" class="level2">
+<h2 class="anchored" data-anchor-id="model-danych-pydantic">1️⃣ Model danych — Pydantic</h2>
+<p>FastAPI używa biblioteki <strong>Pydantic</strong> do opisu kształtu danych i automatycznej walidacji. Zamiast zwracać gołe słowniki jak w laboratorium 1, zdefiniuj klasę:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pydantic <span class="im">import</span> BaseModel</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Poligon(BaseModel):</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">id</span>: <span class="bu">int</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    nazwa: <span class="bu">str</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    lokalizacja: <span class="bu">str</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    typ: <span class="bu">str</span>  <span class="co"># "strzelnica" albo "teren manewrowy"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Pydantic automatycznie sprawdzi, czy przychodzące dane pasują do tych typów — jeśli klient wyśle <code>id</code> jako tekst zamiast liczby, dostanie czytelny błąd <code>422</code>, zanim Twój kod w ogóle zobaczy te dane.</p>
 </section>
+<section id="dane-w-pamięci-na-razie" class="level2">
+<h2 class="anchored" data-anchor-id="dane-w-pamięci-na-razie">2️⃣ Dane w pamięci (na razie)</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>poligony: <span class="bu">list</span>[Poligon] <span class="op">=</span> [</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    Poligon(<span class="bu">id</span><span class="op">=</span><span class="dv">1</span>, nazwa<span class="op">=</span><span class="st">"Poligon Nowa Deba"</span>, lokalizacja<span class="op">=</span><span class="st">"Nowa Deba"</span>, typ<span class="op">=</span><span class="st">"strzelnica"</span>),</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    Poligon(<span class="bu">id</span><span class="op">=</span><span class="dv">2</span>, nazwa<span class="op">=</span><span class="st">"Poligon Drawsko"</span>, lokalizacja<span class="op">=</span><span class="st">"Drawsko Pomorskie"</span>, typ<span class="op">=</span><span class="st">"teren manewrowy"</span>),</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="model-klientserwer" class="level2">
-<h2 class="anchored" data-anchor-id="model-klientserwer">2️⃣ Model klient–serwer</h2>
-<p>Najpopularniejszy model architektury aplikacji sieciowej.</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 40%">
-<col style="width: 60%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Rola</th>
-<th>Zadanie</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Klient</strong></td>
-<td>Inicjuje żądanie, prezentuje wynik użytkownikowi (przeglądarka, aplikacja mobilna, inny serwer)</td>
-</tr>
-<tr class="even">
-<td><strong>Serwer</strong></td>
-<td>Nasłuchuje na żądania, przetwarza je, zwraca odpowiedź</td>
-</tr>
-</tbody>
-</table>
-<blockquote class="blockquote">
-<p>Serwer nie “dzwoni” sam do klienta bez powodu — to klient zawsze inicjuje rozmowę. (Wyjątki: WebSocket, powiadomienia push — omówimy przy okazji wykładu o skalowalności.)</p>
-</blockquote>
-<section id="dlaczego-nie-jeden-wielki-program" class="level3">
-<h3 class="anchored" data-anchor-id="dlaczego-nie-jeden-wielki-program">🔹 Dlaczego nie jeden wielki program?</h3>
-<p>Rozdzielenie klienta i serwera daje:</p>
-<ul>
-<li><strong>niezależne skalowanie</strong> — można dodać kolejne serwery bez zmiany klienta,</li>
-<li><strong>wielu klientów na jeden serwer</strong> — przeglądarka, aplikacja mobilna i inny system mogą korzystać z tego samego API,</li>
-<li><strong>aktualizacje bez przeinstalowywania</strong> — zmiana logiki na serwerze nie wymaga nic od użytkownika.</li>
-</ul>
-<hr>
+<section id="get-lista-i-pojedynczy-zasób" class="level2">
+<h2 class="anchored" data-anchor-id="get-lista-i-pojedynczy-zasób">3️⃣ GET — lista i pojedynczy zasób</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastapi <span class="im">import</span> FastAPI, HTTPException</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> FastAPI(title<span class="op">=</span><span class="st">"System rezerwacji poligonu"</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="at">@app.get</span>(<span class="st">"/poligony"</span>, response_model<span class="op">=</span><span class="bu">list</span>[Poligon])</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lista_poligonow():</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> poligony</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="at">@app.get</span>(<span class="st">"/poligony/</span><span class="sc">{poligon_id}</span><span class="st">"</span>, response_model<span class="op">=</span>Poligon)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> pobierz_poligon(poligon_id: <span class="bu">int</span>):</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> p <span class="kw">in</span> poligony:</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> p.<span class="bu">id</span> <span class="op">==</span> poligon_id:</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> p</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> HTTPException(status_code<span class="op">=</span><span class="dv">404</span>, detail<span class="op">=</span><span class="st">"Poligon nie znaleziony"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>{poligon_id}</code> w ścieżce to <strong>path parameter</strong> — FastAPI automatycznie wyciąga go z URL-a i konwertuje na <code>int</code> (dzięki adnotacji typu w parametrze funkcji). Spróbuj wywołać <code>/poligony/abc</code> — zobaczysz błąd walidacji zamiast crashu.</p>
+<p><code>response_model=Poligon</code> mówi FastAPI, jakiego kształtu odpowiedzi się spodziewać — to też trafia do automatycznej dokumentacji w <code>/docs</code>.</p>
 </section>
+<section id="post-tworzenie-nowego-zasobu" class="level2">
+<h2 class="anchored" data-anchor-id="post-tworzenie-nowego-zasobu">4️⃣ POST — tworzenie nowego zasobu</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="at">@app.post</span>(<span class="st">"/poligony"</span>, response_model<span class="op">=</span>Poligon, status_code<span class="op">=</span><span class="dv">201</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> utworz_poligon(poligon: Poligon):</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> p <span class="kw">in</span> poligony:</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> p.<span class="bu">id</span> <span class="op">==</span> poligon.<span class="bu">id</span>:</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> HTTPException(status_code<span class="op">=</span><span class="dv">409</span>, detail<span class="op">=</span><span class="st">"Poligon o tym ID juz istnieje"</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    poligony.append(poligon)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> poligon</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Zwróć uwagę na <code>status_code=201</code> — zgodnie z wykładem 2, tworzenie zasobu powinno zwracać <code>201 Created</code>, nie domyślne <code>200 OK</code>. <code>409 Conflict</code> to kod statusu na sytuację “żądanie jest poprawne, ale koliduje z obecnym stanem” — dokładnie pasuje do “ID już zajęte”.</p>
+<p>Sprawdź w <code>/docs</code>: kliknij “Try it out” przy <code>POST /poligony</code> i wyślij nowy poligon — zobaczysz go od razu w <code>GET /poligony</code>.</p>
 </section>
-<section id="warstwy-aplikacji-sieciowej" class="level2">
-<h2 class="anchored" data-anchor-id="warstwy-aplikacji-sieciowej">3️⃣ Warstwy aplikacji sieciowej</h2>
-<p>Typowa aplikacja sieciowa dzieli się na trzy warstwy:</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 18%">
-<col style="width: 31%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Warstwa</th>
-<th>Odpowiada za</th>
-<th>Przykład technologii</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Prezentacji (frontend)</strong></td>
-<td>Interfejs użytkownika</td>
-<td>HTML/CSS/JS, aplikacja mobilna</td>
-</tr>
-<tr class="even">
-<td><strong>Logiki biznesowej (backend)</strong></td>
-<td>Reguły, walidację, przetwarzanie żądań</td>
-<td>Python (FastAPI), Java, Node.js</td>
-</tr>
-<tr class="odd">
-<td><strong>Danych</strong></td>
-<td>Trwałe przechowywanie informacji</td>
-<td>PostgreSQL, SQLite, MongoDB</td>
-</tr>
-</tbody>
-</table>
-<blockquote class="blockquote">
-<p><img> Schemat trójwarstwowy: Klient (frontend) ↔︎ API (backend) ↔︎ Baza danych</p>
-</blockquote>
-<p>To ten sam podział, co poziomy ANSI/SPARC z kursów o bazach danych — tu warstwa “logiki” dodatkowo pośredniczy między światem zewnętrznym a bazą, zamiast pozwalać klientowi łączyć się z bazą bezpośrednio.</p>
-<p><strong>Dlaczego backend nigdy nie powinien pozwalać frontendowi łączyć się z bazą wprost?</strong> Bo wtedy każdy klient musiałby znać hasło do bazy, strukturę tabel i reguły biznesowe — a zmiana schematu bazy złamałaby każdą aplikację kliencką osobno.</p>
-<hr>
+<section id="query-parameters-filtrowanie-listy" class="level2">
+<h2 class="anchored" data-anchor-id="query-parameters-filtrowanie-listy">5️⃣ Query parameters — filtrowanie listy</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="at">@app.get</span>(<span class="st">"/poligony"</span>, response_model<span class="op">=</span><span class="bu">list</span>[Poligon])</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lista_poligonow(typ: <span class="bu">str</span> <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>):</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> typ <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> poligony</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [p <span class="cf">for</span> p <span class="kw">in</span> poligony <span class="cf">if</span> p.typ <span class="op">==</span> typ]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Parametr <code>typ</code>, którego <strong>nie ma</strong> w ścieżce URL (<code>/poligony</code>), a jest w liście argumentów funkcji, FastAPI automatycznie traktuje jako <strong>query parameter</strong>: <code>/poligony?typ=strzelnica</code>. <code>str | None = None</code> oznacza “opcjonalny, domyślnie brak filtra”.</p>
 </section>
-<section id="protokoły-komunikacyjne" class="level2">
-<h2 class="anchored" data-anchor-id="protokoły-komunikacyjne">4️⃣ Protokoły komunikacyjne</h2>
-<p>Aby klient i serwer się zrozumiały, muszą mówić tym samym językiem — protokołem.</p>
-<section id="miejsce-http-w-stosie-sieciowym" class="level3">
-<h3 class="anchored" data-anchor-id="miejsce-http-w-stosie-sieciowym">🔹 Miejsce HTTP w stosie sieciowym</h3>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Warstwa (uproszczony model)</th>
-<th>Przykład protokołu</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Aplikacji</td>
-<td><strong>HTTP/HTTPS</strong>, FTP, SMTP</td>
-</tr>
-<tr class="even">
-<td>Transportowa</td>
-<td>TCP, UDP</td>
-</tr>
-<tr class="odd">
-<td>Sieciowa</td>
-<td>IP</td>
-</tr>
-</tbody>
-</table>
-<p>HTTP (HyperText Transfer Protocol) działa na bazie TCP — zanim popłynie choćby bajt danych HTTP, klient i serwer muszą nawiązać połączenie TCP (tzw. three-way handshake). HTTPS to HTTP owinięte w warstwę szyfrowania TLS.</p>
-<p>Szczegóły samego HTTP (metody, nagłówki, kody odpowiedzi) to temat całego następnego wykładu — dziś tylko umiejscawiamy go w stosie.</p>
-<hr>
-</section>
-</section>
-<section id="style-projektowania-api" class="level2">
-<h2 class="anchored" data-anchor-id="style-projektowania-api">5️⃣ Style projektowania API</h2>
-<p>Kiedy backend ma udostępnić swoje możliwości innym programom, robi to przez <strong>API</strong> (Application Programming Interface). Kilka konkurencyjnych stylów:</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 14%">
-<col style="width: 39%">
-<col style="width: 46%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Styl</th>
-<th>Format danych</th>
-<th>Charakterystyka</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>REST</strong></td>
-<td>zwykle JSON</td>
-<td>zasoby adresowane przez URL, operacje przez metody HTTP — dominujący styl dziś</td>
-</tr>
-<tr class="even">
-<td><strong>SOAP</strong></td>
-<td>XML</td>
-<td>sztywny kontrakt (WSDL), popularny w starszych systemach korporacyjnych/rządowych</td>
-</tr>
-<tr class="odd">
-<td><strong>GraphQL</strong></td>
-<td>JSON</td>
-<td>klient sam opisuje, jakich danych potrzebuje, w jednym zapytaniu</td>
-</tr>
-<tr class="even">
-<td><strong>gRPC</strong></td>
-<td>binarny (Protocol Buffers)</td>
-<td>bardzo szybki, typowany, głównie do komunikacji między mikroserwisami</td>
-</tr>
-<tr class="odd">
-<td><strong>WebSocket</strong></td>
-<td>dowolny</td>
-<td>dwukierunkowy, trwały kanał — do komunikacji w czasie rzeczywistym (czat, powiadomienia)</td>
-</tr>
-</tbody>
-</table>
-<p>W tym kursie skupiamy się na <strong>REST</strong> — to on zdominował publiczne API i będzie tym, co zbudujesz na laboratoriach.</p>
-<section id="zasada-rest-w-jednym-zdaniu" class="level3">
-<h3 class="anchored" data-anchor-id="zasada-rest-w-jednym-zdaniu">🔹 Zasada REST w jednym zdaniu</h3>
-<blockquote class="blockquote">
-<p>Każdy zasób (rzecz, którą aplikacja przechowuje) ma swój adres URL, a to, co chcemy z nim zrobić, wyrażamy metodą HTTP (GET = pobierz, POST = utwórz, PUT/PATCH = zmień, DELETE = usuń) — nie czasownikiem w samym adresie.</p>
-</blockquote>
-<p>Przykład: zamiast <code>GET /pobierzRezerwacje?id=5</code>, w REST piszemy <code>GET /rezerwacje/5</code>. Adres opisuje <strong>co</strong>, metoda HTTP opisuje <strong>jak</strong>.</p>
-<hr>
-</section>
-</section>
-<section id="projekt-semestralny-system-rezerwacji-poligonu" class="level2">
-<h2 class="anchored" data-anchor-id="projekt-semestralny-system-rezerwacji-poligonu">6️⃣ Projekt semestralny: system rezerwacji poligonu</h2>
-<p>Przez 12 laboratoriów zbudujemy razem jeden, rosnący system: <strong>rezerwację poligonu/strzelnicy</strong> dla jednostki wojskowej.</p>
-<section id="aktorzy-systemu" class="level3">
-<h3 class="anchored" data-anchor-id="aktorzy-systemu">🔹 Aktorzy systemu</h3>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Rola</th>
-<th>Może</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Planista poligonu</strong></td>
-<td>zarządzać dostępnością poligonów, zatwierdzać/odrzucać rezerwacje</td>
-</tr>
-<tr class="even">
-<td><strong>Dowódca jednostki</strong></td>
-<td>rezerwować poligon dla swojego pododdziału</td>
-</tr>
-<tr class="odd">
-<td><em>(gość/niezalogowany)</em></td>
-<td>tylko przeglądać dostępność, bez rezerwacji</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="główne-zasoby-na-razie-koncepcyjnie-do-api-dojdziemy-w-wykładzie-3" class="level3">
-<h3 class="anchored" data-anchor-id="główne-zasoby-na-razie-koncepcyjnie-do-api-dojdziemy-w-wykładzie-3">🔹 Główne zasoby (na razie koncepcyjnie — do API dojdziemy w wykładzie 3)</h3>
-<ul>
-<li><strong>Poligon</strong> — nazwa, lokalizacja, dostępne przedziały czasowe, typ (strzelnica, teren manewrowy…)</li>
-<li><strong>Jednostka</strong> — nazwa, dowódca</li>
-<li><strong>Rezerwacja</strong> — który poligon, która jednostka, od kiedy do kiedy, status (<code>oczekująca</code>, <code>zatwierdzona</code>, <code>odrzucona</code>)</li>
-</ul>
-</section>
-<section id="kluczowy-problem-projektowy" class="level3">
-<h3 class="anchored" data-anchor-id="kluczowy-problem-projektowy">🔹 Kluczowy problem projektowy</h3>
-<p>Dwie jednostki nie mogą zarezerwować tego samego poligonu w nakładających się przedziałach czasu. To pozornie proste wymaganie wróci wielokrotnie — przy walidacji danych (wykład/lab o błędach), przy autoryzacji (kto może zatwierdzić konflikt) i przy współbieżności (co gdy dwie rezerwacje przychodzą w tej samej sekundzie).</p>
-<blockquote class="blockquote">
-<p>💡 Zapamiętaj ten problem — będziemy go rozwiązywać stopniowo, warstwa po warstwie, przez cały semestr.</p>
-</blockquote>
-<hr>
-</section>
-</section>
-<section id="podsumowanie" class="level2">
-<h2 class="anchored" data-anchor-id="podsumowanie">🧾 Podsumowanie</h2>
-<ul>
-<li>Aplikacja sieciowa rozdziela klienta i serwer, komunikujących się przez sieć według ustalonego protokołu.</li>
-<li>Typowy podział to trzy warstwy: prezentacji, logiki biznesowej, danych.</li>
-<li>HTTP to protokół aplikacyjny działający na TCP; HTTPS dodaje szyfrowanie TLS.</li>
-<li>REST to dominujący dziś styl API: zasoby jako adresy URL, operacje jako metody HTTP.</li>
-<li>Semestralny projekt: system rezerwacji poligonu — zaczynamy od środowiska pracy i pierwszego serwera na laboratorium 1.</li>
-</ul>
-</section>
-<section id="źródła-i-literatura" class="level2">
-<h2 class="anchored" data-anchor-id="źródła-i-literatura">📚 Źródła i literatura</h2>
-<ul>
-<li>R. Fielding, <em>Architectural Styles and the Design of Network-based Software Architectures</em> (praca doktorska wprowadzająca REST)</li>
-<li>MDN Web Docs — <em>An overview of HTTP</em></li>
-<li>Dokumentacja FastAPI (framework używany na laboratoriach)</li>
-</ul>
+<section id="zadanie-na-koniec-laboratorium" class="level2">
+<h2 class="anchored" data-anchor-id="zadanie-na-koniec-laboratorium">✅ Zadanie na koniec laboratorium</h2>
+<ol type="1">
+<li>Dodaj model <code>Jednostka</code> (pola: <code>id</code>, <code>nazwa</code>, <code>garnizon</code>) i analogiczne endpointy <code>GET /jednostki</code>, <code>GET /jednostki/{id}</code>, <code>POST /jednostki</code>.</li>
+<li>Dodaj do <code>Poligon</code> pole <code>dostepny: bool = True</code> i endpoint <code>GET /poligony?dostepny=true</code>, filtrujący po dostępności (analogicznie do filtra <code>typ</code>).</li>
+<li>Sprawdź w <code>/docs</code>, że oba zasoby (Poligon, Jednostka) mają poprawnie wygenerowaną dokumentację.</li>
+<li>Zacommituj zmiany.</li>
+</ol>
+<p><strong>Do oddania:</strong> link do repozytorium / commit hash.</p>
 
 
 </section>

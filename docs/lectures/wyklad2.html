@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Architektura aplikacji sieciowych – Projektowanie Aplikacji Sieciowych</title>
+<title>Protokół HTTP w szczegółach – Projektowanie Aplikacji Sieciowych</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -86,7 +86,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/wyklad1.html">Wykłady</a></li><li class="breadcrumb-item"><a href="../lectures/wyklad1.html">Architektura aplikacji sieciowych</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/wyklad1.html">Wykłady</a></li><li class="breadcrumb-item"><a href="../lectures/wyklad2.html">Protokół HTTP w szczegółach</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -128,13 +128,13 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/wyklad1.html" class="sidebar-item-text sidebar-link active">
+  <a href="../lectures/wyklad1.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Architektura aplikacji sieciowych</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/wyklad2.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/wyklad2.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Protokół HTTP w szczegółach</span></a>
   </div>
 </li>
@@ -173,17 +173,18 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title"><strong>Sections</strong></h2>
    
   <ul class="collapse">
-  <li><a href="#wykład-1-architektura-aplikacji-sieciowych" id="toc-wykład-1-architektura-aplikacji-sieciowych" class="nav-link active" data-scroll-target="#wykład-1-architektura-aplikacji-sieciowych">🌐 Wykład 1: Architektura aplikacji sieciowych</a>
+  <li><a href="#sprawdź-się-z-wykładu-1" id="toc-sprawdź-się-z-wykładu-1" class="nav-link active" data-scroll-target="#sprawdź-się-z-wykładu-1">✅ Sprawdź się z wykładu 1</a></li>
+  <li><a href="#wykład-2-protokół-http-w-szczegółach" id="toc-wykład-2-protokół-http-w-szczegółach" class="nav-link" data-scroll-target="#wykład-2-protokół-http-w-szczegółach">📡 Wykład 2: Protokół HTTP w szczegółach</a>
   <ul class="collapse">
   <li><a href="#cele-wykładu" id="toc-cele-wykładu" class="nav-link" data-scroll-target="#cele-wykładu">🎯 Cele wykładu</a></li>
-  <li><a href="#czym-jest-aplikacja-sieciowa" id="toc-czym-jest-aplikacja-sieciowa" class="nav-link" data-scroll-target="#czym-jest-aplikacja-sieciowa">1️⃣ Czym jest aplikacja sieciowa?</a></li>
-  <li><a href="#model-klientserwer" id="toc-model-klientserwer" class="nav-link" data-scroll-target="#model-klientserwer">2️⃣ Model klient–serwer</a></li>
-  <li><a href="#warstwy-aplikacji-sieciowej" id="toc-warstwy-aplikacji-sieciowej" class="nav-link" data-scroll-target="#warstwy-aplikacji-sieciowej">3️⃣ Warstwy aplikacji sieciowej</a></li>
-  <li><a href="#protokoły-komunikacyjne" id="toc-protokoły-komunikacyjne" class="nav-link" data-scroll-target="#protokoły-komunikacyjne">4️⃣ Protokoły komunikacyjne</a></li>
-  <li><a href="#style-projektowania-api" id="toc-style-projektowania-api" class="nav-link" data-scroll-target="#style-projektowania-api">5️⃣ Style projektowania API</a></li>
-  <li><a href="#projekt-semestralny-system-rezerwacji-poligonu" id="toc-projekt-semestralny-system-rezerwacji-poligonu" class="nav-link" data-scroll-target="#projekt-semestralny-system-rezerwacji-poligonu">6️⃣ Projekt semestralny: system rezerwacji poligonu</a></li>
+  <li><a href="#anatomia-żądania-http" id="toc-anatomia-żądania-http" class="nav-link" data-scroll-target="#anatomia-żądania-http">1️⃣ Anatomia żądania HTTP</a></li>
+  <li><a href="#metody-http-czasowniki-rest-a" id="toc-metody-http-czasowniki-rest-a" class="nav-link" data-scroll-target="#metody-http-czasowniki-rest-a">2️⃣ Metody HTTP — czasowniki REST-a</a></li>
+  <li><a href="#kody-statusu-pięć-rodzin" id="toc-kody-statusu-pięć-rodzin" class="nav-link" data-scroll-target="#kody-statusu-pięć-rodzin">3️⃣ Kody statusu — pięć rodzin</a></li>
+  <li><a href="#nagłówki-które-będziecie-używać-najczęściej" id="toc-nagłówki-które-będziecie-używać-najczęściej" class="nav-link" data-scroll-target="#nagłówki-które-będziecie-używać-najczęściej">4️⃣ Nagłówki, które będziecie używać najczęściej</a></li>
+  <li><a href="#http-jest-bezstanowy-co-to-znaczy-naprawdę" id="toc-http-jest-bezstanowy-co-to-znaczy-naprawdę" class="nav-link" data-scroll-target="#http-jest-bezstanowy-co-to-znaczy-naprawdę">5️⃣ HTTP jest bezstanowy — co to znaczy naprawdę</a></li>
+  <li><a href="#cache-kiedy-nie-pytać-serwera-drugi-raz" id="toc-cache-kiedy-nie-pytać-serwera-drugi-raz" class="nav-link" data-scroll-target="#cache-kiedy-nie-pytać-serwera-drugi-raz">6️⃣ Cache — kiedy nie pytać serwera drugi raz</a></li>
   <li><a href="#podsumowanie" id="toc-podsumowanie" class="nav-link" data-scroll-target="#podsumowanie">🧾 Podsumowanie</a></li>
-  <li><a href="#źródła-i-literatura" id="toc-źródła-i-literatura" class="nav-link" data-scroll-target="#źródła-i-literatura">📚 Źródła i literatura</a></li>
+  <li><a href="#źródła" id="toc-źródła" class="nav-link" data-scroll-target="#źródła">📚 Źródła</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -191,9 +192,9 @@ ul.task-list li input[type="checkbox"] {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/wyklad1.html">Wykłady</a></li><li class="breadcrumb-item"><a href="../lectures/wyklad1.html">Architektura aplikacji sieciowych</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/wyklad1.html">Wykłady</a></li><li class="breadcrumb-item"><a href="../lectures/wyklad2.html">Protokół HTTP w szczegółach</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Architektura aplikacji sieciowych</h1>
+<h1 class="title">Protokół HTTP w szczegółach</h1>
 </div>
 
 
@@ -210,259 +211,296 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="wykład-1-architektura-aplikacji-sieciowych" class="level1">
-<h1>🌐 Wykład 1: Architektura aplikacji sieciowych</h1>
+<section id="sprawdź-się-z-wykładu-1" class="level2">
+<h2 class="anchored" data-anchor-id="sprawdź-się-z-wykładu-1">✅ Sprawdź się z wykładu 1</h2>
+<div id="pas-quiz">
+
+</div>
+<script src="../assets/js/quiz-engine.js"></script>
+<script>
+CourseQuiz.mount(document.getElementById('pas-quiz'), {
+  course: "pas2026",
+  lecture: "wyklad2",
+  title: "Wykład 1: Architektura aplikacji sieciowych",
+  submitUrl: "https://sebastianzajac.pl/rsod-quiz/submit.php",
+  questions: [
+    {
+      id: "q1", points: 1, diff: "bardzo łatwe",
+      text: "Kto zawsze inicjuje komunikację w modelu klient-serwer (poza wyjątkami jak WebSocket)?",
+      options: [
+        {v:"A", t:"Serwer"},
+        {v:"B", t:"Klient"},
+        {v:"C", t:"Oboje jednocześnie"},
+        {v:"D", t:"Zależy od implementacji bazy danych"}
+      ]
+    },
+    {
+      id: "q2", points: 1, diff: "łatwe",
+      text: "Które trzy warstwy tworzą typową aplikację sieciową?",
+      options: [
+        {v:"A", t:"Sieciowa, transportowa, fizyczna"},
+        {v:"B", t:"Prezentacji, logiki biznesowej, danych"},
+        {v:"C", t:"Klient, router, serwer"},
+        {v:"D", t:"HTTP, TCP, IP"}
+      ]
+    },
+    {
+      id: "q3", points: 2, diff: "średnie",
+      text: "Na jakim protokole transportowym działa HTTP?",
+      options: [
+        {v:"A", t:"UDP"},
+        {v:"B", t:"TCP"},
+        {v:"C", t:"IP bezpośrednio, bez warstwy transportowej"},
+        {v:"D", t:"FTP"}
+      ]
+    },
+    {
+      id: "q4", points: 2, diff: "trudne",
+      text: "W stylu REST, jak wyrażamy 'co chcemy zrobić' z zasobem?",
+      options: [
+        {v:"A", t:"Czasownikiem w adresie URL, np. /pobierzRezerwacje"},
+        {v:"B", t:"Metodą HTTP (GET, POST, PUT, DELETE), adres opisuje tylko zasób"},
+        {v:"C", t:"Zawsze przez POST, niezależnie od operacji"},
+        {v:"D", t:"Nagłówkiem X-Action"}
+      ]
+    },
+    {
+      id: "q5", points: 3, diff: "wnioskowanie",
+      text: "Dwie jednostki próbują zarezerwować ten sam poligon w nakładających się terminach. Na którym z trzech warstw (prezentacji/logiki biznesowej/danych) powinno się wykryć i odrzucić ten konflikt?",
+      options: [
+        {v:"A", t:"Prezentacji — przeglądarka użytkownika powinna to sprawdzić przed wysłaniem"},
+        {v:"B", t:"Logiki biznesowej — backend musi to sprawdzić niezależnie od tego, co zrobił frontend, bo to reguła dotycząca danych, nie wyglądu"},
+        {v:"C", t:"Danych — sama baza SQLite sama to wykryje bez dodatkowego kodu"},
+        {v:"D", t:"Nie da się tego sprawdzić w architekturze trójwarstwowej"}
+      ]
+    }
+  ]
+});
+</script>
+<hr>
+</section>
+<section id="wykład-2-protokół-http-w-szczegółach" class="level1">
+<h1>📡 Wykład 2: Protokół HTTP w szczegółach</h1>
 <section id="cele-wykładu" class="level2">
 <h2 class="anchored" data-anchor-id="cele-wykładu">🎯 Cele wykładu</h2>
-<p>Po tym wykładzie powinieneś rozumieć, z jakich warstw składa się typowa aplikacja sieciowa, czym różni się od zwykłego programu działającego lokalnie, jak wygląda komunikacja klient–serwer oraz jakie są główne style projektowania API. Poznasz też projekt, który będziemy budować przez cały semestr na laboratoriach.</p>
+<p>Po tym wykładzie będziesz rozumieć strukturę żądania i odpowiedzi HTTP, znał najważniejsze metody i kody statusu, oraz wiedział, dlaczego HTTP jest protokołem “bezstanowym” i co to oznacza w praktyce dla projektowania aplikacji.</p>
 <hr>
 </section>
-<section id="czym-jest-aplikacja-sieciowa" class="level2">
-<h2 class="anchored" data-anchor-id="czym-jest-aplikacja-sieciowa">1️⃣ Czym jest aplikacja sieciowa?</h2>
-<p>Aplikacja sieciowa (ang. <em>network application</em>) to program, którego części działają na różnych maszynach połączonych siecią i komunikują się ze sobą, wymieniając dane według ustalonego protokołu.</p>
-<p>Kluczowa różnica względem programu lokalnego: <strong>stan i logika nie muszą żyć w tym samym procesie co interfejs użytkownika</strong>. Telefon żołnierza wysyłający zgłoszenie i serwer przechowujący dane o sprzęcie to dwa oddzielne programy, które nigdy nie współdzielą pamięci — jedyny sposób komunikacji to sieć.</p>
-<section id="przykłady-aplikacji-sieciowych" class="level3">
-<h3 class="anchored" data-anchor-id="przykłady-aplikacji-sieciowych">🔹 Przykłady aplikacji sieciowych</h3>
-<ul>
-<li>System rezerwacji (hotel, poligon, sala wykładowa)</li>
-<li>Bankowość internetowa</li>
-<li>Komunikatory (WhatsApp, Signal)</li>
-<li>Systemy ewidencji sprzętu i logistyki</li>
-</ul>
-<hr>
-</section>
-</section>
-<section id="model-klientserwer" class="level2">
-<h2 class="anchored" data-anchor-id="model-klientserwer">2️⃣ Model klient–serwer</h2>
-<p>Najpopularniejszy model architektury aplikacji sieciowej.</p>
+<section id="anatomia-żądania-http" class="level2">
+<h2 class="anchored" data-anchor-id="anatomia-żądania-http">1️⃣ Anatomia żądania HTTP</h2>
+<p>Kiedy przeglądarka (albo <code>curl</code>, albo Wasz kod) wysyła żądanie, wygląda ono (uproszczone) tak:</p>
+<pre><code>GET /poligony/5 HTTP/1.1
+Host: sebastianzajac.pl
+Accept: application/json
+Authorization: Bearer eyJhbGc...
+
+(puste ciało — GET zwykle go nie ma)</code></pre>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 40%">
-<col style="width: 60%">
+<col style="width: 45%">
+<col style="width: 55%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>Rola</th>
-<th>Zadanie</th>
+<th>Element</th>
+<th>Znaczenie</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Klient</strong></td>
-<td>Inicjuje żądanie, prezentuje wynik użytkownikowi (przeglądarka, aplikacja mobilna, inny serwer)</td>
+<td><strong>Linia startowa</strong></td>
+<td>metoda + ścieżka + wersja protokołu</td>
 </tr>
 <tr class="even">
-<td><strong>Serwer</strong></td>
-<td>Nasłuchuje na żądania, przetwarza je, zwraca odpowiedź</td>
+<td><strong>Nagłówki (headers)</strong></td>
+<td>metadane: co akceptujemy, kim jesteśmy, jaki format wysyłamy</td>
+</tr>
+<tr class="odd">
+<td><strong>Ciało (body)</strong></td>
+<td>właściwe dane (przy GET zwykle puste, przy POST/PUT — tak)</td>
 </tr>
 </tbody>
 </table>
-<blockquote class="blockquote">
-<p>Serwer nie “dzwoni” sam do klienta bez powodu — to klient zawsze inicjuje rozmowę. (Wyjątki: WebSocket, powiadomienia push — omówimy przy okazji wykładu o skalowalności.)</p>
-</blockquote>
-<section id="dlaczego-nie-jeden-wielki-program" class="level3">
-<h3 class="anchored" data-anchor-id="dlaczego-nie-jeden-wielki-program">🔹 Dlaczego nie jeden wielki program?</h3>
-<p>Rozdzielenie klienta i serwera daje:</p>
-<ul>
-<li><strong>niezależne skalowanie</strong> — można dodać kolejne serwery bez zmiany klienta,</li>
-<li><strong>wielu klientów na jeden serwer</strong> — przeglądarka, aplikacja mobilna i inny system mogą korzystać z tego samego API,</li>
-<li><strong>aktualizacje bez przeinstalowywania</strong> — zmiana logiki na serwerze nie wymaga nic od użytkownika.</li>
-</ul>
-<hr>
 </section>
-</section>
-<section id="warstwy-aplikacji-sieciowej" class="level2">
-<h2 class="anchored" data-anchor-id="warstwy-aplikacji-sieciowej">3️⃣ Warstwy aplikacji sieciowej</h2>
-<p>Typowa aplikacja sieciowa dzieli się na trzy warstwy:</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 18%">
-<col style="width: 31%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Warstwa</th>
-<th>Odpowiada za</th>
-<th>Przykład technologii</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Prezentacji (frontend)</strong></td>
-<td>Interfejs użytkownika</td>
-<td>HTML/CSS/JS, aplikacja mobilna</td>
-</tr>
-<tr class="even">
-<td><strong>Logiki biznesowej (backend)</strong></td>
-<td>Reguły, walidację, przetwarzanie żądań</td>
-<td>Python (FastAPI), Java, Node.js</td>
-</tr>
-<tr class="odd">
-<td><strong>Danych</strong></td>
-<td>Trwałe przechowywanie informacji</td>
-<td>PostgreSQL, SQLite, MongoDB</td>
-</tr>
-</tbody>
-</table>
-<blockquote class="blockquote">
-<p><img> Schemat trójwarstwowy: Klient (frontend) ↔︎ API (backend) ↔︎ Baza danych</p>
-</blockquote>
-<p>To ten sam podział, co poziomy ANSI/SPARC z kursów o bazach danych — tu warstwa “logiki” dodatkowo pośredniczy między światem zewnętrznym a bazą, zamiast pozwalać klientowi łączyć się z bazą bezpośrednio.</p>
-<p><strong>Dlaczego backend nigdy nie powinien pozwalać frontendowi łączyć się z bazą wprost?</strong> Bo wtedy każdy klient musiałby znać hasło do bazy, strukturę tabel i reguły biznesowe — a zmiana schematu bazy złamałaby każdą aplikację kliencką osobno.</p>
-<hr>
-</section>
-<section id="protokoły-komunikacyjne" class="level2">
-<h2 class="anchored" data-anchor-id="protokoły-komunikacyjne">4️⃣ Protokoły komunikacyjne</h2>
-<p>Aby klient i serwer się zrozumiały, muszą mówić tym samym językiem — protokołem.</p>
-<section id="miejsce-http-w-stosie-sieciowym" class="level3">
-<h3 class="anchored" data-anchor-id="miejsce-http-w-stosie-sieciowym">🔹 Miejsce HTTP w stosie sieciowym</h3>
+<section id="metody-http-czasowniki-rest-a" class="level2">
+<h2 class="anchored" data-anchor-id="metody-http-czasowniki-rest-a">2️⃣ Metody HTTP — czasowniki REST-a</h2>
 <table class="caption-top table">
 <thead>
 <tr class="header">
-<th>Warstwa (uproszczony model)</th>
-<th>Przykład protokołu</th>
+<th>Metoda</th>
+<th>Znaczenie</th>
+<th>Ma ciało?</th>
+<th>Bezpieczna?*</th>
+<th>Idempotentna?**</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Aplikacji</td>
-<td><strong>HTTP/HTTPS</strong>, FTP, SMTP</td>
+<td><code>GET</code></td>
+<td>pobierz zasób</td>
+<td>nie</td>
+<td>tak</td>
+<td>tak</td>
 </tr>
 <tr class="even">
-<td>Transportowa</td>
-<td>TCP, UDP</td>
+<td><code>POST</code></td>
+<td>utwórz nowy zasób</td>
+<td>tak</td>
+<td>nie</td>
+<td>nie</td>
 </tr>
 <tr class="odd">
-<td>Sieciowa</td>
-<td>IP</td>
+<td><code>PUT</code></td>
+<td>zastąp cały zasób</td>
+<td>tak</td>
+<td>nie</td>
+<td>tak</td>
+</tr>
+<tr class="even">
+<td><code>PATCH</code></td>
+<td>zmodyfikuj część zasobu</td>
+<td>tak</td>
+<td>nie</td>
+<td>nie (zwykle)</td>
+</tr>
+<tr class="odd">
+<td><code>DELETE</code></td>
+<td>usuń zasób</td>
+<td>nie</td>
+<td>nie</td>
+<td>tak</td>
 </tr>
 </tbody>
 </table>
-<p>HTTP (HyperText Transfer Protocol) działa na bazie TCP — zanim popłynie choćby bajt danych HTTP, klient i serwer muszą nawiązać połączenie TCP (tzw. three-way handshake). HTTPS to HTTP owinięte w warstwę szyfrowania TLS.</p>
-<p>Szczegóły samego HTTP (metody, nagłówki, kody odpowiedzi) to temat całego następnego wykładu — dziś tylko umiejscawiamy go w stosie.</p>
-<hr>
+<p>* <strong>Bezpieczna</strong> (<em>safe</em>) = nie zmienia stanu serwera — można ją wywołać wielokrotnie bez skutków ubocznych (przeglądarka może np. prefetchować linki GET). ** <strong>Idempotentna</strong> = wielokrotne wykonanie daje ten sam efekt co jednokrotne. <code>DELETE /poligony/5</code> wywołane dwa razy nadal kończy się brakiem poligonu 5 — drugie wywołanie nic nowego nie psuje (może zwrócić 404, ale stan systemu jest identyczny). <code>POST</code> nie jest idempotentny: dwukrotne wysłanie tworzy <strong>dwa</strong> zasoby.</p>
+<blockquote class="blockquote">
+<p>⚠️ To rozróżnienie ma praktyczne znaczenie: jeśli klient nie dostał odpowiedzi (timeout sieciowy) i <strong>nie wie</strong>, czy żądanie dotarło, bezpiecznie może powtórzyć <code>PUT</code>/<code>DELETE</code>, ale powtórzenie <code>POST</code> może utworzyć duplikat.</p>
+</blockquote>
 </section>
-</section>
-<section id="style-projektowania-api" class="level2">
-<h2 class="anchored" data-anchor-id="style-projektowania-api">5️⃣ Style projektowania API</h2>
-<p>Kiedy backend ma udostępnić swoje możliwości innym programom, robi to przez <strong>API</strong> (Application Programming Interface). Kilka konkurencyjnych stylów:</p>
+<section id="kody-statusu-pięć-rodzin" class="level2">
+<h2 class="anchored" data-anchor-id="kody-statusu-pięć-rodzin">3️⃣ Kody statusu — pięć rodzin</h2>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 14%">
+<col style="width: 28%">
+<col style="width: 32%">
 <col style="width: 39%">
-<col style="width: 46%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>Styl</th>
-<th>Format danych</th>
-<th>Charakterystyka</th>
+<th>Zakres</th>
+<th>Rodzina</th>
+<th>Przykłady</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>REST</strong></td>
-<td>zwykle JSON</td>
-<td>zasoby adresowane przez URL, operacje przez metody HTTP — dominujący styl dziś</td>
+<td><code>1xx</code></td>
+<td>Informacyjne</td>
+<td>rzadko używane bezpośrednio w API</td>
 </tr>
 <tr class="even">
-<td><strong>SOAP</strong></td>
-<td>XML</td>
-<td>sztywny kontrakt (WSDL), popularny w starszych systemach korporacyjnych/rządowych</td>
+<td><code>2xx</code></td>
+<td>Sukces</td>
+<td><code>200 OK</code>, <code>201 Created</code>, <code>204 No Content</code></td>
 </tr>
 <tr class="odd">
-<td><strong>GraphQL</strong></td>
-<td>JSON</td>
-<td>klient sam opisuje, jakich danych potrzebuje, w jednym zapytaniu</td>
+<td><code>3xx</code></td>
+<td>Przekierowanie</td>
+<td><code>301 Moved Permanently</code>, <code>304 Not Modified</code></td>
 </tr>
 <tr class="even">
-<td><strong>gRPC</strong></td>
-<td>binarny (Protocol Buffers)</td>
-<td>bardzo szybki, typowany, głównie do komunikacji między mikroserwisami</td>
+<td><code>4xx</code></td>
+<td>Błąd klienta</td>
+<td><code>400 Bad Request</code>, <code>401 Unauthorized</code>, <code>403 Forbidden</code>, <code>404 Not Found</code></td>
 </tr>
 <tr class="odd">
-<td><strong>WebSocket</strong></td>
-<td>dowolny</td>
-<td>dwukierunkowy, trwały kanał — do komunikacji w czasie rzeczywistym (czat, powiadomienia)</td>
+<td><code>5xx</code></td>
+<td>Błąd serwera</td>
+<td><code>500 Internal Server Error</code>, <code>503 Service Unavailable</code></td>
 </tr>
 </tbody>
 </table>
-<p>W tym kursie skupiamy się na <strong>REST</strong> — to on zdominował publiczne API i będzie tym, co zbudujesz na laboratoriach.</p>
-<section id="zasada-rest-w-jednym-zdaniu" class="level3">
-<h3 class="anchored" data-anchor-id="zasada-rest-w-jednym-zdaniu">🔹 Zasada REST w jednym zdaniu</h3>
-<blockquote class="blockquote">
-<p>Każdy zasób (rzecz, którą aplikacja przechowuje) ma swój adres URL, a to, co chcemy z nim zrobić, wyrażamy metodą HTTP (GET = pobierz, POST = utwórz, PUT/PATCH = zmień, DELETE = usuń) — nie czasownikiem w samym adresie.</p>
-</blockquote>
-<p>Przykład: zamiast <code>GET /pobierzRezerwacje?id=5</code>, w REST piszemy <code>GET /rezerwacje/5</code>. Adres opisuje <strong>co</strong>, metoda HTTP opisuje <strong>jak</strong>.</p>
-<hr>
+<section id="rozróżnienie-które-myli-początkujących-401-vs-403" class="level3">
+<h3 class="anchored" data-anchor-id="rozróżnienie-które-myli-początkujących-401-vs-403">🔹 Rozróżnienie, które myli początkujących: 401 vs 403</h3>
+<ul>
+<li><strong>401 Unauthorized</strong> — “nie wiem, kim jesteś” (brak albo niepoprawne uwierzytelnienie).</li>
+<li><strong>403 Forbidden</strong> — “wiem, kim jesteś, ale nie masz uprawnień do tej operacji”.</li>
+</ul>
+<p>Przykład z naszego projektu: żołnierz bez zalogowania próbujący zobaczyć <code>/rezerwacje</code> → <code>401</code>. Zalogowany żołnierz próbujący <strong>zatwierdzić</strong> rezerwację (uprawnienie tylko planisty) → <code>403</code>.</p>
 </section>
 </section>
-<section id="projekt-semestralny-system-rezerwacji-poligonu" class="level2">
-<h2 class="anchored" data-anchor-id="projekt-semestralny-system-rezerwacji-poligonu">6️⃣ Projekt semestralny: system rezerwacji poligonu</h2>
-<p>Przez 12 laboratoriów zbudujemy razem jeden, rosnący system: <strong>rezerwację poligonu/strzelnicy</strong> dla jednostki wojskowej.</p>
-<section id="aktorzy-systemu" class="level3">
-<h3 class="anchored" data-anchor-id="aktorzy-systemu">🔹 Aktorzy systemu</h3>
+<section id="nagłówki-które-będziecie-używać-najczęściej" class="level2">
+<h2 class="anchored" data-anchor-id="nagłówki-które-będziecie-używać-najczęściej">4️⃣ Nagłówki, które będziecie używać najczęściej</h2>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
+<col style="width: 62%">
+<col style="width: 37%">
 </colgroup>
 <thead>
 <tr class="header">
+<th>Nagłówek</th>
 <th>Rola</th>
-<th>Może</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Planista poligonu</strong></td>
-<td>zarządzać dostępnością poligonów, zatwierdzać/odrzucać rezerwacje</td>
+<td><code>Content-Type</code></td>
+<td>jaki format ma ciało żądania/odpowiedzi (<code>application/json</code>)</td>
 </tr>
 <tr class="even">
-<td><strong>Dowódca jednostki</strong></td>
-<td>rezerwować poligon dla swojego pododdziału</td>
+<td><code>Authorization</code></td>
+<td>dane uwierzytelniające (<code>Bearer &lt;token&gt;</code>) — wykład 4</td>
 </tr>
 <tr class="odd">
-<td><em>(gość/niezalogowany)</em></td>
-<td>tylko przeglądać dostępność, bez rezerwacji</td>
+<td><code>Accept</code></td>
+<td>jaki format klient chce dostać z powrotem</td>
+</tr>
+<tr class="even">
+<td><code>Cache-Control</code></td>
+<td>jak długo/czy wolno cache’ować odpowiedź</td>
 </tr>
 </tbody>
 </table>
 </section>
-<section id="główne-zasoby-na-razie-koncepcyjnie-do-api-dojdziemy-w-wykładzie-3" class="level3">
-<h3 class="anchored" data-anchor-id="główne-zasoby-na-razie-koncepcyjnie-do-api-dojdziemy-w-wykładzie-3">🔹 Główne zasoby (na razie koncepcyjnie — do API dojdziemy w wykładzie 3)</h3>
-<ul>
-<li><strong>Poligon</strong> — nazwa, lokalizacja, dostępne przedziały czasowe, typ (strzelnica, teren manewrowy…)</li>
-<li><strong>Jednostka</strong> — nazwa, dowódca</li>
-<li><strong>Rezerwacja</strong> — który poligon, która jednostka, od kiedy do kiedy, status (<code>oczekująca</code>, <code>zatwierdzona</code>, <code>odrzucona</code>)</li>
-</ul>
-</section>
-<section id="kluczowy-problem-projektowy" class="level3">
-<h3 class="anchored" data-anchor-id="kluczowy-problem-projektowy">🔹 Kluczowy problem projektowy</h3>
-<p>Dwie jednostki nie mogą zarezerwować tego samego poligonu w nakładających się przedziałach czasu. To pozornie proste wymaganie wróci wielokrotnie — przy walidacji danych (wykład/lab o błędach), przy autoryzacji (kto może zatwierdzić konflikt) i przy współbieżności (co gdy dwie rezerwacje przychodzą w tej samej sekundzie).</p>
+<section id="http-jest-bezstanowy-co-to-znaczy-naprawdę" class="level2">
+<h2 class="anchored" data-anchor-id="http-jest-bezstanowy-co-to-znaczy-naprawdę">5️⃣ HTTP jest bezstanowy — co to znaczy naprawdę</h2>
+<p>Serwer <strong>nie pamięta</strong> niczego między dwoma żądaniami tego samego klienta — każde żądanie musi nieść ze sobą wszystko, czego serwer potrzebuje, żeby je obsłużyć (np. token uwierzytelniający w nagłówku, nie “zapamiętane” gdzieś po stronie serwera).</p>
 <blockquote class="blockquote">
-<p>💡 Zapamiętaj ten problem — będziemy go rozwiązywać stopniowo, warstwa po warstwie, przez cały semestr.</p>
+<p>💡 To dlaczego logowanie polega na tym, że klient <strong>za każdym razem</strong> wysyła token (w <code>Authorization</code>), a nie że serwer “pamięta”, że kogoś już zalogował 5 minut temu. Do mechanizmu tokenów wrócimy w wykładzie 4.</p>
 </blockquote>
-<hr>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>A cookies i sesje?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Historycznie serwery <strong>symulowały</strong> stan przez cookies + sesje po stronie serwera (<code>Set-Cookie</code> → przeglądarka odsyła ten sam identyfikator przy każdym żądaniu → serwer odnajduje zapisany stan w swojej pamięci/bazie). To dalej działa i bywa używane, ale w architekturach REST/API (szczególnie gdy klientem nie jest przeglądarka, tylko np. aplikacja mobilna) <strong>tokeny bezstanowe (JWT)</strong> są dziś częstszym wyborem — nie wymagają, żeby serwer pamiętał cokolwiek o sesji.</p>
+</div>
+</div>
 </section>
+<section id="cache-kiedy-nie-pytać-serwera-drugi-raz" class="level2">
+<h2 class="anchored" data-anchor-id="cache-kiedy-nie-pytać-serwera-drugi-raz">6️⃣ Cache — kiedy nie pytać serwera drugi raz</h2>
+<p><code>Cache-Control: max-age=3600</code> mówi klientowi (albo pośredniczącemu proxy): “ta odpowiedź jest ważna przez godzinę, nie pytaj mnie ponownie”. Dobrze zaprojektowane API rozróżnia zasoby, które <strong>warto</strong> cache’ować (lista dostępnych poligonów, zmienia się rzadko) od tych, których <strong>nie wolno</strong> (stan bieżącej rezerwacji — musi być zawsze aktualny).</p>
+<hr>
 </section>
 <section id="podsumowanie" class="level2">
 <h2 class="anchored" data-anchor-id="podsumowanie">🧾 Podsumowanie</h2>
 <ul>
-<li>Aplikacja sieciowa rozdziela klienta i serwer, komunikujących się przez sieć według ustalonego protokołu.</li>
-<li>Typowy podział to trzy warstwy: prezentacji, logiki biznesowej, danych.</li>
-<li>HTTP to protokół aplikacyjny działający na TCP; HTTPS dodaje szyfrowanie TLS.</li>
-<li>REST to dominujący dziś styl API: zasoby jako adresy URL, operacje jako metody HTTP.</li>
-<li>Semestralny projekt: system rezerwacji poligonu — zaczynamy od środowiska pracy i pierwszego serwera na laboratorium 1.</li>
+<li>Żądanie HTTP = linia startowa (metoda + ścieżka) + nagłówki + opcjonalne ciało.</li>
+<li>Metody różnią się tym, czy są bezpieczne i idempotentne — to ma realne konsekwencje przy błędach sieciowych.</li>
+<li>Kody 4xx to błąd po stronie klienta, 5xx — po stronie serwera; 401 ≠ 403.</li>
+<li>HTTP jest bezstanowy — każde żądanie musi być samowystarczalne.</li>
 </ul>
 </section>
-<section id="źródła-i-literatura" class="level2">
-<h2 class="anchored" data-anchor-id="źródła-i-literatura">📚 Źródła i literatura</h2>
+<section id="źródła" class="level2">
+<h2 class="anchored" data-anchor-id="źródła">📚 Źródła</h2>
 <ul>
-<li>R. Fielding, <em>Architectural Styles and the Design of Network-based Software Architectures</em> (praca doktorska wprowadzająca REST)</li>
-<li>MDN Web Docs — <em>An overview of HTTP</em></li>
-<li>Dokumentacja FastAPI (framework używany na laboratoriach)</li>
+<li>MDN Web Docs — <em>HTTP request methods</em>, <em>HTTP response status codes</em></li>
+<li>RFC 9110 — <em>HTTP Semantics</em></li>
 </ul>
 
 
