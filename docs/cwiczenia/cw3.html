@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Informacje ogólne – Projektowanie Aplikacji Sieciowych</title>
+<title>Lab 3: Podłączenie bazy danych – Projektowanie Aplikacji Sieciowych</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -26,25 +26,60 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-94ae530b1fc9924793afbc3bb7de9d3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-94ae530b1fc9924793afbc3bb7de9d3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -74,7 +109,7 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../style.css">
 </head>
 
 <body class="nav-sidebar docked quarto-light">
@@ -86,7 +121,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Informacje ogólne</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../cwiczenia/cw1.html">Laboratoria</a></li><li class="breadcrumb-item"><a href="../cwiczenia/cw3.html">Lab 3: Podłączenie bazy danych</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -101,7 +136,7 @@ ul.task-list li input[type="checkbox"] {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Projektowanie Aplikacji Sieciowych</a> 
+      <a href="../">Projektowanie Aplikacji Sieciowych</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -113,7 +148,7 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Informacje ogólne</span></a>
   </div>
 </li>
@@ -128,19 +163,19 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/wyklad1.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/wyklad1.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Architektura aplikacji sieciowych</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/wyklad2.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/wyklad2.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Protokół HTTP w szczegółach</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/wyklad3.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/wyklad3.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Projektowanie API REST</span></a>
   </div>
 </li>
@@ -157,19 +192,19 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./cwiczenia/cw1.html" class="sidebar-item-text sidebar-link">
+  <a href="../cwiczenia/cw1.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Lab 1: Środowisko pracy i pierwszy serwer</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./cwiczenia/cw2.html" class="sidebar-item-text sidebar-link">
+  <a href="../cwiczenia/cw2.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Lab 2: Pierwszy prawdziwy endpoint REST</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./cwiczenia/cw3.html" class="sidebar-item-text sidebar-link">
+  <a href="../cwiczenia/cw3.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Lab 3: Podłączenie bazy danych</span></a>
   </div>
 </li>
@@ -185,17 +220,24 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title"><strong>Sections</strong></h2>
    
   <ul class="collapse">
-  <li><a href="#projektowanie-aplikacji-sieciowych" id="toc-projektowanie-aplikacji-sieciowych" class="nav-link active" data-scroll-target="#projektowanie-aplikacji-sieciowych">Projektowanie Aplikacji Sieciowych</a></li>
-  <li><a href="#kalendarz" id="toc-kalendarz" class="nav-link" data-scroll-target="#kalendarz">Kalendarz</a></li>
+  <li><a href="#laboratorium-3-podłączenie-bazy-danych" id="toc-laboratorium-3-podłączenie-bazy-danych" class="nav-link active" data-scroll-target="#laboratorium-3-podłączenie-bazy-danych">🛠️ Laboratorium 3: Podłączenie bazy danych</a>
+  <ul class="collapse">
+  <li><a href="#cel" id="toc-cel" class="nav-link" data-scroll-target="#cel">🎯 Cel</a></li>
+  <li><a href="#schemat-bazy" id="toc-schemat-bazy" class="nav-link" data-scroll-target="#schemat-bazy">1️⃣ Schemat bazy</a></li>
+  <li><a href="#połączenie-z-bazą-w-fastapi" id="toc-połączenie-z-bazą-w-fastapi" class="nav-link" data-scroll-target="#połączenie-z-bazą-w-fastapi">2️⃣ Połączenie z bazą w FastAPI</a></li>
+  <li><a href="#get-z-bazy-zamiast-z-listy" id="toc-get-z-bazy-zamiast-z-listy" class="nav-link" data-scroll-target="#get-z-bazy-zamiast-z-listy">3️⃣ GET z bazy zamiast z listy</a></li>
+  <li><a href="#post-zapis-do-bazy" id="toc-post-zapis-do-bazy" class="nav-link" data-scroll-target="#post-zapis-do-bazy">4️⃣ POST — zapis do bazy</a></li>
+  <li><a href="#zadanie-na-koniec-laboratorium" id="toc-zadanie-na-koniec-laboratorium" class="nav-link" data-scroll-target="#zadanie-na-koniec-laboratorium">✅ Zadanie na koniec laboratorium</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../cwiczenia/cw1.html">Laboratoria</a></li><li class="breadcrumb-item"><a href="../cwiczenia/cw3.html">Lab 3: Podłączenie bazy danych</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Informacje ogólne</h1>
+<h1 class="title">Lab 3: Podłączenie bazy danych</h1>
 </div>
 
 
@@ -212,25 +254,114 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="projektowanie-aplikacji-sieciowych" class="level2">
-<h2 class="anchored" data-anchor-id="projektowanie-aplikacji-sieciowych">Projektowanie Aplikacji Sieciowych</h2>
-<p>Kod:</p>
-<p>Semestr: zimowy</p>
+<section id="laboratorium-3-podłączenie-bazy-danych" class="level1">
+<h1>🛠️ Laboratorium 3: Podłączenie bazy danych</h1>
+<section id="cel" class="level2">
+<h2 class="anchored" data-anchor-id="cel">🎯 Cel</h2>
+<p>Zastąpić listę w pamięci (laboratoria 1-2) prawdziwą bazą SQLite — dane mają przetrwać restart serwera. Używamy modułu <code>sqlite3</code> z biblioteki standardowej Pythona (bez ORM-a) — chodzi o projektowanie API, nie o naukę nowego narzędzia do baz danych, którą już znacie z innych kursów.</p>
+<hr>
 </section>
-<section id="kalendarz" class="level2">
-<h2 class="anchored" data-anchor-id="kalendarz">Kalendarz</h2>
-<!-- TODO: uzupełnić na podstawie https://wel.wat.edu.pl/planyzajec/zima/dr__Zajac_Sebastian.htm -->
-<section id="wykład-dla-grup" class="level3">
-<h3 class="anchored" data-anchor-id="wykład-dla-grup">Wykład dla grup:</h3>
-<ol type="1">
-<li>TODO: dzień tygodnia, godzina, sala</li>
-</ol>
+<section id="schemat-bazy" class="level2">
+<h2 class="anchored" data-anchor-id="schemat-bazy">1️⃣ Schemat bazy</h2>
+<p>Utwórz plik <code>schema.sql</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> <span class="cf">IF</span> <span class="kw">NOT</span> <span class="kw">EXISTS</span> poligony (</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">id</span> <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span> AUTOINCREMENT,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    nazwa TEXT <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    lokalizacja TEXT <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    typ TEXT <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    dostepny <span class="dt">INTEGER</span> <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> <span class="dv">1</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>);</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> <span class="cf">IF</span> <span class="kw">NOT</span> <span class="kw">EXISTS</span> jednostki (</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">id</span> <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span> AUTOINCREMENT,</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    nazwa TEXT <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    garnizon TEXT <span class="kw">NOT</span> <span class="kw">NULL</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>dostepny INTEGER</code> zamiast <code>BOOLEAN</code> — SQLite nie ma natywnego typu logicznego, konwencja to <code>0</code>/<code>1</code> (dokładnie to, co już znacie z kursów o bazach danych).</p>
 </section>
-<section id="laboratorium-dla-grup" class="level3">
-<h3 class="anchored" data-anchor-id="laboratorium-dla-grup">Laboratorium dla grup:</h3>
+<section id="połączenie-z-bazą-w-fastapi" class="level2">
+<h2 class="anchored" data-anchor-id="połączenie-z-bazą-w-fastapi">2️⃣ Połączenie z bazą w FastAPI</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sqlite3</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> contextlib <span class="im">import</span> contextmanager</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>DB_PATH <span class="op">=</span> <span class="st">"poligony.db"</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> init_db():</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> sqlite3.<span class="ex">connect</span>(DB_PATH) <span class="im">as</span> conn:</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> <span class="bu">open</span>(<span class="st">"schema.sql"</span>) <span class="im">as</span> f:</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>            conn.executescript(f.read())</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="at">@contextmanager</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_db():</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    conn <span class="op">=</span> sqlite3.<span class="ex">connect</span>(DB_PATH)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    conn.row_factory <span class="op">=</span> sqlite3.Row  <span class="co"># dostep do kolumn po nazwie, nie tylko indeksie</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">yield</span> conn</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">finally</span>:</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>        conn.close()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>conn.row_factory = sqlite3.Row</code> sprawia, że wiersze zwrócone z zapytań zachowują się trochę jak słowniki (<code>row["nazwa"]</code>), zamiast gołych krotek (<code>row[1]</code>) — dużo czytelniej przy konwersji na model Pydantic.</p>
+<p>Wywołaj <code>init_db()</code> raz, przy starcie aplikacji:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="at">@app.on_event</span>(<span class="st">"startup"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> startup():</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    init_db()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="get-z-bazy-zamiast-z-listy" class="level2">
+<h2 class="anchored" data-anchor-id="get-z-bazy-zamiast-z-listy">3️⃣ GET z bazy zamiast z listy</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="at">@app.get</span>(<span class="st">"/poligony"</span>, response_model<span class="op">=</span><span class="bu">list</span>[Poligon])</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lista_poligonow(typ: <span class="bu">str</span> <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>):</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> get_db() <span class="im">as</span> conn:</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> typ:</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>            rows <span class="op">=</span> conn.execute(<span class="st">"SELECT * FROM poligony WHERE typ = ?"</span>, (typ,)).fetchall()</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>            rows <span class="op">=</span> conn.execute(<span class="st">"SELECT * FROM poligony"</span>).fetchall()</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> [Poligon(<span class="op">**</span><span class="bu">dict</span>(row)) <span class="cf">for</span> row <span class="kw">in</span> rows]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Zawsze parametryzowane zapytania — nigdy sklejanie stringów
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># NIGDY TAK:</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>conn.execute(<span class="ss">f"SELECT * FROM poligony WHERE typ = '</span><span class="sc">{</span>typ<span class="sc">}</span><span class="ss">'"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># ZAWSZE TAK:</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>conn.execute(<span class="st">"SELECT * FROM poligony WHERE typ = ?"</span>, (typ,))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Sklejanie zapytań SQL z danych wejściowych użytkownika to klasyczna podatność <strong>SQL injection</strong> — do tego wrócimy dokładniej na wykładzie 4 (bezpieczeństwo), ale zasada obowiązuje od pierwszego zapytania, które napiszecie.</p>
+</div>
+</div>
+</section>
+<section id="post-zapis-do-bazy" class="level2">
+<h2 class="anchored" data-anchor-id="post-zapis-do-bazy">4️⃣ POST — zapis do bazy</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="at">@app.post</span>(<span class="st">"/poligony"</span>, response_model<span class="op">=</span>Poligon, status_code<span class="op">=</span><span class="dv">201</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> utworz_poligon(poligon: PoligonCreate):  <span class="co"># model bez pola id -- baza je nada</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> get_db() <span class="im">as</span> conn:</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>        cursor <span class="op">=</span> conn.execute(</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>            <span class="st">"INSERT INTO poligony (nazwa, lokalizacja, typ, dostepny) VALUES (?, ?, ?, ?)"</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>            (poligon.nazwa, poligon.lokalizacja, poligon.typ, <span class="bu">int</span>(poligon.dostepny)),</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        conn.commit()</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>        nowy_id <span class="op">=</span> cursor.lastrowid</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> Poligon(<span class="bu">id</span><span class="op">=</span>nowy_id, <span class="op">**</span>poligon.model_dump())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Zwróć uwagę na nowy model <code>PoligonCreate</code> (bez pola <code>id</code>) — klient tworzący zasób nie powinien sam nadawać mu ID, robi to baza (<code>AUTOINCREMENT</code>). To częsty wzorzec w projektowaniu API: osobny model dla “danych wejściowych przy tworzeniu” i osobny dla “pełnego zasobu zwracanego klientowi”.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> PoligonCreate(BaseModel):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    nazwa: <span class="bu">str</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    lokalizacja: <span class="bu">str</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    typ: <span class="bu">str</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    dostepny: <span class="bu">bool</span> <span class="op">=</span> <span class="va">True</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="zadanie-na-koniec-laboratorium" class="level2">
+<h2 class="anchored" data-anchor-id="zadanie-na-koniec-laboratorium">✅ Zadanie na koniec laboratorium</h2>
 <ol type="1">
-<li>TODO: dzień tygodnia, godzina, sala</li>
+<li>Rozbuduj schemat o tabelę <code>jednostki</code> (już w <code>schema.sql</code> powyżej) i migruj endpointy <code>/jednostki</code> z laboratorium 2 na bazę, analogicznie do <code>/poligony</code>.</li>
+<li>Napisz mały skrypt <code>seed.py</code>, który wypełnia bazę kilkoma przykładowymi poligonami i jednostkami (przydatne przy każdym restarcie podczas testów).</li>
+<li>Sprawdź, że dane <strong>przetrwają restart</strong> serwera (<code>Ctrl+C</code>, uruchom ponownie, sprawdź <code>/poligony</code> — dane wciąż tam są, w przeciwieństwie do laboratorium 2).</li>
+<li>Zacommituj zmiany — dodaj <code>poligony.db</code> do <code>.gitignore</code> (dane testowe nie powinny trafiać do repozytorium, tylko <code>schema.sql</code> i <code>seed.py</code>).</li>
 </ol>
+<p><strong>Do oddania:</strong> link do repozytorium / commit hash.</p>
 
 
 </section>

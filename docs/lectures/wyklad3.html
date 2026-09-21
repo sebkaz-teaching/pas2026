@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Informacje ogólne – Projektowanie Aplikacji Sieciowych</title>
+<title>Projektowanie API REST – Projektowanie Aplikacji Sieciowych</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -26,25 +26,60 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-94ae530b1fc9924793afbc3bb7de9d3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-94ae530b1fc9924793afbc3bb7de9d3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -74,7 +109,7 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../style.css">
 </head>
 
 <body class="nav-sidebar docked quarto-light">
@@ -86,7 +121,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Informacje ogólne</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/wyklad1.html">Wykłady</a></li><li class="breadcrumb-item"><a href="../lectures/wyklad3.html">Projektowanie API REST</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -101,7 +136,7 @@ ul.task-list li input[type="checkbox"] {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Projektowanie Aplikacji Sieciowych</a> 
+      <a href="../">Projektowanie Aplikacji Sieciowych</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -113,7 +148,7 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Informacje ogólne</span></a>
   </div>
 </li>
@@ -128,19 +163,19 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/wyklad1.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/wyklad1.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Architektura aplikacji sieciowych</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/wyklad2.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/wyklad2.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Protokół HTTP w szczegółach</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/wyklad3.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/wyklad3.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Projektowanie API REST</span></a>
   </div>
 </li>
@@ -157,19 +192,19 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./cwiczenia/cw1.html" class="sidebar-item-text sidebar-link">
+  <a href="../cwiczenia/cw1.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Lab 1: Środowisko pracy i pierwszy serwer</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./cwiczenia/cw2.html" class="sidebar-item-text sidebar-link">
+  <a href="../cwiczenia/cw2.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Lab 2: Pierwszy prawdziwy endpoint REST</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./cwiczenia/cw3.html" class="sidebar-item-text sidebar-link">
+  <a href="../cwiczenia/cw3.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Lab 3: Podłączenie bazy danych</span></a>
   </div>
 </li>
@@ -185,17 +220,28 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title"><strong>Sections</strong></h2>
    
   <ul class="collapse">
-  <li><a href="#projektowanie-aplikacji-sieciowych" id="toc-projektowanie-aplikacji-sieciowych" class="nav-link active" data-scroll-target="#projektowanie-aplikacji-sieciowych">Projektowanie Aplikacji Sieciowych</a></li>
-  <li><a href="#kalendarz" id="toc-kalendarz" class="nav-link" data-scroll-target="#kalendarz">Kalendarz</a></li>
+  <li><a href="#sprawdź-się-z-wykładu-2" id="toc-sprawdź-się-z-wykładu-2" class="nav-link active" data-scroll-target="#sprawdź-się-z-wykładu-2">✅ Sprawdź się z wykładu 2</a></li>
+  <li><a href="#wykład-3-projektowanie-api-rest" id="toc-wykład-3-projektowanie-api-rest" class="nav-link" data-scroll-target="#wykład-3-projektowanie-api-rest">🧩 Wykład 3: Projektowanie API REST</a>
+  <ul class="collapse">
+  <li><a href="#cele-wykładu" id="toc-cele-wykładu" class="nav-link" data-scroll-target="#cele-wykładu">🎯 Cele wykładu</a></li>
+  <li><a href="#zasoby-nie-czynności" id="toc-zasoby-nie-czynności" class="nav-link" data-scroll-target="#zasoby-nie-czynności">1️⃣ Zasoby, nie czynności</a></li>
+  <li><a href="#zasoby-zagnieżdżone" id="toc-zasoby-zagnieżdżone" class="nav-link" data-scroll-target="#zasoby-zagnieżdżone">2️⃣ Zasoby zagnieżdżone</a></li>
+  <li><a href="#filtrowanie-sortowanie-paginacja-przez-query-params" id="toc-filtrowanie-sortowanie-paginacja-przez-query-params" class="nav-link" data-scroll-target="#filtrowanie-sortowanie-paginacja-przez-query-params">3️⃣ Filtrowanie, sortowanie, paginacja — przez query params</a></li>
+  <li><a href="#wersjonowanie-api" id="toc-wersjonowanie-api" class="nav-link" data-scroll-target="#wersjonowanie-api">4️⃣ Wersjonowanie API</a></li>
+  <li><a href="#openapi-dokumentacja-która-się-nie-starzeje" id="toc-openapi-dokumentacja-która-się-nie-starzeje" class="nav-link" data-scroll-target="#openapi-dokumentacja-która-się-nie-starzeje">5️⃣ OpenAPI — dokumentacja, która się nie starzeje</a></li>
+  <li><a href="#spójna-struktura-błędów" id="toc-spójna-struktura-błędów" class="nav-link" data-scroll-target="#spójna-struktura-błędów">6️⃣ Spójna struktura błędów</a></li>
+  <li><a href="#podsumowanie" id="toc-podsumowanie" class="nav-link" data-scroll-target="#podsumowanie">🧾 Podsumowanie</a></li>
+  <li><a href="#źródła" id="toc-źródła" class="nav-link" data-scroll-target="#źródła">📚 Źródła</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/wyklad1.html">Wykłady</a></li><li class="breadcrumb-item"><a href="../lectures/wyklad3.html">Projektowanie API REST</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Informacje ogólne</h1>
+<h1 class="title">Projektowanie API REST</h1>
 </div>
 
 
@@ -212,25 +258,188 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="projektowanie-aplikacji-sieciowych" class="level2">
-<h2 class="anchored" data-anchor-id="projektowanie-aplikacji-sieciowych">Projektowanie Aplikacji Sieciowych</h2>
-<p>Kod:</p>
-<p>Semestr: zimowy</p>
+<section id="sprawdź-się-z-wykładu-2" class="level2">
+<h2 class="anchored" data-anchor-id="sprawdź-się-z-wykładu-2">✅ Sprawdź się z wykładu 2</h2>
+<div id="pas-quiz">
+
+</div>
+<script src="../assets/js/quiz-engine.js"></script>
+<script>
+CourseQuiz.mount(document.getElementById('pas-quiz'), {
+  course: "pas2026",
+  lecture: "wyklad3",
+  title: "Wykład 2: Protokół HTTP w szczegółach",
+  submitUrl: "https://sebastianzajac.pl/rsod-quiz/submit.php",
+  questions: [
+    {
+      id: "q1", points: 1, diff: "bardzo łatwe",
+      text: "Który kod statusu powinien zwrócić endpoint po pomyślnym utworzeniu nowego zasobu (POST)?",
+      options: [
+        {v:"A", t:"200 OK"},
+        {v:"B", t:"201 Created"},
+        {v:"C", t:"204 No Content"},
+        {v:"D", t:"301 Moved Permanently"}
+      ]
+    },
+    {
+      id: "q2", points: 1, diff: "łatwe",
+      text: "Czym różni się 401 od 403?",
+      options: [
+        {v:"A", t:"To synonimy, oba znaczą brak dostępu"},
+        {v:"B", t:"401 = nie wiadomo kim jesteś (brak/zły login), 403 = wiadomo kim jesteś, ale brak uprawnień"},
+        {v:"C", t:"401 dotyczy tylko GET, 403 tylko POST"},
+        {v:"D", t:"403 jest starszą wersją 401"}
+      ]
+    },
+    {
+      id: "q3", points: 2, diff: "średnie",
+      text: "Czy PUT /poligony/5 jest idempotentny?",
+      options: [
+        {v:"A", t:"Nie, tak jak POST"},
+        {v:"B", t:"Tak — wielokrotne wywołanie z tymi samymi danymi daje ten sam stan końcowy"},
+        {v:"C", t:"Zależy od nagłówka Content-Type"},
+        {v:"D", t:"Idempotencja dotyczy tylko GET"}
+      ]
+    },
+    {
+      id: "q4", points: 2, diff: "trudne",
+      text: "Dlaczego HTTP nazywamy protokołem bezstanowym?",
+      options: [
+        {v:"A", t:"Bo nie obsługuje żadnych danych"},
+        {v:"B", t:"Bo serwer nie pamięta niczego między żądaniami — każde musi nieść potrzebne dane samo"},
+        {v:"C", t:"Bo działa tylko na jednym porcie"},
+        {v:"D", t:"Bo nie wspiera szyfrowania"}
+      ]
+    },
+    {
+      id: "q5", points: 3, diff: "wnioskowanie",
+      text: "Klient wysyła POST /rezerwacje, ale traci połączenie zanim dostanie odpowiedź — nie wie, czy żądanie dotarło do serwera. Czy bezpiecznie może po prostu wysłać ten sam POST ponownie?",
+      options: [
+        {v:"A", t:"Tak, POST zawsze można bezpiecznie powtórzyć"},
+        {v:"B", t:"Nie — POST nie jest idempotentny, powtórzenie może utworzyć DRUGĄ, zduplikowaną rezerwację"},
+        {v:"C", t:"Tak, bo HTTP gwarantuje brak duplikatów"},
+        {v:"D", t:"Nie da się tego ocenić bez znajomości nagłówków"}
+      ]
+    }
+  ]
+});
+</script>
+<hr>
 </section>
-<section id="kalendarz" class="level2">
-<h2 class="anchored" data-anchor-id="kalendarz">Kalendarz</h2>
-<!-- TODO: uzupełnić na podstawie https://wel.wat.edu.pl/planyzajec/zima/dr__Zajac_Sebastian.htm -->
-<section id="wykład-dla-grup" class="level3">
-<h3 class="anchored" data-anchor-id="wykład-dla-grup">Wykład dla grup:</h3>
-<ol type="1">
-<li>TODO: dzień tygodnia, godzina, sala</li>
-</ol>
+<section id="wykład-3-projektowanie-api-rest" class="level1">
+<h1>🧩 Wykład 3: Projektowanie API REST</h1>
+<section id="cele-wykładu" class="level2">
+<h2 class="anchored" data-anchor-id="cele-wykładu">🎯 Cele wykładu</h2>
+<p>Nauczysz się projektować adresy URL i strukturę odpowiedzi API tak, żeby były przewidywalne i łatwe w użyciu — oraz poznasz, jak FastAPI generuje dokumentację OpenAPI automatycznie z Waszego kodu.</p>
+<hr>
 </section>
-<section id="laboratorium-dla-grup" class="level3">
-<h3 class="anchored" data-anchor-id="laboratorium-dla-grup">Laboratorium dla grup:</h3>
-<ol type="1">
-<li>TODO: dzień tygodnia, godzina, sala</li>
-</ol>
+<section id="zasoby-nie-czynności" class="level2">
+<h2 class="anchored" data-anchor-id="zasoby-nie-czynności">1️⃣ Zasoby, nie czynności</h2>
+<p>Adres URL w REST opisuje <strong>rzecz</strong> (zasób), nie akcję — akcję wyraża metoda HTTP (wykład 2). Dobra konwencja nazewnicza:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Źle</th>
+<th>Dobrze</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>/getPoligony</code></td>
+<td><code>GET /poligony</code></td>
+</tr>
+<tr class="even">
+<td><code>/utworzRezerwacje</code></td>
+<td><code>POST /rezerwacje</code></td>
+</tr>
+<tr class="odd">
+<td><code>/poligon/usun/5</code></td>
+<td><code>DELETE /poligony/5</code></td>
+</tr>
+</tbody>
+</table>
+<p>Zasady:</p>
+<ul>
+<li><strong>Rzeczowniki, nie czasowniki</strong> w ścieżce.</li>
+<li><strong>Liczba mnoga</strong> dla kolekcji: <code>/poligony</code>, nie <code>/poligon</code>.</li>
+<li><strong>Małe litery</strong>, myślniki zamiast podkreślników w wieloczłonowych nazwach.</li>
+</ul>
+</section>
+<section id="zasoby-zagnieżdżone" class="level2">
+<h2 class="anchored" data-anchor-id="zasoby-zagnieżdżone">2️⃣ Zasoby zagnieżdżone</h2>
+<p>Kiedy jeden zasób “należy” logicznie do drugiego:</p>
+<pre><code>GET /poligony/5/rezerwacje        -- rezerwacje na poligonie 5
+POST /poligony/5/rezerwacje       -- nowa rezerwacja na poligonie 5
+GET /jednostki/3/rezerwacje       -- rezerwacje jednostki 3</code></pre>
+<blockquote class="blockquote">
+<p>⚠️ Nie zagnieżdżaj głębiej niż 2 poziomy (<code>/a/1/b/2/c/3</code> jest już nieczytelne) — jeśli potrzebujesz głębszego zagnieżdżenia, rozważ osobny, płaski endpoint z filtrowaniem przez query params zamiast ścieżki.</p>
+</blockquote>
+</section>
+<section id="filtrowanie-sortowanie-paginacja-przez-query-params" class="level2">
+<h2 class="anchored" data-anchor-id="filtrowanie-sortowanie-paginacja-przez-query-params">3️⃣ Filtrowanie, sortowanie, paginacja — przez query params</h2>
+<pre><code>GET /rezerwacje?status=zatwierdzona          -- filtrowanie
+GET /rezerwacje?sortuj=data&amp;kierunek=desc    -- sortowanie
+GET /rezerwacje?strona=2&amp;na_strone=20         -- paginacja</code></pre>
+<p>Query params (po <code>?</code>) nadają się do <strong>opcjonalnych</strong> modyfikatorów zapytania — ścieżka (<code>/rezerwacje</code>) zostaje ta sama niezależnie od tego, jak filtrujesz czy sortujesz wynik.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Dlaczego paginacja jest ważna, nawet w małym projekcie?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>GET /rezerwacje</code> bez paginacji, gdy tabela urośnie do 100 000 wierszy, zwróci gigantyczną odpowiedź, która obciąży i serwer, i klienta. Dobra praktyka: <strong>zawsze</strong> projektuj endpointy listujące z myślą o paginacji, nawet jeśli na start danych jest mało.</p>
+</div>
+</div>
+</section>
+<section id="wersjonowanie-api" class="level2">
+<h2 class="anchored" data-anchor-id="wersjonowanie-api">4️⃣ Wersjonowanie API</h2>
+<p>Kiedy zmieniasz kształt API w sposób, który złamałby istniejących klientów (np. zmieniasz nazwę pola), potrzebujesz wersjonowania:</p>
+<pre><code>/api/v1/poligony
+/api/v2/poligony</code></pre>
+<p>Alternatywa: wersjonowanie przez nagłówek (<code>Accept: application/vnd.api.v2+json</code>) — rzadziej spotykane w praktyce, ale czystsze koncepcyjnie. W tym kursie użyjemy prostszego podejścia z prefiksem <code>/api/v1/</code> w ścieżce.</p>
+</section>
+<section id="openapi-dokumentacja-która-się-nie-starzeje" class="level2">
+<h2 class="anchored" data-anchor-id="openapi-dokumentacja-która-się-nie-starzeje">5️⃣ OpenAPI — dokumentacja, która się nie starzeje</h2>
+<p>Pamiętacie <code>/docs</code> z laboratorium 1? To nie przypadek, że działa automatycznie — FastAPI <strong>generuje specyfikację OpenAPI</strong> (JSON opisujący każdy endpoint, jego parametry, kształt odpowiedzi) bezpośrednio z Waszego kodu (adnotacji typów, modeli Pydantic). Dostępna jest pod <code>/openapi.json</code>.</p>
+<p><strong>Dlaczego to ważne</strong>: dokumentacja pisana ręcznie (osobny plik Word/Markdown) <strong>zawsze</strong> z czasem rozjeżdża się z rzeczywistym kodem — ktoś zmienia endpoint i zapomina zaktualizować opis. Dokumentacja generowana z kodu <strong>nie może</strong> się rozjechać, bo to dosłownie ten sam kod.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="at">@app.get</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"/poligony/</span><span class="sc">{poligon_id}</span><span class="st">"</span>,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    response_model<span class="op">=</span>Poligon,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    summary<span class="op">=</span><span class="st">"Pobierz jeden poligon po ID"</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    description<span class="op">=</span><span class="st">"Zwraca 404, jesli poligon o podanym ID nie istnieje."</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> pobierz_poligon(poligon_id: <span class="bu">int</span>):</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    ...</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Parametry <code>summary</code>/<code>description</code> trafiają bezpośrednio do <code>/docs</code> — dobra dokumentacja API to część kodu, nie osobny dokument.</p>
+</section>
+<section id="spójna-struktura-błędów" class="level2">
+<h2 class="anchored" data-anchor-id="spójna-struktura-błędów">6️⃣ Spójna struktura błędów</h2>
+<p>Zamiast każdy endpoint zwracający błędy w innym formacie, warto ustalić jeden wzorzec:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"detail"</span><span class="fu">:</span> <span class="st">"Poligon nie znaleziony"</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>FastAPI robi to domyślnie dla <code>HTTPException</code> (dokładnie ten kształt, który widzieliście w laboratorium 2) — trzymajcie się tego wzorca konsekwentnie we wszystkich endpointach.</p>
+<hr>
+</section>
+<section id="podsumowanie" class="level2">
+<h2 class="anchored" data-anchor-id="podsumowanie">🧾 Podsumowanie</h2>
+<ul>
+<li>URL opisuje zasób (rzeczownik, liczba mnoga), metoda HTTP opisuje akcję.</li>
+<li>Zagnieżdżaj zasoby maksymalnie na 2 poziomy; filtruj/sortuj/paginuj przez query params.</li>
+<li>Wersjonuj API przez prefiks ścieżki, gdy zmiana złamałaby istniejących klientów.</li>
+<li>OpenAPI/Swagger generowane z kodu nigdy się nie starzeje — w odróżnieniu od ręcznie pisanej dokumentacji.</li>
+</ul>
+</section>
+<section id="źródła" class="level2">
+<h2 class="anchored" data-anchor-id="źródła">📚 Źródła</h2>
+<ul>
+<li>Dokumentacja FastAPI — <em>Path Operations</em>, <em>OpenAPI</em></li>
+<li>M. Masse, <em>REST API Design Rulebook</em></li>
+</ul>
 
 
 </section>

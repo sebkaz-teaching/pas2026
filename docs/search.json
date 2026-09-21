@@ -1,131 +1,288 @@
 [
   {
-    "objectID": "lectures/wyklad2.html#cele-wykładu",
-    "href": "lectures/wyklad2.html#cele-wykładu",
-    "title": "Protokół HTTP w szczegółach",
+    "objectID": "lectures/wyklad3.html#cele-wykładu",
+    "href": "lectures/wyklad3.html#cele-wykładu",
+    "title": "Projektowanie API REST",
     "section": "🎯 Cele wykładu",
-    "text": "🎯 Cele wykładu\nPo tym wykładzie będziesz rozumieć strukturę żądania i odpowiedzi HTTP, znał najważniejsze metody i kody statusu, oraz wiedział, dlaczego HTTP jest protokołem “bezstanowym” i co to oznacza w praktyce dla projektowania aplikacji.",
+    "text": "🎯 Cele wykładu\nNauczysz się projektować adresy URL i strukturę odpowiedzi API tak, żeby były przewidywalne i łatwe w użyciu — oraz poznasz, jak FastAPI generuje dokumentację OpenAPI automatycznie z Waszego kodu.",
     "crumbs": [
       "Wykłady",
-      "Protokół HTTP w szczegółach"
+      "Projektowanie API REST"
     ]
   },
   {
-    "objectID": "lectures/wyklad2.html#anatomia-żądania-http",
-    "href": "lectures/wyklad2.html#anatomia-żądania-http",
-    "title": "Protokół HTTP w szczegółach",
-    "section": "1️⃣ Anatomia żądania HTTP",
-    "text": "1️⃣ Anatomia żądania HTTP\nKiedy przeglądarka (albo curl, albo Wasz kod) wysyła żądanie, wygląda ono (uproszczone) tak:\nGET /poligony/5 HTTP/1.1\nHost: sebastianzajac.pl\nAccept: application/json\nAuthorization: Bearer eyJhbGc...\n\n(puste ciało — GET zwykle go nie ma)\n\n\n\n\n\n\n\nElement\nZnaczenie\n\n\n\n\nLinia startowa\nmetoda + ścieżka + wersja protokołu\n\n\nNagłówki (headers)\nmetadane: co akceptujemy, kim jesteśmy, jaki format wysyłamy\n\n\nCiało (body)\nwłaściwe dane (przy GET zwykle puste, przy POST/PUT — tak)",
+    "objectID": "lectures/wyklad3.html#zasoby-nie-czynności",
+    "href": "lectures/wyklad3.html#zasoby-nie-czynności",
+    "title": "Projektowanie API REST",
+    "section": "1️⃣ Zasoby, nie czynności",
+    "text": "1️⃣ Zasoby, nie czynności\nAdres URL w REST opisuje rzecz (zasób), nie akcję — akcję wyraża metoda HTTP (wykład 2). Dobra konwencja nazewnicza:\n\n\n\nŹle\nDobrze\n\n\n\n\n/getPoligony\nGET /poligony\n\n\n/utworzRezerwacje\nPOST /rezerwacje\n\n\n/poligon/usun/5\nDELETE /poligony/5\n\n\n\nZasady:\n\nRzeczowniki, nie czasowniki w ścieżce.\nLiczba mnoga dla kolekcji: /poligony, nie /poligon.\nMałe litery, myślniki zamiast podkreślników w wieloczłonowych nazwach.",
     "crumbs": [
       "Wykłady",
-      "Protokół HTTP w szczegółach"
+      "Projektowanie API REST"
     ]
   },
   {
-    "objectID": "lectures/wyklad2.html#metody-http-czasowniki-rest-a",
-    "href": "lectures/wyklad2.html#metody-http-czasowniki-rest-a",
-    "title": "Protokół HTTP w szczegółach",
-    "section": "2️⃣ Metody HTTP — czasowniki REST-a",
-    "text": "2️⃣ Metody HTTP — czasowniki REST-a\n\n\n\nMetoda\nZnaczenie\nMa ciało?\nBezpieczna?*\nIdempotentna?**\n\n\n\n\nGET\npobierz zasób\nnie\ntak\ntak\n\n\nPOST\nutwórz nowy zasób\ntak\nnie\nnie\n\n\nPUT\nzastąp cały zasób\ntak\nnie\ntak\n\n\nPATCH\nzmodyfikuj część zasobu\ntak\nnie\nnie (zwykle)\n\n\nDELETE\nusuń zasób\nnie\nnie\ntak\n\n\n\n* Bezpieczna (safe) = nie zmienia stanu serwera — można ją wywołać wielokrotnie bez skutków ubocznych (przeglądarka może np. prefetchować linki GET). ** Idempotentna = wielokrotne wykonanie daje ten sam efekt co jednokrotne. DELETE /poligony/5 wywołane dwa razy nadal kończy się brakiem poligonu 5 — drugie wywołanie nic nowego nie psuje (może zwrócić 404, ale stan systemu jest identyczny). POST nie jest idempotentny: dwukrotne wysłanie tworzy dwa zasoby.\n\n⚠️ To rozróżnienie ma praktyczne znaczenie: jeśli klient nie dostał odpowiedzi (timeout sieciowy) i nie wie, czy żądanie dotarło, bezpiecznie może powtórzyć PUT/DELETE, ale powtórzenie POST może utworzyć duplikat.",
+    "objectID": "lectures/wyklad3.html#zasoby-zagnieżdżone",
+    "href": "lectures/wyklad3.html#zasoby-zagnieżdżone",
+    "title": "Projektowanie API REST",
+    "section": "2️⃣ Zasoby zagnieżdżone",
+    "text": "2️⃣ Zasoby zagnieżdżone\nKiedy jeden zasób “należy” logicznie do drugiego:\nGET /poligony/5/rezerwacje        -- rezerwacje na poligonie 5\nPOST /poligony/5/rezerwacje       -- nowa rezerwacja na poligonie 5\nGET /jednostki/3/rezerwacje       -- rezerwacje jednostki 3\n\n⚠️ Nie zagnieżdżaj głębiej niż 2 poziomy (/a/1/b/2/c/3 jest już nieczytelne) — jeśli potrzebujesz głębszego zagnieżdżenia, rozważ osobny, płaski endpoint z filtrowaniem przez query params zamiast ścieżki.",
     "crumbs": [
       "Wykłady",
-      "Protokół HTTP w szczegółach"
+      "Projektowanie API REST"
     ]
   },
   {
-    "objectID": "lectures/wyklad2.html#kody-statusu-pięć-rodzin",
-    "href": "lectures/wyklad2.html#kody-statusu-pięć-rodzin",
-    "title": "Protokół HTTP w szczegółach",
-    "section": "3️⃣ Kody statusu — pięć rodzin",
-    "text": "3️⃣ Kody statusu — pięć rodzin\n\n\n\n\n\n\n\n\nZakres\nRodzina\nPrzykłady\n\n\n\n\n1xx\nInformacyjne\nrzadko używane bezpośrednio w API\n\n\n2xx\nSukces\n200 OK, 201 Created, 204 No Content\n\n\n3xx\nPrzekierowanie\n301 Moved Permanently, 304 Not Modified\n\n\n4xx\nBłąd klienta\n400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found\n\n\n5xx\nBłąd serwera\n500 Internal Server Error, 503 Service Unavailable\n\n\n\n\n🔹 Rozróżnienie, które myli początkujących: 401 vs 403\n\n401 Unauthorized — “nie wiem, kim jesteś” (brak albo niepoprawne uwierzytelnienie).\n403 Forbidden — “wiem, kim jesteś, ale nie masz uprawnień do tej operacji”.\n\nPrzykład z naszego projektu: żołnierz bez zalogowania próbujący zobaczyć /rezerwacje → 401. Zalogowany żołnierz próbujący zatwierdzić rezerwację (uprawnienie tylko planisty) → 403.",
+    "objectID": "lectures/wyklad3.html#filtrowanie-sortowanie-paginacja-przez-query-params",
+    "href": "lectures/wyklad3.html#filtrowanie-sortowanie-paginacja-przez-query-params",
+    "title": "Projektowanie API REST",
+    "section": "3️⃣ Filtrowanie, sortowanie, paginacja — przez query params",
+    "text": "3️⃣ Filtrowanie, sortowanie, paginacja — przez query params\nGET /rezerwacje?status=zatwierdzona          -- filtrowanie\nGET /rezerwacje?sortuj=data&kierunek=desc    -- sortowanie\nGET /rezerwacje?strona=2&na_strone=20         -- paginacja\nQuery params (po ?) nadają się do opcjonalnych modyfikatorów zapytania — ścieżka (/rezerwacje) zostaje ta sama niezależnie od tego, jak filtrujesz czy sortujesz wynik.\n\n\n\n\n\n\nNoteDlaczego paginacja jest ważna, nawet w małym projekcie?\n\n\n\nGET /rezerwacje bez paginacji, gdy tabela urośnie do 100 000 wierszy, zwróci gigantyczną odpowiedź, która obciąży i serwer, i klienta. Dobra praktyka: zawsze projektuj endpointy listujące z myślą o paginacji, nawet jeśli na start danych jest mało.",
     "crumbs": [
       "Wykłady",
-      "Protokół HTTP w szczegółach"
+      "Projektowanie API REST"
     ]
   },
   {
-    "objectID": "lectures/wyklad2.html#nagłówki-które-będziecie-używać-najczęściej",
-    "href": "lectures/wyklad2.html#nagłówki-które-będziecie-używać-najczęściej",
-    "title": "Protokół HTTP w szczegółach",
-    "section": "4️⃣ Nagłówki, które będziecie używać najczęściej",
-    "text": "4️⃣ Nagłówki, które będziecie używać najczęściej\n\n\n\n\n\n\n\nNagłówek\nRola\n\n\n\n\nContent-Type\njaki format ma ciało żądania/odpowiedzi (application/json)\n\n\nAuthorization\ndane uwierzytelniające (Bearer &lt;token&gt;) — wykład 4\n\n\nAccept\njaki format klient chce dostać z powrotem\n\n\nCache-Control\njak długo/czy wolno cache’ować odpowiedź",
+    "objectID": "lectures/wyklad3.html#wersjonowanie-api",
+    "href": "lectures/wyklad3.html#wersjonowanie-api",
+    "title": "Projektowanie API REST",
+    "section": "4️⃣ Wersjonowanie API",
+    "text": "4️⃣ Wersjonowanie API\nKiedy zmieniasz kształt API w sposób, który złamałby istniejących klientów (np. zmieniasz nazwę pola), potrzebujesz wersjonowania:\n/api/v1/poligony\n/api/v2/poligony\nAlternatywa: wersjonowanie przez nagłówek (Accept: application/vnd.api.v2+json) — rzadziej spotykane w praktyce, ale czystsze koncepcyjnie. W tym kursie użyjemy prostszego podejścia z prefiksem /api/v1/ w ścieżce.",
     "crumbs": [
       "Wykłady",
-      "Protokół HTTP w szczegółach"
+      "Projektowanie API REST"
     ]
   },
   {
-    "objectID": "lectures/wyklad2.html#http-jest-bezstanowy-co-to-znaczy-naprawdę",
-    "href": "lectures/wyklad2.html#http-jest-bezstanowy-co-to-znaczy-naprawdę",
-    "title": "Protokół HTTP w szczegółach",
-    "section": "5️⃣ HTTP jest bezstanowy — co to znaczy naprawdę",
-    "text": "5️⃣ HTTP jest bezstanowy — co to znaczy naprawdę\nSerwer nie pamięta niczego między dwoma żądaniami tego samego klienta — każde żądanie musi nieść ze sobą wszystko, czego serwer potrzebuje, żeby je obsłużyć (np. token uwierzytelniający w nagłówku, nie “zapamiętane” gdzieś po stronie serwera).\n\n💡 To dlaczego logowanie polega na tym, że klient za każdym razem wysyła token (w Authorization), a nie że serwer “pamięta”, że kogoś już zalogował 5 minut temu. Do mechanizmu tokenów wrócimy w wykładzie 4.\n\n\n\n\n\n\n\nNoteA cookies i sesje?\n\n\n\nHistorycznie serwery symulowały stan przez cookies + sesje po stronie serwera (Set-Cookie → przeglądarka odsyła ten sam identyfikator przy każdym żądaniu → serwer odnajduje zapisany stan w swojej pamięci/bazie). To dalej działa i bywa używane, ale w architekturach REST/API (szczególnie gdy klientem nie jest przeglądarka, tylko np. aplikacja mobilna) tokeny bezstanowe (JWT) są dziś częstszym wyborem — nie wymagają, żeby serwer pamiętał cokolwiek o sesji.",
+    "objectID": "lectures/wyklad3.html#openapi-dokumentacja-która-się-nie-starzeje",
+    "href": "lectures/wyklad3.html#openapi-dokumentacja-która-się-nie-starzeje",
+    "title": "Projektowanie API REST",
+    "section": "5️⃣ OpenAPI — dokumentacja, która się nie starzeje",
+    "text": "5️⃣ OpenAPI — dokumentacja, która się nie starzeje\nPamiętacie /docs z laboratorium 1? To nie przypadek, że działa automatycznie — FastAPI generuje specyfikację OpenAPI (JSON opisujący każdy endpoint, jego parametry, kształt odpowiedzi) bezpośrednio z Waszego kodu (adnotacji typów, modeli Pydantic). Dostępna jest pod /openapi.json.\nDlaczego to ważne: dokumentacja pisana ręcznie (osobny plik Word/Markdown) zawsze z czasem rozjeżdża się z rzeczywistym kodem — ktoś zmienia endpoint i zapomina zaktualizować opis. Dokumentacja generowana z kodu nie może się rozjechać, bo to dosłownie ten sam kod.\n@app.get(\n    \"/poligony/{poligon_id}\",\n    response_model=Poligon,\n    summary=\"Pobierz jeden poligon po ID\",\n    description=\"Zwraca 404, jesli poligon o podanym ID nie istnieje.\",\n)\ndef pobierz_poligon(poligon_id: int):\n    ...\nParametry summary/description trafiają bezpośrednio do /docs — dobra dokumentacja API to część kodu, nie osobny dokument.",
     "crumbs": [
       "Wykłady",
-      "Protokół HTTP w szczegółach"
+      "Projektowanie API REST"
     ]
   },
   {
-    "objectID": "lectures/wyklad2.html#cache-kiedy-nie-pytać-serwera-drugi-raz",
-    "href": "lectures/wyklad2.html#cache-kiedy-nie-pytać-serwera-drugi-raz",
-    "title": "Protokół HTTP w szczegółach",
-    "section": "6️⃣ Cache — kiedy nie pytać serwera drugi raz",
-    "text": "6️⃣ Cache — kiedy nie pytać serwera drugi raz\nCache-Control: max-age=3600 mówi klientowi (albo pośredniczącemu proxy): “ta odpowiedź jest ważna przez godzinę, nie pytaj mnie ponownie”. Dobrze zaprojektowane API rozróżnia zasoby, które warto cache’ować (lista dostępnych poligonów, zmienia się rzadko) od tych, których nie wolno (stan bieżącej rezerwacji — musi być zawsze aktualny).",
+    "objectID": "lectures/wyklad3.html#spójna-struktura-błędów",
+    "href": "lectures/wyklad3.html#spójna-struktura-błędów",
+    "title": "Projektowanie API REST",
+    "section": "6️⃣ Spójna struktura błędów",
+    "text": "6️⃣ Spójna struktura błędów\nZamiast każdy endpoint zwracający błędy w innym formacie, warto ustalić jeden wzorzec:\n{\n  \"detail\": \"Poligon nie znaleziony\"\n}\nFastAPI robi to domyślnie dla HTTPException (dokładnie ten kształt, który widzieliście w laboratorium 2) — trzymajcie się tego wzorca konsekwentnie we wszystkich endpointach.",
     "crumbs": [
       "Wykłady",
-      "Protokół HTTP w szczegółach"
+      "Projektowanie API REST"
     ]
   },
   {
-    "objectID": "lectures/wyklad2.html#podsumowanie",
-    "href": "lectures/wyklad2.html#podsumowanie",
-    "title": "Protokół HTTP w szczegółach",
+    "objectID": "lectures/wyklad3.html#podsumowanie",
+    "href": "lectures/wyklad3.html#podsumowanie",
+    "title": "Projektowanie API REST",
     "section": "🧾 Podsumowanie",
-    "text": "🧾 Podsumowanie\n\nŻądanie HTTP = linia startowa (metoda + ścieżka) + nagłówki + opcjonalne ciało.\nMetody różnią się tym, czy są bezpieczne i idempotentne — to ma realne konsekwencje przy błędach sieciowych.\nKody 4xx to błąd po stronie klienta, 5xx — po stronie serwera; 401 ≠ 403.\nHTTP jest bezstanowy — każde żądanie musi być samowystarczalne.",
+    "text": "🧾 Podsumowanie\n\nURL opisuje zasób (rzeczownik, liczba mnoga), metoda HTTP opisuje akcję.\nZagnieżdżaj zasoby maksymalnie na 2 poziomy; filtruj/sortuj/paginuj przez query params.\nWersjonuj API przez prefiks ścieżki, gdy zmiana złamałaby istniejących klientów.\nOpenAPI/Swagger generowane z kodu nigdy się nie starzeje — w odróżnieniu od ręcznie pisanej dokumentacji.",
     "crumbs": [
       "Wykłady",
-      "Protokół HTTP w szczegółach"
+      "Projektowanie API REST"
     ]
   },
   {
-    "objectID": "lectures/wyklad2.html#źródła",
-    "href": "lectures/wyklad2.html#źródła",
-    "title": "Protokół HTTP w szczegółach",
+    "objectID": "lectures/wyklad3.html#źródła",
+    "href": "lectures/wyklad3.html#źródła",
+    "title": "Projektowanie API REST",
     "section": "📚 Źródła",
-    "text": "📚 Źródła\n\nMDN Web Docs — HTTP request methods, HTTP response status codes\nRFC 9110 — HTTP Semantics",
+    "text": "📚 Źródła\n\nDokumentacja FastAPI — Path Operations, OpenAPI\nM. Masse, REST API Design Rulebook",
     "crumbs": [
       "Wykłady",
-      "Protokół HTTP w szczegółach"
+      "Projektowanie API REST"
     ]
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Informacje ogólne",
+    "objectID": "lectures/wyklad1.html",
+    "href": "lectures/wyklad1.html",
+    "title": "Architektura aplikacji sieciowych",
     "section": "",
-    "text": "Kod:\nSemestr: zimowy",
+    "text": "Po tym wykładzie powinieneś rozumieć, z jakich warstw składa się typowa aplikacja sieciowa, czym różni się od zwykłego programu działającego lokalnie, jak wygląda komunikacja klient–serwer oraz jakie są główne style projektowania API. Poznasz też projekt, który będziemy budować przez cały semestr na laboratoriach.\n\n\n\n\nAplikacja sieciowa (ang. network application) to program, którego części działają na różnych maszynach połączonych siecią i komunikują się ze sobą, wymieniając dane według ustalonego protokołu.\nKluczowa różnica względem programu lokalnego: stan i logika nie muszą żyć w tym samym procesie co interfejs użytkownika. Telefon żołnierza wysyłający zgłoszenie i serwer przechowujący dane o sprzęcie to dwa oddzielne programy, które nigdy nie współdzielą pamięci — jedyny sposób komunikacji to sieć.\n\n\n\nSystem rezerwacji (hotel, poligon, sala wykładowa)\nBankowość internetowa\nKomunikatory (WhatsApp, Signal)\nSystemy ewidencji sprzętu i logistyki\n\n\n\n\n\n\nNajpopularniejszy model architektury aplikacji sieciowej.\n\n\n\n\n\n\n\nRola\nZadanie\n\n\n\n\nKlient\nInicjuje żądanie, prezentuje wynik użytkownikowi (przeglądarka, aplikacja mobilna, inny serwer)\n\n\nSerwer\nNasłuchuje na żądania, przetwarza je, zwraca odpowiedź\n\n\n\n\nSerwer nie “dzwoni” sam do klienta bez powodu — to klient zawsze inicjuje rozmowę. (Wyjątki: WebSocket, powiadomienia push — omówimy przy okazji wykładu o skalowalności.)\n\n\n\nRozdzielenie klienta i serwera daje:\n\nniezależne skalowanie — można dodać kolejne serwery bez zmiany klienta,\nwielu klientów na jeden serwer — przeglądarka, aplikacja mobilna i inny system mogą korzystać z tego samego API,\naktualizacje bez przeinstalowywania — zmiana logiki na serwerze nie wymaga nic od użytkownika.\n\n\n\n\n\n\nTypowa aplikacja sieciowa dzieli się na trzy warstwy:\n\n\n\n\n\n\n\n\nWarstwa\nOdpowiada za\nPrzykład technologii\n\n\n\n\nPrezentacji (frontend)\nInterfejs użytkownika\nHTML/CSS/JS, aplikacja mobilna\n\n\nLogiki biznesowej (backend)\nReguły, walidację, przetwarzanie żądań\nPython (FastAPI), Java, Node.js\n\n\nDanych\nTrwałe przechowywanie informacji\nPostgreSQL, SQLite, MongoDB\n\n\n\n\n Schemat trójwarstwowy: Klient (frontend) ↔︎ API (backend) ↔︎ Baza danych\n\nTo ten sam podział, co poziomy ANSI/SPARC z kursów o bazach danych — tu warstwa “logiki” dodatkowo pośredniczy między światem zewnętrznym a bazą, zamiast pozwalać klientowi łączyć się z bazą bezpośrednio.\nDlaczego backend nigdy nie powinien pozwalać frontendowi łączyć się z bazą wprost? Bo wtedy każdy klient musiałby znać hasło do bazy, strukturę tabel i reguły biznesowe — a zmiana schematu bazy złamałaby każdą aplikację kliencką osobno.\n\n\n\n\nAby klient i serwer się zrozumiały, muszą mówić tym samym językiem — protokołem.\n\n\n\n\n\nWarstwa (uproszczony model)\nPrzykład protokołu\n\n\n\n\nAplikacji\nHTTP/HTTPS, FTP, SMTP\n\n\nTransportowa\nTCP, UDP\n\n\nSieciowa\nIP\n\n\n\nHTTP (HyperText Transfer Protocol) działa na bazie TCP — zanim popłynie choćby bajt danych HTTP, klient i serwer muszą nawiązać połączenie TCP (tzw. three-way handshake). HTTPS to HTTP owinięte w warstwę szyfrowania TLS.\nSzczegóły samego HTTP (metody, nagłówki, kody odpowiedzi) to temat całego następnego wykładu — dziś tylko umiejscawiamy go w stosie.\n\n\n\n\n\nKiedy backend ma udostępnić swoje możliwości innym programom, robi to przez API (Application Programming Interface). Kilka konkurencyjnych stylów:\n\n\n\n\n\n\n\n\nStyl\nFormat danych\nCharakterystyka\n\n\n\n\nREST\nzwykle JSON\nzasoby adresowane przez URL, operacje przez metody HTTP — dominujący styl dziś\n\n\nSOAP\nXML\nsztywny kontrakt (WSDL), popularny w starszych systemach korporacyjnych/rządowych\n\n\nGraphQL\nJSON\nklient sam opisuje, jakich danych potrzebuje, w jednym zapytaniu\n\n\ngRPC\nbinarny (Protocol Buffers)\nbardzo szybki, typowany, głównie do komunikacji między mikroserwisami\n\n\nWebSocket\ndowolny\ndwukierunkowy, trwały kanał — do komunikacji w czasie rzeczywistym (czat, powiadomienia)\n\n\n\nW tym kursie skupiamy się na REST — to on zdominował publiczne API i będzie tym, co zbudujesz na laboratoriach.\n\n\n\nKażdy zasób (rzecz, którą aplikacja przechowuje) ma swój adres URL, a to, co chcemy z nim zrobić, wyrażamy metodą HTTP (GET = pobierz, POST = utwórz, PUT/PATCH = zmień, DELETE = usuń) — nie czasownikiem w samym adresie.\n\nPrzykład: zamiast GET /pobierzRezerwacje?id=5, w REST piszemy GET /rezerwacje/5. Adres opisuje co, metoda HTTP opisuje jak.\n\n\n\n\n\nPrzez 12 laboratoriów zbudujemy razem jeden, rosnący system: rezerwację poligonu/strzelnicy dla jednostki wojskowej.\n\n\n\n\n\n\n\n\n\nRola\nMoże\n\n\n\n\nPlanista poligonu\nzarządzać dostępnością poligonów, zatwierdzać/odrzucać rezerwacje\n\n\nDowódca jednostki\nrezerwować poligon dla swojego pododdziału\n\n\n(gość/niezalogowany)\ntylko przeglądać dostępność, bez rezerwacji\n\n\n\n\n\n\n\nPoligon — nazwa, lokalizacja, dostępne przedziały czasowe, typ (strzelnica, teren manewrowy…)\nJednostka — nazwa, dowódca\nRezerwacja — który poligon, która jednostka, od kiedy do kiedy, status (oczekująca, zatwierdzona, odrzucona)\n\n\n\n\nDwie jednostki nie mogą zarezerwować tego samego poligonu w nakładających się przedziałach czasu. To pozornie proste wymaganie wróci wielokrotnie — przy walidacji danych (wykład/lab o błędach), przy autoryzacji (kto może zatwierdzić konflikt) i przy współbieżności (co gdy dwie rezerwacje przychodzą w tej samej sekundzie).\n\n💡 Zapamiętaj ten problem — będziemy go rozwiązywać stopniowo, warstwa po warstwie, przez cały semestr.\n\n\n\n\n\n\n\nAplikacja sieciowa rozdziela klienta i serwer, komunikujących się przez sieć według ustalonego protokołu.\nTypowy podział to trzy warstwy: prezentacji, logiki biznesowej, danych.\nHTTP to protokół aplikacyjny działający na TCP; HTTPS dodaje szyfrowanie TLS.\nREST to dominujący dziś styl API: zasoby jako adresy URL, operacje jako metody HTTP.\nSemestralny projekt: system rezerwacji poligonu — zaczynamy od środowiska pracy i pierwszego serwera na laboratorium 1.\n\n\n\n\n\nR. Fielding, Architectural Styles and the Design of Network-based Software Architectures (praca doktorska wprowadzająca REST)\nMDN Web Docs — An overview of HTTP\nDokumentacja FastAPI (framework używany na laboratoriach)",
     "crumbs": [
-      "Informacje ogólne"
+      "Wykłady",
+      "Architektura aplikacji sieciowych"
     ]
   },
   {
-    "objectID": "index.html#projektowanie-aplikacji-sieciowych",
-    "href": "index.html#projektowanie-aplikacji-sieciowych",
-    "title": "Informacje ogólne",
+    "objectID": "lectures/wyklad1.html#cele-wykładu",
+    "href": "lectures/wyklad1.html#cele-wykładu",
+    "title": "Architektura aplikacji sieciowych",
     "section": "",
-    "text": "Kod:\nSemestr: zimowy",
+    "text": "Po tym wykładzie powinieneś rozumieć, z jakich warstw składa się typowa aplikacja sieciowa, czym różni się od zwykłego programu działającego lokalnie, jak wygląda komunikacja klient–serwer oraz jakie są główne style projektowania API. Poznasz też projekt, który będziemy budować przez cały semestr na laboratoriach.",
     "crumbs": [
-      "Informacje ogólne"
+      "Wykłady",
+      "Architektura aplikacji sieciowych"
     ]
   },
   {
-    "objectID": "index.html#kalendarz",
-    "href": "index.html#kalendarz",
-    "title": "Informacje ogólne",
-    "section": "Kalendarz",
-    "text": "Kalendarz\n\n\nWykład dla grup:\n\nTODO: dzień tygodnia, godzina, sala\n\n\n\nLaboratorium dla grup:\n\nTODO: dzień tygodnia, godzina, sala",
+    "objectID": "lectures/wyklad1.html#czym-jest-aplikacja-sieciowa",
+    "href": "lectures/wyklad1.html#czym-jest-aplikacja-sieciowa",
+    "title": "Architektura aplikacji sieciowych",
+    "section": "",
+    "text": "Aplikacja sieciowa (ang. network application) to program, którego części działają na różnych maszynach połączonych siecią i komunikują się ze sobą, wymieniając dane według ustalonego protokołu.\nKluczowa różnica względem programu lokalnego: stan i logika nie muszą żyć w tym samym procesie co interfejs użytkownika. Telefon żołnierza wysyłający zgłoszenie i serwer przechowujący dane o sprzęcie to dwa oddzielne programy, które nigdy nie współdzielą pamięci — jedyny sposób komunikacji to sieć.\n\n\n\nSystem rezerwacji (hotel, poligon, sala wykładowa)\nBankowość internetowa\nKomunikatory (WhatsApp, Signal)\nSystemy ewidencji sprzętu i logistyki",
     "crumbs": [
-      "Informacje ogólne"
+      "Wykłady",
+      "Architektura aplikacji sieciowych"
+    ]
+  },
+  {
+    "objectID": "lectures/wyklad1.html#model-klientserwer",
+    "href": "lectures/wyklad1.html#model-klientserwer",
+    "title": "Architektura aplikacji sieciowych",
+    "section": "",
+    "text": "Najpopularniejszy model architektury aplikacji sieciowej.\n\n\n\n\n\n\n\nRola\nZadanie\n\n\n\n\nKlient\nInicjuje żądanie, prezentuje wynik użytkownikowi (przeglądarka, aplikacja mobilna, inny serwer)\n\n\nSerwer\nNasłuchuje na żądania, przetwarza je, zwraca odpowiedź\n\n\n\n\nSerwer nie “dzwoni” sam do klienta bez powodu — to klient zawsze inicjuje rozmowę. (Wyjątki: WebSocket, powiadomienia push — omówimy przy okazji wykładu o skalowalności.)\n\n\n\nRozdzielenie klienta i serwera daje:\n\nniezależne skalowanie — można dodać kolejne serwery bez zmiany klienta,\nwielu klientów na jeden serwer — przeglądarka, aplikacja mobilna i inny system mogą korzystać z tego samego API,\naktualizacje bez przeinstalowywania — zmiana logiki na serwerze nie wymaga nic od użytkownika.",
+    "crumbs": [
+      "Wykłady",
+      "Architektura aplikacji sieciowych"
+    ]
+  },
+  {
+    "objectID": "lectures/wyklad1.html#warstwy-aplikacji-sieciowej",
+    "href": "lectures/wyklad1.html#warstwy-aplikacji-sieciowej",
+    "title": "Architektura aplikacji sieciowych",
+    "section": "",
+    "text": "Typowa aplikacja sieciowa dzieli się na trzy warstwy:\n\n\n\n\n\n\n\n\nWarstwa\nOdpowiada za\nPrzykład technologii\n\n\n\n\nPrezentacji (frontend)\nInterfejs użytkownika\nHTML/CSS/JS, aplikacja mobilna\n\n\nLogiki biznesowej (backend)\nReguły, walidację, przetwarzanie żądań\nPython (FastAPI), Java, Node.js\n\n\nDanych\nTrwałe przechowywanie informacji\nPostgreSQL, SQLite, MongoDB\n\n\n\n\n Schemat trójwarstwowy: Klient (frontend) ↔︎ API (backend) ↔︎ Baza danych\n\nTo ten sam podział, co poziomy ANSI/SPARC z kursów o bazach danych — tu warstwa “logiki” dodatkowo pośredniczy między światem zewnętrznym a bazą, zamiast pozwalać klientowi łączyć się z bazą bezpośrednio.\nDlaczego backend nigdy nie powinien pozwalać frontendowi łączyć się z bazą wprost? Bo wtedy każdy klient musiałby znać hasło do bazy, strukturę tabel i reguły biznesowe — a zmiana schematu bazy złamałaby każdą aplikację kliencką osobno.",
+    "crumbs": [
+      "Wykłady",
+      "Architektura aplikacji sieciowych"
+    ]
+  },
+  {
+    "objectID": "lectures/wyklad1.html#protokoły-komunikacyjne",
+    "href": "lectures/wyklad1.html#protokoły-komunikacyjne",
+    "title": "Architektura aplikacji sieciowych",
+    "section": "",
+    "text": "Aby klient i serwer się zrozumiały, muszą mówić tym samym językiem — protokołem.\n\n\n\n\n\nWarstwa (uproszczony model)\nPrzykład protokołu\n\n\n\n\nAplikacji\nHTTP/HTTPS, FTP, SMTP\n\n\nTransportowa\nTCP, UDP\n\n\nSieciowa\nIP\n\n\n\nHTTP (HyperText Transfer Protocol) działa na bazie TCP — zanim popłynie choćby bajt danych HTTP, klient i serwer muszą nawiązać połączenie TCP (tzw. three-way handshake). HTTPS to HTTP owinięte w warstwę szyfrowania TLS.\nSzczegóły samego HTTP (metody, nagłówki, kody odpowiedzi) to temat całego następnego wykładu — dziś tylko umiejscawiamy go w stosie.",
+    "crumbs": [
+      "Wykłady",
+      "Architektura aplikacji sieciowych"
+    ]
+  },
+  {
+    "objectID": "lectures/wyklad1.html#style-projektowania-api",
+    "href": "lectures/wyklad1.html#style-projektowania-api",
+    "title": "Architektura aplikacji sieciowych",
+    "section": "",
+    "text": "Kiedy backend ma udostępnić swoje możliwości innym programom, robi to przez API (Application Programming Interface). Kilka konkurencyjnych stylów:\n\n\n\n\n\n\n\n\nStyl\nFormat danych\nCharakterystyka\n\n\n\n\nREST\nzwykle JSON\nzasoby adresowane przez URL, operacje przez metody HTTP — dominujący styl dziś\n\n\nSOAP\nXML\nsztywny kontrakt (WSDL), popularny w starszych systemach korporacyjnych/rządowych\n\n\nGraphQL\nJSON\nklient sam opisuje, jakich danych potrzebuje, w jednym zapytaniu\n\n\ngRPC\nbinarny (Protocol Buffers)\nbardzo szybki, typowany, głównie do komunikacji między mikroserwisami\n\n\nWebSocket\ndowolny\ndwukierunkowy, trwały kanał — do komunikacji w czasie rzeczywistym (czat, powiadomienia)\n\n\n\nW tym kursie skupiamy się na REST — to on zdominował publiczne API i będzie tym, co zbudujesz na laboratoriach.\n\n\n\nKażdy zasób (rzecz, którą aplikacja przechowuje) ma swój adres URL, a to, co chcemy z nim zrobić, wyrażamy metodą HTTP (GET = pobierz, POST = utwórz, PUT/PATCH = zmień, DELETE = usuń) — nie czasownikiem w samym adresie.\n\nPrzykład: zamiast GET /pobierzRezerwacje?id=5, w REST piszemy GET /rezerwacje/5. Adres opisuje co, metoda HTTP opisuje jak.",
+    "crumbs": [
+      "Wykłady",
+      "Architektura aplikacji sieciowych"
+    ]
+  },
+  {
+    "objectID": "lectures/wyklad1.html#projekt-semestralny-system-rezerwacji-poligonu",
+    "href": "lectures/wyklad1.html#projekt-semestralny-system-rezerwacji-poligonu",
+    "title": "Architektura aplikacji sieciowych",
+    "section": "",
+    "text": "Przez 12 laboratoriów zbudujemy razem jeden, rosnący system: rezerwację poligonu/strzelnicy dla jednostki wojskowej.\n\n\n\n\n\n\n\n\n\nRola\nMoże\n\n\n\n\nPlanista poligonu\nzarządzać dostępnością poligonów, zatwierdzać/odrzucać rezerwacje\n\n\nDowódca jednostki\nrezerwować poligon dla swojego pododdziału\n\n\n(gość/niezalogowany)\ntylko przeglądać dostępność, bez rezerwacji\n\n\n\n\n\n\n\nPoligon — nazwa, lokalizacja, dostępne przedziały czasowe, typ (strzelnica, teren manewrowy…)\nJednostka — nazwa, dowódca\nRezerwacja — który poligon, która jednostka, od kiedy do kiedy, status (oczekująca, zatwierdzona, odrzucona)\n\n\n\n\nDwie jednostki nie mogą zarezerwować tego samego poligonu w nakładających się przedziałach czasu. To pozornie proste wymaganie wróci wielokrotnie — przy walidacji danych (wykład/lab o błędach), przy autoryzacji (kto może zatwierdzić konflikt) i przy współbieżności (co gdy dwie rezerwacje przychodzą w tej samej sekundzie).\n\n💡 Zapamiętaj ten problem — będziemy go rozwiązywać stopniowo, warstwa po warstwie, przez cały semestr.",
+    "crumbs": [
+      "Wykłady",
+      "Architektura aplikacji sieciowych"
+    ]
+  },
+  {
+    "objectID": "lectures/wyklad1.html#podsumowanie",
+    "href": "lectures/wyklad1.html#podsumowanie",
+    "title": "Architektura aplikacji sieciowych",
+    "section": "",
+    "text": "Aplikacja sieciowa rozdziela klienta i serwer, komunikujących się przez sieć według ustalonego protokołu.\nTypowy podział to trzy warstwy: prezentacji, logiki biznesowej, danych.\nHTTP to protokół aplikacyjny działający na TCP; HTTPS dodaje szyfrowanie TLS.\nREST to dominujący dziś styl API: zasoby jako adresy URL, operacje jako metody HTTP.\nSemestralny projekt: system rezerwacji poligonu — zaczynamy od środowiska pracy i pierwszego serwera na laboratorium 1.",
+    "crumbs": [
+      "Wykłady",
+      "Architektura aplikacji sieciowych"
+    ]
+  },
+  {
+    "objectID": "lectures/wyklad1.html#źródła-i-literatura",
+    "href": "lectures/wyklad1.html#źródła-i-literatura",
+    "title": "Architektura aplikacji sieciowych",
+    "section": "",
+    "text": "R. Fielding, Architectural Styles and the Design of Network-based Software Architectures (praca doktorska wprowadzająca REST)\nMDN Web Docs — An overview of HTTP\nDokumentacja FastAPI (framework używany na laboratoriach)",
+    "crumbs": [
+      "Wykłady",
+      "Architektura aplikacji sieciowych"
+    ]
+  },
+  {
+    "objectID": "cwiczenia/cw3.html",
+    "href": "cwiczenia/cw3.html",
+    "title": "Lab 3: Podłączenie bazy danych",
+    "section": "",
+    "text": "Zastąpić listę w pamięci (laboratoria 1-2) prawdziwą bazą SQLite — dane mają przetrwać restart serwera. Używamy modułu sqlite3 z biblioteki standardowej Pythona (bez ORM-a) — chodzi o projektowanie API, nie o naukę nowego narzędzia do baz danych, którą już znacie z innych kursów.\n\n\n\n\nUtwórz plik schema.sql:\nCREATE TABLE IF NOT EXISTS poligony (\n    id INTEGER PRIMARY KEY AUTOINCREMENT,\n    nazwa TEXT NOT NULL,\n    lokalizacja TEXT NOT NULL,\n    typ TEXT NOT NULL,\n    dostepny INTEGER NOT NULL DEFAULT 1\n);\n\nCREATE TABLE IF NOT EXISTS jednostki (\n    id INTEGER PRIMARY KEY AUTOINCREMENT,\n    nazwa TEXT NOT NULL,\n    garnizon TEXT NOT NULL\n);\ndostepny INTEGER zamiast BOOLEAN — SQLite nie ma natywnego typu logicznego, konwencja to 0/1 (dokładnie to, co już znacie z kursów o bazach danych).\n\n\n\nimport sqlite3\nfrom contextlib import contextmanager\n\nDB_PATH = \"poligony.db\"\n\ndef init_db():\n    with sqlite3.connect(DB_PATH) as conn:\n        with open(\"schema.sql\") as f:\n            conn.executescript(f.read())\n\n@contextmanager\ndef get_db():\n    conn = sqlite3.connect(DB_PATH)\n    conn.row_factory = sqlite3.Row  # dostep do kolumn po nazwie, nie tylko indeksie\n    try:\n        yield conn\n    finally:\n        conn.close()\nconn.row_factory = sqlite3.Row sprawia, że wiersze zwrócone z zapytań zachowują się trochę jak słowniki (row[\"nazwa\"]), zamiast gołych krotek (row[1]) — dużo czytelniej przy konwersji na model Pydantic.\nWywołaj init_db() raz, przy starcie aplikacji:\n@app.on_event(\"startup\")\ndef startup():\n    init_db()\n\n\n\n@app.get(\"/poligony\", response_model=list[Poligon])\ndef lista_poligonow(typ: str | None = None):\n    with get_db() as conn:\n        if typ:\n            rows = conn.execute(\"SELECT * FROM poligony WHERE typ = ?\", (typ,)).fetchall()\n        else:\n            rows = conn.execute(\"SELECT * FROM poligony\").fetchall()\n        return [Poligon(**dict(row)) for row in rows]\n\n\n\n\n\n\nImportantZawsze parametryzowane zapytania — nigdy sklejanie stringów\n\n\n\n# NIGDY TAK:\nconn.execute(f\"SELECT * FROM poligony WHERE typ = '{typ}'\")\n\n# ZAWSZE TAK:\nconn.execute(\"SELECT * FROM poligony WHERE typ = ?\", (typ,))\nSklejanie zapytań SQL z danych wejściowych użytkownika to klasyczna podatność SQL injection — do tego wrócimy dokładniej na wykładzie 4 (bezpieczeństwo), ale zasada obowiązuje od pierwszego zapytania, które napiszecie.\n\n\n\n\n\n@app.post(\"/poligony\", response_model=Poligon, status_code=201)\ndef utworz_poligon(poligon: PoligonCreate):  # model bez pola id -- baza je nada\n    with get_db() as conn:\n        cursor = conn.execute(\n            \"INSERT INTO poligony (nazwa, lokalizacja, typ, dostepny) VALUES (?, ?, ?, ?)\",\n            (poligon.nazwa, poligon.lokalizacja, poligon.typ, int(poligon.dostepny)),\n        )\n        conn.commit()\n        nowy_id = cursor.lastrowid\n        return Poligon(id=nowy_id, **poligon.model_dump())\nZwróć uwagę na nowy model PoligonCreate (bez pola id) — klient tworzący zasób nie powinien sam nadawać mu ID, robi to baza (AUTOINCREMENT). To częsty wzorzec w projektowaniu API: osobny model dla “danych wejściowych przy tworzeniu” i osobny dla “pełnego zasobu zwracanego klientowi”.\nclass PoligonCreate(BaseModel):\n    nazwa: str\n    lokalizacja: str\n    typ: str\n    dostepny: bool = True\n\n\n\n\nRozbuduj schemat o tabelę jednostki (już w schema.sql powyżej) i migruj endpointy /jednostki z laboratorium 2 na bazę, analogicznie do /poligony.\nNapisz mały skrypt seed.py, który wypełnia bazę kilkoma przykładowymi poligonami i jednostkami (przydatne przy każdym restarcie podczas testów).\nSprawdź, że dane przetrwają restart serwera (Ctrl+C, uruchom ponownie, sprawdź /poligony — dane wciąż tam są, w przeciwieństwie do laboratorium 2).\nZacommituj zmiany — dodaj poligony.db do .gitignore (dane testowe nie powinny trafiać do repozytorium, tylko schema.sql i seed.py).\n\nDo oddania: link do repozytorium / commit hash.",
+    "crumbs": [
+      "Laboratoria",
+      "Lab 3: Podłączenie bazy danych"
+    ]
+  },
+  {
+    "objectID": "cwiczenia/cw3.html#cel",
+    "href": "cwiczenia/cw3.html#cel",
+    "title": "Lab 3: Podłączenie bazy danych",
+    "section": "",
+    "text": "Zastąpić listę w pamięci (laboratoria 1-2) prawdziwą bazą SQLite — dane mają przetrwać restart serwera. Używamy modułu sqlite3 z biblioteki standardowej Pythona (bez ORM-a) — chodzi o projektowanie API, nie o naukę nowego narzędzia do baz danych, którą już znacie z innych kursów.",
+    "crumbs": [
+      "Laboratoria",
+      "Lab 3: Podłączenie bazy danych"
+    ]
+  },
+  {
+    "objectID": "cwiczenia/cw3.html#schemat-bazy",
+    "href": "cwiczenia/cw3.html#schemat-bazy",
+    "title": "Lab 3: Podłączenie bazy danych",
+    "section": "",
+    "text": "Utwórz plik schema.sql:\nCREATE TABLE IF NOT EXISTS poligony (\n    id INTEGER PRIMARY KEY AUTOINCREMENT,\n    nazwa TEXT NOT NULL,\n    lokalizacja TEXT NOT NULL,\n    typ TEXT NOT NULL,\n    dostepny INTEGER NOT NULL DEFAULT 1\n);\n\nCREATE TABLE IF NOT EXISTS jednostki (\n    id INTEGER PRIMARY KEY AUTOINCREMENT,\n    nazwa TEXT NOT NULL,\n    garnizon TEXT NOT NULL\n);\ndostepny INTEGER zamiast BOOLEAN — SQLite nie ma natywnego typu logicznego, konwencja to 0/1 (dokładnie to, co już znacie z kursów o bazach danych).",
+    "crumbs": [
+      "Laboratoria",
+      "Lab 3: Podłączenie bazy danych"
+    ]
+  },
+  {
+    "objectID": "cwiczenia/cw3.html#połączenie-z-bazą-w-fastapi",
+    "href": "cwiczenia/cw3.html#połączenie-z-bazą-w-fastapi",
+    "title": "Lab 3: Podłączenie bazy danych",
+    "section": "",
+    "text": "import sqlite3\nfrom contextlib import contextmanager\n\nDB_PATH = \"poligony.db\"\n\ndef init_db():\n    with sqlite3.connect(DB_PATH) as conn:\n        with open(\"schema.sql\") as f:\n            conn.executescript(f.read())\n\n@contextmanager\ndef get_db():\n    conn = sqlite3.connect(DB_PATH)\n    conn.row_factory = sqlite3.Row  # dostep do kolumn po nazwie, nie tylko indeksie\n    try:\n        yield conn\n    finally:\n        conn.close()\nconn.row_factory = sqlite3.Row sprawia, że wiersze zwrócone z zapytań zachowują się trochę jak słowniki (row[\"nazwa\"]), zamiast gołych krotek (row[1]) — dużo czytelniej przy konwersji na model Pydantic.\nWywołaj init_db() raz, przy starcie aplikacji:\n@app.on_event(\"startup\")\ndef startup():\n    init_db()",
+    "crumbs": [
+      "Laboratoria",
+      "Lab 3: Podłączenie bazy danych"
+    ]
+  },
+  {
+    "objectID": "cwiczenia/cw3.html#get-z-bazy-zamiast-z-listy",
+    "href": "cwiczenia/cw3.html#get-z-bazy-zamiast-z-listy",
+    "title": "Lab 3: Podłączenie bazy danych",
+    "section": "",
+    "text": "@app.get(\"/poligony\", response_model=list[Poligon])\ndef lista_poligonow(typ: str | None = None):\n    with get_db() as conn:\n        if typ:\n            rows = conn.execute(\"SELECT * FROM poligony WHERE typ = ?\", (typ,)).fetchall()\n        else:\n            rows = conn.execute(\"SELECT * FROM poligony\").fetchall()\n        return [Poligon(**dict(row)) for row in rows]\n\n\n\n\n\n\nImportantZawsze parametryzowane zapytania — nigdy sklejanie stringów\n\n\n\n# NIGDY TAK:\nconn.execute(f\"SELECT * FROM poligony WHERE typ = '{typ}'\")\n\n# ZAWSZE TAK:\nconn.execute(\"SELECT * FROM poligony WHERE typ = ?\", (typ,))\nSklejanie zapytań SQL z danych wejściowych użytkownika to klasyczna podatność SQL injection — do tego wrócimy dokładniej na wykładzie 4 (bezpieczeństwo), ale zasada obowiązuje od pierwszego zapytania, które napiszecie.",
+    "crumbs": [
+      "Laboratoria",
+      "Lab 3: Podłączenie bazy danych"
+    ]
+  },
+  {
+    "objectID": "cwiczenia/cw3.html#post-zapis-do-bazy",
+    "href": "cwiczenia/cw3.html#post-zapis-do-bazy",
+    "title": "Lab 3: Podłączenie bazy danych",
+    "section": "",
+    "text": "@app.post(\"/poligony\", response_model=Poligon, status_code=201)\ndef utworz_poligon(poligon: PoligonCreate):  # model bez pola id -- baza je nada\n    with get_db() as conn:\n        cursor = conn.execute(\n            \"INSERT INTO poligony (nazwa, lokalizacja, typ, dostepny) VALUES (?, ?, ?, ?)\",\n            (poligon.nazwa, poligon.lokalizacja, poligon.typ, int(poligon.dostepny)),\n        )\n        conn.commit()\n        nowy_id = cursor.lastrowid\n        return Poligon(id=nowy_id, **poligon.model_dump())\nZwróć uwagę na nowy model PoligonCreate (bez pola id) — klient tworzący zasób nie powinien sam nadawać mu ID, robi to baza (AUTOINCREMENT). To częsty wzorzec w projektowaniu API: osobny model dla “danych wejściowych przy tworzeniu” i osobny dla “pełnego zasobu zwracanego klientowi”.\nclass PoligonCreate(BaseModel):\n    nazwa: str\n    lokalizacja: str\n    typ: str\n    dostepny: bool = True",
+    "crumbs": [
+      "Laboratoria",
+      "Lab 3: Podłączenie bazy danych"
+    ]
+  },
+  {
+    "objectID": "cwiczenia/cw3.html#zadanie-na-koniec-laboratorium",
+    "href": "cwiczenia/cw3.html#zadanie-na-koniec-laboratorium",
+    "title": "Lab 3: Podłączenie bazy danych",
+    "section": "",
+    "text": "Rozbuduj schemat o tabelę jednostki (już w schema.sql powyżej) i migruj endpointy /jednostki z laboratorium 2 na bazę, analogicznie do /poligony.\nNapisz mały skrypt seed.py, który wypełnia bazę kilkoma przykładowymi poligonami i jednostkami (przydatne przy każdym restarcie podczas testów).\nSprawdź, że dane przetrwają restart serwera (Ctrl+C, uruchom ponownie, sprawdź /poligony — dane wciąż tam są, w przeciwieństwie do laboratorium 2).\nZacommituj zmiany — dodaj poligony.db do .gitignore (dane testowe nie powinny trafiać do repozytorium, tylko schema.sql i seed.py).\n\nDo oddania: link do repozytorium / commit hash.",
+    "crumbs": [
+      "Laboratoria",
+      "Lab 3: Podłączenie bazy danych"
     ]
   },
   {
@@ -305,113 +462,132 @@
     ]
   },
   {
-    "objectID": "lectures/wyklad1.html",
-    "href": "lectures/wyklad1.html",
-    "title": "Architektura aplikacji sieciowych",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Informacje ogólne",
     "section": "",
-    "text": "Po tym wykładzie powinieneś rozumieć, z jakich warstw składa się typowa aplikacja sieciowa, czym różni się od zwykłego programu działającego lokalnie, jak wygląda komunikacja klient–serwer oraz jakie są główne style projektowania API. Poznasz też projekt, który będziemy budować przez cały semestr na laboratoriach.\n\n\n\n\nAplikacja sieciowa (ang. network application) to program, którego części działają na różnych maszynach połączonych siecią i komunikują się ze sobą, wymieniając dane według ustalonego protokołu.\nKluczowa różnica względem programu lokalnego: stan i logika nie muszą żyć w tym samym procesie co interfejs użytkownika. Telefon żołnierza wysyłający zgłoszenie i serwer przechowujący dane o sprzęcie to dwa oddzielne programy, które nigdy nie współdzielą pamięci — jedyny sposób komunikacji to sieć.\n\n\n\nSystem rezerwacji (hotel, poligon, sala wykładowa)\nBankowość internetowa\nKomunikatory (WhatsApp, Signal)\nSystemy ewidencji sprzętu i logistyki\n\n\n\n\n\n\nNajpopularniejszy model architektury aplikacji sieciowej.\n\n\n\n\n\n\n\nRola\nZadanie\n\n\n\n\nKlient\nInicjuje żądanie, prezentuje wynik użytkownikowi (przeglądarka, aplikacja mobilna, inny serwer)\n\n\nSerwer\nNasłuchuje na żądania, przetwarza je, zwraca odpowiedź\n\n\n\n\nSerwer nie “dzwoni” sam do klienta bez powodu — to klient zawsze inicjuje rozmowę. (Wyjątki: WebSocket, powiadomienia push — omówimy przy okazji wykładu o skalowalności.)\n\n\n\nRozdzielenie klienta i serwera daje:\n\nniezależne skalowanie — można dodać kolejne serwery bez zmiany klienta,\nwielu klientów na jeden serwer — przeglądarka, aplikacja mobilna i inny system mogą korzystać z tego samego API,\naktualizacje bez przeinstalowywania — zmiana logiki na serwerze nie wymaga nic od użytkownika.\n\n\n\n\n\n\nTypowa aplikacja sieciowa dzieli się na trzy warstwy:\n\n\n\n\n\n\n\n\nWarstwa\nOdpowiada za\nPrzykład technologii\n\n\n\n\nPrezentacji (frontend)\nInterfejs użytkownika\nHTML/CSS/JS, aplikacja mobilna\n\n\nLogiki biznesowej (backend)\nReguły, walidację, przetwarzanie żądań\nPython (FastAPI), Java, Node.js\n\n\nDanych\nTrwałe przechowywanie informacji\nPostgreSQL, SQLite, MongoDB\n\n\n\n\n Schemat trójwarstwowy: Klient (frontend) ↔︎ API (backend) ↔︎ Baza danych\n\nTo ten sam podział, co poziomy ANSI/SPARC z kursów o bazach danych — tu warstwa “logiki” dodatkowo pośredniczy między światem zewnętrznym a bazą, zamiast pozwalać klientowi łączyć się z bazą bezpośrednio.\nDlaczego backend nigdy nie powinien pozwalać frontendowi łączyć się z bazą wprost? Bo wtedy każdy klient musiałby znać hasło do bazy, strukturę tabel i reguły biznesowe — a zmiana schematu bazy złamałaby każdą aplikację kliencką osobno.\n\n\n\n\nAby klient i serwer się zrozumiały, muszą mówić tym samym językiem — protokołem.\n\n\n\n\n\nWarstwa (uproszczony model)\nPrzykład protokołu\n\n\n\n\nAplikacji\nHTTP/HTTPS, FTP, SMTP\n\n\nTransportowa\nTCP, UDP\n\n\nSieciowa\nIP\n\n\n\nHTTP (HyperText Transfer Protocol) działa na bazie TCP — zanim popłynie choćby bajt danych HTTP, klient i serwer muszą nawiązać połączenie TCP (tzw. three-way handshake). HTTPS to HTTP owinięte w warstwę szyfrowania TLS.\nSzczegóły samego HTTP (metody, nagłówki, kody odpowiedzi) to temat całego następnego wykładu — dziś tylko umiejscawiamy go w stosie.\n\n\n\n\n\nKiedy backend ma udostępnić swoje możliwości innym programom, robi to przez API (Application Programming Interface). Kilka konkurencyjnych stylów:\n\n\n\n\n\n\n\n\nStyl\nFormat danych\nCharakterystyka\n\n\n\n\nREST\nzwykle JSON\nzasoby adresowane przez URL, operacje przez metody HTTP — dominujący styl dziś\n\n\nSOAP\nXML\nsztywny kontrakt (WSDL), popularny w starszych systemach korporacyjnych/rządowych\n\n\nGraphQL\nJSON\nklient sam opisuje, jakich danych potrzebuje, w jednym zapytaniu\n\n\ngRPC\nbinarny (Protocol Buffers)\nbardzo szybki, typowany, głównie do komunikacji między mikroserwisami\n\n\nWebSocket\ndowolny\ndwukierunkowy, trwały kanał — do komunikacji w czasie rzeczywistym (czat, powiadomienia)\n\n\n\nW tym kursie skupiamy się na REST — to on zdominował publiczne API i będzie tym, co zbudujesz na laboratoriach.\n\n\n\nKażdy zasób (rzecz, którą aplikacja przechowuje) ma swój adres URL, a to, co chcemy z nim zrobić, wyrażamy metodą HTTP (GET = pobierz, POST = utwórz, PUT/PATCH = zmień, DELETE = usuń) — nie czasownikiem w samym adresie.\n\nPrzykład: zamiast GET /pobierzRezerwacje?id=5, w REST piszemy GET /rezerwacje/5. Adres opisuje co, metoda HTTP opisuje jak.\n\n\n\n\n\nPrzez 12 laboratoriów zbudujemy razem jeden, rosnący system: rezerwację poligonu/strzelnicy dla jednostki wojskowej.\n\n\n\n\n\n\n\n\n\nRola\nMoże\n\n\n\n\nPlanista poligonu\nzarządzać dostępnością poligonów, zatwierdzać/odrzucać rezerwacje\n\n\nDowódca jednostki\nrezerwować poligon dla swojego pododdziału\n\n\n(gość/niezalogowany)\ntylko przeglądać dostępność, bez rezerwacji\n\n\n\n\n\n\n\nPoligon — nazwa, lokalizacja, dostępne przedziały czasowe, typ (strzelnica, teren manewrowy…)\nJednostka — nazwa, dowódca\nRezerwacja — który poligon, która jednostka, od kiedy do kiedy, status (oczekująca, zatwierdzona, odrzucona)\n\n\n\n\nDwie jednostki nie mogą zarezerwować tego samego poligonu w nakładających się przedziałach czasu. To pozornie proste wymaganie wróci wielokrotnie — przy walidacji danych (wykład/lab o błędach), przy autoryzacji (kto może zatwierdzić konflikt) i przy współbieżności (co gdy dwie rezerwacje przychodzą w tej samej sekundzie).\n\n💡 Zapamiętaj ten problem — będziemy go rozwiązywać stopniowo, warstwa po warstwie, przez cały semestr.\n\n\n\n\n\n\n\nAplikacja sieciowa rozdziela klienta i serwer, komunikujących się przez sieć według ustalonego protokołu.\nTypowy podział to trzy warstwy: prezentacji, logiki biznesowej, danych.\nHTTP to protokół aplikacyjny działający na TCP; HTTPS dodaje szyfrowanie TLS.\nREST to dominujący dziś styl API: zasoby jako adresy URL, operacje jako metody HTTP.\nSemestralny projekt: system rezerwacji poligonu — zaczynamy od środowiska pracy i pierwszego serwera na laboratorium 1.\n\n\n\n\n\nR. Fielding, Architectural Styles and the Design of Network-based Software Architectures (praca doktorska wprowadzająca REST)\nMDN Web Docs — An overview of HTTP\nDokumentacja FastAPI (framework używany na laboratoriach)",
+    "text": "Kod:\nSemestr: zimowy",
     "crumbs": [
-      "Wykłady",
-      "Architektura aplikacji sieciowych"
+      "Informacje ogólne"
     ]
   },
   {
-    "objectID": "lectures/wyklad1.html#cele-wykładu",
-    "href": "lectures/wyklad1.html#cele-wykładu",
-    "title": "Architektura aplikacji sieciowych",
+    "objectID": "index.html#projektowanie-aplikacji-sieciowych",
+    "href": "index.html#projektowanie-aplikacji-sieciowych",
+    "title": "Informacje ogólne",
     "section": "",
-    "text": "Po tym wykładzie powinieneś rozumieć, z jakich warstw składa się typowa aplikacja sieciowa, czym różni się od zwykłego programu działającego lokalnie, jak wygląda komunikacja klient–serwer oraz jakie są główne style projektowania API. Poznasz też projekt, który będziemy budować przez cały semestr na laboratoriach.",
+    "text": "Kod:\nSemestr: zimowy",
     "crumbs": [
-      "Wykłady",
-      "Architektura aplikacji sieciowych"
+      "Informacje ogólne"
     ]
   },
   {
-    "objectID": "lectures/wyklad1.html#czym-jest-aplikacja-sieciowa",
-    "href": "lectures/wyklad1.html#czym-jest-aplikacja-sieciowa",
-    "title": "Architektura aplikacji sieciowych",
-    "section": "",
-    "text": "Aplikacja sieciowa (ang. network application) to program, którego części działają na różnych maszynach połączonych siecią i komunikują się ze sobą, wymieniając dane według ustalonego protokołu.\nKluczowa różnica względem programu lokalnego: stan i logika nie muszą żyć w tym samym procesie co interfejs użytkownika. Telefon żołnierza wysyłający zgłoszenie i serwer przechowujący dane o sprzęcie to dwa oddzielne programy, które nigdy nie współdzielą pamięci — jedyny sposób komunikacji to sieć.\n\n\n\nSystem rezerwacji (hotel, poligon, sala wykładowa)\nBankowość internetowa\nKomunikatory (WhatsApp, Signal)\nSystemy ewidencji sprzętu i logistyki",
+    "objectID": "index.html#kalendarz",
+    "href": "index.html#kalendarz",
+    "title": "Informacje ogólne",
+    "section": "Kalendarz",
+    "text": "Kalendarz\n\n\nWykład dla grup:\n\nTODO: dzień tygodnia, godzina, sala\n\n\n\nLaboratorium dla grup:\n\nTODO: dzień tygodnia, godzina, sala",
     "crumbs": [
-      "Wykłady",
-      "Architektura aplikacji sieciowych"
+      "Informacje ogólne"
     ]
   },
   {
-    "objectID": "lectures/wyklad1.html#model-klientserwer",
-    "href": "lectures/wyklad1.html#model-klientserwer",
-    "title": "Architektura aplikacji sieciowych",
-    "section": "",
-    "text": "Najpopularniejszy model architektury aplikacji sieciowej.\n\n\n\n\n\n\n\nRola\nZadanie\n\n\n\n\nKlient\nInicjuje żądanie, prezentuje wynik użytkownikowi (przeglądarka, aplikacja mobilna, inny serwer)\n\n\nSerwer\nNasłuchuje na żądania, przetwarza je, zwraca odpowiedź\n\n\n\n\nSerwer nie “dzwoni” sam do klienta bez powodu — to klient zawsze inicjuje rozmowę. (Wyjątki: WebSocket, powiadomienia push — omówimy przy okazji wykładu o skalowalności.)\n\n\n\nRozdzielenie klienta i serwera daje:\n\nniezależne skalowanie — można dodać kolejne serwery bez zmiany klienta,\nwielu klientów na jeden serwer — przeglądarka, aplikacja mobilna i inny system mogą korzystać z tego samego API,\naktualizacje bez przeinstalowywania — zmiana logiki na serwerze nie wymaga nic od użytkownika.",
+    "objectID": "lectures/wyklad2.html#cele-wykładu",
+    "href": "lectures/wyklad2.html#cele-wykładu",
+    "title": "Protokół HTTP w szczegółach",
+    "section": "🎯 Cele wykładu",
+    "text": "🎯 Cele wykładu\nPo tym wykładzie będziesz rozumieć strukturę żądania i odpowiedzi HTTP, znał najważniejsze metody i kody statusu, oraz wiedział, dlaczego HTTP jest protokołem “bezstanowym” i co to oznacza w praktyce dla projektowania aplikacji.",
     "crumbs": [
       "Wykłady",
-      "Architektura aplikacji sieciowych"
+      "Protokół HTTP w szczegółach"
     ]
   },
   {
-    "objectID": "lectures/wyklad1.html#warstwy-aplikacji-sieciowej",
-    "href": "lectures/wyklad1.html#warstwy-aplikacji-sieciowej",
-    "title": "Architektura aplikacji sieciowych",
-    "section": "",
-    "text": "Typowa aplikacja sieciowa dzieli się na trzy warstwy:\n\n\n\n\n\n\n\n\nWarstwa\nOdpowiada za\nPrzykład technologii\n\n\n\n\nPrezentacji (frontend)\nInterfejs użytkownika\nHTML/CSS/JS, aplikacja mobilna\n\n\nLogiki biznesowej (backend)\nReguły, walidację, przetwarzanie żądań\nPython (FastAPI), Java, Node.js\n\n\nDanych\nTrwałe przechowywanie informacji\nPostgreSQL, SQLite, MongoDB\n\n\n\n\n Schemat trójwarstwowy: Klient (frontend) ↔︎ API (backend) ↔︎ Baza danych\n\nTo ten sam podział, co poziomy ANSI/SPARC z kursów o bazach danych — tu warstwa “logiki” dodatkowo pośredniczy między światem zewnętrznym a bazą, zamiast pozwalać klientowi łączyć się z bazą bezpośrednio.\nDlaczego backend nigdy nie powinien pozwalać frontendowi łączyć się z bazą wprost? Bo wtedy każdy klient musiałby znać hasło do bazy, strukturę tabel i reguły biznesowe — a zmiana schematu bazy złamałaby każdą aplikację kliencką osobno.",
+    "objectID": "lectures/wyklad2.html#anatomia-żądania-http",
+    "href": "lectures/wyklad2.html#anatomia-żądania-http",
+    "title": "Protokół HTTP w szczegółach",
+    "section": "1️⃣ Anatomia żądania HTTP",
+    "text": "1️⃣ Anatomia żądania HTTP\nKiedy przeglądarka (albo curl, albo Wasz kod) wysyła żądanie, wygląda ono (uproszczone) tak:\nGET /poligony/5 HTTP/1.1\nHost: sebastianzajac.pl\nAccept: application/json\nAuthorization: Bearer eyJhbGc...\n\n(puste ciało — GET zwykle go nie ma)\n\n\n\n\n\n\n\nElement\nZnaczenie\n\n\n\n\nLinia startowa\nmetoda + ścieżka + wersja protokołu\n\n\nNagłówki (headers)\nmetadane: co akceptujemy, kim jesteśmy, jaki format wysyłamy\n\n\nCiało (body)\nwłaściwe dane (przy GET zwykle puste, przy POST/PUT — tak)",
     "crumbs": [
       "Wykłady",
-      "Architektura aplikacji sieciowych"
+      "Protokół HTTP w szczegółach"
     ]
   },
   {
-    "objectID": "lectures/wyklad1.html#protokoły-komunikacyjne",
-    "href": "lectures/wyklad1.html#protokoły-komunikacyjne",
-    "title": "Architektura aplikacji sieciowych",
-    "section": "",
-    "text": "Aby klient i serwer się zrozumiały, muszą mówić tym samym językiem — protokołem.\n\n\n\n\n\nWarstwa (uproszczony model)\nPrzykład protokołu\n\n\n\n\nAplikacji\nHTTP/HTTPS, FTP, SMTP\n\n\nTransportowa\nTCP, UDP\n\n\nSieciowa\nIP\n\n\n\nHTTP (HyperText Transfer Protocol) działa na bazie TCP — zanim popłynie choćby bajt danych HTTP, klient i serwer muszą nawiązać połączenie TCP (tzw. three-way handshake). HTTPS to HTTP owinięte w warstwę szyfrowania TLS.\nSzczegóły samego HTTP (metody, nagłówki, kody odpowiedzi) to temat całego następnego wykładu — dziś tylko umiejscawiamy go w stosie.",
+    "objectID": "lectures/wyklad2.html#metody-http-czasowniki-rest-a",
+    "href": "lectures/wyklad2.html#metody-http-czasowniki-rest-a",
+    "title": "Protokół HTTP w szczegółach",
+    "section": "2️⃣ Metody HTTP — czasowniki REST-a",
+    "text": "2️⃣ Metody HTTP — czasowniki REST-a\n\n\n\nMetoda\nZnaczenie\nMa ciało?\nBezpieczna?*\nIdempotentna?**\n\n\n\n\nGET\npobierz zasób\nnie\ntak\ntak\n\n\nPOST\nutwórz nowy zasób\ntak\nnie\nnie\n\n\nPUT\nzastąp cały zasób\ntak\nnie\ntak\n\n\nPATCH\nzmodyfikuj część zasobu\ntak\nnie\nnie (zwykle)\n\n\nDELETE\nusuń zasób\nnie\nnie\ntak\n\n\n\n* Bezpieczna (safe) = nie zmienia stanu serwera — można ją wywołać wielokrotnie bez skutków ubocznych (przeglądarka może np. prefetchować linki GET). ** Idempotentna = wielokrotne wykonanie daje ten sam efekt co jednokrotne. DELETE /poligony/5 wywołane dwa razy nadal kończy się brakiem poligonu 5 — drugie wywołanie nic nowego nie psuje (może zwrócić 404, ale stan systemu jest identyczny). POST nie jest idempotentny: dwukrotne wysłanie tworzy dwa zasoby.\n\n⚠️ To rozróżnienie ma praktyczne znaczenie: jeśli klient nie dostał odpowiedzi (timeout sieciowy) i nie wie, czy żądanie dotarło, bezpiecznie może powtórzyć PUT/DELETE, ale powtórzenie POST może utworzyć duplikat.",
     "crumbs": [
       "Wykłady",
-      "Architektura aplikacji sieciowych"
+      "Protokół HTTP w szczegółach"
     ]
   },
   {
-    "objectID": "lectures/wyklad1.html#style-projektowania-api",
-    "href": "lectures/wyklad1.html#style-projektowania-api",
-    "title": "Architektura aplikacji sieciowych",
-    "section": "",
-    "text": "Kiedy backend ma udostępnić swoje możliwości innym programom, robi to przez API (Application Programming Interface). Kilka konkurencyjnych stylów:\n\n\n\n\n\n\n\n\nStyl\nFormat danych\nCharakterystyka\n\n\n\n\nREST\nzwykle JSON\nzasoby adresowane przez URL, operacje przez metody HTTP — dominujący styl dziś\n\n\nSOAP\nXML\nsztywny kontrakt (WSDL), popularny w starszych systemach korporacyjnych/rządowych\n\n\nGraphQL\nJSON\nklient sam opisuje, jakich danych potrzebuje, w jednym zapytaniu\n\n\ngRPC\nbinarny (Protocol Buffers)\nbardzo szybki, typowany, głównie do komunikacji między mikroserwisami\n\n\nWebSocket\ndowolny\ndwukierunkowy, trwały kanał — do komunikacji w czasie rzeczywistym (czat, powiadomienia)\n\n\n\nW tym kursie skupiamy się na REST — to on zdominował publiczne API i będzie tym, co zbudujesz na laboratoriach.\n\n\n\nKażdy zasób (rzecz, którą aplikacja przechowuje) ma swój adres URL, a to, co chcemy z nim zrobić, wyrażamy metodą HTTP (GET = pobierz, POST = utwórz, PUT/PATCH = zmień, DELETE = usuń) — nie czasownikiem w samym adresie.\n\nPrzykład: zamiast GET /pobierzRezerwacje?id=5, w REST piszemy GET /rezerwacje/5. Adres opisuje co, metoda HTTP opisuje jak.",
+    "objectID": "lectures/wyklad2.html#kody-statusu-pięć-rodzin",
+    "href": "lectures/wyklad2.html#kody-statusu-pięć-rodzin",
+    "title": "Protokół HTTP w szczegółach",
+    "section": "3️⃣ Kody statusu — pięć rodzin",
+    "text": "3️⃣ Kody statusu — pięć rodzin\n\n\n\n\n\n\n\n\nZakres\nRodzina\nPrzykłady\n\n\n\n\n1xx\nInformacyjne\nrzadko używane bezpośrednio w API\n\n\n2xx\nSukces\n200 OK, 201 Created, 204 No Content\n\n\n3xx\nPrzekierowanie\n301 Moved Permanently, 304 Not Modified\n\n\n4xx\nBłąd klienta\n400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found\n\n\n5xx\nBłąd serwera\n500 Internal Server Error, 503 Service Unavailable\n\n\n\n\n🔹 Rozróżnienie, które myli początkujących: 401 vs 403\n\n401 Unauthorized — “nie wiem, kim jesteś” (brak albo niepoprawne uwierzytelnienie).\n403 Forbidden — “wiem, kim jesteś, ale nie masz uprawnień do tej operacji”.\n\nPrzykład z naszego projektu: żołnierz bez zalogowania próbujący zobaczyć /rezerwacje → 401. Zalogowany żołnierz próbujący zatwierdzić rezerwację (uprawnienie tylko planisty) → 403.",
     "crumbs": [
       "Wykłady",
-      "Architektura aplikacji sieciowych"
+      "Protokół HTTP w szczegółach"
     ]
   },
   {
-    "objectID": "lectures/wyklad1.html#projekt-semestralny-system-rezerwacji-poligonu",
-    "href": "lectures/wyklad1.html#projekt-semestralny-system-rezerwacji-poligonu",
-    "title": "Architektura aplikacji sieciowych",
-    "section": "",
-    "text": "Przez 12 laboratoriów zbudujemy razem jeden, rosnący system: rezerwację poligonu/strzelnicy dla jednostki wojskowej.\n\n\n\n\n\n\n\n\n\nRola\nMoże\n\n\n\n\nPlanista poligonu\nzarządzać dostępnością poligonów, zatwierdzać/odrzucać rezerwacje\n\n\nDowódca jednostki\nrezerwować poligon dla swojego pododdziału\n\n\n(gość/niezalogowany)\ntylko przeglądać dostępność, bez rezerwacji\n\n\n\n\n\n\n\nPoligon — nazwa, lokalizacja, dostępne przedziały czasowe, typ (strzelnica, teren manewrowy…)\nJednostka — nazwa, dowódca\nRezerwacja — który poligon, która jednostka, od kiedy do kiedy, status (oczekująca, zatwierdzona, odrzucona)\n\n\n\n\nDwie jednostki nie mogą zarezerwować tego samego poligonu w nakładających się przedziałach czasu. To pozornie proste wymaganie wróci wielokrotnie — przy walidacji danych (wykład/lab o błędach), przy autoryzacji (kto może zatwierdzić konflikt) i przy współbieżności (co gdy dwie rezerwacje przychodzą w tej samej sekundzie).\n\n💡 Zapamiętaj ten problem — będziemy go rozwiązywać stopniowo, warstwa po warstwie, przez cały semestr.",
+    "objectID": "lectures/wyklad2.html#nagłówki-które-będziecie-używać-najczęściej",
+    "href": "lectures/wyklad2.html#nagłówki-które-będziecie-używać-najczęściej",
+    "title": "Protokół HTTP w szczegółach",
+    "section": "4️⃣ Nagłówki, które będziecie używać najczęściej",
+    "text": "4️⃣ Nagłówki, które będziecie używać najczęściej\n\n\n\n\n\n\n\nNagłówek\nRola\n\n\n\n\nContent-Type\njaki format ma ciało żądania/odpowiedzi (application/json)\n\n\nAuthorization\ndane uwierzytelniające (Bearer &lt;token&gt;) — wykład 4\n\n\nAccept\njaki format klient chce dostać z powrotem\n\n\nCache-Control\njak długo/czy wolno cache’ować odpowiedź",
     "crumbs": [
       "Wykłady",
-      "Architektura aplikacji sieciowych"
+      "Protokół HTTP w szczegółach"
     ]
   },
   {
-    "objectID": "lectures/wyklad1.html#podsumowanie",
-    "href": "lectures/wyklad1.html#podsumowanie",
-    "title": "Architektura aplikacji sieciowych",
-    "section": "",
-    "text": "Aplikacja sieciowa rozdziela klienta i serwer, komunikujących się przez sieć według ustalonego protokołu.\nTypowy podział to trzy warstwy: prezentacji, logiki biznesowej, danych.\nHTTP to protokół aplikacyjny działający na TCP; HTTPS dodaje szyfrowanie TLS.\nREST to dominujący dziś styl API: zasoby jako adresy URL, operacje jako metody HTTP.\nSemestralny projekt: system rezerwacji poligonu — zaczynamy od środowiska pracy i pierwszego serwera na laboratorium 1.",
+    "objectID": "lectures/wyklad2.html#http-jest-bezstanowy-co-to-znaczy-naprawdę",
+    "href": "lectures/wyklad2.html#http-jest-bezstanowy-co-to-znaczy-naprawdę",
+    "title": "Protokół HTTP w szczegółach",
+    "section": "5️⃣ HTTP jest bezstanowy — co to znaczy naprawdę",
+    "text": "5️⃣ HTTP jest bezstanowy — co to znaczy naprawdę\nSerwer nie pamięta niczego między dwoma żądaniami tego samego klienta — każde żądanie musi nieść ze sobą wszystko, czego serwer potrzebuje, żeby je obsłużyć (np. token uwierzytelniający w nagłówku, nie “zapamiętane” gdzieś po stronie serwera).\n\n💡 To dlaczego logowanie polega na tym, że klient za każdym razem wysyła token (w Authorization), a nie że serwer “pamięta”, że kogoś już zalogował 5 minut temu. Do mechanizmu tokenów wrócimy w wykładzie 4.\n\n\n\n\n\n\n\nNoteA cookies i sesje?\n\n\n\nHistorycznie serwery symulowały stan przez cookies + sesje po stronie serwera (Set-Cookie → przeglądarka odsyła ten sam identyfikator przy każdym żądaniu → serwer odnajduje zapisany stan w swojej pamięci/bazie). To dalej działa i bywa używane, ale w architekturach REST/API (szczególnie gdy klientem nie jest przeglądarka, tylko np. aplikacja mobilna) tokeny bezstanowe (JWT) są dziś częstszym wyborem — nie wymagają, żeby serwer pamiętał cokolwiek o sesji.",
     "crumbs": [
       "Wykłady",
-      "Architektura aplikacji sieciowych"
+      "Protokół HTTP w szczegółach"
     ]
   },
   {
-    "objectID": "lectures/wyklad1.html#źródła-i-literatura",
-    "href": "lectures/wyklad1.html#źródła-i-literatura",
-    "title": "Architektura aplikacji sieciowych",
-    "section": "",
-    "text": "R. Fielding, Architectural Styles and the Design of Network-based Software Architectures (praca doktorska wprowadzająca REST)\nMDN Web Docs — An overview of HTTP\nDokumentacja FastAPI (framework używany na laboratoriach)",
+    "objectID": "lectures/wyklad2.html#cache-kiedy-nie-pytać-serwera-drugi-raz",
+    "href": "lectures/wyklad2.html#cache-kiedy-nie-pytać-serwera-drugi-raz",
+    "title": "Protokół HTTP w szczegółach",
+    "section": "6️⃣ Cache — kiedy nie pytać serwera drugi raz",
+    "text": "6️⃣ Cache — kiedy nie pytać serwera drugi raz\nCache-Control: max-age=3600 mówi klientowi (albo pośredniczącemu proxy): “ta odpowiedź jest ważna przez godzinę, nie pytaj mnie ponownie”. Dobrze zaprojektowane API rozróżnia zasoby, które warto cache’ować (lista dostępnych poligonów, zmienia się rzadko) od tych, których nie wolno (stan bieżącej rezerwacji — musi być zawsze aktualny).",
     "crumbs": [
       "Wykłady",
-      "Architektura aplikacji sieciowych"
+      "Protokół HTTP w szczegółach"
+    ]
+  },
+  {
+    "objectID": "lectures/wyklad2.html#podsumowanie",
+    "href": "lectures/wyklad2.html#podsumowanie",
+    "title": "Protokół HTTP w szczegółach",
+    "section": "🧾 Podsumowanie",
+    "text": "🧾 Podsumowanie\n\nŻądanie HTTP = linia startowa (metoda + ścieżka) + nagłówki + opcjonalne ciało.\nMetody różnią się tym, czy są bezpieczne i idempotentne — to ma realne konsekwencje przy błędach sieciowych.\nKody 4xx to błąd po stronie klienta, 5xx — po stronie serwera; 401 ≠ 403.\nHTTP jest bezstanowy — każde żądanie musi być samowystarczalne.",
+    "crumbs": [
+      "Wykłady",
+      "Protokół HTTP w szczegółach"
+    ]
+  },
+  {
+    "objectID": "lectures/wyklad2.html#źródła",
+    "href": "lectures/wyklad2.html#źródła",
+    "title": "Protokół HTTP w szczegółach",
+    "section": "📚 Źródła",
+    "text": "📚 Źródła\n\nMDN Web Docs — HTTP request methods, HTTP response status codes\nRFC 9110 — HTTP Semantics",
+    "crumbs": [
+      "Wykłady",
+      "Protokół HTTP w szczegółach"
     ]
   }
 ]
