@@ -10,8 +10,14 @@ project:
     - "*.qmd"
     - "lectures/*.qmd"
     - "cwiczenia/*.qmd"
+    - "!lectures/wyklad2.qmd"
+    - "!lectures/wyklad3.qmd"
+    - "!lectures/wyklad4.qmd"
     - "!lectures/wyklad5.qmd"
     - "!lectures/wyklad6.qmd"
+    - "!cwiczenia/cw2.qmd"
+    - "!cwiczenia/cw3.qmd"
+    - "!cwiczenia/cw4.qmd"
     - "!cwiczenia/cw5.qmd"
     - "!cwiczenia/cw6.qmd"
     - "!cwiczenia/cw7.qmd"
@@ -32,17 +38,17 @@ website:
       - section: "Wykłady"
         contents:
           - lectures/wyklad1.qmd
-          - lectures/wyklad2.qmd
-          - lectures/wyklad3.qmd
-          - lectures/wyklad4.qmd
+          # - lectures/wyklad2.qmd
+          # - lectures/wyklad3.qmd
+          # - lectures/wyklad4.qmd
           # - lectures/wyklad5.qmd
           # - lectures/wyklad6.qmd
       - section: "Laboratoria"
         contents:
           - cwiczenia/cw1.qmd
-          - cwiczenia/cw2.qmd
-          - cwiczenia/cw3.qmd
-          - cwiczenia/cw4.qmd
+          # - cwiczenia/cw2.qmd
+          # - cwiczenia/cw3.qmd
+          # - cwiczenia/cw4.qmd
           # - cwiczenia/cw5.qmd
           # - cwiczenia/cw6.qmd
           # - cwiczenia/cw7.qmd

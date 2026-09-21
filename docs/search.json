@@ -1,563 +1,5 @@
 [
   {
-    "objectID": "lectures/wyklad4.html#cele-wykładu",
-    "href": "lectures/wyklad4.html#cele-wykładu",
-    "title": "Bezpieczeństwo aplikacji sieciowych",
-    "section": "🎯 Cele wykładu",
-    "text": "🎯 Cele wykładu\nPoznasz różnicę między uwierzytelnianiem a autoryzacją, zrozumiesz jak działają tokeny JWT, oraz poznasz najważniejsze podatności z listy OWASP Top 10 i jak się przed nimi bronić — wiedzę, którą zastosujesz praktycznie w laboratoriach 6-8.",
-    "crumbs": [
-      "Wykłady",
-      "Bezpieczeństwo aplikacji sieciowych"
-    ]
-  },
-  {
-    "objectID": "lectures/wyklad4.html#uwierzytelnianie-vs-autoryzacja",
-    "href": "lectures/wyklad4.html#uwierzytelnianie-vs-autoryzacja",
-    "title": "Bezpieczeństwo aplikacji sieciowych",
-    "section": "1️⃣ Uwierzytelnianie vs autoryzacja",
-    "text": "1️⃣ Uwierzytelnianie vs autoryzacja\nTo dwa różne pytania, często mylone:\n\n\n\n\n\n\n\n\nPytanie\nTermin\nPrzykład\n\n\n\n\nKim jesteś?\nUwierzytelnianie (authentication)\nlogin + hasło, token\n\n\nCo wolno Ci zrobić?\nAutoryzacja (authorization)\nplanista może zatwierdzać rezerwacje, żołnierz — nie\n\n\n\nSystem może wiedzieć, kim jesteś (uwierzytelniony), ale mimo to odmówić Ci operacji (brak autoryzacji) — to dokładnie różnica między 401 a 403 z wykładu 2.",
-    "crumbs": [
-      "Wykłady",
-      "Bezpieczeństwo aplikacji sieciowych"
-    ]
-  },
-  {
-    "objectID": "lectures/wyklad4.html#jak-przechowywać-hasła-nigdy-jawnym-tekstem",
-    "href": "lectures/wyklad4.html#jak-przechowywać-hasła-nigdy-jawnym-tekstem",
-    "title": "Bezpieczeństwo aplikacji sieciowych",
-    "section": "2️⃣ Jak przechowywać hasła — nigdy jawnym tekstem",
-    "text": "2️⃣ Jak przechowywać hasła — nigdy jawnym tekstem\n# NIGDY:\nif podane_haslo == uzytkownik.haslo:  # haslo w bazie jako czysty tekst\n\n# ZAWSZE: hashowanie z \"solą\"\nimport bcrypt\n\nhash_hasla = bcrypt.hashpw(haslo.encode(), bcrypt.gensalt())\n# ... zapisz hash_hasla w bazie, NIGDY samego hasla\n\n# przy logowaniu:\nbcrypt.checkpw(podane_haslo.encode(), hash_hasla)\nbcrypt (i podobne: argon2, scrypt) to funkcje jednokierunkowe — z hasha nie da się odtworzyć hasła, a każde wywołanie z “solą” (losowym dodatkiem) daje inny wynik nawet dla tego samego hasła, co chroni przed atakami tęczowych tablic (rainbow tables). Praktykę tę zastosujecie w laboratorium 6.",
-    "crumbs": [
-      "Wykłady",
-      "Bezpieczeństwo aplikacji sieciowych"
-    ]
-  },
-  {
-    "objectID": "lectures/wyklad4.html#sesje-vs-tokeny-dwa-modele-uwierzytelniania",
-    "href": "lectures/wyklad4.html#sesje-vs-tokeny-dwa-modele-uwierzytelniania",
-    "title": "Bezpieczeństwo aplikacji sieciowych",
-    "section": "3️⃣ Sesje vs tokeny — dwa modele uwierzytelniania",
-    "text": "3️⃣ Sesje vs tokeny — dwa modele uwierzytelniania\n\n\n\n\n\n\n\n\n\nSesje (cookie-based)\nTokeny (JWT)\n\n\n\n\nGdzie żyje stan\npo stronie serwera (baza sesji)\nw samym tokenie, po stronie klienta\n\n\nSkalowanie na wiele serwerów\nwymaga współdzielonej bazy sesji\ntrywialne — każdy serwer sam zweryfikuje token\n\n\nUnieważnienie przed wygaśnięciem\nłatwe (usuń z bazy)\ntrudniejsze (token jest ważny, dopóki nie wygaśnie)\n\n\n\nW tym kursie używamy JWT (JSON Web Token) — pasuje do architektury bezstanowej z wykładu 2.",
-    "crumbs": [
-      "Wykłady",
-      "Bezpieczeństwo aplikacji sieciowych"
-    ]
-  },
-  {
-    "objectID": "lectures/wyklad4.html#anatomia-jwt",
-    "href": "lectures/wyklad4.html#anatomia-jwt",
-    "title": "Bezpieczeństwo aplikacji sieciowych",
-    "section": "4️⃣ Anatomia JWT",
-    "text": "4️⃣ Anatomia JWT\nToken JWT to trzy części oddzielone kropkami: header.payload.signature\neyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5rb3dhbHNraSIsInJvbGEiOiJkb3dvZGNhIn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c\n\nHeader — jaki algorytm podpisu (np. HS256).\nPayload — dane (np. {\"sub\": \"jankowalski\", \"rola\": \"dowodca\", \"exp\": 1735689600}) — czytelne dla każdego (to tylko Base64, nie szyfrowanie!), więc nigdy nie wkładajcie tam haseł czy innych sekretów.\nSignature — podpis kryptograficzny, weryfikowany kluczem znanym tylko serwerowi — to on gwarantuje, że nikt nie sfałszował payloadu.\n\n\n\n\n\n\n\nImportantJWT jest podpisany, nie zaszyfrowany\n\n\n\nKażdy, kto przechwyci token, może odczytać jego zawartość (Base64 to nie szyfrowanie) — nie może jej jednak zmienić niezauważenie, bo podpis by się nie zgadzał. Wniosek: JWT chroni przed fałszowaniem danych, nie przed ich odczytaniem — transport tokenu musi iść przez HTTPS, żeby nikt po drodze go nie podsłuchał.",
-    "crumbs": [
-      "Wykłady",
-      "Bezpieczeństwo aplikacji sieciowych"
-    ]
-  },
-  {
-    "objectID": "lectures/wyklad4.html#owasp-top-10-trzy-podatności-które-napotkacie-w-laboratoriach",
-    "href": "lectures/wyklad4.html#owasp-top-10-trzy-podatności-które-napotkacie-w-laboratoriach",
-    "title": "Bezpieczeństwo aplikacji sieciowych",
-    "section": "5️⃣ OWASP Top 10 — trzy podatności, które napotkacie w laboratoriach",
-    "text": "5️⃣ OWASP Top 10 — trzy podatności, które napotkacie w laboratoriach\n\nSQL Injection\n# PODATNE:\nconn.execute(f\"SELECT * FROM uzytkownicy WHERE login = '{login}'\")\n# atakujacy wpisuje: login = \"' OR '1'='1\"\nObrona: zawsze parametryzowane zapytania (widzieliście to już w laboratorium 3) — conn.execute(\"... WHERE login = ?\", (login,)).\n\n\nXSS (Cross-Site Scripting)\nAtakujący wstrzykuje złośliwy JavaScript do danych, które potem są wyświetlane innemu użytkownikowi bez odpowiedniego oczyszczenia (np. komentarz zawierający &lt;script&gt;...&lt;/script&gt;, wyświetlony bez escapowania w przeglądarce ofiary).\nObrona: nowoczesne frameworki frontendowe (React i podobne) domyślnie escapują dane przy renderowaniu — problem pojawia się głównie, gdy ktoś świadomie to wyłączy (dangerouslySetInnerHTML i podobne).\n\n\nCSRF (Cross-Site Request Forgery)\nAtakujący nakłania przeglądarkę ofiary (zalogowanej w Waszej aplikacji) do wysłania żądania bez jej wiedzy (np. przez ukryty formularz na złośliwej stronie). Ponieważ przeglądarka automatycznie dołącza cookies do żądań, serwer “widzi” żądanie jako uwierzytelnione.\nObrona: API oparte o JWT w nagłówku Authorization (nie w cookies) jest z natury odporne na klasyczny CSRF — atakująca strona nie ma dostępu do tokenu przechowywanego przez Waszą aplikację (np. w pamięci JS), więc nie może go dołączyć do sfałszowanego żądania.",
-    "crumbs": [
-      "Wykłady",
-      "Bezpieczeństwo aplikacji sieciowych"
-    ]
-  },
-  {
-    "objectID": "lectures/wyklad4.html#httpstls-dlaczego-zawsze",
-    "href": "lectures/wyklad4.html#httpstls-dlaczego-zawsze",
-    "title": "Bezpieczeństwo aplikacji sieciowych",
-    "section": "6️⃣ HTTPS/TLS — dlaczego zawsze",
-    "text": "6️⃣ HTTPS/TLS — dlaczego zawsze\nBez TLS każdy w tej samej sieci (Wi-Fi w kawiarni, router po drodze) może odczytać cały ruch — łącznie z tokenami JWT i hasłami przesyłanymi przy logowaniu. TLS szyfruje transport między klientem a serwerem — to warunek konieczny, nie opcjonalny dodatek, dla każdej aplikacji przyjmującej dane logowania.",
-    "crumbs": [
-      "Wykłady",
-      "Bezpieczeństwo aplikacji sieciowych"
-    ]
-  },
-  {
-    "objectID": "lectures/wyklad4.html#podsumowanie",
-    "href": "lectures/wyklad4.html#podsumowanie",
-    "title": "Bezpieczeństwo aplikacji sieciowych",
-    "section": "🧾 Podsumowanie",
-    "text": "🧾 Podsumowanie\n\nUwierzytelnianie = kim jesteś; autoryzacja = co wolno Ci zrobić — to dwa osobne mechanizmy.\nHasła zawsze hashowane (bcrypt/argon2), nigdy przechowywane jawnym tekstem.\nJWT jest podpisany (integralność), nie zaszyfrowany (poufność) — payload jest czytelny dla każdego.\nSQL injection, XSS, CSRF — trzy klasyczne podatności; parametryzowane zapytania, escapowanie i tokeny w nagłówku to podstawowa obrona.",
-    "crumbs": [
-      "Wykłady",
-      "Bezpieczeństwo aplikacji sieciowych"
-    ]
-  },
-  {
-    "objectID": "lectures/wyklad4.html#źródła",
-    "href": "lectures/wyklad4.html#źródła",
-    "title": "Bezpieczeństwo aplikacji sieciowych",
-    "section": "📚 Źródła",
-    "text": "📚 Źródła\n\nOWASP Top 10 (owasp.org)\nRFC 7519 — JSON Web Token (JWT)\nDokumentacja FastAPI — Security",
-    "crumbs": [
-      "Wykłady",
-      "Bezpieczeństwo aplikacji sieciowych"
-    ]
-  },
-  {
-    "objectID": "lectures/wyklad2.html#cele-wykładu",
-    "href": "lectures/wyklad2.html#cele-wykładu",
-    "title": "Protokół HTTP w szczegółach",
-    "section": "🎯 Cele wykładu",
-    "text": "🎯 Cele wykładu\nPo tym wykładzie będziesz rozumieć strukturę żądania i odpowiedzi HTTP, znał najważniejsze metody i kody statusu, oraz wiedział, dlaczego HTTP jest protokołem “bezstanowym” i co to oznacza w praktyce dla projektowania aplikacji.",
-    "crumbs": [
-      "Wykłady",
-      "Protokół HTTP w szczegółach"
-    ]
-  },
-  {
-    "objectID": "lectures/wyklad2.html#anatomia-żądania-http",
-    "href": "lectures/wyklad2.html#anatomia-żądania-http",
-    "title": "Protokół HTTP w szczegółach",
-    "section": "1️⃣ Anatomia żądania HTTP",
-    "text": "1️⃣ Anatomia żądania HTTP\nKiedy przeglądarka (albo curl, albo Wasz kod) wysyła żądanie, wygląda ono (uproszczone) tak:\nGET /poligony/5 HTTP/1.1\nHost: sebastianzajac.pl\nAccept: application/json\nAuthorization: Bearer eyJhbGc...\n\n(puste ciało — GET zwykle go nie ma)\n\n\n\n\n\n\n\nElement\nZnaczenie\n\n\n\n\nLinia startowa\nmetoda + ścieżka + wersja protokołu\n\n\nNagłówki (headers)\nmetadane: co akceptujemy, kim jesteśmy, jaki format wysyłamy\n\n\nCiało (body)\nwłaściwe dane (przy GET zwykle puste, przy POST/PUT — tak)",
-    "crumbs": [
-      "Wykłady",
-      "Protokół HTTP w szczegółach"
-    ]
-  },
-  {
-    "objectID": "lectures/wyklad2.html#metody-http-czasowniki-rest-a",
-    "href": "lectures/wyklad2.html#metody-http-czasowniki-rest-a",
-    "title": "Protokół HTTP w szczegółach",
-    "section": "2️⃣ Metody HTTP — czasowniki REST-a",
-    "text": "2️⃣ Metody HTTP — czasowniki REST-a\n\n\n\nMetoda\nZnaczenie\nMa ciało?\nBezpieczna?*\nIdempotentna?**\n\n\n\n\nGET\npobierz zasób\nnie\ntak\ntak\n\n\nPOST\nutwórz nowy zasób\ntak\nnie\nnie\n\n\nPUT\nzastąp cały zasób\ntak\nnie\ntak\n\n\nPATCH\nzmodyfikuj część zasobu\ntak\nnie\nnie (zwykle)\n\n\nDELETE\nusuń zasób\nnie\nnie\ntak\n\n\n\n* Bezpieczna (safe) = nie zmienia stanu serwera — można ją wywołać wielokrotnie bez skutków ubocznych (przeglądarka może np. prefetchować linki GET). ** Idempotentna = wielokrotne wykonanie daje ten sam efekt co jednokrotne. DELETE /poligony/5 wywołane dwa razy nadal kończy się brakiem poligonu 5 — drugie wywołanie nic nowego nie psuje (może zwrócić 404, ale stan systemu jest identyczny). POST nie jest idempotentny: dwukrotne wysłanie tworzy dwa zasoby.\n\n⚠️ To rozróżnienie ma praktyczne znaczenie: jeśli klient nie dostał odpowiedzi (timeout sieciowy) i nie wie, czy żądanie dotarło, bezpiecznie może powtórzyć PUT/DELETE, ale powtórzenie POST może utworzyć duplikat.",
-    "crumbs": [
-      "Wykłady",
-      "Protokół HTTP w szczegółach"
-    ]
-  },
-  {
-    "objectID": "lectures/wyklad2.html#kody-statusu-pięć-rodzin",
-    "href": "lectures/wyklad2.html#kody-statusu-pięć-rodzin",
-    "title": "Protokół HTTP w szczegółach",
-    "section": "3️⃣ Kody statusu — pięć rodzin",
-    "text": "3️⃣ Kody statusu — pięć rodzin\n\n\n\n\n\n\n\n\nZakres\nRodzina\nPrzykłady\n\n\n\n\n1xx\nInformacyjne\nrzadko używane bezpośrednio w API\n\n\n2xx\nSukces\n200 OK, 201 Created, 204 No Content\n\n\n3xx\nPrzekierowanie\n301 Moved Permanently, 304 Not Modified\n\n\n4xx\nBłąd klienta\n400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found\n\n\n5xx\nBłąd serwera\n500 Internal Server Error, 503 Service Unavailable\n\n\n\n\n🔹 Rozróżnienie, które myli początkujących: 401 vs 403\n\n401 Unauthorized — “nie wiem, kim jesteś” (brak albo niepoprawne uwierzytelnienie).\n403 Forbidden — “wiem, kim jesteś, ale nie masz uprawnień do tej operacji”.\n\nPrzykład z naszego projektu: żołnierz bez zalogowania próbujący zobaczyć /rezerwacje → 401. Zalogowany żołnierz próbujący zatwierdzić rezerwację (uprawnienie tylko planisty) → 403.",
-    "crumbs": [
-      "Wykłady",
-      "Protokół HTTP w szczegółach"
-    ]
-  },
-  {
-    "objectID": "lectures/wyklad2.html#nagłówki-które-będziecie-używać-najczęściej",
-    "href": "lectures/wyklad2.html#nagłówki-które-będziecie-używać-najczęściej",
-    "title": "Protokół HTTP w szczegółach",
-    "section": "4️⃣ Nagłówki, które będziecie używać najczęściej",
-    "text": "4️⃣ Nagłówki, które będziecie używać najczęściej\n\n\n\n\n\n\n\nNagłówek\nRola\n\n\n\n\nContent-Type\njaki format ma ciało żądania/odpowiedzi (application/json)\n\n\nAuthorization\ndane uwierzytelniające (Bearer &lt;token&gt;) — wykład 4\n\n\nAccept\njaki format klient chce dostać z powrotem\n\n\nCache-Control\njak długo/czy wolno cache’ować odpowiedź",
-    "crumbs": [
-      "Wykłady",
-      "Protokół HTTP w szczegółach"
-    ]
-  },
-  {
-    "objectID": "lectures/wyklad2.html#http-jest-bezstanowy-co-to-znaczy-naprawdę",
-    "href": "lectures/wyklad2.html#http-jest-bezstanowy-co-to-znaczy-naprawdę",
-    "title": "Protokół HTTP w szczegółach",
-    "section": "5️⃣ HTTP jest bezstanowy — co to znaczy naprawdę",
-    "text": "5️⃣ HTTP jest bezstanowy — co to znaczy naprawdę\nSerwer nie pamięta niczego między dwoma żądaniami tego samego klienta — każde żądanie musi nieść ze sobą wszystko, czego serwer potrzebuje, żeby je obsłużyć (np. token uwierzytelniający w nagłówku, nie “zapamiętane” gdzieś po stronie serwera).\n\n💡 To dlaczego logowanie polega na tym, że klient za każdym razem wysyła token (w Authorization), a nie że serwer “pamięta”, że kogoś już zalogował 5 minut temu. Do mechanizmu tokenów wrócimy w wykładzie 4.\n\n\n\n\n\n\n\nNoteA cookies i sesje?\n\n\n\nHistorycznie serwery symulowały stan przez cookies + sesje po stronie serwera (Set-Cookie → przeglądarka odsyła ten sam identyfikator przy każdym żądaniu → serwer odnajduje zapisany stan w swojej pamięci/bazie). To dalej działa i bywa używane, ale w architekturach REST/API (szczególnie gdy klientem nie jest przeglądarka, tylko np. aplikacja mobilna) tokeny bezstanowe (JWT) są dziś częstszym wyborem — nie wymagają, żeby serwer pamiętał cokolwiek o sesji.",
-    "crumbs": [
-      "Wykłady",
-      "Protokół HTTP w szczegółach"
-    ]
-  },
-  {
-    "objectID": "lectures/wyklad2.html#cache-kiedy-nie-pytać-serwera-drugi-raz",
-    "href": "lectures/wyklad2.html#cache-kiedy-nie-pytać-serwera-drugi-raz",
-    "title": "Protokół HTTP w szczegółach",
-    "section": "6️⃣ Cache — kiedy nie pytać serwera drugi raz",
-    "text": "6️⃣ Cache — kiedy nie pytać serwera drugi raz\nCache-Control: max-age=3600 mówi klientowi (albo pośredniczącemu proxy): “ta odpowiedź jest ważna przez godzinę, nie pytaj mnie ponownie”. Dobrze zaprojektowane API rozróżnia zasoby, które warto cache’ować (lista dostępnych poligonów, zmienia się rzadko) od tych, których nie wolno (stan bieżącej rezerwacji — musi być zawsze aktualny).",
-    "crumbs": [
-      "Wykłady",
-      "Protokół HTTP w szczegółach"
-    ]
-  },
-  {
-    "objectID": "lectures/wyklad2.html#podsumowanie",
-    "href": "lectures/wyklad2.html#podsumowanie",
-    "title": "Protokół HTTP w szczegółach",
-    "section": "🧾 Podsumowanie",
-    "text": "🧾 Podsumowanie\n\nŻądanie HTTP = linia startowa (metoda + ścieżka) + nagłówki + opcjonalne ciało.\nMetody różnią się tym, czy są bezpieczne i idempotentne — to ma realne konsekwencje przy błędach sieciowych.\nKody 4xx to błąd po stronie klienta, 5xx — po stronie serwera; 401 ≠ 403.\nHTTP jest bezstanowy — każde żądanie musi być samowystarczalne.",
-    "crumbs": [
-      "Wykłady",
-      "Protokół HTTP w szczegółach"
-    ]
-  },
-  {
-    "objectID": "lectures/wyklad2.html#źródła",
-    "href": "lectures/wyklad2.html#źródła",
-    "title": "Protokół HTTP w szczegółach",
-    "section": "📚 Źródła",
-    "text": "📚 Źródła\n\nMDN Web Docs — HTTP request methods, HTTP response status codes\nRFC 9110 — HTTP Semantics",
-    "crumbs": [
-      "Wykłady",
-      "Protokół HTTP w szczegółach"
-    ]
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Informacje ogólne",
-    "section": "",
-    "text": "Kod:\nSemestr: zimowy",
-    "crumbs": [
-      "Informacje ogólne"
-    ]
-  },
-  {
-    "objectID": "index.html#projektowanie-aplikacji-sieciowych",
-    "href": "index.html#projektowanie-aplikacji-sieciowych",
-    "title": "Informacje ogólne",
-    "section": "",
-    "text": "Kod:\nSemestr: zimowy",
-    "crumbs": [
-      "Informacje ogólne"
-    ]
-  },
-  {
-    "objectID": "index.html#kalendarz",
-    "href": "index.html#kalendarz",
-    "title": "Informacje ogólne",
-    "section": "Kalendarz",
-    "text": "Kalendarz\n\n\nWykład dla grup:\n\nTODO: dzień tygodnia, godzina, sala\n\n\n\nLaboratorium dla grup:\n\nTODO: dzień tygodnia, godzina, sala",
-    "crumbs": [
-      "Informacje ogólne"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/cw3.html",
-    "href": "cwiczenia/cw3.html",
-    "title": "Lab 3: Podłączenie bazy danych",
-    "section": "",
-    "text": "Zastąpić listę w pamięci (laboratoria 1-2) prawdziwą bazą SQLite — dane mają przetrwać restart serwera. Używamy modułu sqlite3 z biblioteki standardowej Pythona (bez ORM-a) — chodzi o projektowanie API, nie o naukę nowego narzędzia do baz danych, którą już znacie z innych kursów.\n\n\n\n\nUtwórz plik schema.sql:\nCREATE TABLE IF NOT EXISTS poligony (\n    id INTEGER PRIMARY KEY AUTOINCREMENT,\n    nazwa TEXT NOT NULL,\n    lokalizacja TEXT NOT NULL,\n    typ TEXT NOT NULL,\n    dostepny INTEGER NOT NULL DEFAULT 1\n);\n\nCREATE TABLE IF NOT EXISTS jednostki (\n    id INTEGER PRIMARY KEY AUTOINCREMENT,\n    nazwa TEXT NOT NULL,\n    garnizon TEXT NOT NULL\n);\ndostepny INTEGER zamiast BOOLEAN — SQLite nie ma natywnego typu logicznego, konwencja to 0/1 (dokładnie to, co już znacie z kursów o bazach danych).\n\n\n\nimport sqlite3\nfrom contextlib import contextmanager\n\nDB_PATH = \"poligony.db\"\n\ndef init_db():\n    with sqlite3.connect(DB_PATH) as conn:\n        with open(\"schema.sql\") as f:\n            conn.executescript(f.read())\n\n@contextmanager\ndef get_db():\n    conn = sqlite3.connect(DB_PATH)\n    conn.row_factory = sqlite3.Row  # dostep do kolumn po nazwie, nie tylko indeksie\n    try:\n        yield conn\n    finally:\n        conn.close()\nconn.row_factory = sqlite3.Row sprawia, że wiersze zwrócone z zapytań zachowują się trochę jak słowniki (row[\"nazwa\"]), zamiast gołych krotek (row[1]) — dużo czytelniej przy konwersji na model Pydantic.\nWywołaj init_db() raz, przy starcie aplikacji:\n@app.on_event(\"startup\")\ndef startup():\n    init_db()\n\n\n\n@app.get(\"/poligony\", response_model=list[Poligon])\ndef lista_poligonow(typ: str | None = None):\n    with get_db() as conn:\n        if typ:\n            rows = conn.execute(\"SELECT * FROM poligony WHERE typ = ?\", (typ,)).fetchall()\n        else:\n            rows = conn.execute(\"SELECT * FROM poligony\").fetchall()\n        return [Poligon(**dict(row)) for row in rows]\n\n\n\n\n\n\nImportantZawsze parametryzowane zapytania — nigdy sklejanie stringów\n\n\n\n# NIGDY TAK:\nconn.execute(f\"SELECT * FROM poligony WHERE typ = '{typ}'\")\n\n# ZAWSZE TAK:\nconn.execute(\"SELECT * FROM poligony WHERE typ = ?\", (typ,))\nSklejanie zapytań SQL z danych wejściowych użytkownika to klasyczna podatność SQL injection — do tego wrócimy dokładniej na wykładzie 4 (bezpieczeństwo), ale zasada obowiązuje od pierwszego zapytania, które napiszecie.\n\n\n\n\n\n@app.post(\"/poligony\", response_model=Poligon, status_code=201)\ndef utworz_poligon(poligon: PoligonCreate):  # model bez pola id -- baza je nada\n    with get_db() as conn:\n        cursor = conn.execute(\n            \"INSERT INTO poligony (nazwa, lokalizacja, typ, dostepny) VALUES (?, ?, ?, ?)\",\n            (poligon.nazwa, poligon.lokalizacja, poligon.typ, int(poligon.dostepny)),\n        )\n        conn.commit()\n        nowy_id = cursor.lastrowid\n        return Poligon(id=nowy_id, **poligon.model_dump())\nZwróć uwagę na nowy model PoligonCreate (bez pola id) — klient tworzący zasób nie powinien sam nadawać mu ID, robi to baza (AUTOINCREMENT). To częsty wzorzec w projektowaniu API: osobny model dla “danych wejściowych przy tworzeniu” i osobny dla “pełnego zasobu zwracanego klientowi”.\nclass PoligonCreate(BaseModel):\n    nazwa: str\n    lokalizacja: str\n    typ: str\n    dostepny: bool = True\n\n\n\n\nRozbuduj schemat o tabelę jednostki (już w schema.sql powyżej) i migruj endpointy /jednostki z laboratorium 2 na bazę, analogicznie do /poligony.\nNapisz mały skrypt seed.py, który wypełnia bazę kilkoma przykładowymi poligonami i jednostkami (przydatne przy każdym restarcie podczas testów).\nSprawdź, że dane przetrwają restart serwera (Ctrl+C, uruchom ponownie, sprawdź /poligony — dane wciąż tam są, w przeciwieństwie do laboratorium 2).\nZacommituj zmiany — dodaj poligony.db do .gitignore (dane testowe nie powinny trafiać do repozytorium, tylko schema.sql i seed.py).\n\nDo oddania: link do repozytorium / commit hash.",
-    "crumbs": [
-      "Laboratoria",
-      "Lab 3: Podłączenie bazy danych"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/cw3.html#cel",
-    "href": "cwiczenia/cw3.html#cel",
-    "title": "Lab 3: Podłączenie bazy danych",
-    "section": "",
-    "text": "Zastąpić listę w pamięci (laboratoria 1-2) prawdziwą bazą SQLite — dane mają przetrwać restart serwera. Używamy modułu sqlite3 z biblioteki standardowej Pythona (bez ORM-a) — chodzi o projektowanie API, nie o naukę nowego narzędzia do baz danych, którą już znacie z innych kursów.",
-    "crumbs": [
-      "Laboratoria",
-      "Lab 3: Podłączenie bazy danych"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/cw3.html#schemat-bazy",
-    "href": "cwiczenia/cw3.html#schemat-bazy",
-    "title": "Lab 3: Podłączenie bazy danych",
-    "section": "",
-    "text": "Utwórz plik schema.sql:\nCREATE TABLE IF NOT EXISTS poligony (\n    id INTEGER PRIMARY KEY AUTOINCREMENT,\n    nazwa TEXT NOT NULL,\n    lokalizacja TEXT NOT NULL,\n    typ TEXT NOT NULL,\n    dostepny INTEGER NOT NULL DEFAULT 1\n);\n\nCREATE TABLE IF NOT EXISTS jednostki (\n    id INTEGER PRIMARY KEY AUTOINCREMENT,\n    nazwa TEXT NOT NULL,\n    garnizon TEXT NOT NULL\n);\ndostepny INTEGER zamiast BOOLEAN — SQLite nie ma natywnego typu logicznego, konwencja to 0/1 (dokładnie to, co już znacie z kursów o bazach danych).",
-    "crumbs": [
-      "Laboratoria",
-      "Lab 3: Podłączenie bazy danych"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/cw3.html#połączenie-z-bazą-w-fastapi",
-    "href": "cwiczenia/cw3.html#połączenie-z-bazą-w-fastapi",
-    "title": "Lab 3: Podłączenie bazy danych",
-    "section": "",
-    "text": "import sqlite3\nfrom contextlib import contextmanager\n\nDB_PATH = \"poligony.db\"\n\ndef init_db():\n    with sqlite3.connect(DB_PATH) as conn:\n        with open(\"schema.sql\") as f:\n            conn.executescript(f.read())\n\n@contextmanager\ndef get_db():\n    conn = sqlite3.connect(DB_PATH)\n    conn.row_factory = sqlite3.Row  # dostep do kolumn po nazwie, nie tylko indeksie\n    try:\n        yield conn\n    finally:\n        conn.close()\nconn.row_factory = sqlite3.Row sprawia, że wiersze zwrócone z zapytań zachowują się trochę jak słowniki (row[\"nazwa\"]), zamiast gołych krotek (row[1]) — dużo czytelniej przy konwersji na model Pydantic.\nWywołaj init_db() raz, przy starcie aplikacji:\n@app.on_event(\"startup\")\ndef startup():\n    init_db()",
-    "crumbs": [
-      "Laboratoria",
-      "Lab 3: Podłączenie bazy danych"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/cw3.html#get-z-bazy-zamiast-z-listy",
-    "href": "cwiczenia/cw3.html#get-z-bazy-zamiast-z-listy",
-    "title": "Lab 3: Podłączenie bazy danych",
-    "section": "",
-    "text": "@app.get(\"/poligony\", response_model=list[Poligon])\ndef lista_poligonow(typ: str | None = None):\n    with get_db() as conn:\n        if typ:\n            rows = conn.execute(\"SELECT * FROM poligony WHERE typ = ?\", (typ,)).fetchall()\n        else:\n            rows = conn.execute(\"SELECT * FROM poligony\").fetchall()\n        return [Poligon(**dict(row)) for row in rows]\n\n\n\n\n\n\nImportantZawsze parametryzowane zapytania — nigdy sklejanie stringów\n\n\n\n# NIGDY TAK:\nconn.execute(f\"SELECT * FROM poligony WHERE typ = '{typ}'\")\n\n# ZAWSZE TAK:\nconn.execute(\"SELECT * FROM poligony WHERE typ = ?\", (typ,))\nSklejanie zapytań SQL z danych wejściowych użytkownika to klasyczna podatność SQL injection — do tego wrócimy dokładniej na wykładzie 4 (bezpieczeństwo), ale zasada obowiązuje od pierwszego zapytania, które napiszecie.",
-    "crumbs": [
-      "Laboratoria",
-      "Lab 3: Podłączenie bazy danych"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/cw3.html#post-zapis-do-bazy",
-    "href": "cwiczenia/cw3.html#post-zapis-do-bazy",
-    "title": "Lab 3: Podłączenie bazy danych",
-    "section": "",
-    "text": "@app.post(\"/poligony\", response_model=Poligon, status_code=201)\ndef utworz_poligon(poligon: PoligonCreate):  # model bez pola id -- baza je nada\n    with get_db() as conn:\n        cursor = conn.execute(\n            \"INSERT INTO poligony (nazwa, lokalizacja, typ, dostepny) VALUES (?, ?, ?, ?)\",\n            (poligon.nazwa, poligon.lokalizacja, poligon.typ, int(poligon.dostepny)),\n        )\n        conn.commit()\n        nowy_id = cursor.lastrowid\n        return Poligon(id=nowy_id, **poligon.model_dump())\nZwróć uwagę na nowy model PoligonCreate (bez pola id) — klient tworzący zasób nie powinien sam nadawać mu ID, robi to baza (AUTOINCREMENT). To częsty wzorzec w projektowaniu API: osobny model dla “danych wejściowych przy tworzeniu” i osobny dla “pełnego zasobu zwracanego klientowi”.\nclass PoligonCreate(BaseModel):\n    nazwa: str\n    lokalizacja: str\n    typ: str\n    dostepny: bool = True",
-    "crumbs": [
-      "Laboratoria",
-      "Lab 3: Podłączenie bazy danych"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/cw3.html#zadanie-na-koniec-laboratorium",
-    "href": "cwiczenia/cw3.html#zadanie-na-koniec-laboratorium",
-    "title": "Lab 3: Podłączenie bazy danych",
-    "section": "",
-    "text": "Rozbuduj schemat o tabelę jednostki (już w schema.sql powyżej) i migruj endpointy /jednostki z laboratorium 2 na bazę, analogicznie do /poligony.\nNapisz mały skrypt seed.py, który wypełnia bazę kilkoma przykładowymi poligonami i jednostkami (przydatne przy każdym restarcie podczas testów).\nSprawdź, że dane przetrwają restart serwera (Ctrl+C, uruchom ponownie, sprawdź /poligony — dane wciąż tam są, w przeciwieństwie do laboratorium 2).\nZacommituj zmiany — dodaj poligony.db do .gitignore (dane testowe nie powinny trafiać do repozytorium, tylko schema.sql i seed.py).\n\nDo oddania: link do repozytorium / commit hash.",
-    "crumbs": [
-      "Laboratoria",
-      "Lab 3: Podłączenie bazy danych"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/cw1.html",
-    "href": "cwiczenia/cw1.html",
-    "title": "Lab 1: Środowisko pracy i pierwszy serwer",
-    "section": "",
-    "text": "Postawić działający serwer HTTP w Pythonie i zobaczyć swój pierwszy endpoint w przeglądarce. To fundament, na którym przez 12 laboratoriów zbudujemy system rezerwacji poligonu.\n\n\n\n\nBędziemy używać Python 3.11+, FastAPI (framework webowy) i uvicorn (serwer, który faktycznie uruchamia aplikację).\n\n\nZawsze pracuj w izolowanym środowisku — nigdy nie instaluj pakietów globalnie.\npython3 -m venv .venv\nsource .venv/bin/activate      # macOS/Linux\n# .venv\\Scripts\\activate       # Windows\n\npip install fastapi uvicorn[standard]\n\n💡 .venv/ nigdy nie trafia do repozytorium git — dodaj go do .gitignore.\n\n\n\n\n\n\nUtwórz plik main.py:\nfrom fastapi import FastAPI\n\napp = FastAPI(title=\"System rezerwacji poligonu\")\n\n\n@app.get(\"/\")\ndef root():\n    return {\"komunikat\": \"System rezerwacji poligonu dziala\"}\nUruchom:\nuvicorn main:app --reload\n\nmain — nazwa pliku (main.py),\napp — nazwa obiektu FastAPI() w tym pliku,\n--reload — serwer automatycznie restartuje się po zapisaniu zmian (tylko do pracy deweloperskiej, nigdy na produkcji).\n\nOtwórz w przeglądarce http://127.0.0.1:8000/ — powinieneś zobaczyć:\n{\"komunikat\": \"System rezerwacji poligonu dziala\"}\n\n\n\n\nFastAPI, bez dodatkowej pracy z Twojej strony, generuje interaktywną dokumentację API. Otwórz:\n\nhttp://127.0.0.1:8000/docs — interfejs Swagger UI, w którym możesz od razu klikać i testować endpointy.\nhttp://127.0.0.1:8000/redoc — alternatywny, bardziej “dokumentacyjny” widok.\n\n\n🧠 Do tego mechanizmu wrócimy dokładniej w wykładzie 3 (projektowanie API) i laboratorium 9 — dziś zapamiętaj tylko, że istnieje i że jest darmowy.\n\n\n\n\n\nDodaj do main.py endpoint, który na razie zwraca dane na sztywno (żadnej bazy jeszcze nie mamy — to dopiero lab 3):\n@app.get(\"/poligony\")\ndef lista_poligonow():\n    return [\n        {\"id\": 1, \"nazwa\": \"Poligon Nowa Dęba\", \"typ\": \"strzelnica\"},\n        {\"id\": 2, \"nazwa\": \"Poligon Drawsko\", \"typ\": \"teren manewrowy\"},\n    ]\nSprawdź http://127.0.0.1:8000/poligony w przeglądarce oraz w /docs — zobacz, jak Swagger sam wykrył nowy endpoint.\n\n\n\n\nZałóż repozytorium git dla swojego projektu (osobne od materiałów kursu):\ngit init\necho \".venv/\\n__pycache__/\\n*.pyc\" &gt; .gitignore\ngit add main.py .gitignore\ngit commit -m \"Init: pierwszy serwer FastAPI\"\nTen projekt będzie rósł przez cały semestr — każde kolejne laboratorium to nowy commit.\n\n\n\n\n\nDodaj trzeci endpoint GET /jednostki, zwracający sztywną listę 2-3 jednostek wojskowych (nazwa, garnizon).\nSprawdź go w /docs.\nZacommituj zmiany z sensowną wiadomością.\n\nDo oddania: link do repozytorium (lub commit hash) — prowadzący sprawdza na następnych zajęciach.",
-    "crumbs": [
-      "Laboratoria",
-      "Lab 1: Środowisko pracy i pierwszy serwer"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/cw1.html#cel",
-    "href": "cwiczenia/cw1.html#cel",
-    "title": "Lab 1: Środowisko pracy i pierwszy serwer",
-    "section": "",
-    "text": "Postawić działający serwer HTTP w Pythonie i zobaczyć swój pierwszy endpoint w przeglądarce. To fundament, na którym przez 12 laboratoriów zbudujemy system rezerwacji poligonu.",
-    "crumbs": [
-      "Laboratoria",
-      "Lab 1: Środowisko pracy i pierwszy serwer"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/cw1.html#środowisko",
-    "href": "cwiczenia/cw1.html#środowisko",
-    "title": "Lab 1: Środowisko pracy i pierwszy serwer",
-    "section": "",
-    "text": "Będziemy używać Python 3.11+, FastAPI (framework webowy) i uvicorn (serwer, który faktycznie uruchamia aplikację).\n\n\nZawsze pracuj w izolowanym środowisku — nigdy nie instaluj pakietów globalnie.\npython3 -m venv .venv\nsource .venv/bin/activate      # macOS/Linux\n# .venv\\Scripts\\activate       # Windows\n\npip install fastapi uvicorn[standard]\n\n💡 .venv/ nigdy nie trafia do repozytorium git — dodaj go do .gitignore.",
-    "crumbs": [
-      "Laboratoria",
-      "Lab 1: Środowisko pracy i pierwszy serwer"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/cw1.html#pierwszy-serwer",
-    "href": "cwiczenia/cw1.html#pierwszy-serwer",
-    "title": "Lab 1: Środowisko pracy i pierwszy serwer",
-    "section": "",
-    "text": "Utwórz plik main.py:\nfrom fastapi import FastAPI\n\napp = FastAPI(title=\"System rezerwacji poligonu\")\n\n\n@app.get(\"/\")\ndef root():\n    return {\"komunikat\": \"System rezerwacji poligonu dziala\"}\nUruchom:\nuvicorn main:app --reload\n\nmain — nazwa pliku (main.py),\napp — nazwa obiektu FastAPI() w tym pliku,\n--reload — serwer automatycznie restartuje się po zapisaniu zmian (tylko do pracy deweloperskiej, nigdy na produkcji).\n\nOtwórz w przeglądarce http://127.0.0.1:8000/ — powinieneś zobaczyć:\n{\"komunikat\": \"System rezerwacji poligonu dziala\"}",
-    "crumbs": [
-      "Laboratoria",
-      "Lab 1: Środowisko pracy i pierwszy serwer"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/cw1.html#automatyczna-dokumentacja-korzyść-od-razu",
-    "href": "cwiczenia/cw1.html#automatyczna-dokumentacja-korzyść-od-razu",
-    "title": "Lab 1: Środowisko pracy i pierwszy serwer",
-    "section": "",
-    "text": "FastAPI, bez dodatkowej pracy z Twojej strony, generuje interaktywną dokumentację API. Otwórz:\n\nhttp://127.0.0.1:8000/docs — interfejs Swagger UI, w którym możesz od razu klikać i testować endpointy.\nhttp://127.0.0.1:8000/redoc — alternatywny, bardziej “dokumentacyjny” widok.\n\n\n🧠 Do tego mechanizmu wrócimy dokładniej w wykładzie 3 (projektowanie API) i laboratorium 9 — dziś zapamiętaj tylko, że istnieje i że jest darmowy.",
-    "crumbs": [
-      "Laboratoria",
-      "Lab 1: Środowisko pracy i pierwszy serwer"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/cw1.html#drugi-endpoint-zapowiedź-projektu",
-    "href": "cwiczenia/cw1.html#drugi-endpoint-zapowiedź-projektu",
-    "title": "Lab 1: Środowisko pracy i pierwszy serwer",
-    "section": "",
-    "text": "Dodaj do main.py endpoint, który na razie zwraca dane na sztywno (żadnej bazy jeszcze nie mamy — to dopiero lab 3):\n@app.get(\"/poligony\")\ndef lista_poligonow():\n    return [\n        {\"id\": 1, \"nazwa\": \"Poligon Nowa Dęba\", \"typ\": \"strzelnica\"},\n        {\"id\": 2, \"nazwa\": \"Poligon Drawsko\", \"typ\": \"teren manewrowy\"},\n    ]\nSprawdź http://127.0.0.1:8000/poligony w przeglądarce oraz w /docs — zobacz, jak Swagger sam wykrył nowy endpoint.",
-    "crumbs": [
-      "Laboratoria",
-      "Lab 1: Środowisko pracy i pierwszy serwer"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/cw1.html#repozytorium",
-    "href": "cwiczenia/cw1.html#repozytorium",
-    "title": "Lab 1: Środowisko pracy i pierwszy serwer",
-    "section": "",
-    "text": "Załóż repozytorium git dla swojego projektu (osobne od materiałów kursu):\ngit init\necho \".venv/\\n__pycache__/\\n*.pyc\" &gt; .gitignore\ngit add main.py .gitignore\ngit commit -m \"Init: pierwszy serwer FastAPI\"\nTen projekt będzie rósł przez cały semestr — każde kolejne laboratorium to nowy commit.",
-    "crumbs": [
-      "Laboratoria",
-      "Lab 1: Środowisko pracy i pierwszy serwer"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/cw1.html#zadanie-na-koniec-laboratorium",
-    "href": "cwiczenia/cw1.html#zadanie-na-koniec-laboratorium",
-    "title": "Lab 1: Środowisko pracy i pierwszy serwer",
-    "section": "",
-    "text": "Dodaj trzeci endpoint GET /jednostki, zwracający sztywną listę 2-3 jednostek wojskowych (nazwa, garnizon).\nSprawdź go w /docs.\nZacommituj zmiany z sensowną wiadomością.\n\nDo oddania: link do repozytorium (lub commit hash) — prowadzący sprawdza na następnych zajęciach.",
-    "crumbs": [
-      "Laboratoria",
-      "Lab 1: Środowisko pracy i pierwszy serwer"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/cw2.html",
-    "href": "cwiczenia/cw2.html",
-    "title": "Lab 2: Pierwszy prawdziwy endpoint REST",
-    "section": "",
-    "text": "Zastąpić sztywno wpisane listy z laboratorium 1 prawdziwym modelem danych (Pydantic) i zaimplementować pierwsze operacje REST na zasobie Poligon: GET (lista, jeden) i POST (utworzenie). Dane na razie żyją w pamięci procesu (lista Pythona) — baza danych to dopiero laboratorium 3.\n\n\n\n\nFastAPI używa biblioteki Pydantic do opisu kształtu danych i automatycznej walidacji. Zamiast zwracać gołe słowniki jak w laboratorium 1, zdefiniuj klasę:\nfrom pydantic import BaseModel\n\nclass Poligon(BaseModel):\n    id: int\n    nazwa: str\n    lokalizacja: str\n    typ: str  # \"strzelnica\" albo \"teren manewrowy\"\nPydantic automatycznie sprawdzi, czy przychodzące dane pasują do tych typów — jeśli klient wyśle id jako tekst zamiast liczby, dostanie czytelny błąd 422, zanim Twój kod w ogóle zobaczy te dane.\n\n\n\npoligony: list[Poligon] = [\n    Poligon(id=1, nazwa=\"Poligon Nowa Deba\", lokalizacja=\"Nowa Deba\", typ=\"strzelnica\"),\n    Poligon(id=2, nazwa=\"Poligon Drawsko\", lokalizacja=\"Drawsko Pomorskie\", typ=\"teren manewrowy\"),\n]\n\n\n\nfrom fastapi import FastAPI, HTTPException\n\napp = FastAPI(title=\"System rezerwacji poligonu\")\n\n@app.get(\"/poligony\", response_model=list[Poligon])\ndef lista_poligonow():\n    return poligony\n\n\n@app.get(\"/poligony/{poligon_id}\", response_model=Poligon)\ndef pobierz_poligon(poligon_id: int):\n    for p in poligony:\n        if p.id == poligon_id:\n            return p\n    raise HTTPException(status_code=404, detail=\"Poligon nie znaleziony\")\n{poligon_id} w ścieżce to path parameter — FastAPI automatycznie wyciąga go z URL-a i konwertuje na int (dzięki adnotacji typu w parametrze funkcji). Spróbuj wywołać /poligony/abc — zobaczysz błąd walidacji zamiast crashu.\nresponse_model=Poligon mówi FastAPI, jakiego kształtu odpowiedzi się spodziewać — to też trafia do automatycznej dokumentacji w /docs.\n\n\n\n@app.post(\"/poligony\", response_model=Poligon, status_code=201)\ndef utworz_poligon(poligon: Poligon):\n    for p in poligony:\n        if p.id == poligon.id:\n            raise HTTPException(status_code=409, detail=\"Poligon o tym ID juz istnieje\")\n    poligony.append(poligon)\n    return poligon\nZwróć uwagę na status_code=201 — zgodnie z wykładem 2, tworzenie zasobu powinno zwracać 201 Created, nie domyślne 200 OK. 409 Conflict to kod statusu na sytuację “żądanie jest poprawne, ale koliduje z obecnym stanem” — dokładnie pasuje do “ID już zajęte”.\nSprawdź w /docs: kliknij “Try it out” przy POST /poligony i wyślij nowy poligon — zobaczysz go od razu w GET /poligony.\n\n\n\n@app.get(\"/poligony\", response_model=list[Poligon])\ndef lista_poligonow(typ: str | None = None):\n    if typ is None:\n        return poligony\n    return [p for p in poligony if p.typ == typ]\nParametr typ, którego nie ma w ścieżce URL (/poligony), a jest w liście argumentów funkcji, FastAPI automatycznie traktuje jako query parameter: /poligony?typ=strzelnica. str | None = None oznacza “opcjonalny, domyślnie brak filtra”.\n\n\n\n\nDodaj model Jednostka (pola: id, nazwa, garnizon) i analogiczne endpointy GET /jednostki, GET /jednostki/{id}, POST /jednostki.\nDodaj do Poligon pole dostepny: bool = True i endpoint GET /poligony?dostepny=true, filtrujący po dostępności (analogicznie do filtra typ).\nSprawdź w /docs, że oba zasoby (Poligon, Jednostka) mają poprawnie wygenerowaną dokumentację.\nZacommituj zmiany.\n\nDo oddania: link do repozytorium / commit hash.",
-    "crumbs": [
-      "Laboratoria",
-      "Lab 2: Pierwszy prawdziwy endpoint REST"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/cw2.html#cel",
-    "href": "cwiczenia/cw2.html#cel",
-    "title": "Lab 2: Pierwszy prawdziwy endpoint REST",
-    "section": "",
-    "text": "Zastąpić sztywno wpisane listy z laboratorium 1 prawdziwym modelem danych (Pydantic) i zaimplementować pierwsze operacje REST na zasobie Poligon: GET (lista, jeden) i POST (utworzenie). Dane na razie żyją w pamięci procesu (lista Pythona) — baza danych to dopiero laboratorium 3.",
-    "crumbs": [
-      "Laboratoria",
-      "Lab 2: Pierwszy prawdziwy endpoint REST"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/cw2.html#model-danych-pydantic",
-    "href": "cwiczenia/cw2.html#model-danych-pydantic",
-    "title": "Lab 2: Pierwszy prawdziwy endpoint REST",
-    "section": "",
-    "text": "FastAPI używa biblioteki Pydantic do opisu kształtu danych i automatycznej walidacji. Zamiast zwracać gołe słowniki jak w laboratorium 1, zdefiniuj klasę:\nfrom pydantic import BaseModel\n\nclass Poligon(BaseModel):\n    id: int\n    nazwa: str\n    lokalizacja: str\n    typ: str  # \"strzelnica\" albo \"teren manewrowy\"\nPydantic automatycznie sprawdzi, czy przychodzące dane pasują do tych typów — jeśli klient wyśle id jako tekst zamiast liczby, dostanie czytelny błąd 422, zanim Twój kod w ogóle zobaczy te dane.",
-    "crumbs": [
-      "Laboratoria",
-      "Lab 2: Pierwszy prawdziwy endpoint REST"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/cw2.html#dane-w-pamięci-na-razie",
-    "href": "cwiczenia/cw2.html#dane-w-pamięci-na-razie",
-    "title": "Lab 2: Pierwszy prawdziwy endpoint REST",
-    "section": "",
-    "text": "poligony: list[Poligon] = [\n    Poligon(id=1, nazwa=\"Poligon Nowa Deba\", lokalizacja=\"Nowa Deba\", typ=\"strzelnica\"),\n    Poligon(id=2, nazwa=\"Poligon Drawsko\", lokalizacja=\"Drawsko Pomorskie\", typ=\"teren manewrowy\"),\n]",
-    "crumbs": [
-      "Laboratoria",
-      "Lab 2: Pierwszy prawdziwy endpoint REST"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/cw2.html#get-lista-i-pojedynczy-zasób",
-    "href": "cwiczenia/cw2.html#get-lista-i-pojedynczy-zasób",
-    "title": "Lab 2: Pierwszy prawdziwy endpoint REST",
-    "section": "",
-    "text": "from fastapi import FastAPI, HTTPException\n\napp = FastAPI(title=\"System rezerwacji poligonu\")\n\n@app.get(\"/poligony\", response_model=list[Poligon])\ndef lista_poligonow():\n    return poligony\n\n\n@app.get(\"/poligony/{poligon_id}\", response_model=Poligon)\ndef pobierz_poligon(poligon_id: int):\n    for p in poligony:\n        if p.id == poligon_id:\n            return p\n    raise HTTPException(status_code=404, detail=\"Poligon nie znaleziony\")\n{poligon_id} w ścieżce to path parameter — FastAPI automatycznie wyciąga go z URL-a i konwertuje na int (dzięki adnotacji typu w parametrze funkcji). Spróbuj wywołać /poligony/abc — zobaczysz błąd walidacji zamiast crashu.\nresponse_model=Poligon mówi FastAPI, jakiego kształtu odpowiedzi się spodziewać — to też trafia do automatycznej dokumentacji w /docs.",
-    "crumbs": [
-      "Laboratoria",
-      "Lab 2: Pierwszy prawdziwy endpoint REST"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/cw2.html#post-tworzenie-nowego-zasobu",
-    "href": "cwiczenia/cw2.html#post-tworzenie-nowego-zasobu",
-    "title": "Lab 2: Pierwszy prawdziwy endpoint REST",
-    "section": "",
-    "text": "@app.post(\"/poligony\", response_model=Poligon, status_code=201)\ndef utworz_poligon(poligon: Poligon):\n    for p in poligony:\n        if p.id == poligon.id:\n            raise HTTPException(status_code=409, detail=\"Poligon o tym ID juz istnieje\")\n    poligony.append(poligon)\n    return poligon\nZwróć uwagę na status_code=201 — zgodnie z wykładem 2, tworzenie zasobu powinno zwracać 201 Created, nie domyślne 200 OK. 409 Conflict to kod statusu na sytuację “żądanie jest poprawne, ale koliduje z obecnym stanem” — dokładnie pasuje do “ID już zajęte”.\nSprawdź w /docs: kliknij “Try it out” przy POST /poligony i wyślij nowy poligon — zobaczysz go od razu w GET /poligony.",
-    "crumbs": [
-      "Laboratoria",
-      "Lab 2: Pierwszy prawdziwy endpoint REST"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/cw2.html#query-parameters-filtrowanie-listy",
-    "href": "cwiczenia/cw2.html#query-parameters-filtrowanie-listy",
-    "title": "Lab 2: Pierwszy prawdziwy endpoint REST",
-    "section": "",
-    "text": "@app.get(\"/poligony\", response_model=list[Poligon])\ndef lista_poligonow(typ: str | None = None):\n    if typ is None:\n        return poligony\n    return [p for p in poligony if p.typ == typ]\nParametr typ, którego nie ma w ścieżce URL (/poligony), a jest w liście argumentów funkcji, FastAPI automatycznie traktuje jako query parameter: /poligony?typ=strzelnica. str | None = None oznacza “opcjonalny, domyślnie brak filtra”.",
-    "crumbs": [
-      "Laboratoria",
-      "Lab 2: Pierwszy prawdziwy endpoint REST"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/cw2.html#zadanie-na-koniec-laboratorium",
-    "href": "cwiczenia/cw2.html#zadanie-na-koniec-laboratorium",
-    "title": "Lab 2: Pierwszy prawdziwy endpoint REST",
-    "section": "",
-    "text": "Dodaj model Jednostka (pola: id, nazwa, garnizon) i analogiczne endpointy GET /jednostki, GET /jednostki/{id}, POST /jednostki.\nDodaj do Poligon pole dostepny: bool = True i endpoint GET /poligony?dostepny=true, filtrujący po dostępności (analogicznie do filtra typ).\nSprawdź w /docs, że oba zasoby (Poligon, Jednostka) mają poprawnie wygenerowaną dokumentację.\nZacommituj zmiany.\n\nDo oddania: link do repozytorium / commit hash.",
-    "crumbs": [
-      "Laboratoria",
-      "Lab 2: Pierwszy prawdziwy endpoint REST"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/cw4.html",
-    "href": "cwiczenia/cw4.html",
-    "title": "Lab 4: Pełny CRUD i pierwsze rezerwacje",
-    "section": "",
-    "text": "Dodać brakujące operacje (PUT, PATCH, DELETE) do zasobów z laboratorium 3 i wprowadzić trzeci, kluczowy zasób projektu: Rezerwacja — z pierwszą wersją sprawdzania konfliktu terminów, zapowiedzianego jeszcze na wykładzie 1.\n\n\n\n\n@app.put(\"/poligony/{poligon_id}\", response_model=Poligon)\ndef zaktualizuj_poligon(poligon_id: int, poligon: PoligonCreate):\n    with get_db() as conn:\n        cursor = conn.execute(\n            \"UPDATE poligony SET nazwa=?, lokalizacja=?, typ=?, dostepny=? WHERE id=?\",\n            (poligon.nazwa, poligon.lokalizacja, poligon.typ, int(poligon.dostepny), poligon_id),\n        )\n        conn.commit()\n        if cursor.rowcount == 0:\n            raise HTTPException(status_code=404, detail=\"Poligon nie znaleziony\")\n        return Poligon(id=poligon_id, **poligon.model_dump())\nZgodnie z wykładem 2, PUT zastępuje cały zasób — klient musi przysłać wszystkie pola, nawet te, których nie zmienia. Stąd PATCH na częściowe aktualizacje:\nclass PoligonPatch(BaseModel):\n    nazwa: str | None = None\n    lokalizacja: str | None = None\n    typ: str | None = None\n    dostepny: bool | None = None\n\n@app.patch(\"/poligony/{poligon_id}\", response_model=Poligon)\ndef czesciowa_aktualizacja(poligon_id: int, zmiany: PoligonPatch):\n    pola_do_zmiany = zmiany.model_dump(exclude_unset=True)  # tylko pola faktycznie przeslane\n    if not pola_do_zmiany:\n        raise HTTPException(status_code=400, detail=\"Brak pol do aktualizacji\")\n    # zbuduj dynamiczne zapytanie UPDATE tylko dla przeslanych pol\n    ...\nexclude_unset=True to klucz do poprawnego PATCH-a: rozróżnia “klient nie przysłał tego pola” od “klient przysłał null” — bez tego nie dałoby się odróżnić “nie zmieniaj tego pola” od “ustaw je na puste”.\n\n\n\n@app.delete(\"/poligony/{poligon_id}\", status_code=204)\ndef usun_poligon(poligon_id: int):\n    with get_db() as conn:\n        cursor = conn.execute(\"DELETE FROM poligony WHERE id=?\", (poligon_id,))\n        conn.commit()\n        if cursor.rowcount == 0:\n            raise HTTPException(status_code=404, detail=\"Poligon nie znaleziony\")\n204 No Content — sukces, ale świadomie bez ciała odpowiedzi (nie ma czego zwracać, zasób już nie istnieje). FastAPI z status_code=204 automatycznie nie wysyła ciała, nawet jeśli funkcja by coś zwróciła.\n\n\n\nCREATE TABLE IF NOT EXISTS rezerwacje (\n    id INTEGER PRIMARY KEY AUTOINCREMENT,\n    poligon_id INTEGER NOT NULL REFERENCES poligony(id),\n    jednostka_id INTEGER NOT NULL REFERENCES jednostki(id),\n    data_od TEXT NOT NULL,   -- ISO 8601: \"2026-03-10T08:00:00\"\n    data_do TEXT NOT NULL,\n    status TEXT NOT NULL DEFAULT 'oczekujaca'  -- oczekujaca / zatwierdzona / odrzucona\n);\nclass RezerwacjaCreate(BaseModel):\n    poligon_id: int\n    jednostka_id: int\n    data_od: str\n    data_do: str\n\n\n\nTo dokładnie problem zapowiedziany na wykładzie 1: dwie jednostki nie mogą zarezerwować tego samego poligonu w nakładających się terminach.\ndef sprawdz_konflikt(conn, poligon_id: int, data_od: str, data_do: str) -&gt; bool:\n    wiersze = conn.execute(\n        \"\"\"\n        SELECT id FROM rezerwacje\n        WHERE poligon_id = ?\n          AND status != 'odrzucona'\n          AND data_od &lt; ?\n          AND data_do &gt; ?\n        \"\"\",\n        (poligon_id, data_do, data_od),\n    ).fetchall()\n    return len(wiersze) &gt; 0\n\n\n@app.post(\"/rezerwacje\", status_code=201)\ndef utworz_rezerwacje(rez: RezerwacjaCreate):\n    with get_db() as conn:\n        if sprawdz_konflikt(conn, rez.poligon_id, rez.data_od, rez.data_do):\n            raise HTTPException(status_code=409, detail=\"Konflikt terminow na tym poligonie\")\n        cursor = conn.execute(\n            \"INSERT INTO rezerwacje (poligon_id, jednostka_id, data_od, data_do) VALUES (?, ?, ?, ?)\",\n            (rez.poligon_id, rez.jednostka_id, rez.data_od, rez.data_do),\n        )\n        conn.commit()\n        return {\"id\": cursor.lastrowid, **rez.model_dump(), \"status\": \"oczekujaca\"}\nWarunek data_od &lt; ? AND data_do &gt; ? to klasyczny test nakładania się dwóch przedziałów czasowych: dwa przedziały nie nakładają się tylko wtedy, gdy jeden kończy się przed rozpoczęciem drugiego. Zanegowanie tego warunku (logicznie — de Morgan) daje właśnie powyższe zapytanie.\n409 Conflict (nie 400 Bad Request!) — dane są poprawnie sformułowane, problem to konflikt ze stanem systemu, dokładnie jak w laboratorium 2 z duplikatem ID.\n\n\n\n\nDokończ PATCH /poligony/{id} (dynamiczne zapytanie UPDATE tylko dla przesłanych pól).\nDodaj GET /rezerwacje z filtrowaniem po poligon_id i status (query params, jak w laboratorium 2-3).\nNapisz test ręczny w /docs: spróbuj utworzyć dwie rezerwacje na ten sam poligon w nakładających się terminach — sprawdź, że druga dostaje 409.\nNapisz też test negatywny: dwie rezerwacje na ten sam poligon w terminach, które się nie nakładają — obie powinny się udać.\nZacommituj zmiany.\n\nDo oddania: link do repozytorium / commit hash.",
-    "crumbs": [
-      "Laboratoria",
-      "Lab 4: Pełny CRUD i pierwsze rezerwacje"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/cw4.html#cel",
-    "href": "cwiczenia/cw4.html#cel",
-    "title": "Lab 4: Pełny CRUD i pierwsze rezerwacje",
-    "section": "",
-    "text": "Dodać brakujące operacje (PUT, PATCH, DELETE) do zasobów z laboratorium 3 i wprowadzić trzeci, kluczowy zasób projektu: Rezerwacja — z pierwszą wersją sprawdzania konfliktu terminów, zapowiedzianego jeszcze na wykładzie 1.",
-    "crumbs": [
-      "Laboratoria",
-      "Lab 4: Pełny CRUD i pierwsze rezerwacje"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/cw4.html#put-zastąp-cały-zasób",
-    "href": "cwiczenia/cw4.html#put-zastąp-cały-zasób",
-    "title": "Lab 4: Pełny CRUD i pierwsze rezerwacje",
-    "section": "",
-    "text": "@app.put(\"/poligony/{poligon_id}\", response_model=Poligon)\ndef zaktualizuj_poligon(poligon_id: int, poligon: PoligonCreate):\n    with get_db() as conn:\n        cursor = conn.execute(\n            \"UPDATE poligony SET nazwa=?, lokalizacja=?, typ=?, dostepny=? WHERE id=?\",\n            (poligon.nazwa, poligon.lokalizacja, poligon.typ, int(poligon.dostepny), poligon_id),\n        )\n        conn.commit()\n        if cursor.rowcount == 0:\n            raise HTTPException(status_code=404, detail=\"Poligon nie znaleziony\")\n        return Poligon(id=poligon_id, **poligon.model_dump())\nZgodnie z wykładem 2, PUT zastępuje cały zasób — klient musi przysłać wszystkie pola, nawet te, których nie zmienia. Stąd PATCH na częściowe aktualizacje:\nclass PoligonPatch(BaseModel):\n    nazwa: str | None = None\n    lokalizacja: str | None = None\n    typ: str | None = None\n    dostepny: bool | None = None\n\n@app.patch(\"/poligony/{poligon_id}\", response_model=Poligon)\ndef czesciowa_aktualizacja(poligon_id: int, zmiany: PoligonPatch):\n    pola_do_zmiany = zmiany.model_dump(exclude_unset=True)  # tylko pola faktycznie przeslane\n    if not pola_do_zmiany:\n        raise HTTPException(status_code=400, detail=\"Brak pol do aktualizacji\")\n    # zbuduj dynamiczne zapytanie UPDATE tylko dla przeslanych pol\n    ...\nexclude_unset=True to klucz do poprawnego PATCH-a: rozróżnia “klient nie przysłał tego pola” od “klient przysłał null” — bez tego nie dałoby się odróżnić “nie zmieniaj tego pola” od “ustaw je na puste”.",
-    "crumbs": [
-      "Laboratoria",
-      "Lab 4: Pełny CRUD i pierwsze rezerwacje"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/cw4.html#delete",
-    "href": "cwiczenia/cw4.html#delete",
-    "title": "Lab 4: Pełny CRUD i pierwsze rezerwacje",
-    "section": "",
-    "text": "@app.delete(\"/poligony/{poligon_id}\", status_code=204)\ndef usun_poligon(poligon_id: int):\n    with get_db() as conn:\n        cursor = conn.execute(\"DELETE FROM poligony WHERE id=?\", (poligon_id,))\n        conn.commit()\n        if cursor.rowcount == 0:\n            raise HTTPException(status_code=404, detail=\"Poligon nie znaleziony\")\n204 No Content — sukces, ale świadomie bez ciała odpowiedzi (nie ma czego zwracać, zasób już nie istnieje). FastAPI z status_code=204 automatycznie nie wysyła ciała, nawet jeśli funkcja by coś zwróciła.",
-    "crumbs": [
-      "Laboratoria",
-      "Lab 4: Pełny CRUD i pierwsze rezerwacje"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/cw4.html#zasób-rezerwacja-model-i-tabela",
-    "href": "cwiczenia/cw4.html#zasób-rezerwacja-model-i-tabela",
-    "title": "Lab 4: Pełny CRUD i pierwsze rezerwacje",
-    "section": "",
-    "text": "CREATE TABLE IF NOT EXISTS rezerwacje (\n    id INTEGER PRIMARY KEY AUTOINCREMENT,\n    poligon_id INTEGER NOT NULL REFERENCES poligony(id),\n    jednostka_id INTEGER NOT NULL REFERENCES jednostki(id),\n    data_od TEXT NOT NULL,   -- ISO 8601: \"2026-03-10T08:00:00\"\n    data_do TEXT NOT NULL,\n    status TEXT NOT NULL DEFAULT 'oczekujaca'  -- oczekujaca / zatwierdzona / odrzucona\n);\nclass RezerwacjaCreate(BaseModel):\n    poligon_id: int\n    jednostka_id: int\n    data_od: str\n    data_do: str",
-    "crumbs": [
-      "Laboratoria",
-      "Lab 4: Pełny CRUD i pierwsze rezerwacje"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/cw4.html#sprawdzanie-konfliktu-terminów-pierwsza-wersja",
-    "href": "cwiczenia/cw4.html#sprawdzanie-konfliktu-terminów-pierwsza-wersja",
-    "title": "Lab 4: Pełny CRUD i pierwsze rezerwacje",
-    "section": "",
-    "text": "To dokładnie problem zapowiedziany na wykładzie 1: dwie jednostki nie mogą zarezerwować tego samego poligonu w nakładających się terminach.\ndef sprawdz_konflikt(conn, poligon_id: int, data_od: str, data_do: str) -&gt; bool:\n    wiersze = conn.execute(\n        \"\"\"\n        SELECT id FROM rezerwacje\n        WHERE poligon_id = ?\n          AND status != 'odrzucona'\n          AND data_od &lt; ?\n          AND data_do &gt; ?\n        \"\"\",\n        (poligon_id, data_do, data_od),\n    ).fetchall()\n    return len(wiersze) &gt; 0\n\n\n@app.post(\"/rezerwacje\", status_code=201)\ndef utworz_rezerwacje(rez: RezerwacjaCreate):\n    with get_db() as conn:\n        if sprawdz_konflikt(conn, rez.poligon_id, rez.data_od, rez.data_do):\n            raise HTTPException(status_code=409, detail=\"Konflikt terminow na tym poligonie\")\n        cursor = conn.execute(\n            \"INSERT INTO rezerwacje (poligon_id, jednostka_id, data_od, data_do) VALUES (?, ?, ?, ?)\",\n            (rez.poligon_id, rez.jednostka_id, rez.data_od, rez.data_do),\n        )\n        conn.commit()\n        return {\"id\": cursor.lastrowid, **rez.model_dump(), \"status\": \"oczekujaca\"}\nWarunek data_od &lt; ? AND data_do &gt; ? to klasyczny test nakładania się dwóch przedziałów czasowych: dwa przedziały nie nakładają się tylko wtedy, gdy jeden kończy się przed rozpoczęciem drugiego. Zanegowanie tego warunku (logicznie — de Morgan) daje właśnie powyższe zapytanie.\n409 Conflict (nie 400 Bad Request!) — dane są poprawnie sformułowane, problem to konflikt ze stanem systemu, dokładnie jak w laboratorium 2 z duplikatem ID.",
-    "crumbs": [
-      "Laboratoria",
-      "Lab 4: Pełny CRUD i pierwsze rezerwacje"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/cw4.html#zadanie-na-koniec-laboratorium",
-    "href": "cwiczenia/cw4.html#zadanie-na-koniec-laboratorium",
-    "title": "Lab 4: Pełny CRUD i pierwsze rezerwacje",
-    "section": "",
-    "text": "Dokończ PATCH /poligony/{id} (dynamiczne zapytanie UPDATE tylko dla przesłanych pól).\nDodaj GET /rezerwacje z filtrowaniem po poligon_id i status (query params, jak w laboratorium 2-3).\nNapisz test ręczny w /docs: spróbuj utworzyć dwie rezerwacje na ten sam poligon w nakładających się terminach — sprawdź, że druga dostaje 409.\nNapisz też test negatywny: dwie rezerwacje na ten sam poligon w terminach, które się nie nakładają — obie powinny się udać.\nZacommituj zmiany.\n\nDo oddania: link do repozytorium / commit hash.",
-    "crumbs": [
-      "Laboratoria",
-      "Lab 4: Pełny CRUD i pierwsze rezerwacje"
-    ]
-  },
-  {
     "objectID": "lectures/wyklad1.html",
     "href": "lectures/wyklad1.html",
     "title": "Architektura aplikacji sieciowych",
@@ -668,102 +110,121 @@
     ]
   },
   {
-    "objectID": "lectures/wyklad3.html#cele-wykładu",
-    "href": "lectures/wyklad3.html#cele-wykładu",
-    "title": "Projektowanie API REST",
-    "section": "🎯 Cele wykładu",
-    "text": "🎯 Cele wykładu\nNauczysz się projektować adresy URL i strukturę odpowiedzi API tak, żeby były przewidywalne i łatwe w użyciu — oraz poznasz, jak FastAPI generuje dokumentację OpenAPI automatycznie z Waszego kodu.",
+    "objectID": "cwiczenia/cw1.html",
+    "href": "cwiczenia/cw1.html",
+    "title": "Lab 1: Środowisko pracy i pierwszy serwer",
+    "section": "",
+    "text": "Postawić działający serwer HTTP w Pythonie i zobaczyć swój pierwszy endpoint w przeglądarce. To fundament, na którym przez 12 laboratoriów zbudujemy system rezerwacji poligonu.\n\n\n\n\nBędziemy używać Python 3.11+, FastAPI (framework webowy) i uvicorn (serwer, który faktycznie uruchamia aplikację).\n\n\nZawsze pracuj w izolowanym środowisku — nigdy nie instaluj pakietów globalnie.\npython3 -m venv .venv\nsource .venv/bin/activate      # macOS/Linux\n# .venv\\Scripts\\activate       # Windows\n\npip install fastapi uvicorn[standard]\n\n💡 .venv/ nigdy nie trafia do repozytorium git — dodaj go do .gitignore.\n\n\n\n\n\n\nUtwórz plik main.py:\nfrom fastapi import FastAPI\n\napp = FastAPI(title=\"System rezerwacji poligonu\")\n\n\n@app.get(\"/\")\ndef root():\n    return {\"komunikat\": \"System rezerwacji poligonu dziala\"}\nUruchom:\nuvicorn main:app --reload\n\nmain — nazwa pliku (main.py),\napp — nazwa obiektu FastAPI() w tym pliku,\n--reload — serwer automatycznie restartuje się po zapisaniu zmian (tylko do pracy deweloperskiej, nigdy na produkcji).\n\nOtwórz w przeglądarce http://127.0.0.1:8000/ — powinieneś zobaczyć:\n{\"komunikat\": \"System rezerwacji poligonu dziala\"}\n\n\n\n\nFastAPI, bez dodatkowej pracy z Twojej strony, generuje interaktywną dokumentację API. Otwórz:\n\nhttp://127.0.0.1:8000/docs — interfejs Swagger UI, w którym możesz od razu klikać i testować endpointy.\nhttp://127.0.0.1:8000/redoc — alternatywny, bardziej “dokumentacyjny” widok.\n\n\n🧠 Do tego mechanizmu wrócimy dokładniej w wykładzie 3 (projektowanie API) i laboratorium 9 — dziś zapamiętaj tylko, że istnieje i że jest darmowy.\n\n\n\n\n\nDodaj do main.py endpoint, który na razie zwraca dane na sztywno (żadnej bazy jeszcze nie mamy — to dopiero lab 3):\n@app.get(\"/poligony\")\ndef lista_poligonow():\n    return [\n        {\"id\": 1, \"nazwa\": \"Poligon Nowa Dęba\", \"typ\": \"strzelnica\"},\n        {\"id\": 2, \"nazwa\": \"Poligon Drawsko\", \"typ\": \"teren manewrowy\"},\n    ]\nSprawdź http://127.0.0.1:8000/poligony w przeglądarce oraz w /docs — zobacz, jak Swagger sam wykrył nowy endpoint.\n\n\n\n\nZałóż repozytorium git dla swojego projektu (osobne od materiałów kursu):\ngit init\necho \".venv/\\n__pycache__/\\n*.pyc\" &gt; .gitignore\ngit add main.py .gitignore\ngit commit -m \"Init: pierwszy serwer FastAPI\"\nTen projekt będzie rósł przez cały semestr — każde kolejne laboratorium to nowy commit.\n\n\n\n\n\nDodaj trzeci endpoint GET /jednostki, zwracający sztywną listę 2-3 jednostek wojskowych (nazwa, garnizon).\nSprawdź go w /docs.\nZacommituj zmiany z sensowną wiadomością.\n\nDo oddania: link do repozytorium (lub commit hash) — prowadzący sprawdza na następnych zajęciach.",
     "crumbs": [
-      "Wykłady",
-      "Projektowanie API REST"
+      "Laboratoria",
+      "Lab 1: Środowisko pracy i pierwszy serwer"
     ]
   },
   {
-    "objectID": "lectures/wyklad3.html#zasoby-nie-czynności",
-    "href": "lectures/wyklad3.html#zasoby-nie-czynności",
-    "title": "Projektowanie API REST",
-    "section": "1️⃣ Zasoby, nie czynności",
-    "text": "1️⃣ Zasoby, nie czynności\nAdres URL w REST opisuje rzecz (zasób), nie akcję — akcję wyraża metoda HTTP (wykład 2). Dobra konwencja nazewnicza:\n\n\n\nŹle\nDobrze\n\n\n\n\n/getPoligony\nGET /poligony\n\n\n/utworzRezerwacje\nPOST /rezerwacje\n\n\n/poligon/usun/5\nDELETE /poligony/5\n\n\n\nZasady:\n\nRzeczowniki, nie czasowniki w ścieżce.\nLiczba mnoga dla kolekcji: /poligony, nie /poligon.\nMałe litery, myślniki zamiast podkreślników w wieloczłonowych nazwach.",
+    "objectID": "cwiczenia/cw1.html#cel",
+    "href": "cwiczenia/cw1.html#cel",
+    "title": "Lab 1: Środowisko pracy i pierwszy serwer",
+    "section": "",
+    "text": "Postawić działający serwer HTTP w Pythonie i zobaczyć swój pierwszy endpoint w przeglądarce. To fundament, na którym przez 12 laboratoriów zbudujemy system rezerwacji poligonu.",
     "crumbs": [
-      "Wykłady",
-      "Projektowanie API REST"
+      "Laboratoria",
+      "Lab 1: Środowisko pracy i pierwszy serwer"
     ]
   },
   {
-    "objectID": "lectures/wyklad3.html#zasoby-zagnieżdżone",
-    "href": "lectures/wyklad3.html#zasoby-zagnieżdżone",
-    "title": "Projektowanie API REST",
-    "section": "2️⃣ Zasoby zagnieżdżone",
-    "text": "2️⃣ Zasoby zagnieżdżone\nKiedy jeden zasób “należy” logicznie do drugiego:\nGET /poligony/5/rezerwacje        -- rezerwacje na poligonie 5\nPOST /poligony/5/rezerwacje       -- nowa rezerwacja na poligonie 5\nGET /jednostki/3/rezerwacje       -- rezerwacje jednostki 3\n\n⚠️ Nie zagnieżdżaj głębiej niż 2 poziomy (/a/1/b/2/c/3 jest już nieczytelne) — jeśli potrzebujesz głębszego zagnieżdżenia, rozważ osobny, płaski endpoint z filtrowaniem przez query params zamiast ścieżki.",
+    "objectID": "cwiczenia/cw1.html#środowisko",
+    "href": "cwiczenia/cw1.html#środowisko",
+    "title": "Lab 1: Środowisko pracy i pierwszy serwer",
+    "section": "",
+    "text": "Będziemy używać Python 3.11+, FastAPI (framework webowy) i uvicorn (serwer, który faktycznie uruchamia aplikację).\n\n\nZawsze pracuj w izolowanym środowisku — nigdy nie instaluj pakietów globalnie.\npython3 -m venv .venv\nsource .venv/bin/activate      # macOS/Linux\n# .venv\\Scripts\\activate       # Windows\n\npip install fastapi uvicorn[standard]\n\n💡 .venv/ nigdy nie trafia do repozytorium git — dodaj go do .gitignore.",
     "crumbs": [
-      "Wykłady",
-      "Projektowanie API REST"
+      "Laboratoria",
+      "Lab 1: Środowisko pracy i pierwszy serwer"
     ]
   },
   {
-    "objectID": "lectures/wyklad3.html#filtrowanie-sortowanie-paginacja-przez-query-params",
-    "href": "lectures/wyklad3.html#filtrowanie-sortowanie-paginacja-przez-query-params",
-    "title": "Projektowanie API REST",
-    "section": "3️⃣ Filtrowanie, sortowanie, paginacja — przez query params",
-    "text": "3️⃣ Filtrowanie, sortowanie, paginacja — przez query params\nGET /rezerwacje?status=zatwierdzona          -- filtrowanie\nGET /rezerwacje?sortuj=data&kierunek=desc    -- sortowanie\nGET /rezerwacje?strona=2&na_strone=20         -- paginacja\nQuery params (po ?) nadają się do opcjonalnych modyfikatorów zapytania — ścieżka (/rezerwacje) zostaje ta sama niezależnie od tego, jak filtrujesz czy sortujesz wynik.\n\n\n\n\n\n\nNoteDlaczego paginacja jest ważna, nawet w małym projekcie?\n\n\n\nGET /rezerwacje bez paginacji, gdy tabela urośnie do 100 000 wierszy, zwróci gigantyczną odpowiedź, która obciąży i serwer, i klienta. Dobra praktyka: zawsze projektuj endpointy listujące z myślą o paginacji, nawet jeśli na start danych jest mało.",
+    "objectID": "cwiczenia/cw1.html#pierwszy-serwer",
+    "href": "cwiczenia/cw1.html#pierwszy-serwer",
+    "title": "Lab 1: Środowisko pracy i pierwszy serwer",
+    "section": "",
+    "text": "Utwórz plik main.py:\nfrom fastapi import FastAPI\n\napp = FastAPI(title=\"System rezerwacji poligonu\")\n\n\n@app.get(\"/\")\ndef root():\n    return {\"komunikat\": \"System rezerwacji poligonu dziala\"}\nUruchom:\nuvicorn main:app --reload\n\nmain — nazwa pliku (main.py),\napp — nazwa obiektu FastAPI() w tym pliku,\n--reload — serwer automatycznie restartuje się po zapisaniu zmian (tylko do pracy deweloperskiej, nigdy na produkcji).\n\nOtwórz w przeglądarce http://127.0.0.1:8000/ — powinieneś zobaczyć:\n{\"komunikat\": \"System rezerwacji poligonu dziala\"}",
     "crumbs": [
-      "Wykłady",
-      "Projektowanie API REST"
+      "Laboratoria",
+      "Lab 1: Środowisko pracy i pierwszy serwer"
     ]
   },
   {
-    "objectID": "lectures/wyklad3.html#wersjonowanie-api",
-    "href": "lectures/wyklad3.html#wersjonowanie-api",
-    "title": "Projektowanie API REST",
-    "section": "4️⃣ Wersjonowanie API",
-    "text": "4️⃣ Wersjonowanie API\nKiedy zmieniasz kształt API w sposób, który złamałby istniejących klientów (np. zmieniasz nazwę pola), potrzebujesz wersjonowania:\n/api/v1/poligony\n/api/v2/poligony\nAlternatywa: wersjonowanie przez nagłówek (Accept: application/vnd.api.v2+json) — rzadziej spotykane w praktyce, ale czystsze koncepcyjnie. W tym kursie użyjemy prostszego podejścia z prefiksem /api/v1/ w ścieżce.",
+    "objectID": "cwiczenia/cw1.html#automatyczna-dokumentacja-korzyść-od-razu",
+    "href": "cwiczenia/cw1.html#automatyczna-dokumentacja-korzyść-od-razu",
+    "title": "Lab 1: Środowisko pracy i pierwszy serwer",
+    "section": "",
+    "text": "FastAPI, bez dodatkowej pracy z Twojej strony, generuje interaktywną dokumentację API. Otwórz:\n\nhttp://127.0.0.1:8000/docs — interfejs Swagger UI, w którym możesz od razu klikać i testować endpointy.\nhttp://127.0.0.1:8000/redoc — alternatywny, bardziej “dokumentacyjny” widok.\n\n\n🧠 Do tego mechanizmu wrócimy dokładniej w wykładzie 3 (projektowanie API) i laboratorium 9 — dziś zapamiętaj tylko, że istnieje i że jest darmowy.",
     "crumbs": [
-      "Wykłady",
-      "Projektowanie API REST"
+      "Laboratoria",
+      "Lab 1: Środowisko pracy i pierwszy serwer"
     ]
   },
   {
-    "objectID": "lectures/wyklad3.html#openapi-dokumentacja-która-się-nie-starzeje",
-    "href": "lectures/wyklad3.html#openapi-dokumentacja-która-się-nie-starzeje",
-    "title": "Projektowanie API REST",
-    "section": "5️⃣ OpenAPI — dokumentacja, która się nie starzeje",
-    "text": "5️⃣ OpenAPI — dokumentacja, która się nie starzeje\nPamiętacie /docs z laboratorium 1? To nie przypadek, że działa automatycznie — FastAPI generuje specyfikację OpenAPI (JSON opisujący każdy endpoint, jego parametry, kształt odpowiedzi) bezpośrednio z Waszego kodu (adnotacji typów, modeli Pydantic). Dostępna jest pod /openapi.json.\nDlaczego to ważne: dokumentacja pisana ręcznie (osobny plik Word/Markdown) zawsze z czasem rozjeżdża się z rzeczywistym kodem — ktoś zmienia endpoint i zapomina zaktualizować opis. Dokumentacja generowana z kodu nie może się rozjechać, bo to dosłownie ten sam kod.\n@app.get(\n    \"/poligony/{poligon_id}\",\n    response_model=Poligon,\n    summary=\"Pobierz jeden poligon po ID\",\n    description=\"Zwraca 404, jesli poligon o podanym ID nie istnieje.\",\n)\ndef pobierz_poligon(poligon_id: int):\n    ...\nParametry summary/description trafiają bezpośrednio do /docs — dobra dokumentacja API to część kodu, nie osobny dokument.",
+    "objectID": "cwiczenia/cw1.html#drugi-endpoint-zapowiedź-projektu",
+    "href": "cwiczenia/cw1.html#drugi-endpoint-zapowiedź-projektu",
+    "title": "Lab 1: Środowisko pracy i pierwszy serwer",
+    "section": "",
+    "text": "Dodaj do main.py endpoint, który na razie zwraca dane na sztywno (żadnej bazy jeszcze nie mamy — to dopiero lab 3):\n@app.get(\"/poligony\")\ndef lista_poligonow():\n    return [\n        {\"id\": 1, \"nazwa\": \"Poligon Nowa Dęba\", \"typ\": \"strzelnica\"},\n        {\"id\": 2, \"nazwa\": \"Poligon Drawsko\", \"typ\": \"teren manewrowy\"},\n    ]\nSprawdź http://127.0.0.1:8000/poligony w przeglądarce oraz w /docs — zobacz, jak Swagger sam wykrył nowy endpoint.",
     "crumbs": [
-      "Wykłady",
-      "Projektowanie API REST"
+      "Laboratoria",
+      "Lab 1: Środowisko pracy i pierwszy serwer"
     ]
   },
   {
-    "objectID": "lectures/wyklad3.html#spójna-struktura-błędów",
-    "href": "lectures/wyklad3.html#spójna-struktura-błędów",
-    "title": "Projektowanie API REST",
-    "section": "6️⃣ Spójna struktura błędów",
-    "text": "6️⃣ Spójna struktura błędów\nZamiast każdy endpoint zwracający błędy w innym formacie, warto ustalić jeden wzorzec:\n{\n  \"detail\": \"Poligon nie znaleziony\"\n}\nFastAPI robi to domyślnie dla HTTPException (dokładnie ten kształt, który widzieliście w laboratorium 2) — trzymajcie się tego wzorca konsekwentnie we wszystkich endpointach.",
+    "objectID": "cwiczenia/cw1.html#repozytorium",
+    "href": "cwiczenia/cw1.html#repozytorium",
+    "title": "Lab 1: Środowisko pracy i pierwszy serwer",
+    "section": "",
+    "text": "Załóż repozytorium git dla swojego projektu (osobne od materiałów kursu):\ngit init\necho \".venv/\\n__pycache__/\\n*.pyc\" &gt; .gitignore\ngit add main.py .gitignore\ngit commit -m \"Init: pierwszy serwer FastAPI\"\nTen projekt będzie rósł przez cały semestr — każde kolejne laboratorium to nowy commit.",
     "crumbs": [
-      "Wykłady",
-      "Projektowanie API REST"
+      "Laboratoria",
+      "Lab 1: Środowisko pracy i pierwszy serwer"
     ]
   },
   {
-    "objectID": "lectures/wyklad3.html#podsumowanie",
-    "href": "lectures/wyklad3.html#podsumowanie",
-    "title": "Projektowanie API REST",
-    "section": "🧾 Podsumowanie",
-    "text": "🧾 Podsumowanie\n\nURL opisuje zasób (rzeczownik, liczba mnoga), metoda HTTP opisuje akcję.\nZagnieżdżaj zasoby maksymalnie na 2 poziomy; filtruj/sortuj/paginuj przez query params.\nWersjonuj API przez prefiks ścieżki, gdy zmiana złamałaby istniejących klientów.\nOpenAPI/Swagger generowane z kodu nigdy się nie starzeje — w odróżnieniu od ręcznie pisanej dokumentacji.",
+    "objectID": "cwiczenia/cw1.html#zadanie-na-koniec-laboratorium",
+    "href": "cwiczenia/cw1.html#zadanie-na-koniec-laboratorium",
+    "title": "Lab 1: Środowisko pracy i pierwszy serwer",
+    "section": "",
+    "text": "Dodaj trzeci endpoint GET /jednostki, zwracający sztywną listę 2-3 jednostek wojskowych (nazwa, garnizon).\nSprawdź go w /docs.\nZacommituj zmiany z sensowną wiadomością.\n\nDo oddania: link do repozytorium (lub commit hash) — prowadzący sprawdza na następnych zajęciach.",
     "crumbs": [
-      "Wykłady",
-      "Projektowanie API REST"
+      "Laboratoria",
+      "Lab 1: Środowisko pracy i pierwszy serwer"
     ]
   },
   {
-    "objectID": "lectures/wyklad3.html#źródła",
-    "href": "lectures/wyklad3.html#źródła",
-    "title": "Projektowanie API REST",
-    "section": "📚 Źródła",
-    "text": "📚 Źródła\n\nDokumentacja FastAPI — Path Operations, OpenAPI\nM. Masse, REST API Design Rulebook",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Informacje ogólne",
+    "section": "",
+    "text": "Kod:\nSemestr: zimowy",
     "crumbs": [
-      "Wykłady",
-      "Projektowanie API REST"
+      "Informacje ogólne"
+    ]
+  },
+  {
+    "objectID": "index.html#projektowanie-aplikacji-sieciowych",
+    "href": "index.html#projektowanie-aplikacji-sieciowych",
+    "title": "Informacje ogólne",
+    "section": "",
+    "text": "Kod:\nSemestr: zimowy",
+    "crumbs": [
+      "Informacje ogólne"
+    ]
+  },
+  {
+    "objectID": "index.html#kalendarz",
+    "href": "index.html#kalendarz",
+    "title": "Informacje ogólne",
+    "section": "Kalendarz",
+    "text": "Kalendarz\n\n\nWykład dla grup:\n\nTODO: dzień tygodnia, godzina, sala\n\n\n\nLaboratorium dla grup:\n\nTODO: dzień tygodnia, godzina, sala",
+    "crumbs": [
+      "Informacje ogólne"
     ]
   }
 ]
