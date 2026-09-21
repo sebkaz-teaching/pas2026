@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Architektura aplikacji sieciowych – Projektowanie Aplikacji Sieciowych</title>
+<title>Bezpieczeństwo aplikacji sieciowych – Projektowanie Aplikacji Sieciowych</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -25,6 +25,41 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -86,7 +121,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/wyklad1.html">Wykłady</a></li><li class="breadcrumb-item"><a href="../lectures/wyklad1.html">Architektura aplikacji sieciowych</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/wyklad1.html">Wykłady</a></li><li class="breadcrumb-item"><a href="../lectures/wyklad4.html">Bezpieczeństwo aplikacji sieciowych</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -128,7 +163,7 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/wyklad1.html" class="sidebar-item-text sidebar-link active">
+  <a href="../lectures/wyklad1.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Architektura aplikacji sieciowych</span></a>
   </div>
 </li>
@@ -146,7 +181,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/wyklad4.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/wyklad4.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Bezpieczeństwo aplikacji sieciowych</span></a>
   </div>
 </li>
@@ -197,17 +232,18 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title"><strong>Sections</strong></h2>
    
   <ul class="collapse">
-  <li><a href="#wykład-1-architektura-aplikacji-sieciowych" id="toc-wykład-1-architektura-aplikacji-sieciowych" class="nav-link active" data-scroll-target="#wykład-1-architektura-aplikacji-sieciowych">🌐 Wykład 1: Architektura aplikacji sieciowych</a>
+  <li><a href="#sprawdź-się-z-wykładu-3" id="toc-sprawdź-się-z-wykładu-3" class="nav-link active" data-scroll-target="#sprawdź-się-z-wykładu-3">✅ Sprawdź się z wykładu 3</a></li>
+  <li><a href="#wykład-4-bezpieczeństwo-aplikacji-sieciowych" id="toc-wykład-4-bezpieczeństwo-aplikacji-sieciowych" class="nav-link" data-scroll-target="#wykład-4-bezpieczeństwo-aplikacji-sieciowych">🔒 Wykład 4: Bezpieczeństwo aplikacji sieciowych</a>
   <ul class="collapse">
   <li><a href="#cele-wykładu" id="toc-cele-wykładu" class="nav-link" data-scroll-target="#cele-wykładu">🎯 Cele wykładu</a></li>
-  <li><a href="#czym-jest-aplikacja-sieciowa" id="toc-czym-jest-aplikacja-sieciowa" class="nav-link" data-scroll-target="#czym-jest-aplikacja-sieciowa">1️⃣ Czym jest aplikacja sieciowa?</a></li>
-  <li><a href="#model-klientserwer" id="toc-model-klientserwer" class="nav-link" data-scroll-target="#model-klientserwer">2️⃣ Model klient–serwer</a></li>
-  <li><a href="#warstwy-aplikacji-sieciowej" id="toc-warstwy-aplikacji-sieciowej" class="nav-link" data-scroll-target="#warstwy-aplikacji-sieciowej">3️⃣ Warstwy aplikacji sieciowej</a></li>
-  <li><a href="#protokoły-komunikacyjne" id="toc-protokoły-komunikacyjne" class="nav-link" data-scroll-target="#protokoły-komunikacyjne">4️⃣ Protokoły komunikacyjne</a></li>
-  <li><a href="#style-projektowania-api" id="toc-style-projektowania-api" class="nav-link" data-scroll-target="#style-projektowania-api">5️⃣ Style projektowania API</a></li>
-  <li><a href="#projekt-semestralny-system-rezerwacji-poligonu" id="toc-projekt-semestralny-system-rezerwacji-poligonu" class="nav-link" data-scroll-target="#projekt-semestralny-system-rezerwacji-poligonu">6️⃣ Projekt semestralny: system rezerwacji poligonu</a></li>
+  <li><a href="#uwierzytelnianie-vs-autoryzacja" id="toc-uwierzytelnianie-vs-autoryzacja" class="nav-link" data-scroll-target="#uwierzytelnianie-vs-autoryzacja">1️⃣ Uwierzytelnianie vs autoryzacja</a></li>
+  <li><a href="#jak-przechowywać-hasła-nigdy-jawnym-tekstem" id="toc-jak-przechowywać-hasła-nigdy-jawnym-tekstem" class="nav-link" data-scroll-target="#jak-przechowywać-hasła-nigdy-jawnym-tekstem">2️⃣ Jak przechowywać hasła — nigdy jawnym tekstem</a></li>
+  <li><a href="#sesje-vs-tokeny-dwa-modele-uwierzytelniania" id="toc-sesje-vs-tokeny-dwa-modele-uwierzytelniania" class="nav-link" data-scroll-target="#sesje-vs-tokeny-dwa-modele-uwierzytelniania">3️⃣ Sesje vs tokeny — dwa modele uwierzytelniania</a></li>
+  <li><a href="#anatomia-jwt" id="toc-anatomia-jwt" class="nav-link" data-scroll-target="#anatomia-jwt">4️⃣ Anatomia JWT</a></li>
+  <li><a href="#owasp-top-10-trzy-podatności-które-napotkacie-w-laboratoriach" id="toc-owasp-top-10-trzy-podatności-które-napotkacie-w-laboratoriach" class="nav-link" data-scroll-target="#owasp-top-10-trzy-podatności-które-napotkacie-w-laboratoriach">5️⃣ OWASP Top 10 — trzy podatności, które napotkacie w laboratoriach</a></li>
+  <li><a href="#httpstls-dlaczego-zawsze" id="toc-httpstls-dlaczego-zawsze" class="nav-link" data-scroll-target="#httpstls-dlaczego-zawsze">6️⃣ HTTPS/TLS — dlaczego zawsze</a></li>
   <li><a href="#podsumowanie" id="toc-podsumowanie" class="nav-link" data-scroll-target="#podsumowanie">🧾 Podsumowanie</a></li>
-  <li><a href="#źródła-i-literatura" id="toc-źródła-i-literatura" class="nav-link" data-scroll-target="#źródła-i-literatura">📚 Źródła i literatura</a></li>
+  <li><a href="#źródła" id="toc-źródła" class="nav-link" data-scroll-target="#źródła">📚 Źródła</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -215,9 +251,9 @@ ul.task-list li input[type="checkbox"] {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/wyklad1.html">Wykłady</a></li><li class="breadcrumb-item"><a href="../lectures/wyklad1.html">Architektura aplikacji sieciowych</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/wyklad1.html">Wykłady</a></li><li class="breadcrumb-item"><a href="../lectures/wyklad4.html">Bezpieczeństwo aplikacji sieciowych</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Architektura aplikacji sieciowych</h1>
+<h1 class="title">Bezpieczeństwo aplikacji sieciowych</h1>
 </div>
 
 
@@ -234,259 +270,225 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="wykład-1-architektura-aplikacji-sieciowych" class="level1">
-<h1>🌐 Wykład 1: Architektura aplikacji sieciowych</h1>
+<section id="sprawdź-się-z-wykładu-3" class="level2">
+<h2 class="anchored" data-anchor-id="sprawdź-się-z-wykładu-3">✅ Sprawdź się z wykładu 3</h2>
+<div id="pas-quiz">
+
+</div>
+<script src="../assets/js/quiz-engine.js"></script>
+<script>
+CourseQuiz.mount(document.getElementById('pas-quiz'), {
+  course: "pas2026",
+  lecture: "wyklad4",
+  title: "Wykład 3: Projektowanie API REST",
+  submitUrl: "https://sebastianzajac.pl/rsod-quiz/submit.php",
+  questions: [
+    {
+      id: "q1", points: 1, diff: "bardzo łatwe",
+      text: "Który adres jest zgodny z konwencją REST dla listy poligonów?",
+      options: [
+        {v:"A", t:"/getPoligony"},
+        {v:"B", t:"/poligony"},
+        {v:"C", t:"/poligon/lista"},
+        {v:"D", t:"/API/POLIGON"}
+      ]
+    },
+    {
+      id: "q2", points: 1, diff: "łatwe",
+      text: "Do czego służą query params typu ?status=zatwierdzona?",
+      options: [
+        {v:"A", t:"Do identyfikacji konkretnego zasobu (jak path param)"},
+        {v:"B", t:"Do opcjonalnego filtrowania/sortowania/paginacji wyniku"},
+        {v:"C", t:"Do uwierzytelniania użytkownika"},
+        {v:"D", t:"Do wersjonowania API"}
+      ]
+    },
+    {
+      id: "q3", points: 2, diff: "średnie",
+      text: "Dlaczego dokumentacja OpenAPI generowana z kodu (jak w FastAPI) jest lepsza od osobnego pliku Word z opisem API?",
+      options: [
+        {v:"A", t:"Bo jest ładniejsza wizualnie"},
+        {v:"B", t:"Bo nie może się rozjechać z rzeczywistym kodem — to dosłownie ten sam kod"},
+        {v:"C", t:"Bo Word nie obsługuje języka angielskiego"},
+        {v:"D", t:"Nie ma żadnej różnicy"}
+      ]
+    },
+    {
+      id: "q4", points: 2, diff: "trudne",
+      text: "Ile poziomów zagnieżdżenia zasobów w URL uznaje się za rozsądną granicę?",
+      options: [
+        {v:"A", t:"Bez ograniczeń — im głębiej, tym lepiej opisuje relacje"},
+        {v:"B", t:"Około 2 — głębiej robi się nieczytelne, lepiej użyć płaskiego endpointu z filtrem"},
+        {v:"C", t:"Dokładnie 1, nigdy więcej"},
+        {v:"D", t:"REST nie pozwala na zagnieżdżanie zasobów"}
+      ]
+    },
+    {
+      id: "q5", points: 3, diff: "wnioskowanie",
+      text: "Endpoint GET /rezerwacje zwraca dziś 50 rekordów bez paginacji i to działa dobrze. Za rok tabela ma 200 000 wierszy. Co się prawdopodobnie stanie, i czy trzeba było to przewidzieć wcześniej?",
+      options: [
+        {v:"A", t:"Nic się nie zmieni, HTTP automatycznie obsługuje duże odpowiedzi bez kosztu"},
+        {v:"B", t:"Odpowiedź stanie się ogromna i wolna — dlatego dobra praktyka to projektować paginację od razu, nawet gdy danych jest mało"},
+        {v:"C", t:"Serwer automatycznie doda paginację bez zmian w kodzie"},
+        {v:"D", t:"To problem tylko bazy danych, nie API"}
+      ]
+    }
+  ]
+});
+</script>
+<hr>
+</section>
+<section id="wykład-4-bezpieczeństwo-aplikacji-sieciowych" class="level1">
+<h1>🔒 Wykład 4: Bezpieczeństwo aplikacji sieciowych</h1>
 <section id="cele-wykładu" class="level2">
 <h2 class="anchored" data-anchor-id="cele-wykładu">🎯 Cele wykładu</h2>
-<p>Po tym wykładzie powinieneś rozumieć, z jakich warstw składa się typowa aplikacja sieciowa, czym różni się od zwykłego programu działającego lokalnie, jak wygląda komunikacja klient–serwer oraz jakie są główne style projektowania API. Poznasz też projekt, który będziemy budować przez cały semestr na laboratoriach.</p>
+<p>Poznasz różnicę między uwierzytelnianiem a autoryzacją, zrozumiesz jak działają tokeny JWT, oraz poznasz najważniejsze podatności z listy OWASP Top 10 i jak się przed nimi bronić — wiedzę, którą zastosujesz praktycznie w laboratoriach 6-8.</p>
 <hr>
 </section>
-<section id="czym-jest-aplikacja-sieciowa" class="level2">
-<h2 class="anchored" data-anchor-id="czym-jest-aplikacja-sieciowa">1️⃣ Czym jest aplikacja sieciowa?</h2>
-<p>Aplikacja sieciowa (ang. <em>network application</em>) to program, którego części działają na różnych maszynach połączonych siecią i komunikują się ze sobą, wymieniając dane według ustalonego protokołu.</p>
-<p>Kluczowa różnica względem programu lokalnego: <strong>stan i logika nie muszą żyć w tym samym procesie co interfejs użytkownika</strong>. Telefon żołnierza wysyłający zgłoszenie i serwer przechowujący dane o sprzęcie to dwa oddzielne programy, które nigdy nie współdzielą pamięci — jedyny sposób komunikacji to sieć.</p>
-<section id="przykłady-aplikacji-sieciowych" class="level3">
-<h3 class="anchored" data-anchor-id="przykłady-aplikacji-sieciowych">🔹 Przykłady aplikacji sieciowych</h3>
+<section id="uwierzytelnianie-vs-autoryzacja" class="level2">
+<h2 class="anchored" data-anchor-id="uwierzytelnianie-vs-autoryzacja">1️⃣ Uwierzytelnianie vs autoryzacja</h2>
+<p>To dwa <strong>różne</strong> pytania, często mylone:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 29%">
+<col style="width: 37%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Pytanie</th>
+<th>Termin</th>
+<th>Przykład</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Kim jesteś?</strong></td>
+<td>Uwierzytelnianie (<em>authentication</em>)</td>
+<td>login + hasło, token</td>
+</tr>
+<tr class="even">
+<td><strong>Co wolno Ci zrobić?</strong></td>
+<td>Autoryzacja (<em>authorization</em>)</td>
+<td>planista może zatwierdzać rezerwacje, żołnierz — nie</td>
+</tr>
+</tbody>
+</table>
+<p>System może <strong>wiedzieć, kim jesteś</strong> (uwierzytelniony), ale mimo to <strong>odmówić Ci operacji</strong> (brak autoryzacji) — to dokładnie różnica między <code>401</code> a <code>403</code> z wykładu 2.</p>
+</section>
+<section id="jak-przechowywać-hasła-nigdy-jawnym-tekstem" class="level2">
+<h2 class="anchored" data-anchor-id="jak-przechowywać-hasła-nigdy-jawnym-tekstem">2️⃣ Jak przechowywać hasła — nigdy jawnym tekstem</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># NIGDY:</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> podane_haslo <span class="op">==</span> uzytkownik.haslo:  <span class="co"># haslo w bazie jako czysty tekst</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># ZAWSZE: hashowanie z "solą"</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> bcrypt</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>hash_hasla <span class="op">=</span> bcrypt.hashpw(haslo.encode(), bcrypt.gensalt())</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># ... zapisz hash_hasla w bazie, NIGDY samego hasla</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># przy logowaniu:</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>bcrypt.checkpw(podane_haslo.encode(), hash_hasla)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>bcrypt</code> (i podobne: <code>argon2</code>, <code>scrypt</code>) to <strong>funkcje jednokierunkowe</strong> — z hasha nie da się odtworzyć hasła, a każde wywołanie z “solą” (losowym dodatkiem) daje inny wynik nawet dla tego samego hasła, co chroni przed atakami tęczowych tablic (<em>rainbow tables</em>). Praktykę tę zastosujecie w laboratorium 6.</p>
+</section>
+<section id="sesje-vs-tokeny-dwa-modele-uwierzytelniania" class="level2">
+<h2 class="anchored" data-anchor-id="sesje-vs-tokeny-dwa-modele-uwierzytelniania">3️⃣ Sesje vs tokeny — dwa modele uwierzytelniania</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Sesje (cookie-based)</th>
+<th>Tokeny (JWT)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Gdzie żyje stan</td>
+<td>po stronie serwera (baza sesji)</td>
+<td>w samym tokenie, po stronie klienta</td>
+</tr>
+<tr class="even">
+<td>Skalowanie na wiele serwerów</td>
+<td>wymaga współdzielonej bazy sesji</td>
+<td>trywialne — każdy serwer sam zweryfikuje token</td>
+</tr>
+<tr class="odd">
+<td>Unieważnienie przed wygaśnięciem</td>
+<td>łatwe (usuń z bazy)</td>
+<td>trudniejsze (token jest ważny, dopóki nie wygaśnie)</td>
+</tr>
+</tbody>
+</table>
+<p>W tym kursie używamy <strong>JWT</strong> (JSON Web Token) — pasuje do architektury bezstanowej z wykładu 2.</p>
+</section>
+<section id="anatomia-jwt" class="level2">
+<h2 class="anchored" data-anchor-id="anatomia-jwt">4️⃣ Anatomia JWT</h2>
+<p>Token JWT to trzy części oddzielone kropkami: <code>header.payload.signature</code></p>
+<pre><code>eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5rb3dhbHNraSIsInJvbGEiOiJkb3dvZGNhIn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c</code></pre>
 <ul>
-<li>System rezerwacji (hotel, poligon, sala wykładowa)</li>
-<li>Bankowość internetowa</li>
-<li>Komunikatory (WhatsApp, Signal)</li>
-<li>Systemy ewidencji sprzętu i logistyki</li>
+<li><strong>Header</strong> — jaki algorytm podpisu (np. <code>HS256</code>).</li>
+<li><strong>Payload</strong> — dane (np. <code>{"sub": "jankowalski", "rola": "dowodca", "exp": 1735689600}</code>) — <strong>czytelne dla każdego</strong> (to tylko Base64, nie szyfrowanie!), więc <strong>nigdy</strong> nie wkładajcie tam haseł czy innych sekretów.</li>
+<li><strong>Signature</strong> — podpis kryptograficzny, weryfikowany kluczem znanym tylko serwerowi — to on gwarantuje, że nikt nie sfałszował payloadu.</li>
 </ul>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>JWT jest podpisany, nie zaszyfrowany
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Każdy, kto przechwyci token, może <strong>odczytać</strong> jego zawartość (Base64 to nie szyfrowanie) — nie może jej jednak <strong>zmienić</strong> niezauważenie, bo podpis by się nie zgadzał. Wniosek: JWT chroni przed fałszowaniem danych, nie przed ich odczytaniem — transport tokenu musi iść przez HTTPS, żeby nikt po drodze go nie podsłuchał.</p>
+</div>
+</div>
+</section>
+<section id="owasp-top-10-trzy-podatności-które-napotkacie-w-laboratoriach" class="level2">
+<h2 class="anchored" data-anchor-id="owasp-top-10-trzy-podatności-które-napotkacie-w-laboratoriach">5️⃣ OWASP Top 10 — trzy podatności, które napotkacie w laboratoriach</h2>
+<section id="sql-injection" class="level3">
+<h3 class="anchored" data-anchor-id="sql-injection">SQL Injection</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># PODATNE:</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>conn.execute(<span class="ss">f"SELECT * FROM uzytkownicy WHERE login = '</span><span class="sc">{</span>login<span class="sc">}</span><span class="ss">'"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># atakujacy wpisuje: login = "' OR '1'='1"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Obrona: <strong>zawsze</strong> parametryzowane zapytania (widzieliście to już w laboratorium 3) — <code>conn.execute("... WHERE login = ?", (login,))</code>.</p>
+</section>
+<section id="xss-cross-site-scripting" class="level3">
+<h3 class="anchored" data-anchor-id="xss-cross-site-scripting">XSS (Cross-Site Scripting)</h3>
+<p>Atakujący wstrzykuje złośliwy JavaScript do danych, które potem są wyświetlane innemu użytkownikowi bez odpowiedniego oczyszczenia (np. komentarz zawierający <code>&lt;script&gt;...&lt;/script&gt;</code>, wyświetlony bez escapowania w przeglądarce ofiary).</p>
+<p>Obrona: nowoczesne frameworki frontendowe (React i podobne) domyślnie escapują dane przy renderowaniu — problem pojawia się głównie, gdy ktoś świadomie to wyłączy (<code>dangerouslySetInnerHTML</code> i podobne).</p>
+</section>
+<section id="csrf-cross-site-request-forgery" class="level3">
+<h3 class="anchored" data-anchor-id="csrf-cross-site-request-forgery">CSRF (Cross-Site Request Forgery)</h3>
+<p>Atakujący nakłania przeglądarkę ofiary (zalogowanej w Waszej aplikacji) do wysłania żądania bez jej wiedzy (np. przez ukryty formularz na złośliwej stronie). Ponieważ przeglądarka automatycznie dołącza cookies do żądań, serwer “widzi” żądanie jako uwierzytelnione.</p>
+<p>Obrona: API oparte o JWT w nagłówku <code>Authorization</code> (nie w cookies) jest <strong>z natury odporne</strong> na klasyczny CSRF — atakująca strona nie ma dostępu do tokenu przechowywanego przez Waszą aplikację (np. w pamięci JS), więc nie może go dołączyć do sfałszowanego żądania.</p>
+</section>
+</section>
+<section id="httpstls-dlaczego-zawsze" class="level2">
+<h2 class="anchored" data-anchor-id="httpstls-dlaczego-zawsze">6️⃣ HTTPS/TLS — dlaczego zawsze</h2>
+<p>Bez TLS każdy w tej samej sieci (Wi-Fi w kawiarni, router po drodze) może odczytać <strong>cały</strong> ruch — łącznie z tokenami JWT i hasłami przesyłanymi przy logowaniu. TLS szyfruje transport między klientem a serwerem — to warunek konieczny, nie opcjonalny dodatek, dla każdej aplikacji przyjmującej dane logowania.</p>
 <hr>
-</section>
-</section>
-<section id="model-klientserwer" class="level2">
-<h2 class="anchored" data-anchor-id="model-klientserwer">2️⃣ Model klient–serwer</h2>
-<p>Najpopularniejszy model architektury aplikacji sieciowej.</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 40%">
-<col style="width: 60%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Rola</th>
-<th>Zadanie</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Klient</strong></td>
-<td>Inicjuje żądanie, prezentuje wynik użytkownikowi (przeglądarka, aplikacja mobilna, inny serwer)</td>
-</tr>
-<tr class="even">
-<td><strong>Serwer</strong></td>
-<td>Nasłuchuje na żądania, przetwarza je, zwraca odpowiedź</td>
-</tr>
-</tbody>
-</table>
-<blockquote class="blockquote">
-<p>Serwer nie “dzwoni” sam do klienta bez powodu — to klient zawsze inicjuje rozmowę. (Wyjątki: WebSocket, powiadomienia push — omówimy przy okazji wykładu o skalowalności.)</p>
-</blockquote>
-<section id="dlaczego-nie-jeden-wielki-program" class="level3">
-<h3 class="anchored" data-anchor-id="dlaczego-nie-jeden-wielki-program">🔹 Dlaczego nie jeden wielki program?</h3>
-<p>Rozdzielenie klienta i serwera daje:</p>
-<ul>
-<li><strong>niezależne skalowanie</strong> — można dodać kolejne serwery bez zmiany klienta,</li>
-<li><strong>wielu klientów na jeden serwer</strong> — przeglądarka, aplikacja mobilna i inny system mogą korzystać z tego samego API,</li>
-<li><strong>aktualizacje bez przeinstalowywania</strong> — zmiana logiki na serwerze nie wymaga nic od użytkownika.</li>
-</ul>
-<hr>
-</section>
-</section>
-<section id="warstwy-aplikacji-sieciowej" class="level2">
-<h2 class="anchored" data-anchor-id="warstwy-aplikacji-sieciowej">3️⃣ Warstwy aplikacji sieciowej</h2>
-<p>Typowa aplikacja sieciowa dzieli się na trzy warstwy:</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 18%">
-<col style="width: 31%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Warstwa</th>
-<th>Odpowiada za</th>
-<th>Przykład technologii</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Prezentacji (frontend)</strong></td>
-<td>Interfejs użytkownika</td>
-<td>HTML/CSS/JS, aplikacja mobilna</td>
-</tr>
-<tr class="even">
-<td><strong>Logiki biznesowej (backend)</strong></td>
-<td>Reguły, walidację, przetwarzanie żądań</td>
-<td>Python (FastAPI), Java, Node.js</td>
-</tr>
-<tr class="odd">
-<td><strong>Danych</strong></td>
-<td>Trwałe przechowywanie informacji</td>
-<td>PostgreSQL, SQLite, MongoDB</td>
-</tr>
-</tbody>
-</table>
-<blockquote class="blockquote">
-<p><img> Schemat trójwarstwowy: Klient (frontend) ↔︎ API (backend) ↔︎ Baza danych</p>
-</blockquote>
-<p>To ten sam podział, co poziomy ANSI/SPARC z kursów o bazach danych — tu warstwa “logiki” dodatkowo pośredniczy między światem zewnętrznym a bazą, zamiast pozwalać klientowi łączyć się z bazą bezpośrednio.</p>
-<p><strong>Dlaczego backend nigdy nie powinien pozwalać frontendowi łączyć się z bazą wprost?</strong> Bo wtedy każdy klient musiałby znać hasło do bazy, strukturę tabel i reguły biznesowe — a zmiana schematu bazy złamałaby każdą aplikację kliencką osobno.</p>
-<hr>
-</section>
-<section id="protokoły-komunikacyjne" class="level2">
-<h2 class="anchored" data-anchor-id="protokoły-komunikacyjne">4️⃣ Protokoły komunikacyjne</h2>
-<p>Aby klient i serwer się zrozumiały, muszą mówić tym samym językiem — protokołem.</p>
-<section id="miejsce-http-w-stosie-sieciowym" class="level3">
-<h3 class="anchored" data-anchor-id="miejsce-http-w-stosie-sieciowym">🔹 Miejsce HTTP w stosie sieciowym</h3>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Warstwa (uproszczony model)</th>
-<th>Przykład protokołu</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Aplikacji</td>
-<td><strong>HTTP/HTTPS</strong>, FTP, SMTP</td>
-</tr>
-<tr class="even">
-<td>Transportowa</td>
-<td>TCP, UDP</td>
-</tr>
-<tr class="odd">
-<td>Sieciowa</td>
-<td>IP</td>
-</tr>
-</tbody>
-</table>
-<p>HTTP (HyperText Transfer Protocol) działa na bazie TCP — zanim popłynie choćby bajt danych HTTP, klient i serwer muszą nawiązać połączenie TCP (tzw. three-way handshake). HTTPS to HTTP owinięte w warstwę szyfrowania TLS.</p>
-<p>Szczegóły samego HTTP (metody, nagłówki, kody odpowiedzi) to temat całego następnego wykładu — dziś tylko umiejscawiamy go w stosie.</p>
-<hr>
-</section>
-</section>
-<section id="style-projektowania-api" class="level2">
-<h2 class="anchored" data-anchor-id="style-projektowania-api">5️⃣ Style projektowania API</h2>
-<p>Kiedy backend ma udostępnić swoje możliwości innym programom, robi to przez <strong>API</strong> (Application Programming Interface). Kilka konkurencyjnych stylów:</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 14%">
-<col style="width: 39%">
-<col style="width: 46%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Styl</th>
-<th>Format danych</th>
-<th>Charakterystyka</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>REST</strong></td>
-<td>zwykle JSON</td>
-<td>zasoby adresowane przez URL, operacje przez metody HTTP — dominujący styl dziś</td>
-</tr>
-<tr class="even">
-<td><strong>SOAP</strong></td>
-<td>XML</td>
-<td>sztywny kontrakt (WSDL), popularny w starszych systemach korporacyjnych/rządowych</td>
-</tr>
-<tr class="odd">
-<td><strong>GraphQL</strong></td>
-<td>JSON</td>
-<td>klient sam opisuje, jakich danych potrzebuje, w jednym zapytaniu</td>
-</tr>
-<tr class="even">
-<td><strong>gRPC</strong></td>
-<td>binarny (Protocol Buffers)</td>
-<td>bardzo szybki, typowany, głównie do komunikacji między mikroserwisami</td>
-</tr>
-<tr class="odd">
-<td><strong>WebSocket</strong></td>
-<td>dowolny</td>
-<td>dwukierunkowy, trwały kanał — do komunikacji w czasie rzeczywistym (czat, powiadomienia)</td>
-</tr>
-</tbody>
-</table>
-<p>W tym kursie skupiamy się na <strong>REST</strong> — to on zdominował publiczne API i będzie tym, co zbudujesz na laboratoriach.</p>
-<section id="zasada-rest-w-jednym-zdaniu" class="level3">
-<h3 class="anchored" data-anchor-id="zasada-rest-w-jednym-zdaniu">🔹 Zasada REST w jednym zdaniu</h3>
-<blockquote class="blockquote">
-<p>Każdy zasób (rzecz, którą aplikacja przechowuje) ma swój adres URL, a to, co chcemy z nim zrobić, wyrażamy metodą HTTP (GET = pobierz, POST = utwórz, PUT/PATCH = zmień, DELETE = usuń) — nie czasownikiem w samym adresie.</p>
-</blockquote>
-<p>Przykład: zamiast <code>GET /pobierzRezerwacje?id=5</code>, w REST piszemy <code>GET /rezerwacje/5</code>. Adres opisuje <strong>co</strong>, metoda HTTP opisuje <strong>jak</strong>.</p>
-<hr>
-</section>
-</section>
-<section id="projekt-semestralny-system-rezerwacji-poligonu" class="level2">
-<h2 class="anchored" data-anchor-id="projekt-semestralny-system-rezerwacji-poligonu">6️⃣ Projekt semestralny: system rezerwacji poligonu</h2>
-<p>Przez 12 laboratoriów zbudujemy razem jeden, rosnący system: <strong>rezerwację poligonu/strzelnicy</strong> dla jednostki wojskowej.</p>
-<section id="aktorzy-systemu" class="level3">
-<h3 class="anchored" data-anchor-id="aktorzy-systemu">🔹 Aktorzy systemu</h3>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Rola</th>
-<th>Może</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Planista poligonu</strong></td>
-<td>zarządzać dostępnością poligonów, zatwierdzać/odrzucać rezerwacje</td>
-</tr>
-<tr class="even">
-<td><strong>Dowódca jednostki</strong></td>
-<td>rezerwować poligon dla swojego pododdziału</td>
-</tr>
-<tr class="odd">
-<td><em>(gość/niezalogowany)</em></td>
-<td>tylko przeglądać dostępność, bez rezerwacji</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="główne-zasoby-na-razie-koncepcyjnie-do-api-dojdziemy-w-wykładzie-3" class="level3">
-<h3 class="anchored" data-anchor-id="główne-zasoby-na-razie-koncepcyjnie-do-api-dojdziemy-w-wykładzie-3">🔹 Główne zasoby (na razie koncepcyjnie — do API dojdziemy w wykładzie 3)</h3>
-<ul>
-<li><strong>Poligon</strong> — nazwa, lokalizacja, dostępne przedziały czasowe, typ (strzelnica, teren manewrowy…)</li>
-<li><strong>Jednostka</strong> — nazwa, dowódca</li>
-<li><strong>Rezerwacja</strong> — który poligon, która jednostka, od kiedy do kiedy, status (<code>oczekująca</code>, <code>zatwierdzona</code>, <code>odrzucona</code>)</li>
-</ul>
-</section>
-<section id="kluczowy-problem-projektowy" class="level3">
-<h3 class="anchored" data-anchor-id="kluczowy-problem-projektowy">🔹 Kluczowy problem projektowy</h3>
-<p>Dwie jednostki nie mogą zarezerwować tego samego poligonu w nakładających się przedziałach czasu. To pozornie proste wymaganie wróci wielokrotnie — przy walidacji danych (wykład/lab o błędach), przy autoryzacji (kto może zatwierdzić konflikt) i przy współbieżności (co gdy dwie rezerwacje przychodzą w tej samej sekundzie).</p>
-<blockquote class="blockquote">
-<p>💡 Zapamiętaj ten problem — będziemy go rozwiązywać stopniowo, warstwa po warstwie, przez cały semestr.</p>
-</blockquote>
-<hr>
-</section>
 </section>
 <section id="podsumowanie" class="level2">
 <h2 class="anchored" data-anchor-id="podsumowanie">🧾 Podsumowanie</h2>
 <ul>
-<li>Aplikacja sieciowa rozdziela klienta i serwer, komunikujących się przez sieć według ustalonego protokołu.</li>
-<li>Typowy podział to trzy warstwy: prezentacji, logiki biznesowej, danych.</li>
-<li>HTTP to protokół aplikacyjny działający na TCP; HTTPS dodaje szyfrowanie TLS.</li>
-<li>REST to dominujący dziś styl API: zasoby jako adresy URL, operacje jako metody HTTP.</li>
-<li>Semestralny projekt: system rezerwacji poligonu — zaczynamy od środowiska pracy i pierwszego serwera na laboratorium 1.</li>
+<li>Uwierzytelnianie = kim jesteś; autoryzacja = co wolno Ci zrobić — to dwa osobne mechanizmy.</li>
+<li>Hasła zawsze hashowane (bcrypt/argon2), nigdy przechowywane jawnym tekstem.</li>
+<li>JWT jest podpisany (integralność), nie zaszyfrowany (poufność) — payload jest czytelny dla każdego.</li>
+<li>SQL injection, XSS, CSRF — trzy klasyczne podatności; parametryzowane zapytania, escapowanie i tokeny w nagłówku to podstawowa obrona.</li>
 </ul>
 </section>
-<section id="źródła-i-literatura" class="level2">
-<h2 class="anchored" data-anchor-id="źródła-i-literatura">📚 Źródła i literatura</h2>
+<section id="źródła" class="level2">
+<h2 class="anchored" data-anchor-id="źródła">📚 Źródła</h2>
 <ul>
-<li>R. Fielding, <em>Architectural Styles and the Design of Network-based Software Architectures</em> (praca doktorska wprowadzająca REST)</li>
-<li>MDN Web Docs — <em>An overview of HTTP</em></li>
-<li>Dokumentacja FastAPI (framework używany na laboratoriach)</li>
+<li>OWASP Top 10 (owasp.org)</li>
+<li>RFC 7519 — <em>JSON Web Token (JWT)</em></li>
+<li>Dokumentacja FastAPI — <em>Security</em></li>
 </ul>
 
 

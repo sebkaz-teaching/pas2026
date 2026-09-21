@@ -1,0 +1,204 @@
+---
+title: "Bezpieczeństwo aplikacji sieciowych"
+---
+
+## ✅ Sprawdź się z wykładu 3
+
+<div id="pas-quiz"></div>
+<script src="../assets/js/quiz-engine.js"></script>
+<script>
+CourseQuiz.mount(document.getElementById('pas-quiz'), {
+  course: "pas2026",
+  lecture: "wyklad4",
+  title: "Wykład 3: Projektowanie API REST",
+  submitUrl: "https://sebastianzajac.pl/rsod-quiz/submit.php",
+  questions: [
+    {
+      id: "q1", points: 1, diff: "bardzo łatwe",
+      text: "Który adres jest zgodny z konwencją REST dla listy poligonów?",
+      options: [
+        {v:"A", t:"/getPoligony"},
+        {v:"B", t:"/poligony"},
+        {v:"C", t:"/poligon/lista"},
+        {v:"D", t:"/API/POLIGON"}
+      ]
+    },
+    {
+      id: "q2", points: 1, diff: "łatwe",
+      text: "Do czego służą query params typu ?status=zatwierdzona?",
+      options: [
+        {v:"A", t:"Do identyfikacji konkretnego zasobu (jak path param)"},
+        {v:"B", t:"Do opcjonalnego filtrowania/sortowania/paginacji wyniku"},
+        {v:"C", t:"Do uwierzytelniania użytkownika"},
+        {v:"D", t:"Do wersjonowania API"}
+      ]
+    },
+    {
+      id: "q3", points: 2, diff: "średnie",
+      text: "Dlaczego dokumentacja OpenAPI generowana z kodu (jak w FastAPI) jest lepsza od osobnego pliku Word z opisem API?",
+      options: [
+        {v:"A", t:"Bo jest ładniejsza wizualnie"},
+        {v:"B", t:"Bo nie może się rozjechać z rzeczywistym kodem — to dosłownie ten sam kod"},
+        {v:"C", t:"Bo Word nie obsługuje języka angielskiego"},
+        {v:"D", t:"Nie ma żadnej różnicy"}
+      ]
+    },
+    {
+      id: "q4", points: 2, diff: "trudne",
+      text: "Ile poziomów zagnieżdżenia zasobów w URL uznaje się za rozsądną granicę?",
+      options: [
+        {v:"A", t:"Bez ograniczeń — im głębiej, tym lepiej opisuje relacje"},
+        {v:"B", t:"Około 2 — głębiej robi się nieczytelne, lepiej użyć płaskiego endpointu z filtrem"},
+        {v:"C", t:"Dokładnie 1, nigdy więcej"},
+        {v:"D", t:"REST nie pozwala na zagnieżdżanie zasobów"}
+      ]
+    },
+    {
+      id: "q5", points: 3, diff: "wnioskowanie",
+      text: "Endpoint GET /rezerwacje zwraca dziś 50 rekordów bez paginacji i to działa dobrze. Za rok tabela ma 200 000 wierszy. Co się prawdopodobnie stanie, i czy trzeba było to przewidzieć wcześniej?",
+      options: [
+        {v:"A", t:"Nic się nie zmieni, HTTP automatycznie obsługuje duże odpowiedzi bez kosztu"},
+        {v:"B", t:"Odpowiedź stanie się ogromna i wolna — dlatego dobra praktyka to projektować paginację od razu, nawet gdy danych jest mało"},
+        {v:"C", t:"Serwer automatycznie doda paginację bez zmian w kodzie"},
+        {v:"D", t:"To problem tylko bazy danych, nie API"}
+      ]
+    }
+  ]
+});
+</script>
+
+---
+
+# 🔒 Wykład 4: Bezpieczeństwo aplikacji sieciowych
+
+## 🎯 Cele wykładu
+
+Poznasz różnicę między uwierzytelnianiem a autoryzacją, zrozumiesz jak działają
+tokeny JWT, oraz poznasz najważniejsze podatności z listy OWASP Top 10 i jak się
+przed nimi bronić — wiedzę, którą zastosujesz praktycznie w laboratoriach 6-8.
+
+---
+
+## 1️⃣ Uwierzytelnianie vs autoryzacja
+
+To dwa **różne** pytania, często mylone:
+
+| Pytanie | Termin | Przykład |
+|---------|--------|----------|
+| **Kim jesteś?** | Uwierzytelnianie (*authentication*) | login + hasło, token |
+| **Co wolno Ci zrobić?** | Autoryzacja (*authorization*) | planista może zatwierdzać rezerwacje, żołnierz — nie |
+
+System może **wiedzieć, kim jesteś** (uwierzytelniony), ale mimo to **odmówić Ci
+operacji** (brak autoryzacji) — to dokładnie różnica między `401` a `403` z wykładu 2.
+
+## 2️⃣ Jak przechowywać hasła — nigdy jawnym tekstem
+
+```python
+# NIGDY:
+if podane_haslo == uzytkownik.haslo:  # haslo w bazie jako czysty tekst
+
+# ZAWSZE: hashowanie z "solą"
+import bcrypt
+
+hash_hasla = bcrypt.hashpw(haslo.encode(), bcrypt.gensalt())
+# ... zapisz hash_hasla w bazie, NIGDY samego hasla
+
+# przy logowaniu:
+bcrypt.checkpw(podane_haslo.encode(), hash_hasla)
+```
+
+`bcrypt` (i podobne: `argon2`, `scrypt`) to **funkcje jednokierunkowe** — z hasha nie
+da się odtworzyć hasła, a każde wywołanie z "solą" (losowym dodatkiem) daje inny
+wynik nawet dla tego samego hasła, co chroni przed atakami tęczowych tablic
+(*rainbow tables*). Praktykę tę zastosujecie w laboratorium 6.
+
+## 3️⃣ Sesje vs tokeny — dwa modele uwierzytelniania
+
+| | Sesje (cookie-based) | Tokeny (JWT) |
+|---|---|---|
+| Gdzie żyje stan | po stronie serwera (baza sesji) | w samym tokenie, po stronie klienta |
+| Skalowanie na wiele serwerów | wymaga współdzielonej bazy sesji | trywialne — każdy serwer sam zweryfikuje token |
+| Unieważnienie przed wygaśnięciem | łatwe (usuń z bazy) | trudniejsze (token jest ważny, dopóki nie wygaśnie) |
+
+W tym kursie używamy **JWT** (JSON Web Token) — pasuje do architektury bezstanowej z
+wykładu 2.
+
+## 4️⃣ Anatomia JWT
+
+Token JWT to trzy części oddzielone kropkami: `header.payload.signature`
+
+```
+eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5rb3dhbHNraSIsInJvbGEiOiJkb3dvZGNhIn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+```
+
+- **Header** — jaki algorytm podpisu (np. `HS256`).
+- **Payload** — dane (np. `{"sub": "jankowalski", "rola": "dowodca", "exp": 1735689600}`)
+  — **czytelne dla każdego** (to tylko Base64, nie szyfrowanie!), więc **nigdy** nie
+  wkładajcie tam haseł czy innych sekretów.
+- **Signature** — podpis kryptograficzny, weryfikowany kluczem znanym tylko serwerowi
+  — to on gwarantuje, że nikt nie sfałszował payloadu.
+
+::: {.callout-important}
+## JWT jest podpisany, nie zaszyfrowany
+Każdy, kto przechwyci token, może **odczytać** jego zawartość (Base64 to nie
+szyfrowanie) — nie może jej jednak **zmienić** niezauważenie, bo podpis by się nie
+zgadzał. Wniosek: JWT chroni przed fałszowaniem danych, nie przed ich odczytaniem —
+transport tokenu musi iść przez HTTPS, żeby nikt po drodze go nie podsłuchał.
+:::
+
+## 5️⃣ OWASP Top 10 — trzy podatności, które napotkacie w laboratoriach
+
+### SQL Injection
+
+```python
+# PODATNE:
+conn.execute(f"SELECT * FROM uzytkownicy WHERE login = '{login}'")
+# atakujacy wpisuje: login = "' OR '1'='1"
+```
+
+Obrona: **zawsze** parametryzowane zapytania (widzieliście to już w laboratorium 3) —
+`conn.execute("... WHERE login = ?", (login,))`.
+
+### XSS (Cross-Site Scripting)
+
+Atakujący wstrzykuje złośliwy JavaScript do danych, które potem są wyświetlane
+innemu użytkownikowi bez odpowiedniego oczyszczenia (np. komentarz zawierający
+`<script>...</script>`, wyświetlony bez escapowania w przeglądarce ofiary).
+
+Obrona: nowoczesne frameworki frontendowe (React i podobne) domyślnie escapują dane
+przy renderowaniu — problem pojawia się głównie, gdy ktoś świadomie to wyłączy
+(`dangerouslySetInnerHTML` i podobne).
+
+### CSRF (Cross-Site Request Forgery)
+
+Atakujący nakłania przeglądarkę ofiary (zalogowanej w Waszej aplikacji) do wysłania
+żądania bez jej wiedzy (np. przez ukryty formularz na złośliwej stronie). Ponieważ
+przeglądarka automatycznie dołącza cookies do żądań, serwer "widzi" żądanie jako
+uwierzytelnione.
+
+Obrona: API oparte o JWT w nagłówku `Authorization` (nie w cookies) jest **z natury
+odporne** na klasyczny CSRF — atakująca strona nie ma dostępu do tokenu
+przechowywanego przez Waszą aplikację (np. w pamięci JS), więc nie może go dołączyć
+do sfałszowanego żądania.
+
+## 6️⃣ HTTPS/TLS — dlaczego zawsze
+
+Bez TLS każdy w tej samej sieci (Wi-Fi w kawiarni, router po drodze) może odczytać
+**cały** ruch — łącznie z tokenami JWT i hasłami przesyłanymi przy logowaniu. TLS
+szyfruje transport między klientem a serwerem — to warunek konieczny, nie opcjonalny
+dodatek, dla każdej aplikacji przyjmującej dane logowania.
+
+---
+
+## 🧾 Podsumowanie
+
+- Uwierzytelnianie = kim jesteś; autoryzacja = co wolno Ci zrobić — to dwa osobne mechanizmy.
+- Hasła zawsze hashowane (bcrypt/argon2), nigdy przechowywane jawnym tekstem.
+- JWT jest podpisany (integralność), nie zaszyfrowany (poufność) — payload jest czytelny dla każdego.
+- SQL injection, XSS, CSRF — trzy klasyczne podatności; parametryzowane zapytania, escapowanie i tokeny w nagłówku to podstawowa obrona.
+
+## 📚 Źródła
+
+- OWASP Top 10 (owasp.org)
+- RFC 7519 — *JSON Web Token (JWT)*
+- Dokumentacja FastAPI — *Security*
