@@ -1,0 +1,26 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: Projektowanie Aplikacji Sieciowych
+  description: "Projektowanie Aplikacji Sieciowych dla studentów WAT w Warszawie"
+  site-url: https://sebkaz-teaching.github.io/pas2026
+  sidebar:
+    style: "docked"
+    contents:
+      - index.qmd
+  page-footer: "Copyright 2026, Sebastian Zając"
+format:
+  html:
+    page-layout: article
+    css: style.css
+    theme: cosmo
+    toc: true
+    toc-depth: 2
+    toc-title: "**Sections**"
+    self-contained-math: true
+    code-overflow: wrap
+    highlight-style: dark
+    code-block-background: true
+    link-external-newwindow: true

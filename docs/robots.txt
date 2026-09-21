@@ -1,0 +1,1 @@
+Sitemap: https://sebkaz-teaching.github.io/pas2026/sitemap.xml

@@ -9,3 +9,9 @@ venv/
 dist/
 build/
 .pytest_cache/
+
+/.quarto/
+**/*.quarto_ipynb
+
+/.quarto/
+**/*.quarto_ipynb

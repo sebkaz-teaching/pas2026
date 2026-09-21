@@ -1,0 +1,21 @@
+---
+title: "Informacje ogólne"
+---
+
+## Projektowanie Aplikacji Sieciowych
+
+Kod:
+
+Semestr: zimowy
+
+## Kalendarz
+
+<!-- TODO: uzupełnić na podstawie https://wel.wat.edu.pl/planyzajec/zima/dr__Zajac_Sebastian.htm -->
+
+### Wykład dla grup:
+
+1. TODO: dzień tygodnia, godzina, sala
+
+### Laboratorium dla grup:
+
+1. TODO: dzień tygodnia, godzina, sala
