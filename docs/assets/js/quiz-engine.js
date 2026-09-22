@@ -52,6 +52,23 @@
     return t.content.firstElementChild;
   }
 
+  var DISPLAY_LETTERS = ["A", "B", "C", "D"];
+
+  // Fisher-Yates. Grading uses each option's own `v` (submitted as the
+  // radio's value), never the on-screen position — shuffling display
+  // order only stops "always pick the Nth option" guessing, it can't
+  // desync grading.
+  function shuffled(arr) {
+    var copy = arr.slice();
+    for (var i = copy.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = copy[i];
+      copy[i] = copy[j];
+      copy[j] = tmp;
+    }
+    return copy;
+  }
+
   function mount(container, config) {
     injectStyle();
     var questions = config.questions;
@@ -69,15 +86,15 @@
 
     var qHost = container.querySelector(".rq-questions");
     questions.forEach(function (q, i) {
-      var opts = q.options
-        .map(function (o) {
+      var opts = shuffled(q.options)
+        .map(function (o, idx) {
           return (
             '<label class="rq-opt"><input type="radio" name="' +
             q.id +
             '" value="' +
             o.v +
             '" required><span><strong>' +
-            o.v +
+            DISPLAY_LETTERS[idx] +
             ")</strong> " +
             o.t +
             "</span></label>"
