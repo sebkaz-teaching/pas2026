@@ -46,25 +46,64 @@ pip install pytest httpx
 FastAPI udostępnia `TestClient`, który wywołuje endpointy **bez uruchamiania
 prawdziwego serwera** — testy są szybkie i powtarzalne.
 
+::: {.callout-important}
+## Testy potrzebują własnej bazy i własnych danych — nie zgadujcie ID
+Dwie pułapki, które psują testy miesiąc po napisaniu:
+
+1. **Data na sztywno** (`"2026-05-01"`) prędzej czy później stanie się przeszłością —
+   a Wasz walidator z części I odrzuca rezerwacje w przeszłości. Test przestanie
+   przechodzić, mimo że kod jest poprawny. Licz daty **względem `datetime.now()`**.
+2. **`poligon_id=1`, `jednostka_id=1`** zakłada, że te wiersze już istnieją w bazie.
+   Jeśli baza jest pusta (świeże środowisko CI, kolegi), test dostanie `404`/`422`
+   zamiast spodziewanego `409` — nie dlatego, że kod konfliktu jest zły, tylko
+   dlatego, że dane wejściowe testu nigdy nie istniały. Testy tworzą **własne** dane
+   wejściowe, nie zakładają cudzych.
+:::
+
 ```python
 # test_api.py
+from datetime import datetime, timedelta
 from fastapi.testclient import TestClient
 from main import app
 
 client = TestClient(app)
 
+
+def utworz_poligon_testowy() -> int:
+    odp = client.post("/poligony", json={
+        "nazwa": "Poligon testowy", "lokalizacja": "Test", "typ": "strzelnica",
+    })
+    return odp.json()["id"]
+
+
+def utworz_jednostke_testowa() -> int:
+    odp = client.post("/jednostki", json={"nazwa": "Jednostka testowa", "garnizon": "Test"})
+    return odp.json()["id"]
+
+
 def test_lista_poligonow_pusta_na_starcie():
     odpowiedz = client.get("/poligony")
     assert odpowiedz.status_code == 200
 
+
 def test_tworzenie_rezerwacji_z_konfliktem():
+    poligon_id = utworz_poligon_testowy()
+    jednostka_a = utworz_jednostke_testowa()
+    jednostka_b = utworz_jednostke_testowa()
+
+    # daty wzgledem "teraz", zeby test nie psul sie z uplywem czasu
+    start = datetime.now() + timedelta(days=30)
+    koniec = start + timedelta(hours=4)
+    start_nakladajacy = start + timedelta(hours=2)
+    koniec_nakladajacy = start_nakladajacy + timedelta(hours=4)
+
     client.post("/rezerwacje", json={
-        "poligon_id": 1, "jednostka_id": 1,
-        "data_od": "2026-05-01T08:00:00", "data_do": "2026-05-01T12:00:00",
+        "poligon_id": poligon_id, "jednostka_id": jednostka_a,
+        "data_od": start.isoformat(), "data_do": koniec.isoformat(),
     })
     odpowiedz = client.post("/rezerwacje", json={
-        "poligon_id": 1, "jednostka_id": 2,
-        "data_od": "2026-05-01T10:00:00", "data_do": "2026-05-01T14:00:00",
+        "poligon_id": poligon_id, "jednostka_id": jednostka_b,
+        "data_od": start_nakladajacy.isoformat(), "data_do": koniec_nakladajacy.isoformat(),
     })
     assert odpowiedz.status_code == 409
 ```
@@ -200,9 +239,17 @@ services:
       - ./poligony.db:/app/poligony.db
 ```
 
-`volumes` mapuje plik bazy SQLite z Waszego dysku do wnętrza kontenera — bez tego
-dane zniknęłyby przy każdym restarcie kontenera (kontenery są domyślnie
-**efemeryczne**: to, co zapiszesz wewnątrz, ginie, gdy kontener zostaje usunięty).
+`volumes` mapuje plik bazy SQLite z Waszego dysku do wnętrza kontenera.
+
+::: {.callout-note}
+## Restart kontenera vs usunięcie kontenera — to nie to samo
+Sam **restart** tego samego kontenera (`docker stop` + `docker start`, albo
+`docker-compose restart`) **zachowuje** dane zapisane wewnątrz, nawet bez `volumes` —
+to dalej ten sam kontener, ta sama warstwa zapisywalna. Dane giną dopiero, gdy
+kontener zostaje **usunięty i odtworzony od nowa** z obrazu — a to właśnie robi
+`docker-compose down` (usuwa kontenery) + `docker-compose up` (tworzy je na nowo).
+`volumes` chroni Was przed **tym drugim** przypadkiem, nie przed zwykłym restartem.
+:::
 
 ```bash
 docker-compose up
@@ -210,9 +257,11 @@ docker-compose up
 
 ### ✅ Mini-zadanie części III
 
-Sprawdź, że po `docker-compose down` i `docker-compose up` ponownie, dane w bazie
-**przetrwały** (dzięki `volumes`). Zrób też test przeciwny: usuń sekcję `volumes` i
-sprawdź, że dane **znikają** — zrozum na własne oczy, po co ten wpis istnieje.
+Sprawdź, że po `docker-compose down` (usuwa kontener) i `docker-compose up` ponownie
+(tworzy go od nowa), dane w bazie **przetrwały** — dzięki `volumes`, nie dzięki
+samemu kontenerowi. Zrób też test przeciwny: usuń sekcję `volumes` i powtórz
+`down`/`up` — sprawdź, że dane **znikają**, bo tym razem nowy kontener nie ma skąd
+ich odczytać.
 
 ---
 
@@ -254,7 +303,7 @@ kodzie źródłowym trafiającym do repozytorium.
 
 - [ ] Wszystkie sekrety w zmiennych środowiskowych, nie w kodzie.
 - [ ] `docker-compose up` stawia cały system jedną komendą.
-- [ ] Dane przetrwają restart kontenera (`volumes`).
+- [ ] Dane przetrwają usunięcie i odtworzenie kontenera, `docker-compose down && up` (`volumes`).
 - [ ] `/docs` pokazuje kompletną, opisaną dokumentację API.
 - [ ] Podstawowe testy (`pytest`) przechodzą.
 - [ ] CORS skonfigurowany dla adresu, na którym żyje frontend.

@@ -241,7 +241,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#put-zastąp-cały-zasób" id="toc-put-zastąp-cały-zasób" class="nav-link" data-scroll-target="#put-zastąp-cały-zasób">1️⃣ PUT — zastąp cały zasób</a></li>
   <li><a href="#delete" id="toc-delete" class="nav-link" data-scroll-target="#delete">2️⃣ DELETE</a></li>
   <li><a href="#zasób-rezerwacja-model-i-tabela" id="toc-zasób-rezerwacja-model-i-tabela" class="nav-link" data-scroll-target="#zasób-rezerwacja-model-i-tabela">3️⃣ Zasób <code>Rezerwacja</code> — model i tabela</a></li>
-  <li><a href="#sprawdzanie-konfliktu-terminów-pierwsza-wersja" id="toc-sprawdzanie-konfliktu-terminów-pierwsza-wersja" class="nav-link" data-scroll-target="#sprawdzanie-konfliktu-terminów-pierwsza-wersja">4️⃣ Sprawdzanie konfliktu terminów — pierwsza wersja</a></li>
+  <li><a href="#sprawdzanie-konfliktu-terminów-i-dlaczego-sprawdź-potem-zapisz-nie-wystarcza" id="toc-sprawdzanie-konfliktu-terminów-i-dlaczego-sprawdź-potem-zapisz-nie-wystarcza" class="nav-link" data-scroll-target="#sprawdzanie-konfliktu-terminów-i-dlaczego-sprawdź-potem-zapisz-nie-wystarcza">4️⃣ Sprawdzanie konfliktu terminów — i dlaczego “sprawdź, potem zapisz” nie wystarcza</a></li>
   <li><a href="#zadanie-na-koniec-spotkania" id="toc-zadanie-na-koniec-spotkania" class="nav-link" data-scroll-target="#zadanie-na-koniec-spotkania">✅ Zadanie na koniec spotkania</a></li>
   </ul></li>
   </ul>
@@ -592,8 +592,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    data_od: <span class="bu">str</span></span>
 <span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    data_do: <span class="bu">str</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="sprawdzanie-konfliktu-terminów-pierwsza-wersja" class="level2">
-<h2 class="anchored" data-anchor-id="sprawdzanie-konfliktu-terminów-pierwsza-wersja">4️⃣ Sprawdzanie konfliktu terminów — pierwsza wersja</h2>
+<section id="sprawdzanie-konfliktu-terminów-i-dlaczego-sprawdź-potem-zapisz-nie-wystarcza" class="level2">
+<h2 class="anchored" data-anchor-id="sprawdzanie-konfliktu-terminów-i-dlaczego-sprawdź-potem-zapisz-nie-wystarcza">4️⃣ Sprawdzanie konfliktu terminów — i dlaczego “sprawdź, potem zapisz” nie wystarcza</h2>
 <p>To dokładnie problem zapowiedziany na spotkaniu 1: dwie jednostki nie mogą zarezerwować tego samego poligonu w nakładających się terminach.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sprawdz_konflikt(conn, poligon_id: <span class="bu">int</span>, data_od: <span class="bu">str</span>, data_do: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">bool</span>:</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    wiersze <span class="op">=</span> conn.execute(</span>
@@ -606,23 +606,67 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="st">        """</span>,</span>
 <span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>        (poligon_id, data_do, data_od),</span>
 <span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>    ).fetchall()</span>
-<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">len</span>(wiersze) <span class="op">&gt;</span> <span class="dv">0</span></span>
-<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a><span class="at">@app.post</span>(<span class="st">"/rezerwacje"</span>, status_code<span class="op">=</span><span class="dv">201</span>)</span>
-<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> utworz_rezerwacje(rez: RezerwacjaCreate):</span>
-<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> get_db() <span class="im">as</span> conn:</span>
-<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> sprawdz_konflikt(conn, rez.poligon_id, rez.data_od, rez.data_do):</span>
-<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> HTTPException(status_code<span class="op">=</span><span class="dv">409</span>, detail<span class="op">=</span><span class="st">"Konflikt terminow na tym poligonie"</span>)</span>
-<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>        cursor <span class="op">=</span> conn.execute(</span>
-<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>            <span class="st">"INSERT INTO rezerwacje (poligon_id, jednostka_id, data_od, data_do) VALUES (?, ?, ?, ?)"</span>,</span>
-<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>            (rez.poligon_id, rez.jednostka_id, rez.data_od, rez.data_do),</span>
-<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>        conn.commit()</span>
-<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> {<span class="st">"id"</span>: cursor.lastrowid, <span class="op">**</span>rez.model_dump(), <span class="st">"status"</span>: <span class="st">"oczekujaca"</span>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Warunek <code>data_od &lt; ? AND data_do &gt; ?</code> to klasyczny test nakładania się dwóch przedziałów czasowych: dwa przedziały <strong>nie</strong> nakładają się tylko wtedy, gdy jeden kończy się przed rozpoczęciem drugiego. Zanegowanie tego warunku (logicznie — de Morgan) daje właśnie powyższe zapytanie.</p>
-<p><code>409 Conflict</code> (nie <code>400 Bad Request</code>!) — dane są poprawnie sformułowane, problem to konflikt ze <strong>stanem systemu</strong>, dokładnie jak w części II z duplikatem ID.</p>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">len</span>(wiersze) <span class="op">&gt;</span> <span class="dv">0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Warunek <code>data_od &lt; ? AND data_do &gt; ?</code> to klasyczny test nakładania się dwóch przedziałów czasowych: dwa przedziały <strong>nie</strong> nakładają się tylko wtedy, gdy jeden kończy się przed rozpoczęciem drugiego. Zanegowanie tego warunku (logicznie — de Morgan) daje właśnie powyższe zapytanie. <code>409 Conflict</code> (nie <code>400 Bad Request</code>!) — dane są poprawnie sformułowane, problem to konflikt ze <strong>stanem systemu</strong>, dokładnie jak w części II z duplikatem ID.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>“Sprawdź, potem zapisz” ma lukę czasową — i to jest WŁAŚNIE nasz problem z wykładu 1
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># WERSJA Z LUKA — NIE KOPIUJ:</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="at">@app.post</span>(<span class="st">"/rezerwacje"</span>, status_code<span class="op">=</span><span class="dv">201</span>)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> utworz_rezerwacje(rez: RezerwacjaCreate):</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> get_db() <span class="im">as</span> conn:</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> sprawdz_konflikt(conn, rez.poligon_id, rez.data_od, rez.data_do):</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> HTTPException(status_code<span class="op">=</span><span class="dv">409</span>, detail<span class="op">=</span><span class="st">"Konflikt terminow"</span>)</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>        <span class="co"># &lt;-- MIEDZY TA LINIA A NASTEPNA moze wcisnac sie DRUGIE zadanie</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>        conn.execute(<span class="st">"INSERT INTO rezerwacje (...) VALUES (...)"</span>, (...))</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>        conn.commit()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>SELECT</code> (sprawdzanie konfliktu) <strong>nie blokuje zapisu</strong> innym połączeniom — to zwykły odczyt. Jeśli dwa żądania POST przyjdą prawie jednocześnie, oba mogą wykonać <code>sprawdz_konflikt</code> <strong>zanim którekolwiek</strong> zdąży wstawić swój wiersz — oba widzą “brak konfliktu”, oba wstawiają, i mamy dokładnie to, czemu miał zapobiegać ten kod: podwójną rezerwację. To nie hipotetyczne ćwiczenie akademickie — to jest dosłownie problem zapowiedziany w pierwszym wykładzie, teraz w konkretnej, kodowej postaci.</p>
+</div>
+</div>
+<section id="naprawa-begin-immediate-zablokuj-zapis-zanim-sprawdzisz" class="level3">
+<h3 class="anchored" data-anchor-id="naprawa-begin-immediate-zablokuj-zapis-zanim-sprawdzisz">🔹 Naprawa: <code>BEGIN IMMEDIATE</code> — zablokuj zapis, zanim sprawdzisz</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sqlite3</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="at">@app.post</span>(<span class="st">"/rezerwacje"</span>, status_code<span class="op">=</span><span class="dv">201</span>)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> utworz_rezerwacje(rez: RezerwacjaCreate):</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> get_db() <span class="im">as</span> conn:</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>        conn.execute(<span class="st">"BEGIN IMMEDIATE"</span>)  <span class="co"># zajmij blokade zapisu NATYCHMIAST, przed SELECT-em</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> sprawdz_konflikt(conn, rez.poligon_id, rez.data_od, rez.data_do):</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>                conn.rollback()</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>                <span class="cf">raise</span> HTTPException(status_code<span class="op">=</span><span class="dv">409</span>, detail<span class="op">=</span><span class="st">"Konflikt terminow na tym poligonie"</span>)</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>            cursor <span class="op">=</span> conn.execute(</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>                <span class="st">"INSERT INTO rezerwacje (poligon_id, jednostka_id, data_od, data_do) VALUES (?, ?, ?, ?)"</span>,</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>                (rez.poligon_id, rez.jednostka_id, rez.data_od, rez.data_do),</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>            conn.commit()</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> {<span class="st">"id"</span>: cursor.lastrowid, <span class="op">**</span>rez.model_dump(), <span class="st">"status"</span>: <span class="st">"oczekujaca"</span>}</span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span> sqlite3.OperationalError:</span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>            conn.rollback()</span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> HTTPException(status_code<span class="op">=</span><span class="dv">503</span>, detail<span class="op">=</span><span class="st">"Baza chwilowo zajeta, sprobuj ponownie"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>BEGIN IMMEDIATE</code> każe SQLite zająć blokadę zapisu <strong>od razu</strong>, zanim wykonamy choćby jeden <code>SELECT</code> — drugie żądanie, próbujące własnego <code>BEGIN IMMEDIATE</code> w tym samym momencie, zostanie zablokowane (albo dostanie <code>OperationalError: database is locked</code>, jeśli przekroczy limit czasu), dopóki pierwsza transakcja się nie zakończy (<code>commit</code> albo <code>rollback</code>). Efekt: dwa równoczesne żądania na ten sam poligon są teraz <strong>serializowane</strong> — drugie zobaczy w swoim <code>sprawdz_konflikt</code> rezerwację, którą pierwsze zdążyło już zacommitować, zamiast pustego wyniku.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>To rozwiązuje problem w skali jednego procesu/pliku SQLite — nie w skali wielu serwerów
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Jak zobaczycie na spotkaniu 3 (skalowanie), jeśli kiedyś ta aplikacja miałaby działać na wielu serwerach ze wspólną bazą sieciową (PostgreSQL), blokada <code>BEGIN IMMEDIATE</code> przestałaby wystarczać — trzeba by sięgnąć po blokady na poziomie bazy sieciowej (<code>SELECT ... FOR UPDATE</code>) albo ograniczenie <code>UNIQUE</code> na poziomie schematu. Na razie, z jednym plikiem SQLite i jednym procesem serwera, <code>BEGIN IMMEDIATE</code> w pełni rozwiązuje problem.</p>
+</div>
+</div>
 <hr>
+</section>
 </section>
 <section id="zadanie-na-koniec-spotkania" class="level2">
 <h2 class="anchored" data-anchor-id="zadanie-na-koniec-spotkania">✅ Zadanie na koniec spotkania</h2>

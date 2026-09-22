@@ -216,7 +216,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#zasoby-zagnieżdżone" id="toc-zasoby-zagnieżdżone" class="nav-link" data-scroll-target="#zasoby-zagnieżdżone">2️⃣ Zasoby zagnieżdżone</a></li>
   <li><a href="#filtrowanie-sortowanie-paginacja-przez-query-params" id="toc-filtrowanie-sortowanie-paginacja-przez-query-params" class="nav-link" data-scroll-target="#filtrowanie-sortowanie-paginacja-przez-query-params">3️⃣ Filtrowanie, sortowanie, paginacja — przez query params</a></li>
   <li><a href="#wersjonowanie-api" id="toc-wersjonowanie-api" class="nav-link" data-scroll-target="#wersjonowanie-api">4️⃣ Wersjonowanie API</a></li>
-  <li><a href="#openapi-dokumentacja-która-się-nie-starzeje" id="toc-openapi-dokumentacja-która-się-nie-starzeje" class="nav-link" data-scroll-target="#openapi-dokumentacja-która-się-nie-starzeje">5️⃣ OpenAPI — dokumentacja, która się nie starzeje</a></li>
+  <li><a href="#openapi-dokumentacja-blisko-kodu" id="toc-openapi-dokumentacja-blisko-kodu" class="nav-link" data-scroll-target="#openapi-dokumentacja-blisko-kodu">5️⃣ OpenAPI — dokumentacja blisko kodu</a></li>
   <li><a href="#spójna-struktura-błędów" id="toc-spójna-struktura-błędów" class="nav-link" data-scroll-target="#spójna-struktura-błędów">6️⃣ Spójna struktura błędów</a></li>
   <li><a href="#podsumowanie-części-i" id="toc-podsumowanie-części-i" class="nav-link" data-scroll-target="#podsumowanie-części-i">🧾 Podsumowanie części I</a></li>
   </ul></li>
@@ -226,7 +226,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#uwierzytelnianie-vs-autoryzacja" id="toc-uwierzytelnianie-vs-autoryzacja" class="nav-link" data-scroll-target="#uwierzytelnianie-vs-autoryzacja">1️⃣ Uwierzytelnianie vs autoryzacja</a></li>
   <li><a href="#jak-przechowywać-hasła-nigdy-jawnym-tekstem" id="toc-jak-przechowywać-hasła-nigdy-jawnym-tekstem" class="nav-link" data-scroll-target="#jak-przechowywać-hasła-nigdy-jawnym-tekstem">2️⃣ Jak przechowywać hasła — nigdy jawnym tekstem</a></li>
   <li><a href="#sesje-vs-tokeny-dwa-modele-uwierzytelniania" id="toc-sesje-vs-tokeny-dwa-modele-uwierzytelniania" class="nav-link" data-scroll-target="#sesje-vs-tokeny-dwa-modele-uwierzytelniania">3️⃣ Sesje vs tokeny — dwa modele uwierzytelniania</a></li>
-  <li><a href="#anatomia-jwt" id="toc-anatomia-jwt" class="nav-link" data-scroll-target="#anatomia-jwt">4️⃣ Anatomia JWT</a></li>
+  <li><a href="#anatomia-jwt-wariantu-którego-używamy" id="toc-anatomia-jwt-wariantu-którego-używamy" class="nav-link" data-scroll-target="#anatomia-jwt-wariantu-którego-używamy">4️⃣ Anatomia JWT (wariantu, którego używamy)</a></li>
   <li><a href="#owasp-top-10-trzy-podatności-które-napotkacie-w-laboratoriach" id="toc-owasp-top-10-trzy-podatności-które-napotkacie-w-laboratoriach" class="nav-link" data-scroll-target="#owasp-top-10-trzy-podatności-które-napotkacie-w-laboratoriach">5️⃣ OWASP Top 10 — trzy podatności, które napotkacie w laboratoriach</a></li>
   <li><a href="#httpstls-dlaczego-zawsze" id="toc-httpstls-dlaczego-zawsze" class="nav-link" data-scroll-target="#httpstls-dlaczego-zawsze">6️⃣ HTTPS/TLS — dlaczego zawsze</a></li>
   <li><a href="#podsumowanie-części-ii" id="toc-podsumowanie-części-ii" class="nav-link" data-scroll-target="#podsumowanie-części-ii">🧾 Podsumowanie części II</a></li>
@@ -399,12 +399,25 @@ GET /rezerwacje?strona=2&amp;na_strone=20         -- paginacja</code></pre>
 <p>Kiedy zmieniasz kształt API w sposób, który złamałby istniejących klientów (np. zmieniasz nazwę pola), potrzebujesz wersjonowania:</p>
 <pre><code>/api/v1/poligony
 /api/v2/poligony</code></pre>
-<p>Alternatywa: wersjonowanie przez nagłówek (<code>Accept: application/vnd.api.v2+json</code>) — rzadziej spotykane w praktyce, ale czystsze koncepcyjnie. W tym kursie użyjemy prostszego podejścia z prefiksem <code>/api/v1/</code> w ścieżce.</p>
+<p>Alternatywa: wersjonowanie przez nagłówek (<code>Accept: application/vnd.api.v2+json</code>) — rzadziej spotykane w praktyce, ale czystsze koncepcyjnie. Nasz projekt jest na razie za mały, żeby potrzebować którejkolwiek z tych opcji naprawdę — zapamiętajcie obie jako narzędzia na później, gdy API będzie miało zewnętrznych klientów.</p>
 </section>
-<section id="openapi-dokumentacja-która-się-nie-starzeje" class="level2">
-<h2 class="anchored" data-anchor-id="openapi-dokumentacja-która-się-nie-starzeje">5️⃣ OpenAPI — dokumentacja, która się nie starzeje</h2>
-<p>Pamiętacie <code>/docs</code> z laboratorium 1? To nie przypadek, że działa automatycznie — FastAPI <strong>generuje specyfikację OpenAPI</strong> (JSON opisujący każdy endpoint, jego parametry, kształt odpowiedzi) bezpośrednio z Waszego kodu (adnotacji typów, modeli Pydantic). Dostępna jest pod <code>/openapi.json</code>.</p>
-<p><strong>Dlaczego to ważne</strong>: dokumentacja pisana ręcznie (osobny plik Word/Markdown) <strong>zawsze</strong> z czasem rozjeżdża się z rzeczywistym kodem — ktoś zmienia endpoint i zapomina zaktualizować opis. Dokumentacja generowana z kodu <strong>nie może</strong> się rozjechać, bo to dosłownie ten sam kod.</p>
+<section id="openapi-dokumentacja-blisko-kodu" class="level2">
+<h2 class="anchored" data-anchor-id="openapi-dokumentacja-blisko-kodu">5️⃣ OpenAPI — dokumentacja blisko kodu</h2>
+<p>Pamiętacie <code>/docs</code> z pierwszego laboratorium? To nie przypadek, że działa automatycznie — FastAPI <strong>generuje specyfikację OpenAPI</strong> (JSON opisujący każdy endpoint, jego parametry, kształt odpowiedzi) bezpośrednio z Waszego kodu (adnotacji typów, modeli Pydantic). Dostępna jest pod <code>/openapi.json</code>.</p>
+<p><strong>Dlaczego to pomaga</strong>: dokumentacja pisana ręcznie (osobny plik Word/Markdown) <strong>zawsze</strong> z czasem rozjeżdża się z rzeczywistym kodem — ktoś zmienia endpoint i zapomina zaktualizować opis. Dokumentacja generowana z kodu jest bliżej prawdy, bo typy i nazwy parametrów <strong>nie mogą</strong> się rozjechać — to dosłownie ta sama adnotacja.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>To nie jest automat, o którym można zapomnieć
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>“Blisko kodu” nie znaczy “całkowicie odporne na błędy”. FastAPI wie o kodach błędów, które zwraca <em>domyślnie</em> (np. <code>422</code> z Pydantic) — ale własny <code>HTTPException(404, ...)</code> w ciele funkcji <strong>nie pojawi się</strong> w <code>/docs</code>, dopóki nie zadeklarujecie go jawnie w <code>responses</code> (przykład niżej). Zmienisz logikę błędu w kodzie i zapomnisz zaktualizować <code>responses</code> — i dokumentacja jednak się rozjedzie. “Generowane z kodu” zmniejsza ryzyko, nie eliminuje go.</p>
+</div>
+</div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="at">@app.get</span>(</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"/poligony/</span><span class="sc">{poligon_id}</span><span class="st">"</span>,</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    response_model<span class="op">=</span>Poligon,</span>
@@ -429,8 +442,8 @@ GET /rezerwacje?strona=2&amp;na_strone=20         -- paginacja</code></pre>
 <ul>
 <li>URL opisuje zasób (rzeczownik, liczba mnoga), metoda HTTP opisuje akcję.</li>
 <li>Zagnieżdżaj zasoby maksymalnie na 2 poziomy; filtruj/sortuj/paginuj przez query params.</li>
-<li>Wersjonuj API przez prefiks ścieżki, gdy zmiana złamałaby istniejących klientów.</li>
-<li>OpenAPI/Swagger generowane z kodu nigdy się nie starzeje — w odróżnieniu od ręcznie pisanej dokumentacji.</li>
+<li>Wersjonuj API (prefiks ścieżki albo nagłówek), gdy zmiana złamałaby istniejących klientów.</li>
+<li>OpenAPI/Swagger generowane z kodu jest bliżej prawdy niż ręcznie pisana dokumentacja — ale własne kody błędów wciąż trzeba zadeklarować jawnie (<code>responses</code>).</li>
 </ul>
 <hr>
 </section>
@@ -523,9 +536,10 @@ GET /rezerwacje?strona=2&amp;na_strone=20         -- paginacja</code></pre>
 </table>
 <p>W tym kursie używamy <strong>JWT</strong> (JSON Web Token) — pasuje do architektury bezstanowej ze spotkania 1.</p>
 </section>
-<section id="anatomia-jwt" class="level2">
-<h2 class="anchored" data-anchor-id="anatomia-jwt">4️⃣ Anatomia JWT</h2>
-<p>Token JWT to trzy części oddzielone kropkami: <code>header.payload.signature</code></p>
+<section id="anatomia-jwt-wariantu-którego-używamy" class="level2">
+<h2 class="anchored" data-anchor-id="anatomia-jwt-wariantu-którego-używamy">4️⃣ Anatomia JWT (wariantu, którego używamy)</h2>
+<p>Standard JWT (RFC 7519) dopuszcza dwa warianty: <strong>JWS</strong> (JSON Web <em>Signature</em> — podpisany, ale czytelny) i <strong>JWE</strong> (JSON Web <em>Encryption</em> — faktycznie zaszyfrowany). <strong>W tym kursie, jak w zdecydowanej większości praktycznych API, używamy JWS</strong> — poniższy opis dotyczy tego wariantu, nie każdego możliwego tokenu JWT.</p>
+<p>Token JWS to trzy części oddzielone kropkami: <code>header.payload.signature</code></p>
 <pre><code>eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5rb3dhbHNraSIsInJvbGEiOiJkb3dvZGNhIn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c</code></pre>
 <ul>
 <li><strong>Header</strong> — jaki algorytm podpisu (np. <code>HS256</code>).</li>
@@ -538,11 +552,11 @@ GET /rezerwacje?strona=2&amp;na_strone=20         -- paginacja</code></pre>
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>JWT jest podpisany, nie zaszyfrowany
+<span class="screen-reader-only">Important</span>Nasz JWT (JWS) jest podpisany, nie zaszyfrowany
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Każdy, kto przechwyci token, może <strong>odczytać</strong> jego zawartość (Base64 to nie szyfrowanie) — nie może jej jednak <strong>zmienić</strong> niezauważenie, bo podpis by się nie zgadzał. Wniosek: JWT chroni przed fałszowaniem danych, nie przed ich odczytaniem — transport tokenu musi iść przez HTTPS, żeby nikt po drodze go nie podsłuchał.</p>
+<p>Każdy, kto przechwyci token, może <strong>odczytać</strong> jego zawartość (Base64 to nie szyfrowanie) — nie może jej jednak <strong>zmienić</strong> niezauważenie, bo podpis by się nie zgadzał. Wniosek: JWS chroni przed fałszowaniem danych, nie przed ich odczytaniem — transport tokenu musi iść przez HTTPS, żeby nikt po drodze go nie podsłuchał. (JWE rozwiązałby też problem odczytu, kosztem większej złożoności — poza zakresem tego kursu.)</p>
 </div>
 </div>
 </section>
@@ -576,7 +590,7 @@ GET /rezerwacje?strona=2&amp;na_strone=20         -- paginacja</code></pre>
 <ul>
 <li>Uwierzytelnianie = kim jesteś; autoryzacja = co wolno Ci zrobić — to dwa osobne mechanizmy.</li>
 <li>Hasła zawsze hashowane (bcrypt/argon2), nigdy przechowywane jawnym tekstem.</li>
-<li>JWT jest podpisany (integralność), nie zaszyfrowany (poufność) — payload jest czytelny dla każdego.</li>
+<li>Nasz wariant JWT (JWS) jest podpisany (integralność), nie zaszyfrowany (poufność) — payload jest czytelny dla każdego; JWE istnieje, ale to poza zakresem kursu.</li>
 <li>SQL injection, XSS, CSRF — trzy klasyczne podatności; parametryzowane zapytania, escapowanie i tokeny w nagłówku to podstawowa obrona.</li>
 </ul>
 </section>

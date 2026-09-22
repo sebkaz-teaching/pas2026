@@ -118,7 +118,7 @@ def sprawdz_haslo(haslo: str, hash_z_bazy: str) -> bool:
 class RejestracjaRequest(BaseModel):
     login: str
     haslo: str = Field(min_length=8)
-    rola: str = "dowodca"
+    # UWAGA: celowo BRAK pola "rola" tutaj — patrz callout ponizej
 
 @app.post("/register", status_code=201)
 def rejestracja(dane: RejestracjaRequest):
@@ -127,12 +127,43 @@ def rejestracja(dane: RejestracjaRequest):
         if istniejacy:
             raise HTTPException(status_code=409, detail="Login juz zajety")
         cursor = conn.execute(
-            "INSERT INTO uzytkownicy (login, hash_hasla, rola) VALUES (?, ?, ?)",
-            (dane.login, zahashuj_haslo(dane.haslo), dane.rola),
+            "INSERT INTO uzytkownicy (login, hash_hasla, rola) VALUES (?, ?, 'dowodca')",
+            (dane.login, zahashuj_haslo(dane.haslo)),
         )
         conn.commit()
-        return {"id": cursor.lastrowid, "login": dane.login, "rola": dane.rola}
+        return {"id": cursor.lastrowid, "login": dane.login, "rola": "dowodca"}
 ```
+
+::: {.callout-important}
+## Rola nie może pochodzić od klienta
+
+Wersja tego endpointu, która przyjmuje `rola: str` wprost z żądania (`dane.rola`),
+pozwala **dowolnemu** nieuwierzytelnionemu użytkownikowi zarejestrować się od razu
+jako `"planista"` — czyli samodzielnie nadać sobie uprawnienia, które dopiero za
+chwilę (część IV) będziemy starannie chronić `403`-ką. To nie teoretyczna dziura:
+to dokładnie ten sam błąd klasy *mass assignment*, co pozwolenie klientowi wysłać
+`is_admin: true` w formularzu rejestracji.
+
+`/register` **zawsze** tworzy rolę `dowodca`, z góry, bez pytania klienta. Nadawanie
+roli `planista` to osobna operacja — patrz część III, gdzie budujemy do niej
+chroniony endpoint (wymagający, żeby robił to już istniejący planista).
+:::
+
+### 🔹 Skąd bierze się PIERWSZY planista?
+
+Skoro awans na planistę wymaga (część III) bycia już zalogowanym jako planista, ktoś
+musi być tym pierwszym — jajko i kura. W praktyce rozwiązuje się to jednym z dwóch
+sposobów:
+
+1. **Seed przy starcie projektu** — skrypt `seed.py` (macie go już z laboratorium o
+   bazie danych) wstawia jedno konto z `rola = 'planista'` bezpośrednio przez SQL,
+   z pominięciem API.
+2. **Ręczna zmiana w bazie** — prowadzący/administrator loguje się do
+   `poligony.db` i robi `UPDATE uzytkownicy SET rola = 'planista' WHERE login = ...`
+   dla konkretnego konta.
+
+Żadna z tych dróg nie prowadzi przez publiczne, nieuwierzytelnione API — i tak
+właśnie powinno być.
 
 ## 4️⃣ Endpoint `/login` (na razie bez tokenu — dopiero część III)
 
@@ -178,6 +209,7 @@ pip install python-jose[cryptography]
 
 ```python
 from jose import jwt
+from jose.exceptions import JWTError
 from datetime import datetime, timedelta
 
 SECRET_KEY = "zmien-mnie-w-prawdziwym-projekcie"  # docelowo: zmienna srodowiskowa!
@@ -205,21 +237,39 @@ def login(dane: LoginRequest):
 ## 2️⃣ Weryfikacja tokenu — `Depends`
 
 FastAPI ma wbudowany mechanizm **wstrzykiwania zależności** (`Depends`) — idealny do
-"za każdym razem zweryfikuj token, zanim wykonasz właściwą logikę endpointu":
+"za każdym razem zweryfikuj token, zanim wykonasz właściwą logikę endpointu".
+
+::: {.callout-note}
+## Dlaczego nie `OAuth2PasswordBearer`?
+FastAPI ma gotowy schemat `OAuth2PasswordBearer`, ale zakłada, że logowanie
+przyjmuje dane w formacie `OAuth2PasswordRequestForm` — pola `username`/`password`
+wysłane jako formularz (`application/x-www-form-urlencoded`), nie nasz JSON z polami
+`login`/`haslo`. Użycie go "na skróty" (jak w niejednej gotowej dokumentacji w
+internecie) sprawiłoby, że przycisk "Authorize" w `/docs` wysyłałby dane w formacie,
+którego nasz `/login` nie rozumie. Zamiast dopasowywać cały nasz projekt do cudzej
+konwencji, czytamy nagłówek `Authorization` ręcznie — mniej "magii", w pełni spójne
+z tym, co już mamy.
+:::
 
 ```python
-from fastapi import Depends
-from fastapi.security import OAuth2PasswordBearer
+from fastapi import Depends, Header
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
-
-def pobierz_biezacego_uzytkownika(token: str = Depends(oauth2_scheme)) -> dict:
+def pobierz_biezacego_uzytkownika(authorization: str = Header(...)) -> dict:
+    if not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Brak lub nieprawidlowy naglowek Authorization")
+    token = authorization.removeprefix("Bearer ")
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         return {"login": payload["sub"], "rola": payload["rola"]}
-    except Exception:
+    except JWTError:
         raise HTTPException(status_code=401, detail="Nieprawidlowy lub wygasly token")
 ```
+
+`Header(...)` mówi FastAPI: "wyciągnij nagłówek `Authorization` z żądania, wymagaj
+go" — dokładnie tak samo deklaratywnie, jak `Depends`, tylko dla nagłówka zamiast
+zależności. Zwróć uwagę też na `except JWTError` (z `jose.exceptions`) zamiast
+gołego `except Exception` — łapiemy konkretnie błędy dekodowania tokenu, nie każdy
+możliwy wyjątek w tej funkcji (który mógłby ukryć prawdziwy błąd programistyczny).
 
 Dowolny endpoint dostaje uwierzytelnionego użytkownika, dopisując jeden parametr:
 
@@ -249,10 +299,40 @@ def zatwierdz_rezerwacje(rez_id: int, uzytkownik: dict = Depends(wymagaj_roli("p
 dopasowaną do konkretnej roli. Dzięki temu jeden mechanizm obsługuje dowolną liczbę
 ról bez powtarzania kodu.
 
+## 4️⃣ Awans na planistę — dopiero teraz to możliwe
+
+Mamy już `wymagaj_roli`, więc możemy dotrzymać obietnicy z części II: nadawanie roli
+`planista` to osobny, chroniony endpoint, nie pole w `/register`.
+
+```python
+class AwansRequest(BaseModel):
+    login: str
+
+@app.post("/uzytkownicy/awansuj")
+def awansuj_na_planiste(
+    dane: AwansRequest,
+    uzytkownik: dict = Depends(wymagaj_roli("planista")),  # tylko obecny planista moze awansowac
+):
+    with get_db() as conn:
+        cursor = conn.execute(
+            "UPDATE uzytkownicy SET rola = 'planista' WHERE login = ?", (dane.login,)
+        )
+        conn.commit()
+        if cursor.rowcount == 0:
+            raise HTTPException(status_code=404, detail="Uzytkownik nie znaleziony")
+        return {"komunikat": f"{dane.login} jest teraz planista"}
+```
+
+Zamknięty krąg: żeby kogoś awansować, sam musisz już być planistą — a **pierwszy**
+planista powstaje przez `seed.py` albo ręczny `UPDATE`, jak opisano w części II.
+Nikt nie zostaje planistą przez samo wypełnienie formularza rejestracji.
+
 ### ✅ Mini-zadanie części III
 
-Zabezpiecz `DELETE /poligony/{id}` tak, żeby tylko `planista` mógł usuwać poligony —
-`dowodca` próbujący to zrobić powinien dostać `403`.
+1. Zabezpiecz `DELETE /poligony/{id}` tak, żeby tylko `planista` mógł usuwać poligony —
+   `dowodca` próbujący to zrobić powinien dostać `403`.
+2. Sprawdź ręcznie (przez seed/UPDATE) nadanie sobie roli planisty, zaloguj się, i
+   przetestuj `/uzytkownicy/awansuj` na drugim, świeżo zarejestrowanym koncie.
 
 ---
 
@@ -312,8 +392,8 @@ def login(request: Request, dane: LoginRequest):
 ## 3️⃣ CORS — kto może wywoływać Twoje API z przeglądarki
 
 Domyślnie przeglądarki **blokują** żądania JavaScript do innej domeny niż ta, z
-której strona została załadowana (*Same-Origin Policy*). Jeśli frontend (lab 10) ma
-żyć na innej domenie/porcie niż backend, musisz jawnie zezwolić:
+której strona została załadowana (*Same-Origin Policy*). Jeśli frontend (część II
+następnego spotkania) ma żyć na innej domenie/porcie niż backend, musisz jawnie zezwolić:
 
 ```python
 from fastapi.middleware.cors import CORSMiddleware

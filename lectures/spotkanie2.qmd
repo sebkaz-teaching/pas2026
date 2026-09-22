@@ -141,20 +141,31 @@ zmieniasz nazwę pola), potrzebujesz wersjonowania:
 ```
 
 Alternatywa: wersjonowanie przez nagłówek (`Accept: application/vnd.api.v2+json`) —
-rzadziej spotykane w praktyce, ale czystsze koncepcyjnie. W tym kursie użyjemy
-prostszego podejścia z prefiksem `/api/v1/` w ścieżce.
+rzadziej spotykane w praktyce, ale czystsze koncepcyjnie. Nasz projekt jest na razie
+za mały, żeby potrzebować którejkolwiek z tych opcji naprawdę — zapamiętajcie obie
+jako narzędzia na później, gdy API będzie miało zewnętrznych klientów.
 
-## 5️⃣ OpenAPI — dokumentacja, która się nie starzeje
+## 5️⃣ OpenAPI — dokumentacja blisko kodu
 
-Pamiętacie `/docs` z laboratorium 1? To nie przypadek, że działa automatycznie —
+Pamiętacie `/docs` z pierwszego laboratorium? To nie przypadek, że działa automatycznie —
 FastAPI **generuje specyfikację OpenAPI** (JSON opisujący każdy endpoint, jego
 parametry, kształt odpowiedzi) bezpośrednio z Waszego kodu (adnotacji typów,
 modeli Pydantic). Dostępna jest pod `/openapi.json`.
 
-**Dlaczego to ważne**: dokumentacja pisana ręcznie (osobny plik Word/Markdown)
+**Dlaczego to pomaga**: dokumentacja pisana ręcznie (osobny plik Word/Markdown)
 **zawsze** z czasem rozjeżdża się z rzeczywistym kodem — ktoś zmienia endpoint i
-zapomina zaktualizować opis. Dokumentacja generowana z kodu **nie może** się
-rozjechać, bo to dosłownie ten sam kod.
+zapomina zaktualizować opis. Dokumentacja generowana z kodu jest bliżej prawdy, bo
+typy i nazwy parametrów **nie mogą** się rozjechać — to dosłownie ta sama adnotacja.
+
+::: {.callout-important}
+## To nie jest automat, o którym można zapomnieć
+"Blisko kodu" nie znaczy "całkowicie odporne na błędy". FastAPI wie o kodach błędów,
+które zwraca *domyślnie* (np. `422` z Pydantic) — ale własny `HTTPException(404, ...)`
+w ciele funkcji **nie pojawi się** w `/docs`, dopóki nie zadeklarujecie go jawnie w
+`responses` (przykład niżej). Zmienisz logikę błędu w kodzie i zapomnisz
+zaktualizować `responses` — i dokumentacja jednak się rozjedzie. "Generowane z kodu"
+zmniejsza ryzyko, nie eliminuje go.
+:::
 
 ```python
 @app.get(
@@ -190,8 +201,8 @@ wszystkich endpointach.
 
 - URL opisuje zasób (rzeczownik, liczba mnoga), metoda HTTP opisuje akcję.
 - Zagnieżdżaj zasoby maksymalnie na 2 poziomy; filtruj/sortuj/paginuj przez query params.
-- Wersjonuj API przez prefiks ścieżki, gdy zmiana złamałaby istniejących klientów.
-- OpenAPI/Swagger generowane z kodu nigdy się nie starzeje — w odróżnieniu od ręcznie pisanej dokumentacji.
+- Wersjonuj API (prefiks ścieżki albo nagłówek), gdy zmiana złamałaby istniejących klientów.
+- OpenAPI/Swagger generowane z kodu jest bliżej prawdy niż ręcznie pisana dokumentacja — ale własne kody błędów wciąż trzeba zadeklarować jawnie (`responses`).
 
 ---
 
@@ -248,9 +259,14 @@ wynik nawet dla tego samego hasła, co chroni przed atakami tęczowych tablic
 
 W tym kursie używamy **JWT** (JSON Web Token) — pasuje do architektury bezstanowej ze spotkania 1.
 
-## 4️⃣ Anatomia JWT
+## 4️⃣ Anatomia JWT (wariantu, którego używamy)
 
-Token JWT to trzy części oddzielone kropkami: `header.payload.signature`
+Standard JWT (RFC 7519) dopuszcza dwa warianty: **JWS** (JSON Web *Signature* —
+podpisany, ale czytelny) i **JWE** (JSON Web *Encryption* — faktycznie zaszyfrowany).
+**W tym kursie, jak w zdecydowanej większości praktycznych API, używamy JWS** —
+poniższy opis dotyczy tego wariantu, nie każdego możliwego tokenu JWT.
+
+Token JWS to trzy części oddzielone kropkami: `header.payload.signature`
 
 ```
 eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5rb3dhbHNraSIsInJvbGEiOiJkb3dvZGNhIn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
@@ -264,11 +280,13 @@ eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5rb3dhbHNraSIsInJvbGEiOiJkb3dvZGNhIn0.SflKxwR
   — to on gwarantuje, że nikt nie sfałszował payloadu.
 
 ::: {.callout-important}
-## JWT jest podpisany, nie zaszyfrowany
+## Nasz JWT (JWS) jest podpisany, nie zaszyfrowany
 Każdy, kto przechwyci token, może **odczytać** jego zawartość (Base64 to nie
 szyfrowanie) — nie może jej jednak **zmienić** niezauważenie, bo podpis by się nie
-zgadzał. Wniosek: JWT chroni przed fałszowaniem danych, nie przed ich odczytaniem —
-transport tokenu musi iść przez HTTPS, żeby nikt po drodze go nie podsłuchał.
+zgadzał. Wniosek: JWS chroni przed fałszowaniem danych, nie przed ich odczytaniem —
+transport tokenu musi iść przez HTTPS, żeby nikt po drodze go nie podsłuchał. (JWE
+rozwiązałby też problem odczytu, kosztem większej złożoności — poza zakresem tego
+kursu.)
 :::
 
 ## 5️⃣ OWASP Top 10 — trzy podatności, które napotkacie w laboratoriach
@@ -319,7 +337,7 @@ dodatek, dla każdej aplikacji przyjmującej dane logowania.
 
 - Uwierzytelnianie = kim jesteś; autoryzacja = co wolno Ci zrobić — to dwa osobne mechanizmy.
 - Hasła zawsze hashowane (bcrypt/argon2), nigdy przechowywane jawnym tekstem.
-- JWT jest podpisany (integralność), nie zaszyfrowany (poufność) — payload jest czytelny dla każdego.
+- Nasz wariant JWT (JWS) jest podpisany (integralność), nie zaszyfrowany (poufność) — payload jest czytelny dla każdego; JWE istnieje, ale to poza zakresem kursu.
 - SQL injection, XSS, CSRF — trzy klasyczne podatności; parametryzowane zapytania, escapowanie i tokeny w nagłówku to podstawowa obrona.
 
 ## 📚 Źródła

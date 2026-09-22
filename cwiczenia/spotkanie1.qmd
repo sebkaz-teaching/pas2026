@@ -427,7 +427,7 @@ class RezerwacjaCreate(BaseModel):
     data_do: str
 ```
 
-## 4️⃣ Sprawdzanie konfliktu terminów — pierwsza wersja
+## 4️⃣ Sprawdzanie konfliktu terminów — i dlaczego "sprawdź, potem zapisz" nie wystarcza
 
 To dokładnie problem zapowiedziany na spotkaniu 1: dwie jednostki nie mogą
 zarezerwować tego samego poligonu w nakładających się terminach.
@@ -445,28 +445,79 @@ def sprawdz_konflikt(conn, poligon_id: int, data_od: str, data_do: str) -> bool:
         (poligon_id, data_do, data_od),
     ).fetchall()
     return len(wiersze) > 0
-
-
-@app.post("/rezerwacje", status_code=201)
-def utworz_rezerwacje(rez: RezerwacjaCreate):
-    with get_db() as conn:
-        if sprawdz_konflikt(conn, rez.poligon_id, rez.data_od, rez.data_do):
-            raise HTTPException(status_code=409, detail="Konflikt terminow na tym poligonie")
-        cursor = conn.execute(
-            "INSERT INTO rezerwacje (poligon_id, jednostka_id, data_od, data_do) VALUES (?, ?, ?, ?)",
-            (rez.poligon_id, rez.jednostka_id, rez.data_od, rez.data_do),
-        )
-        conn.commit()
-        return {"id": cursor.lastrowid, **rez.model_dump(), "status": "oczekujaca"}
 ```
 
 Warunek `data_od < ? AND data_do > ?` to klasyczny test nakładania się dwóch
 przedziałów czasowych: dwa przedziały **nie** nakładają się tylko wtedy, gdy jeden
 kończy się przed rozpoczęciem drugiego. Zanegowanie tego warunku (logicznie — de
-Morgan) daje właśnie powyższe zapytanie.
+Morgan) daje właśnie powyższe zapytanie. `409 Conflict` (nie `400 Bad Request`!) —
+dane są poprawnie sformułowane, problem to konflikt ze **stanem systemu**, dokładnie
+jak w części II z duplikatem ID.
 
-`409 Conflict` (nie `400 Bad Request`!) — dane są poprawnie sformułowane, problem to
-konflikt ze **stanem systemu**, dokładnie jak w części II z duplikatem ID.
+::: {.callout-important}
+## "Sprawdź, potem zapisz" ma lukę czasową — i to jest WŁAŚNIE nasz problem z wykładu 1
+
+```python
+# WERSJA Z LUKA — NIE KOPIUJ:
+@app.post("/rezerwacje", status_code=201)
+def utworz_rezerwacje(rez: RezerwacjaCreate):
+    with get_db() as conn:
+        if sprawdz_konflikt(conn, rez.poligon_id, rez.data_od, rez.data_do):
+            raise HTTPException(status_code=409, detail="Konflikt terminow")
+        # <-- MIEDZY TA LINIA A NASTEPNA moze wcisnac sie DRUGIE zadanie
+        conn.execute("INSERT INTO rezerwacje (...) VALUES (...)", (...))
+        conn.commit()
+```
+
+`SELECT` (sprawdzanie konfliktu) **nie blokuje zapisu** innym połączeniom — to zwykły
+odczyt. Jeśli dwa żądania POST przyjdą prawie jednocześnie, oba mogą wykonać
+`sprawdz_konflikt` **zanim którekolwiek** zdąży wstawić swój wiersz — oba widzą "brak
+konfliktu", oba wstawiają, i mamy dokładnie to, czemu miał zapobiegać ten kod:
+podwójną rezerwację. To nie hipotetyczne ćwiczenie akademickie — to jest dosłownie
+problem zapowiedziany w pierwszym wykładzie, teraz w konkretnej, kodowej postaci.
+:::
+
+### 🔹 Naprawa: `BEGIN IMMEDIATE` — zablokuj zapis, zanim sprawdzisz
+
+```python
+import sqlite3
+
+@app.post("/rezerwacje", status_code=201)
+def utworz_rezerwacje(rez: RezerwacjaCreate):
+    with get_db() as conn:
+        conn.execute("BEGIN IMMEDIATE")  # zajmij blokade zapisu NATYCHMIAST, przed SELECT-em
+        try:
+            if sprawdz_konflikt(conn, rez.poligon_id, rez.data_od, rez.data_do):
+                conn.rollback()
+                raise HTTPException(status_code=409, detail="Konflikt terminow na tym poligonie")
+            cursor = conn.execute(
+                "INSERT INTO rezerwacje (poligon_id, jednostka_id, data_od, data_do) VALUES (?, ?, ?, ?)",
+                (rez.poligon_id, rez.jednostka_id, rez.data_od, rez.data_do),
+            )
+            conn.commit()
+            return {"id": cursor.lastrowid, **rez.model_dump(), "status": "oczekujaca"}
+        except sqlite3.OperationalError:
+            conn.rollback()
+            raise HTTPException(status_code=503, detail="Baza chwilowo zajeta, sprobuj ponownie")
+```
+
+`BEGIN IMMEDIATE` każe SQLite zająć blokadę zapisu **od razu**, zanim wykonamy
+choćby jeden `SELECT` — drugie żądanie, próbujące własnego `BEGIN IMMEDIATE` w tym
+samym momencie, zostanie zablokowane (albo dostanie `OperationalError: database is
+locked`, jeśli przekroczy limit czasu), dopóki pierwsza transakcja się nie zakończy
+(`commit` albo `rollback`). Efekt: dwa równoczesne żądania na ten sam poligon są
+teraz **serializowane** — drugie zobaczy w swoim `sprawdz_konflikt` rezerwację, którą
+pierwsze zdążyło już zacommitować, zamiast pustego wyniku.
+
+::: {.callout-note}
+## To rozwiązuje problem w skali jednego procesu/pliku SQLite — nie w skali wielu serwerów
+Jak zobaczycie na spotkaniu 3 (skalowanie), jeśli kiedyś ta aplikacja miałaby działać
+na wielu serwerach ze wspólną bazą sieciową (PostgreSQL), blokada `BEGIN IMMEDIATE`
+przestałaby wystarczać — trzeba by sięgnąć po blokady na poziomie bazy sieciowej
+(`SELECT ... FOR UPDATE`) albo ograniczenie `UNIQUE` na poziomie schematu. Na razie,
+z jednym plikiem SQLite i jednym procesem serwera, `BEGIN IMMEDIATE` w pełni
+rozwiązuje problem.
+:::
 
 ---
 

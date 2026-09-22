@@ -61,7 +61,7 @@ Typowa aplikacja sieciowa dzieli się na trzy warstwy:
 
 > <img> Schemat trójwarstwowy: Klient (frontend) ↔ API (backend) ↔ Baza danych
 
-To ten sam podział, co poziomy ANSI/SPARC z kursów o bazach danych — tu warstwa "logiki" dodatkowo pośredniczy między światem zewnętrznym a bazą, zamiast pozwalać klientowi łączyć się z bazą bezpośrednio.
+To inny podział niż poziomy ANSI/SPARC z kursów o bazach danych — ANSI/SPARC opisuje niezależność danych *wewnątrz* jednego DBMS (zewnętrzny/koncepcyjny/wewnętrzny widok tych samych danych), a warstwy tutaj to podział samej *aplikacji* na osobne procesy. Nie mylcie tych dwóch modeli — łączy je tylko to samo słowo "warstwa".
 
 **Dlaczego backend nigdy nie powinien pozwalać frontendowi łączyć się z bazą wprost?** Bo wtedy każdy klient musiałby znać hasło do bazy, strukturę tabel i reguły biznesowe — a zmiana schematu bazy złamałaby każdą aplikację kliencką osobno.
 
@@ -79,7 +79,9 @@ Aby klient i serwer się zrozumiały, muszą mówić tym samym językiem — pro
 | Transportowa | TCP, UDP |
 | Sieciowa | IP |
 
-HTTP (HyperText Transfer Protocol) działa na bazie TCP — zanim popłynie choćby bajt danych HTTP, klient i serwer muszą nawiązać połączenie TCP (tzw. three-way handshake). HTTPS to HTTP owinięte w warstwę szyfrowania TLS.
+HTTP (HyperText Transfer Protocol) w wersjach **1.1 i 2** działa na bazie TCP — zanim popłynie choćby bajt danych HTTP, klient i serwer muszą nawiązać połączenie TCP (tzw. three-way handshake). HTTPS to HTTP owinięte w warstwę szyfrowania TLS.
+
+> ⚠️ **HTTP/3 to wyjątek**: rezygnuje z TCP na rzecz protokołu **QUIC** (zbudowanego na UDP, RFC 9114) — głównie po to, by uniknąć tzw. head-of-line blocking przy zgubionych pakietach. W tym kursie pracujemy na semantyce HTTP/1.1, więc "HTTP na TCP" jest tu poprawnym uproszczeniem — ale nie uogólniajcie tego na każdą wersję protokołu.
 
 Szczegóły samego HTTP (metody, nagłówki, kody odpowiedzi) to temat części II tego spotkania — na razie tylko umiejscawiamy go w stosie.
 
@@ -109,7 +111,7 @@ Przykład: zamiast `GET /pobierzRezerwacje?id=5`, w REST piszemy `GET /rezerwacj
 
 ## 6️⃣ Projekt semestralny: system rezerwacji poligonu
 
-Przez 12 laboratoriów zbudujemy razem jeden, rosnący system: **rezerwację poligonu/strzelnicy** dla jednostki wojskowej.
+Przez wszystkie spotkania laboratoryjne zbudujemy razem jeden, rosnący system: **rezerwację poligonu/strzelnicy** dla jednostki wojskowej.
 
 ### 🔹 Aktorzy systemu
 
@@ -139,7 +141,7 @@ Dwie jednostki nie mogą zarezerwować tego samego poligonu w nakładających si
 - Typowy podział to trzy warstwy: prezentacji, logiki biznesowej, danych.
 - HTTP to protokół aplikacyjny działający na TCP; HTTPS dodaje szyfrowanie TLS.
 - REST to dominujący dziś styl API: zasoby jako adresy URL, operacje jako metody HTTP.
-- Semestralny projekt: system rezerwacji poligonu — zaczynamy od środowiska pracy i pierwszego serwera na laboratorium 1.
+- Semestralny projekt: system rezerwacji poligonu — zaczynamy od środowiska pracy i pierwszego serwera na dzisiejszym laboratorium.
 
 ---
 
@@ -213,7 +215,7 @@ Przykład z naszego projektu: żołnierz bez zalogowania próbujący zobaczyć `
 
 ## 5️⃣ HTTP jest bezstanowy — co to znaczy naprawdę
 
-Serwer **nie pamięta** niczego między dwoma żądaniami tego samego klienta — każde żądanie musi nieść ze sobą wszystko, czego serwer potrzebuje, żeby je obsłużyć (np. token uwierzytelniający w nagłówku, nie "zapamiętane" gdzieś po stronie serwera).
+**Sam protokół** HTTP nie niesie żadnego stanu między żądaniami — nie ma wbudowanego pojęcia "ta sama rozmowa co poprzednio". To **nie znaczy**, że serwer nie wolno mu niczego pamiętać (serwer ma swoją bazę danych i może przechowywać, co chce) — znaczy to, że każde żądanie musi **samo z siebie** nieść informację potrzebną do jego obsłużenia (np. token w nagłówku), zamiast polegać na tym, że protokół "skojarzy" je z poprzednim żądaniem tego klienta.
 
 > 💡 To dlaczego logowanie polega na tym, że klient **za każdym razem** wysyła token (w `Authorization`), a nie że serwer "pamięta", że kogoś już zalogował 5 minut temu. Do mechanizmu tokenów wrócimy przy wykładzie o bezpieczeństwie.
 

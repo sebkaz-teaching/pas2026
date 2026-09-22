@@ -230,6 +230,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#generowanie-tokenu" id="toc-generowanie-tokenu" class="nav-link" data-scroll-target="#generowanie-tokenu">1️⃣ Generowanie tokenu</a></li>
   <li><a href="#weryfikacja-tokenu-depends" id="toc-weryfikacja-tokenu-depends" class="nav-link" data-scroll-target="#weryfikacja-tokenu-depends">2️⃣ Weryfikacja tokenu — <code>Depends</code></a></li>
   <li><a href="#autoryzacja-wymagaj-konkretnej-roli" id="toc-autoryzacja-wymagaj-konkretnej-roli" class="nav-link" data-scroll-target="#autoryzacja-wymagaj-konkretnej-roli">3️⃣ Autoryzacja — wymagaj konkretnej roli</a></li>
+  <li><a href="#awans-na-planistę-dopiero-teraz-to-możliwe" id="toc-awans-na-planistę-dopiero-teraz-to-możliwe" class="nav-link" data-scroll-target="#awans-na-planistę-dopiero-teraz-to-możliwe">4️⃣ Awans na planistę — dopiero teraz to możliwe</a></li>
   </ul></li>
   <li><a href="#część-iv-ochrona-przed-atakami" id="toc-część-iv-ochrona-przed-atakami" class="nav-link" data-scroll-target="#część-iv-ochrona-przed-atakami">Część IV — Ochrona przed atakami</a>
   <ul class="collapse">
@@ -380,7 +381,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> RejestracjaRequest(BaseModel):</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    login: <span class="bu">str</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    haslo: <span class="bu">str</span> <span class="op">=</span> Field(min_length<span class="op">=</span><span class="dv">8</span>)</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    rola: <span class="bu">str</span> <span class="op">=</span> <span class="st">"dowodca"</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># UWAGA: celowo BRAK pola "rola" tutaj — patrz callout ponizej</span></span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="at">@app.post</span>(<span class="st">"/register"</span>, status_code<span class="op">=</span><span class="dv">201</span>)</span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rejestracja(dane: RejestracjaRequest):</span>
@@ -389,11 +390,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> istniejacy:</span>
 <span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> HTTPException(status_code<span class="op">=</span><span class="dv">409</span>, detail<span class="op">=</span><span class="st">"Login juz zajety"</span>)</span>
 <span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>        cursor <span class="op">=</span> conn.execute(</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>            <span class="st">"INSERT INTO uzytkownicy (login, hash_hasla, rola) VALUES (?, ?, ?)"</span>,</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>            (dane.login, zahashuj_haslo(dane.haslo), dane.rola),</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>            <span class="st">"INSERT INTO uzytkownicy (login, hash_hasla, rola) VALUES (?, ?, 'dowodca')"</span>,</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>            (dane.login, zahashuj_haslo(dane.haslo)),</span>
 <span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>        )</span>
 <span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>        conn.commit()</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> {<span class="st">"id"</span>: cursor.lastrowid, <span class="st">"login"</span>: dane.login, <span class="st">"rola"</span>: dane.rola}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> {<span class="st">"id"</span>: cursor.lastrowid, <span class="st">"login"</span>: dane.login, <span class="st">"rola"</span>: <span class="st">"dowodca"</span>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Rola nie może pochodzić od klienta
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Wersja tego endpointu, która przyjmuje <code>rola: str</code> wprost z żądania (<code>dane.rola</code>), pozwala <strong>dowolnemu</strong> nieuwierzytelnionemu użytkownikowi zarejestrować się od razu jako <code>"planista"</code> — czyli samodzielnie nadać sobie uprawnienia, które dopiero za chwilę (część IV) będziemy starannie chronić <code>403</code>-ką. To nie teoretyczna dziura: to dokładnie ten sam błąd klasy <em>mass assignment</em>, co pozwolenie klientowi wysłać <code>is_admin: true</code> w formularzu rejestracji.</p>
+<p><code>/register</code> <strong>zawsze</strong> tworzy rolę <code>dowodca</code>, z góry, bez pytania klienta. Nadawanie roli <code>planista</code> to osobna operacja — patrz część III, gdzie budujemy do niej chroniony endpoint (wymagający, żeby robił to już istniejący planista).</p>
+</div>
+</div>
+<section id="skąd-bierze-się-pierwszy-planista" class="level3">
+<h3 class="anchored" data-anchor-id="skąd-bierze-się-pierwszy-planista">🔹 Skąd bierze się PIERWSZY planista?</h3>
+<p>Skoro awans na planistę wymaga (część III) bycia już zalogowanym jako planista, ktoś musi być tym pierwszym — jajko i kura. W praktyce rozwiązuje się to jednym z dwóch sposobów:</p>
+<ol type="1">
+<li><strong>Seed przy starcie projektu</strong> — skrypt <code>seed.py</code> (macie go już z laboratorium o bazie danych) wstawia jedno konto z <code>rola = 'planista'</code> bezpośrednio przez SQL, z pominięciem API.</li>
+<li><strong>Ręczna zmiana w bazie</strong> — prowadzący/administrator loguje się do <code>poligony.db</code> i robi <code>UPDATE uzytkownicy SET rola = 'planista' WHERE login = ...</code> dla konkretnego konta.</li>
+</ol>
+<p>Żadna z tych dróg nie prowadzi przez publiczne, nieuwierzytelnione API — i tak właśnie powinno być.</p>
+</section>
 </section>
 <section id="endpoint-login-na-razie-bez-tokenu-dopiero-część-iii" class="level2">
 <h2 class="anchored" data-anchor-id="endpoint-login-na-razie-bez-tokenu-dopiero-część-iii">4️⃣ Endpoint <code>/login</code> (na razie bez tokenu — dopiero część III)</h2>
@@ -426,18 +450,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="generowanie-tokenu">1️⃣ Generowanie tokenu</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install python-jose<span class="pp">[</span><span class="ss">cryptography</span><span class="pp">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> jose <span class="im">import</span> jwt</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datetime <span class="im">import</span> datetime, timedelta</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>SECRET_KEY <span class="op">=</span> <span class="st">"zmien-mnie-w-prawdziwym-projekcie"</span>  <span class="co"># docelowo: zmienna srodowiskowa!</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>ALGORITHM <span class="op">=</span> <span class="st">"HS256"</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> utworz_token(login: <span class="bu">str</span>, rola: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    dane <span class="op">=</span> {</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"sub"</span>: login,</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">"rola"</span>: rola,</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">"exp"</span>: datetime.utcnow() <span class="op">+</span> timedelta(hours<span class="op">=</span><span class="dv">8</span>),</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> jwt.encode(dane, SECRET_KEY, algorithm<span class="op">=</span>ALGORITHM)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> jose.exceptions <span class="im">import</span> JWTError</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datetime <span class="im">import</span> datetime, timedelta</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>SECRET_KEY <span class="op">=</span> <span class="st">"zmien-mnie-w-prawdziwym-projekcie"</span>  <span class="co"># docelowo: zmienna srodowiskowa!</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>ALGORITHM <span class="op">=</span> <span class="st">"HS256"</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> utworz_token(login: <span class="bu">str</span>, rola: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    dane <span class="op">=</span> {</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">"sub"</span>: login,</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">"rola"</span>: rola,</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>        <span class="st">"exp"</span>: datetime.utcnow() <span class="op">+</span> timedelta(hours<span class="op">=</span><span class="dv">8</span>),</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> jwt.encode(dane, SECRET_KEY, algorithm<span class="op">=</span>ALGORITHM)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Zaktualizuj <code>/login</code>, żeby zwracał token zamiast samego komunikatu:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="at">@app.post</span>(<span class="st">"/login"</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> login(dane: LoginRequest):</span>
@@ -447,18 +472,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="weryfikacja-tokenu-depends" class="level2">
 <h2 class="anchored" data-anchor-id="weryfikacja-tokenu-depends">2️⃣ Weryfikacja tokenu — <code>Depends</code></h2>
-<p>FastAPI ma wbudowany mechanizm <strong>wstrzykiwania zależności</strong> (<code>Depends</code>) — idealny do “za każdym razem zweryfikuj token, zanim wykonasz właściwą logikę endpointu”:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastapi <span class="im">import</span> Depends</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastapi.security <span class="im">import</span> OAuth2PasswordBearer</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>oauth2_scheme <span class="op">=</span> OAuth2PasswordBearer(tokenUrl<span class="op">=</span><span class="st">"login"</span>)</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> pobierz_biezacego_uzytkownika(token: <span class="bu">str</span> <span class="op">=</span> Depends(oauth2_scheme)) <span class="op">-&gt;</span> <span class="bu">dict</span>:</span>
+<p>FastAPI ma wbudowany mechanizm <strong>wstrzykiwania zależności</strong> (<code>Depends</code>) — idealny do “za każdym razem zweryfikuj token, zanim wykonasz właściwą logikę endpointu”.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Dlaczego nie <code>OAuth2PasswordBearer</code>?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>FastAPI ma gotowy schemat <code>OAuth2PasswordBearer</code>, ale zakłada, że logowanie przyjmuje dane w formacie <code>OAuth2PasswordRequestForm</code> — pola <code>username</code>/<code>password</code> wysłane jako formularz (<code>application/x-www-form-urlencoded</code>), nie nasz JSON z polami <code>login</code>/<code>haslo</code>. Użycie go “na skróty” (jak w niejednej gotowej dokumentacji w internecie) sprawiłoby, że przycisk “Authorize” w <code>/docs</code> wysyłałby dane w formacie, którego nasz <code>/login</code> nie rozumie. Zamiast dopasowywać cały nasz projekt do cudzej konwencji, czytamy nagłówek <code>Authorization</code> ręcznie — mniej “magii”, w pełni spójne z tym, co już mamy.</p>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastapi <span class="im">import</span> Depends, Header</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> pobierz_biezacego_uzytkownika(authorization: <span class="bu">str</span> <span class="op">=</span> Header(...)) <span class="op">-&gt;</span> <span class="bu">dict</span>:</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> authorization.startswith(<span class="st">"Bearer "</span>):</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> HTTPException(status_code<span class="op">=</span><span class="dv">401</span>, detail<span class="op">=</span><span class="st">"Brak lub nieprawidlowy naglowek Authorization"</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    token <span class="op">=</span> authorization.removeprefix(<span class="st">"Bearer "</span>)</span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>        payload <span class="op">=</span> jwt.decode(token, SECRET_KEY, algorithms<span class="op">=</span>[ALGORITHM])</span>
 <span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> {<span class="st">"login"</span>: payload[<span class="st">"sub"</span>], <span class="st">"rola"</span>: payload[<span class="st">"rola"</span>]}</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span>:</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> JWTError:</span>
 <span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> HTTPException(status_code<span class="op">=</span><span class="dv">401</span>, detail<span class="op">=</span><span class="st">"Nieprawidlowy lub wygasly token"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>Header(...)</code> mówi FastAPI: “wyciągnij nagłówek <code>Authorization</code> z żądania, wymagaj go” — dokładnie tak samo deklaratywnie, jak <code>Depends</code>, tylko dla nagłówka zamiast zależności. Zwróć uwagę też na <code>except JWTError</code> (z <code>jose.exceptions</code>) zamiast gołego <code>except Exception</code> — łapiemy konkretnie błędy dekodowania tokenu, nie każdy możliwy wyjątek w tej funkcji (który mógłby ukryć prawdziwy błąd programistyczny).</p>
 <p>Dowolny endpoint dostaje uwierzytelnionego użytkownika, dopisując jeden parametr:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="at">@app.get</span>(<span class="st">"/rezerwacje"</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lista_rezerwacji(uzytkownik: <span class="bu">dict</span> <span class="op">=</span> Depends(pobierz_biezacego_uzytkownika)):</span>
@@ -478,9 +517,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> zatwierdz_rezerwacje(rez_id: <span class="bu">int</span>, uzytkownik: <span class="bu">dict</span> <span class="op">=</span> Depends(wymagaj_roli(<span class="st">"planista"</span>))):</span>
 <span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    ...</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>wymagaj_roli("planista")</code> to <strong>fabryka zależności</strong> — funkcja zwracająca funkcję, dopasowaną do konkretnej roli. Dzięki temu jeden mechanizm obsługuje dowolną liczbę ról bez powtarzania kodu.</p>
+</section>
+<section id="awans-na-planistę-dopiero-teraz-to-możliwe" class="level2">
+<h2 class="anchored" data-anchor-id="awans-na-planistę-dopiero-teraz-to-możliwe">4️⃣ Awans na planistę — dopiero teraz to możliwe</h2>
+<p>Mamy już <code>wymagaj_roli</code>, więc możemy dotrzymać obietnicy z części II: nadawanie roli <code>planista</code> to osobny, chroniony endpoint, nie pole w <code>/register</code>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> AwansRequest(BaseModel):</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    login: <span class="bu">str</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="at">@app.post</span>(<span class="st">"/uzytkownicy/awansuj"</span>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> awansuj_na_planiste(</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    dane: AwansRequest,</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    uzytkownik: <span class="bu">dict</span> <span class="op">=</span> Depends(wymagaj_roli(<span class="st">"planista"</span>)),  <span class="co"># tylko obecny planista moze awansowac</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>):</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> get_db() <span class="im">as</span> conn:</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>        cursor <span class="op">=</span> conn.execute(</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>            <span class="st">"UPDATE uzytkownicy SET rola = 'planista' WHERE login = ?"</span>, (dane.login,)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>        conn.commit()</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> cursor.rowcount <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> HTTPException(status_code<span class="op">=</span><span class="dv">404</span>, detail<span class="op">=</span><span class="st">"Uzytkownik nie znaleziony"</span>)</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> {<span class="st">"komunikat"</span>: <span class="ss">f"</span><span class="sc">{</span>dane<span class="sc">.</span>login<span class="sc">}</span><span class="ss"> jest teraz planista"</span>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Zamknięty krąg: żeby kogoś awansować, sam musisz już być planistą — a <strong>pierwszy</strong> planista powstaje przez <code>seed.py</code> albo ręczny <code>UPDATE</code>, jak opisano w części II. Nikt nie zostaje planistą przez samo wypełnienie formularza rejestracji.</p>
 <section id="mini-zadanie-części-iii" class="level3">
 <h3 class="anchored" data-anchor-id="mini-zadanie-części-iii">✅ Mini-zadanie części III</h3>
-<p>Zabezpiecz <code>DELETE /poligony/{id}</code> tak, żeby tylko <code>planista</code> mógł usuwać poligony — <code>dowodca</code> próbujący to zrobić powinien dostać <code>403</code>.</p>
+<ol type="1">
+<li>Zabezpiecz <code>DELETE /poligony/{id}</code> tak, żeby tylko <code>planista</code> mógł usuwać poligony — <code>dowodca</code> próbujący to zrobić powinien dostać <code>403</code>.</li>
+<li>Sprawdź ręcznie (przez seed/UPDATE) nadanie sobie roli planisty, zaloguj się, i przetestuj <code>/uzytkownicy/awansuj</code> na drugim, świeżo zarejestrowanym koncie.</li>
+</ol>
 <hr>
 </section>
 </section>
@@ -493,45 +556,45 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="sql-injection-przez-nazwę-kolumny-luka-której-nie-łata" class="level2">
 <h2 class="anchored" data-anchor-id="sql-injection-przez-nazwę-kolumny-luka-której-nie-łata">1️⃣ SQL injection przez nazwę kolumny — luka, której nie łata <code>?</code></h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># PODATNE — mimo ze reszta zapytania jest parametryzowana!</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="at">@app.get</span>(<span class="st">"/rezerwacje"</span>)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lista(sortuj: <span class="bu">str</span> <span class="op">=</span> <span class="st">"data_od"</span>):</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> conn.execute(<span class="ss">f"SELECT * FROM rezerwacje ORDER BY </span><span class="sc">{</span>sortuj<span class="sc">}</span><span class="ss">"</span>).fetchall()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># PODATNE — mimo ze reszta zapytania jest parametryzowana!</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="at">@app.get</span>(<span class="st">"/rezerwacje"</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lista(sortuj: <span class="bu">str</span> <span class="op">=</span> <span class="st">"data_od"</span>):</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> conn.execute(<span class="ss">f"SELECT * FROM rezerwacje ORDER BY </span><span class="sc">{</span>sortuj<span class="sc">}</span><span class="ss">"</span>).fetchall()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Placeholdery (<code>?</code>) działają tylko dla <strong>wartości</strong>, nie dla nazw kolumn/tabel — <code>sortuj</code> wstawiony przez f-string pozwala atakującemu wpisać dowolny SQL. Obrona: <strong>biała lista</strong> dozwolonych wartości.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>DOZWOLONE_KOLUMNY <span class="op">=</span> {<span class="st">"data_od"</span>, <span class="st">"data_do"</span>, <span class="st">"status"</span>}</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="at">@app.get</span>(<span class="st">"/rezerwacje"</span>)</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lista(sortuj: <span class="bu">str</span> <span class="op">=</span> <span class="st">"data_od"</span>):</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> sortuj <span class="kw">not</span> <span class="kw">in</span> DOZWOLONE_KOLUMNY:</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> HTTPException(status_code<span class="op">=</span><span class="dv">400</span>, detail<span class="op">=</span><span class="st">"Nieprawidlowa kolumna sortowania"</span>)</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> conn.execute(<span class="ss">f"SELECT * FROM rezerwacje ORDER BY </span><span class="sc">{</span>sortuj<span class="sc">}</span><span class="ss">"</span>).fetchall()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>DOZWOLONE_KOLUMNY <span class="op">=</span> {<span class="st">"data_od"</span>, <span class="st">"data_do"</span>, <span class="st">"status"</span>}</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="at">@app.get</span>(<span class="st">"/rezerwacje"</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lista(sortuj: <span class="bu">str</span> <span class="op">=</span> <span class="st">"data_od"</span>):</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> sortuj <span class="kw">not</span> <span class="kw">in</span> DOZWOLONE_KOLUMNY:</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> HTTPException(status_code<span class="op">=</span><span class="dv">400</span>, detail<span class="op">=</span><span class="st">"Nieprawidlowa kolumna sortowania"</span>)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> conn.execute(<span class="ss">f"SELECT * FROM rezerwacje ORDER BY </span><span class="sc">{</span>sortuj<span class="sc">}</span><span class="ss">"</span>).fetchall()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="rate-limiting-ogranicz-liczbę-żądań" class="level2">
 <h2 class="anchored" data-anchor-id="rate-limiting-ogranicz-liczbę-żądań">2️⃣ Rate limiting — ogranicz liczbę żądań</h2>
 <p>Bez limitu, ktoś może próbować zalogować się tysiące razy na sekundę (atak <em>brute-force</em> na hasło) albo po prostu zasypać serwer żądaniami.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install slowapi</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> slowapi <span class="im">import</span> Limiter</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> slowapi.util <span class="im">import</span> get_remote_address</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>limiter <span class="op">=</span> Limiter(key_func<span class="op">=</span>get_remote_address)</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>app.state.limiter <span class="op">=</span> limiter</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="at">@app.post</span>(<span class="st">"/login"</span>)</span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="at">@limiter.limit</span>(<span class="st">"5/minute"</span>)</span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> login(request: Request, dane: LoginRequest):</span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    ...</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install slowapi</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> slowapi <span class="im">import</span> Limiter</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> slowapi.util <span class="im">import</span> get_remote_address</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>limiter <span class="op">=</span> Limiter(key_func<span class="op">=</span>get_remote_address)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>app.state.limiter <span class="op">=</span> limiter</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="at">@app.post</span>(<span class="st">"/login"</span>)</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="at">@limiter.limit</span>(<span class="st">"5/minute"</span>)</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> login(request: Request, dane: LoginRequest):</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    ...</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="cors-kto-może-wywoływać-twoje-api-z-przeglądarki" class="level2">
 <h2 class="anchored" data-anchor-id="cors-kto-może-wywoływać-twoje-api-z-przeglądarki">3️⃣ CORS — kto może wywoływać Twoje API z przeglądarki</h2>
-<p>Domyślnie przeglądarki <strong>blokują</strong> żądania JavaScript do innej domeny niż ta, z której strona została załadowana (<em>Same-Origin Policy</em>). Jeśli frontend (lab 10) ma żyć na innej domenie/porcie niż backend, musisz jawnie zezwolić:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastapi.middleware.cors <span class="im">import</span> CORSMiddleware</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>app.add_middleware(</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    CORSMiddleware,</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    allow_origins<span class="op">=</span>[<span class="st">"http://localhost:3000"</span>],  <span class="co"># tylko Twoj frontend, NIE "*" na produkcji</span></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    allow_methods<span class="op">=</span>[<span class="st">"*"</span>],</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    allow_headers<span class="op">=</span>[<span class="st">"*"</span>],</span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Domyślnie przeglądarki <strong>blokują</strong> żądania JavaScript do innej domeny niż ta, z której strona została załadowana (<em>Same-Origin Policy</em>). Jeśli frontend (część II następnego spotkania) ma żyć na innej domenie/porcie niż backend, musisz jawnie zezwolić:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastapi.middleware.cors <span class="im">import</span> CORSMiddleware</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>app.add_middleware(</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    CORSMiddleware,</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    allow_origins<span class="op">=</span>[<span class="st">"http://localhost:3000"</span>],  <span class="co"># tylko Twoj frontend, NIE "*" na produkcji</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    allow_methods<span class="op">=</span>[<span class="st">"*"</span>],</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    allow_headers<span class="op">=</span>[<span class="st">"*"</span>],</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">

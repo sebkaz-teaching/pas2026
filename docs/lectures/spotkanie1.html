@@ -319,7 +319,7 @@ ul.task-list li input[type="checkbox"] {
 <blockquote class="blockquote">
 <p><img> Schemat trójwarstwowy: Klient (frontend) ↔︎ API (backend) ↔︎ Baza danych</p>
 </blockquote>
-<p>To ten sam podział, co poziomy ANSI/SPARC z kursów o bazach danych — tu warstwa “logiki” dodatkowo pośredniczy między światem zewnętrznym a bazą, zamiast pozwalać klientowi łączyć się z bazą bezpośrednio.</p>
+<p>To inny podział niż poziomy ANSI/SPARC z kursów o bazach danych — ANSI/SPARC opisuje niezależność danych <em>wewnątrz</em> jednego DBMS (zewnętrzny/koncepcyjny/wewnętrzny widok tych samych danych), a warstwy tutaj to podział samej <em>aplikacji</em> na osobne procesy. Nie mylcie tych dwóch modeli — łączy je tylko to samo słowo “warstwa”.</p>
 <p><strong>Dlaczego backend nigdy nie powinien pozwalać frontendowi łączyć się z bazą wprost?</strong> Bo wtedy każdy klient musiałby znać hasło do bazy, strukturę tabel i reguły biznesowe — a zmiana schematu bazy złamałaby każdą aplikację kliencką osobno.</p>
 <hr>
 </section>
@@ -350,7 +350,10 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
-<p>HTTP (HyperText Transfer Protocol) działa na bazie TCP — zanim popłynie choćby bajt danych HTTP, klient i serwer muszą nawiązać połączenie TCP (tzw. three-way handshake). HTTPS to HTTP owinięte w warstwę szyfrowania TLS.</p>
+<p>HTTP (HyperText Transfer Protocol) w wersjach <strong>1.1 i 2</strong> działa na bazie TCP — zanim popłynie choćby bajt danych HTTP, klient i serwer muszą nawiązać połączenie TCP (tzw. three-way handshake). HTTPS to HTTP owinięte w warstwę szyfrowania TLS.</p>
+<blockquote class="blockquote">
+<p>⚠️ <strong>HTTP/3 to wyjątek</strong>: rezygnuje z TCP na rzecz protokołu <strong>QUIC</strong> (zbudowanego na UDP, RFC 9114) — głównie po to, by uniknąć tzw. head-of-line blocking przy zgubionych pakietach. W tym kursie pracujemy na semantyce HTTP/1.1, więc “HTTP na TCP” jest tu poprawnym uproszczeniem — ale nie uogólniajcie tego na każdą wersję protokołu.</p>
+</blockquote>
 <p>Szczegóły samego HTTP (metody, nagłówki, kody odpowiedzi) to temat części II tego spotkania — na razie tylko umiejscawiamy go w stosie.</p>
 <hr>
 </section>
@@ -411,7 +414,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="projekt-semestralny-system-rezerwacji-poligonu" class="level2">
 <h2 class="anchored" data-anchor-id="projekt-semestralny-system-rezerwacji-poligonu">6️⃣ Projekt semestralny: system rezerwacji poligonu</h2>
-<p>Przez 12 laboratoriów zbudujemy razem jeden, rosnący system: <strong>rezerwację poligonu/strzelnicy</strong> dla jednostki wojskowej.</p>
+<p>Przez wszystkie spotkania laboratoryjne zbudujemy razem jeden, rosnący system: <strong>rezerwację poligonu/strzelnicy</strong> dla jednostki wojskowej.</p>
 <section id="aktorzy-systemu" class="level3">
 <h3 class="anchored" data-anchor-id="aktorzy-systemu">🔹 Aktorzy systemu</h3>
 <table class="caption-top table">
@@ -465,7 +468,7 @@ ul.task-list li input[type="checkbox"] {
 <li>Typowy podział to trzy warstwy: prezentacji, logiki biznesowej, danych.</li>
 <li>HTTP to protokół aplikacyjny działający na TCP; HTTPS dodaje szyfrowanie TLS.</li>
 <li>REST to dominujący dziś styl API: zasoby jako adresy URL, operacje jako metody HTTP.</li>
-<li>Semestralny projekt: system rezerwacji poligonu — zaczynamy od środowiska pracy i pierwszego serwera na laboratorium 1.</li>
+<li>Semestralny projekt: system rezerwacji poligonu — zaczynamy od środowiska pracy i pierwszego serwera na dzisiejszym laboratorium.</li>
 </ul>
 <hr>
 </section>
@@ -655,7 +658,7 @@ Authorization: Bearer eyJhbGc...
 </section>
 <section id="http-jest-bezstanowy-co-to-znaczy-naprawdę" class="level2">
 <h2 class="anchored" data-anchor-id="http-jest-bezstanowy-co-to-znaczy-naprawdę">5️⃣ HTTP jest bezstanowy — co to znaczy naprawdę</h2>
-<p>Serwer <strong>nie pamięta</strong> niczego między dwoma żądaniami tego samego klienta — każde żądanie musi nieść ze sobą wszystko, czego serwer potrzebuje, żeby je obsłużyć (np. token uwierzytelniający w nagłówku, nie “zapamiętane” gdzieś po stronie serwera).</p>
+<p><strong>Sam protokół</strong> HTTP nie niesie żadnego stanu między żądaniami — nie ma wbudowanego pojęcia “ta sama rozmowa co poprzednio”. To <strong>nie znaczy</strong>, że serwer nie wolno mu niczego pamiętać (serwer ma swoją bazę danych i może przechowywać, co chce) — znaczy to, że każde żądanie musi <strong>samo z siebie</strong> nieść informację potrzebną do jego obsłużenia (np. token w nagłówku), zamiast polegać na tym, że protokół “skojarzy” je z poprzednim żądaniem tego klienta.</p>
 <blockquote class="blockquote">
 <p>💡 To dlaczego logowanie polega na tym, że klient <strong>za każdym razem</strong> wysyła token (w <code>Authorization</code>), a nie że serwer “pamięta”, że kogoś już zalogował 5 minut temu. Do mechanizmu tokenów wrócimy przy wykładzie o bezpieczeństwie.</p>
 </blockquote>

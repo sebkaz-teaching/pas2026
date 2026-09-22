@@ -87,9 +87,20 @@ tym, kiedy dana technika w ogóle ma sens (nie każdy projekt potrzebuje mikrose
 | Limit | fizyczny sufit sprzętu | teoretycznie brak |
 | Złożoność | prosta — nic w kodzie się nie zmienia | wymaga architektury bezstanowej (pamiętacie HTTP ze spotkania 1?) |
 
-Aplikacja bezstanowa (jak ta, którą budujecie z JWT zamiast sesji serwerowych) skaluje
-się poziomo **bez zmian w kodzie** — dowolny serwer może obsłużyć dowolne żądanie,
-bo żaden nie musi "pamiętać" niczego o kliencie z poprzedniego żądania.
+Bezstanowość (JWT zamiast sesji trzymanych w pamięci jednego serwera) usuwa **jedną**
+przeszkodę w skalowaniu poziomym: dowolny serwer może zweryfikować dowolne żądanie,
+nie pytając "czy to ja go zalogowałem". To jednak nie znaczy, że wystarczy JWT, żeby
+skalować się "bez zmian w kodzie" — patrz zastrzeżenie w sekcji o load balancerze.
+
+::: {.callout-note}
+## Sesje serwerowe też się skalują — jeśli są wspólne
+Sesje trzymane **lokalnie w pamięci** jednego serwera faktycznie blokują skalowanie
+poziome. Ale sesje trzymane we **wspólnym magazynie** (np. Redis, dostępnym z każdego
+serwera) skalują się tak samo dobrze jak JWT — różnica jest w tym, że wymagają
+dodatkowej usługi (Redis) i jednego zapytania sieciowego więcej na żądanie, podczas
+gdy JWT weryfikuje się lokalnie, bez pytania czegokolwiek. To kompromis wydajność
+kontra prostota infrastruktury, nie "JWT jedyny słuszny sposób".
+:::
 
 ## 2️⃣ Load balancer — rozdzielanie ruchu
 
@@ -101,12 +112,22 @@ Klient → Load Balancer → [Serwer A, Serwer B, Serwer C] → wspólna baza da
 ```
 
 ::: {.callout-important}
-## Dlaczego to wymaga architektury bezstanowej
+## Bezstanowość rozwiązuje tylko połowę problemu
+
 Gdyby serwer A "pamiętał" sesję zalogowanego użytkownika w swojej pamięci lokalnej, a
 load balancer wysłał kolejne żądanie tego samego użytkownika do serwera B — serwer B
-nie miałby pojęcia, kim jest ten użytkownik. To dokładnie dlatego JWT (token niosący
-całą potrzebną informację w sobie, weryfikowalny przez **każdy** serwer niezależnie)
-pasuje tak dobrze do architektur skalowanych poziomo.
+nie miałby pojęcia, kim jest ten użytkownik. JWT (token niosący całą potrzebną
+informację w sobie, weryfikowalny przez **każdy** serwer niezależnie) rozwiązuje
+dokładnie ten problem.
+
+Ale spójrzcie na diagram wyżej: wszystkie trzy serwery i tak muszą sięgać do
+**wspólnej bazy danych**. Nasz projekt używa **lokalnego pliku SQLite** — a plik na
+dysku serwera A jest niewidoczny dla serwera B. Żeby ten diagram naprawdę zadziałał,
+`poligony.db` musiałby stać się bazą sieciową (PostgreSQL, MySQL) dostępną z każdego
+serwera. JWT rozwiązuje problem *tożsamości użytkownika*; problem *współdzielonych
+danych* to osobna decyzja architektoniczna, którą nasz projekt na razie świadomie
+odkłada — działa świetnie na jednym serwerze, nie skalowałby się poziomo bez zmiany
+bazy danych.
 :::
 
 ## 3️⃣ Cache — nie licz tego samego dwa razy
@@ -167,7 +188,7 @@ serwujących statyczne pliki (obrazy, CSS, JS) z lokalizacji najbliższej użytk
 
 ## 🧾 Podsumowanie części I
 
-- Skalowanie poziome (więcej serwerów) wymaga architektury bezstanowej — to dlatego dbaliśmy o to od spotkania 1.
+- Skalowanie poziome wymaga bezstanowości (JWT albo sesje we wspólnym magazynie) **i** wspólnej, sieciowej bazy danych — sam JWT nie wystarczy, jeśli baza to lokalny plik.
 - Cache oszczędza powtarzalną pracę; kolejki odkładają nie-krytyczną pracę na później.
 - Monolit vs mikroserwisy to decyzja organizacyjna, nie techniczna — mikroserwisy nie są "lepsze z zasady".
 
