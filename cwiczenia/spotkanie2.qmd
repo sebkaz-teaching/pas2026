@@ -92,9 +92,43 @@ CREATE TABLE IF NOT EXISTS uzytkownicy (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     login TEXT NOT NULL UNIQUE,
     hash_hasla TEXT NOT NULL,
-    rola TEXT NOT NULL DEFAULT 'dowodca'  -- 'dowodca' albo 'planista'
+    rola TEXT NOT NULL DEFAULT 'dowodca',
+    jednostka_id INTEGER REFERENCES jednostki(id)
 );
 ```
+
+Konto dowódcy otrzymuje przypisanie do jednostki od prowadzącego/administratora.
+Nowe konto ma `jednostka_id = NULL` i do czasu przypisania nie może zarządzać
+rezerwacjami. Formularz rejestracji nie przyjmuje roli ani identyfikatora jednostki.
+Planista może obsługiwać wszystkie jednostki i nie wymaga własnego przypisania.
+
+Jeśli tabela już istnieje, `CREATE TABLE IF NOT EXISTS` jej nie zmieni. Sprawdź
+`PRAGMA table_info(uzytkownicy)` i tylko gdy kolumny brakuje, wykonaj jednorazowo:
+
+```sql
+ALTER TABLE uzytkownicy ADD COLUMN jednostka_id INTEGER REFERENCES jednostki(id);
+```
+
+W `get_db()` ze spotkania 1 włącz `conn.execute("PRAGMA foreign_keys = ON")`
+zaraz po otwarciu każdego połączenia, przed rozpoczęciem transakcji. Przypisanie
+wykonuje prowadzący na bazie ćwiczenia, używając rzeczywistych identyfikatorów:
+
+```python
+with get_db() as conn:
+    if conn.execute("SELECT id FROM jednostki WHERE id = ?", (unit_id,)).fetchone() is None:
+        raise ValueError("Unknown unit")
+    cursor = conn.execute(
+        "UPDATE uzytkownicy SET jednostka_id = ? WHERE login = ?",
+        (unit_id, account_login),
+    )
+    if cursor.rowcount != 1:
+        raise ValueError("Unknown account")
+    conn.commit()
+```
+
+`unit_id` i `account_login` to wartości wybrane przez prowadzącego dla istniejącej
+jednostki i konta. Przygotuj osobno konta Alfa i Bravo. Nie udostępniaj tego kodu
+jako publicznego endpointu samodzielnego przypisywania jednostki.
 
 ## 2️⃣ Hashowanie haseł — nigdy jawnym tekstem
 
@@ -254,22 +288,31 @@ z tym, co już mamy.
 ```python
 from fastapi import Depends, Header
 
-def pobierz_biezacego_uzytkownika(authorization: str = Header(...)) -> dict:
-    if not authorization.startswith("Bearer "):
+def pobierz_biezacego_uzytkownika(authorization: str | None = Header(default=None)) -> dict:
+    if not authorization or not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Brak lub nieprawidlowy naglowek Authorization")
     token = authorization.removeprefix("Bearer ")
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        return {"login": payload["sub"], "rola": payload["rola"]}
+        account_login = payload.get("sub")
+        if not isinstance(account_login, str):
+            raise HTTPException(status_code=401, detail="Invalid token subject")
     except JWTError:
         raise HTTPException(status_code=401, detail="Nieprawidlowy lub wygasly token")
+    with get_db() as conn:
+        account = conn.execute(
+            "SELECT id, login, rola, jednostka_id FROM uzytkownicy WHERE login = ?",
+            (account_login,),
+        ).fetchone()
+    if account is None:
+        raise HTTPException(status_code=401, detail="Account no longer exists")
+    return dict(account)
 ```
 
-`Header(...)` mówi FastAPI: "wyciągnij nagłówek `Authorization` z żądania, wymagaj
-go" — dokładnie tak samo deklaratywnie, jak `Depends`, tylko dla nagłówka zamiast
-zależności. Zwróć uwagę też na `except JWTError` (z `jose.exceptions`) zamiast
-gołego `except Exception` — łapiemy konkretnie błędy dekodowania tokenu, nie każdy
-możliwy wyjątek w tej funkcji (który mógłby ukryć prawdziwy błąd programistyczny).
+Nagłówek jest opcjonalny na poziomie walidacji parametrów, aby nasz kod zwracał
+401 również wtedy, gdy go brakuje. Wymagany `Header(...)` spowodowałby wcześniej
+błąd walidacji 422. Token potwierdza login, natomiast aktualną rolę i przypisanie
+do jednostki odczytujemy z bazy; nie ufamy starej roli zapisanej w tokenie.
 
 Dowolny endpoint dostaje uwierzytelnionego użytkownika, dopisując jeden parametr:
 
@@ -298,6 +341,55 @@ def zatwierdz_rezerwacje(rez_id: int, uzytkownik: dict = Depends(wymagaj_roli("p
 `wymagaj_roli("planista")` to **fabryka zależności** — funkcja zwracająca funkcję,
 dopasowaną do konkretnej roli. Dzięki temu jeden mechanizm obsługuje dowolną liczbę
 ról bez powtarzania kodu.
+
+### Kontrola jednostki: rola nie wystarcza
+
+Dodaj funkcję używaną przy każdej operacji na konkretnej jednostce:
+
+```python
+def require_unit_access(account: dict, unit_id: int) -> None:
+    if account["rola"] == "planista":
+        return
+    if account["jednostka_id"] is None or account["jednostka_id"] != unit_id:
+        raise HTTPException(status_code=403, detail="Unit access denied")
+
+
+@app.delete("/rezerwacje/{reservation_id}")
+def delete_reservation(
+    reservation_id: int,
+    account: dict = Depends(pobierz_biezacego_uzytkownika),
+):
+    with get_db() as conn:
+        conn.execute("BEGIN IMMEDIATE")
+        reservation = conn.execute(
+            "SELECT jednostka_id FROM rezerwacje WHERE id = ?", (reservation_id,),
+        ).fetchone()
+        if reservation is None:
+            raise HTTPException(status_code=404, detail="Reservation not found")
+        require_unit_access(account, reservation["jednostka_id"])
+        conn.execute("DELETE FROM rezerwacje WHERE id = ?", (reservation_id,))
+        conn.commit()
+    return {"deleted": reservation_id}
+```
+
+Zamknięcie połączenia przez `get_db()` cofa niezatwierdzoną transakcję w ścieżce
+odmowy. W przykładzie tworzenia rezerwacji ze spotkania 1 dodaj parametr
+`account: dict = Depends(pobierz_biezacego_uzytkownika)` oraz wywołaj
+`require_unit_access(account, rez.jednostka_id)` przed zapisem, zachowując
+atomowe sprawdzenie konfliktu. Przy zmianie rezerwacji sprawdź zarówno jej obecną,
+jak i proponowaną jednostkę — nie wystarczy sprawdzić danych przesłanych przez klienta.
+
+Dla `GET /rezerwacje` planista odczytuje wszystkie wiersze. Dowódca bez przypisania
+otrzymuje 403, a przypisany dowódca odczytuje wyłącznie
+`WHERE jednostka_id = ?` z wartością pobraną z konta. Filtr przekazany w URL nie może
+poszerzyć tego zakresu. Zastąp wcześniejsze niezabezpieczone endpointy, zamiast
+rejestrować dwie funkcje dla tej samej metody i ścieżki.
+
+Próba odbiorcza na świeżych danych: Alfa usuwa swoją rezerwację; Alfa nie może
+usunąć rezerwacji Bravo (403 i rekord nadal istnieje); planista może ją usunąć.
+Brak nagłówka daje 401. Konto bez jednostki dostaje 403 przy próbie rezerwacji.
+Przed każdą próbą odtwórz potrzebny rekord, aby wcześniejsze usunięcie nie zamieniło
+próby uprawnień w zwykłą odpowiedź 404.
 
 ## 4️⃣ Awans na planistę — dopiero teraz to możliwe
 
