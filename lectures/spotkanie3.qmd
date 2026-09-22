@@ -55,12 +55,12 @@ CourseQuiz.mount(document.getElementById('pas-quiz'), {
     },
     {
       id: "q5", points: 3, diff: "wnioskowanie",
-      text: "Endpoint GET /rezerwacje?sortuj=nazwa wstawia wartość parametru 'sortuj' bezpośrednio (przez sklejanie stringów) jako nazwę kolumny w klauzuli ORDER BY zapytania SQL. Jakie zagrożenie to stwarza, i czy zwykłe parametryzowane zapytanie (?, jak przy WHERE) to naprawi?",
+      text: "Napisaliście endpoint @app.get('/poligony/{id}') zwracający w kodzie HTTPException(status_code=404, ...), ale NIE dodaliście do dekoratora parametru responses={404: {...}}. Co pokaże /docs (Swagger) na temat tego endpointu?",
       options: [
-        {v:"A", t:"Żadne zagrożenie — ORDER BY nie dotyczy bezpieczeństwa"},
-        {v:"B", t:"SQL injection przez nazwę kolumny; parametryzacja (?) NIE rozwiąże tego — placeholdery działają dla wartości, nie nazw kolumn, więc trzeba ręcznie zweryfikować nazwę względem białej listy dozwolonych kolumn"},
-        {v:"C", t:"To XSS, nie SQL injection, więc parametryzacja w ogóle nie jest tu istotna"},
-        {v:"D", t:"Parametryzowane zapytanie zawsze rozwiązuje każdy problem z SQL injection, niezależnie od miejsca w zapytaniu"}
+        {v:"A", t:"Swagger sam wykryje HTTPException w kodzie i pokaże 404 w dokumentacji"},
+        {v:"B", t:"Swagger NIE pokaże wcale, że endpoint może zwrócić 404 — dokumentacja będzie milczeć o kodzie błędu, który w praktyce naprawdę się zdarza"},
+        {v:"C", t:"Endpoint przestanie działać, dopóki responses nie zostanie dodane"},
+        {v:"D", t:"FastAPI automatycznie doda responses na podstawie treści funkcji"}
       ]
     }
   ]
