@@ -1,0 +1,94 @@
+---
+title: "Rezerwacje obiektów — zadania"
+toc: true
+---
+
+## Wasze zadanie
+
+Budujecie własną aplikację fikcyjnego ośrodka „Sosna”. Nie korzystacie z baz ani kodu innych kursów. Wymagana jest podstawowa znajomość Pythona; środowisko i stan startowy udostępnia prowadzący.
+
+- P1: plac treningowy, dostępny; P2: sala symulatorów, niedostępna z powodu przeglądu.
+- Jednostki: A — Alfa, B — Bravo. Konta Alfa i Bravo są przypisane do swoich jednostek; planista obsługuje wszystkie jednostki.
+- T oznacza jutrzejszą datę ustaloną na zajęciach. Wszystkie czasy mają jawną, wspólną strefę.
+- Rezerwacja kontrolna R1: P1, jednostka A, T 08:00–10:00.
+- Rezerwacja wymaga istniejącego, dostępnego obiektu i istniejącej jednostki. Początek poprzedza koniec i nie może być w przeszłości.
+- Przedziały są półotwarte: zawierają początek, nie zawierają końca. Dwie rezerwacje tego samego obiektu nie mogą nachodzić na siebie.
+- Użytkownik zarządza tylko rezerwacjami swojej jednostki. Nie może sam nadać sobie roli planisty ani przypisać jednostki.
+
+Przed każdą próbą modyfikacji lub usunięcia odtwórzcie dane kontrolne. Zapisujcie żądanie, odpowiedź i stan danych po próbie. Nie publikujcie haseł ani tokenów.
+
+## Jak pracujemy
+
+Każda para oddaje rozwiązanie, opis próby i krótkie uzasadnienie. Każda osoba powinna umieć wyjaśnić wynik. Dane i zadania są niezależne od pozostałych przedmiotów.
+
+## Wykład 1 — Co się dzieje po kliknięciu „Rezerwuj”?
+
+[Materiał do zajęć](lectures/spotkanie1.qmd)
+
+1. Rozrysuj drogę od kliknięcia „Rezerwuj” do zapisu i odpowiedzi. Nazwij odpowiedzialność przeglądarki, API i bazy.
+2. Zaproponuj żądania odczytu i utworzenia rezerwacji. Co możesz stwierdzić, gdy odpowiedź po zapisie nie dotarła?
+
+## Wykład 2 — Kto może zmienić rezerwację?
+
+[Materiał do zajęć](lectures/spotkanie2.qmd)
+
+1. Ułóż tabelę uprawnień użytkownika jednostki i planisty dla odczytu, tworzenia i usuwania rezerwacji.
+2. Zaproponuj odpowiedzi API dla błędnego przedziału, konfliktu, braku tokenu i próby zmiany cudzej rezerwacji. Uzasadnij, gdzie należy sprawdzać uprawnienia.
+
+## Blok 1 — Czy serwer odpowiada?
+
+[Materiał do zajęć](cwiczenia/spotkanie1.qmd)
+
+1. Uruchom przygotowany serwer i odczytaj endpoint kontrolny. Zapisz metodę, status i treść odpowiedzi.
+2. Porównaj żądanie pod błędny adres endpointu z próbą połączenia z wyłączonym serwerem.
+
+## Blok 2 — Jedna lista, dwóch odbiorców
+
+[Materiał do zajęć](cwiczenia/spotkanie1.qmd)
+
+1. Udostępnij katalog P1 i P2 jako JSON oraz odczyt pojedynczego obiektu.
+2. Sprawdź nieistniejący identyfikator i zmianę kolejności listy. Czy klient nadal wskazuje ten sam obiekt?
+
+## Blok 3 — Dane przetrwały uruchomienie od nowa
+
+[Materiał do zajęć](cwiczenia/spotkanie1.qmd)
+
+1. Przenieś katalog obiektów i jednostek do SQLite. Dodaj rekord i uruchom proces ponownie.
+2. Wskaż używany plik bazy. Sprawdź wpływ zmiany katalogu roboczego na jego lokalizację.
+
+## Blok 4 — Pierwsze kolidujące terminy
+
+[Materiał do zajęć](cwiczenia/spotkanie1.qmd)
+
+1. Przy istniejącej R1 spróbuj utworzyć rezerwację P1 10:00–11:00 i zapisz rezultat.
+2. Odtwórz dane, sprawdź P1 09:00–11:00 oraz rezerwację P2. Rozróżnij przyczyny przyjęcia lub odmowy.
+
+## Blok 5 — Poprawny JSON, niepoprawne znaczenie
+
+[Materiał do zajęć](cwiczenia/spotkanie2.qmd)
+
+1. Dodaj walidację przedziału i przygotuj próby dla początku wcześniejszego, równego i późniejszego niż koniec.
+2. Sprawdź datę w przeszłości i zapis czasu w innej strefie. Zweryfikuj stan bazy po odmowie.
+
+## Blok 6 — Konto bez samodzielnego awansu
+
+[Materiał do zajęć](cwiczenia/spotkanie2.qmd)
+
+1. Dodaj rejestrację z hashowaniem hasła i logowanie. Sprawdź poprawne oraz błędne hasło.
+2. Wyślij deklarację roli planisty przy rejestracji. Sprawdź faktyczne uprawnienia utworzonego konta.
+
+## Blok 7 — Cudza rezerwacja
+
+[Materiał do zajęć](cwiczenia/spotkanie2.qmd)
+
+1. Jako Alfa wykonaj operację na swojej rezerwacji, a następnie na rezerwacji Bravo. Zachowaj dowody odpowiedzi i stanu danych.
+2. Powtórz próbę jako planista, bez tokenu i jako konto bez przypisanej jednostki. Wyjaśnij różnice.
+
+## Blok 8 — Dwa stanowiska w tej samej chwili
+
+[Materiał do zajęć](cwiczenia/spotkanie2.qmd)
+
+1. Przygotuj dwa równoczesne żądania rezerwacji tego samego wolnego terminu w bazie testowej.
+2. Sprawdź liczbę zapisanych rezerwacji i obie odpowiedzi. Opisz zachowanie aplikacji, kiedy baza jest zajęta.
+
+Kolejne karty będą udostępniane wraz z następnymi zajęciami.

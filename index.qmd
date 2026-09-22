@@ -19,3 +19,7 @@ Semestr: zimowy
 ### Laboratorium dla grup:
 
 1. TODO: dzień tygodnia, godzina, sala
+
+## Scenariusze zajęć
+
+[Otwórz zadania i opis projektu](scenariusze.qmd).
