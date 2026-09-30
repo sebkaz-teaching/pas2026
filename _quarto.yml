@@ -7,14 +7,17 @@ project:
   # either publishes an unlisted page (still reachable by a direct URL)
   # or links to a page that doesn't exist yet.
   #
-  # Lectures: 3 meetings x 90 min (2x45), each covering 2 of the
-  # original 6 topics. Labs: 3 meetings x 3h (4x45), each covering 4 of
-  # the original 12 lab topics.
+  # Lectures: Oct 3 (2x45) and Oct 24 (4x45), 2026.
+  # The second meeting will use the existing lecture modules 2 and 3.
+  # Labs: Nov 8 and Dec 13 (4x45 each), 2026.
+  # Module 3 lab material is supplementary, not a scheduled third meeting.
   render:
     - "*.qmd"
     - "lectures/*.qmd"
     - "cwiczenia/*.qmd"
+    - "!lectures/spotkanie2.qmd"
     - "!lectures/spotkanie3.qmd"
+    - "!cwiczenia/spotkanie2.qmd"
     - "!cwiczenia/spotkanie3.qmd"
 
 website:
@@ -25,15 +28,15 @@ website:
     style: "docked"
     contents:
       - index.qmd
-      - section: "Wykłady (3 spotkania x 90 min)"
+      - section: "Wykłady"
         contents:
           - lectures/spotkanie1.qmd
-          - lectures/spotkanie2.qmd
+          # - lectures/spotkanie2.qmd
           # - lectures/spotkanie3.qmd
-      - section: "Laboratoria (3 spotkania x 3h)"
+      - section: "Laboratoria"
         contents:
           - cwiczenia/spotkanie1.qmd
-          - cwiczenia/spotkanie2.qmd
+          # - cwiczenia/spotkanie2.qmd
           # - cwiczenia/spotkanie3.qmd
   page-footer: "Copyright 2026, Sebastian Zając"
 format:

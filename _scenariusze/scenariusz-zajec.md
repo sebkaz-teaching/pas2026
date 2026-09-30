@@ -1,6 +1,18 @@
 # PAS 2026 — Rezerwacje obiektów „Ośrodek Sosna”
 
-Scenariusz dla prowadzącego: trzy wykłady po 90 minut oraz dwanaście bloków laboratoryjnych po 45 minut, zgrupowanych w trzy spotkania po 180 minut dydaktycznych. Przerwy organizacyjne są poza tym bilansem. Układ odpowiada obecnym plikom PAS; nie tworzymy sześciu dodatkowych wykładów.
+Harmonogram aktualny: wykład 3 października 2026 (2 × 45 min) oraz
+24 października 2026 (4 × 45 min); laboratoria 8 listopada i 13 grudnia 2026
+(po 4 × 45 min). Przerwy organizacyjne są poza bilansem minut dydaktycznych.
+
+Poniższe trzy karty wykładowe są modułami: moduł 1 na 3 października,
+moduły 2 i 3 razem na 24 października. Nie oznaczają trzech osobnych terminów.
+Bloki laboratoryjne 1–4 przypadają na 8 listopada, 5–8 na 13 grudnia.
+Bloki 9–12 pozostają materiałem uzupełniającym, bez przypisanego terminu i bez
+obowiązkowego wykonania w ośmiu godzinach laboratoriów. Nie zakładamy czasu na
+pełne wdrożenie i frontend w tym harmonogramie.
+
+Na stronie studenckiej pokazujemy obecnie tylko pierwszy moduł wykładowy oraz
+bloki laboratoryjne 1–4. Dalsze karty w tym dokumencie służą przygotowaniu zajęć.
 
 ## Niezależny projekt i punkt startowy
 
@@ -58,7 +70,7 @@ Materiał: [API i bezpieczeństwo](../lectures/spotkanie2.qmd).
 
 **Odbiór:** student rozróżnia identyfikację użytkownika od sprawdzenia, czy wolno mu wykonać konkretną operację.
 
-## Wykład 3 — Działało na moim komputerze
+## Wykład 3 — Działało na moim komputerze (moduł na 24 października)
 
 Materiał: [Skalowalność i wdrażanie](../lectures/spotkanie3.qmd).
 
@@ -132,7 +144,7 @@ Korzystaj z przypisania `uzytkownicy.jednostka_id` i kontroli jednostki opisanej
 
 **Zmiana:** baza jest chwilowo zajęta. **Odbiór:** najwyżej jedna kolidująca rezerwacja; obsłużona odpowiedź lub ograniczone ponowienie, bez ukrytego drugiego zapisu. Dla wariantu SQLite prowadzący przygotowuje atomową sekcję sprawdzenia i zapisu, np. transakcję rozpoczynającą blokadę zapisu przed odczytem. Samo `SELECT` oraz późniejsze `INSERT` nie spełniają kryterium. Jeśli przygotowany kod nie ma tej ochrony, ćwiczenie kończy się udokumentowanym błędem, nie pozornym zaliczeniem.
 
-## Laboratorium — spotkanie 3: przekazanie aplikacji
+## Laboratorium — materiał uzupełniający: przekazanie aplikacji
 
 Materiał: [Cztery części spotkania 3](../cwiczenia/spotkanie3.qmd).
 
