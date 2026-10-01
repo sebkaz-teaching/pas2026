@@ -17,6 +17,7 @@ project:
     - "cwiczenia/*.qmd"
     - "!lectures/spotkanie2.qmd"
     - "!lectures/spotkanie3.qmd"
+    - "!cwiczenia/spotkanie1.qmd"
     - "!cwiczenia/spotkanie2.qmd"
     - "!cwiczenia/spotkanie3.qmd"
 
@@ -33,9 +34,9 @@ website:
           - lectures/spotkanie1.qmd
           # - lectures/spotkanie2.qmd
           # - lectures/spotkanie3.qmd
-      - section: "Laboratoria"
-        contents:
-          - cwiczenia/spotkanie1.qmd
+      # - section: "Laboratoria"
+      #   contents:
+      #     - cwiczenia/spotkanie1.qmd
           # - cwiczenia/spotkanie2.qmd
           # - cwiczenia/spotkanie3.qmd
   page-footer: "Copyright 2026, Sebastian Zając"

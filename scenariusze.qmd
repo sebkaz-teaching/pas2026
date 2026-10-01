@@ -5,9 +5,9 @@ toc: true
 
 ## Zakres pierwszego spotkania
 
-Ta karta obejmuje wykład 3 października 2026 (2 × 45 min) oraz pierwszy etap
-projektu laboratoryjnego na 8 listopada 2026 (4 × 45 min). Na tym etapie
-skupiacie się na komunikacji klient–serwer, katalogu obiektów i rezerwacjach.
+Ta karta obejmuje wyłącznie wykład 3 października 2026 (2 × 45 min).
+Analizujecie komunikację klient–serwer i projekt rezerwacji. Nie musicie jeszcze
+uruchamiać środowiska ani samodzielnie programować aplikacji.
 
 ## Wasze zadanie
 
@@ -20,11 +20,11 @@ Budujecie własną aplikację fikcyjnego ośrodka „Sosna”. Nie korzystacie z
 - Rezerwacja wymaga istniejącego, dostępnego obiektu i istniejącej jednostki. Początek poprzedza koniec i nie może być w przeszłości.
 - Przedziały są półotwarte: zawierają początek, nie zawierają końca. Dwie rezerwacje tego samego obiektu nie mogą nachodzić na siebie.
 
-Przed każdą próbą modyfikacji lub usunięcia odtwórzcie dane kontrolne. Zapisujcie żądanie, odpowiedź i stan danych po próbie.
+Na wykładzie przewidujecie wyniki żądań na podstawie tego przykładu; działanie serwera pokazuje prowadzący.
 
 ## Jak pracujemy
 
-Każda para oddaje rozwiązanie, opis próby i krótkie uzasadnienie. Każda osoba powinna umieć wyjaśnić wynik. Dane i zadania są niezależne od pozostałych przedmiotów.
+Każda para przygotowuje schemat komunikacji, przykłady żądań i krótkie uzasadnienie. Każda osoba powinna umieć wyjaśnić wynik. Dane i zadania są niezależne od pozostałych przedmiotów.
 
 ## Wykład 1 — Co się dzieje po kliknięciu „Rezerwuj”?
 
@@ -33,32 +33,5 @@ Każda para oddaje rozwiązanie, opis próby i krótkie uzasadnienie. Każda oso
 1. Rozrysuj drogę od kliknięcia „Rezerwuj” do zapisu i odpowiedzi. Nazwij odpowiedzialność przeglądarki, API i bazy.
 2. Zaproponuj żądania odczytu i utworzenia rezerwacji. Co możesz stwierdzić, gdy odpowiedź po zapisie nie dotarła?
 
-## Blok 1 — Czy serwer odpowiada?
-
-[Materiał do zajęć](cwiczenia/spotkanie1.qmd)
-
-1. Uruchom przygotowany serwer i odczytaj endpoint kontrolny. Zapisz metodę, status i treść odpowiedzi.
-2. Porównaj żądanie pod błędny adres endpointu z próbą połączenia z wyłączonym serwerem.
-
-## Blok 2 — Jedna lista, dwóch odbiorców
-
-[Materiał do zajęć](cwiczenia/spotkanie1.qmd)
-
-1. Udostępnij katalog P1 i P2 jako JSON oraz odczyt pojedynczego obiektu.
-2. Sprawdź nieistniejący identyfikator i zmianę kolejności listy. Czy klient nadal wskazuje ten sam obiekt?
-
-## Blok 3 — Dane przetrwały uruchomienie od nowa
-
-[Materiał do zajęć](cwiczenia/spotkanie1.qmd)
-
-1. Przenieś katalog obiektów i jednostek do SQLite. Dodaj rekord i uruchom proces ponownie.
-2. Wskaż używany plik bazy. Sprawdź wpływ zmiany katalogu roboczego na jego lokalizację.
-
-## Blok 4 — Pierwsze kolidujące terminy
-
-[Materiał do zajęć](cwiczenia/spotkanie1.qmd)
-
-1. Przy istniejącej R1 spróbuj utworzyć rezerwację P1 10:00–11:00 i zapisz rezultat.
-2. Odtwórz dane, sprawdź P1 09:00–11:00 oraz rezerwację P2. Rozróżnij przyczyny przyjęcia lub odmowy.
-
-Kolejne karty będą udostępniane przed następnymi spotkaniami.
+Materiały i zadania laboratoryjne zostaną udostępnione przed 8 listopada 2026
+(4 × 45 min). Na wykładzie 3 października nie realizujecie laboratorium „Od zera do CRUD”.

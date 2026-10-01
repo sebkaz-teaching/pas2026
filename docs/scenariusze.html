@@ -136,23 +136,6 @@ ul.task-list li input[type="checkbox"] {
 </li>
       </ul>
   </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
- <span class="menu-text">Laboratoria</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./cwiczenia/spotkanie1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lab, spotkanie 1: Od zera do pełnego CRUD</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
     </ul>
     </div>
 </nav>
@@ -167,10 +150,6 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#wasze-zadanie" id="toc-wasze-zadanie" class="nav-link" data-scroll-target="#wasze-zadanie">Wasze zadanie</a></li>
   <li><a href="#jak-pracujemy" id="toc-jak-pracujemy" class="nav-link" data-scroll-target="#jak-pracujemy">Jak pracujemy</a></li>
   <li><a href="#wykład-1-co-się-dzieje-po-kliknięciu-rezerwuj" id="toc-wykład-1-co-się-dzieje-po-kliknięciu-rezerwuj" class="nav-link" data-scroll-target="#wykład-1-co-się-dzieje-po-kliknięciu-rezerwuj">Wykład 1 — Co się dzieje po kliknięciu „Rezerwuj”?</a></li>
-  <li><a href="#blok-1-czy-serwer-odpowiada" id="toc-blok-1-czy-serwer-odpowiada" class="nav-link" data-scroll-target="#blok-1-czy-serwer-odpowiada">Blok 1 — Czy serwer odpowiada?</a></li>
-  <li><a href="#blok-2-jedna-lista-dwóch-odbiorców" id="toc-blok-2-jedna-lista-dwóch-odbiorców" class="nav-link" data-scroll-target="#blok-2-jedna-lista-dwóch-odbiorców">Blok 2 — Jedna lista, dwóch odbiorców</a></li>
-  <li><a href="#blok-3-dane-przetrwały-uruchomienie-od-nowa" id="toc-blok-3-dane-przetrwały-uruchomienie-od-nowa" class="nav-link" data-scroll-target="#blok-3-dane-przetrwały-uruchomienie-od-nowa">Blok 3 — Dane przetrwały uruchomienie od nowa</a></li>
-  <li><a href="#blok-4-pierwsze-kolidujące-terminy" id="toc-blok-4-pierwsze-kolidujące-terminy" class="nav-link" data-scroll-target="#blok-4-pierwsze-kolidujące-terminy">Blok 4 — Pierwsze kolidujące terminy</a></li>
   </ul>
 </nav>
     </div>
@@ -198,7 +177,7 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="zakres-pierwszego-spotkania" class="level2">
 <h2 class="anchored" data-anchor-id="zakres-pierwszego-spotkania">Zakres pierwszego spotkania</h2>
-<p>Ta karta obejmuje wykład 3 października 2026 (2 × 45 min) oraz pierwszy etap projektu laboratoryjnego na 8 listopada 2026 (4 × 45 min). Na tym etapie skupiacie się na komunikacji klient–serwer, katalogu obiektów i rezerwacjach.</p>
+<p>Ta karta obejmuje wyłącznie wykład 3 października 2026 (2 × 45 min). Analizujecie komunikację klient–serwer i projekt rezerwacji. Nie musicie jeszcze uruchamiać środowiska ani samodzielnie programować aplikacji.</p>
 </section>
 <section id="wasze-zadanie" class="level2">
 <h2 class="anchored" data-anchor-id="wasze-zadanie">Wasze zadanie</h2>
@@ -211,11 +190,11 @@ ul.task-list li input[type="checkbox"] {
 <li>Rezerwacja wymaga istniejącego, dostępnego obiektu i istniejącej jednostki. Początek poprzedza koniec i nie może być w przeszłości.</li>
 <li>Przedziały są półotwarte: zawierają początek, nie zawierają końca. Dwie rezerwacje tego samego obiektu nie mogą nachodzić na siebie.</li>
 </ul>
-<p>Przed każdą próbą modyfikacji lub usunięcia odtwórzcie dane kontrolne. Zapisujcie żądanie, odpowiedź i stan danych po próbie.</p>
+<p>Na wykładzie przewidujecie wyniki żądań na podstawie tego przykładu; działanie serwera pokazuje prowadzący.</p>
 </section>
 <section id="jak-pracujemy" class="level2">
 <h2 class="anchored" data-anchor-id="jak-pracujemy">Jak pracujemy</h2>
-<p>Każda para oddaje rozwiązanie, opis próby i krótkie uzasadnienie. Każda osoba powinna umieć wyjaśnić wynik. Dane i zadania są niezależne od pozostałych przedmiotów.</p>
+<p>Każda para przygotowuje schemat komunikacji, przykłady żądań i krótkie uzasadnienie. Każda osoba powinna umieć wyjaśnić wynik. Dane i zadania są niezależne od pozostałych przedmiotów.</p>
 </section>
 <section id="wykład-1-co-się-dzieje-po-kliknięciu-rezerwuj" class="level2">
 <h2 class="anchored" data-anchor-id="wykład-1-co-się-dzieje-po-kliknięciu-rezerwuj">Wykład 1 — Co się dzieje po kliknięciu „Rezerwuj”?</h2>
@@ -224,39 +203,7 @@ ul.task-list li input[type="checkbox"] {
 <li>Rozrysuj drogę od kliknięcia „Rezerwuj” do zapisu i odpowiedzi. Nazwij odpowiedzialność przeglądarki, API i bazy.</li>
 <li>Zaproponuj żądania odczytu i utworzenia rezerwacji. Co możesz stwierdzić, gdy odpowiedź po zapisie nie dotarła?</li>
 </ol>
-</section>
-<section id="blok-1-czy-serwer-odpowiada" class="level2">
-<h2 class="anchored" data-anchor-id="blok-1-czy-serwer-odpowiada">Blok 1 — Czy serwer odpowiada?</h2>
-<p><a href="./cwiczenia/spotkanie1.html">Materiał do zajęć</a></p>
-<ol type="1">
-<li>Uruchom przygotowany serwer i odczytaj endpoint kontrolny. Zapisz metodę, status i treść odpowiedzi.</li>
-<li>Porównaj żądanie pod błędny adres endpointu z próbą połączenia z wyłączonym serwerem.</li>
-</ol>
-</section>
-<section id="blok-2-jedna-lista-dwóch-odbiorców" class="level2">
-<h2 class="anchored" data-anchor-id="blok-2-jedna-lista-dwóch-odbiorców">Blok 2 — Jedna lista, dwóch odbiorców</h2>
-<p><a href="./cwiczenia/spotkanie1.html">Materiał do zajęć</a></p>
-<ol type="1">
-<li>Udostępnij katalog P1 i P2 jako JSON oraz odczyt pojedynczego obiektu.</li>
-<li>Sprawdź nieistniejący identyfikator i zmianę kolejności listy. Czy klient nadal wskazuje ten sam obiekt?</li>
-</ol>
-</section>
-<section id="blok-3-dane-przetrwały-uruchomienie-od-nowa" class="level2">
-<h2 class="anchored" data-anchor-id="blok-3-dane-przetrwały-uruchomienie-od-nowa">Blok 3 — Dane przetrwały uruchomienie od nowa</h2>
-<p><a href="./cwiczenia/spotkanie1.html">Materiał do zajęć</a></p>
-<ol type="1">
-<li>Przenieś katalog obiektów i jednostek do SQLite. Dodaj rekord i uruchom proces ponownie.</li>
-<li>Wskaż używany plik bazy. Sprawdź wpływ zmiany katalogu roboczego na jego lokalizację.</li>
-</ol>
-</section>
-<section id="blok-4-pierwsze-kolidujące-terminy" class="level2">
-<h2 class="anchored" data-anchor-id="blok-4-pierwsze-kolidujące-terminy">Blok 4 — Pierwsze kolidujące terminy</h2>
-<p><a href="./cwiczenia/spotkanie1.html">Materiał do zajęć</a></p>
-<ol type="1">
-<li>Przy istniejącej R1 spróbuj utworzyć rezerwację P1 10:00–11:00 i zapisz rezultat.</li>
-<li>Odtwórz dane, sprawdź P1 09:00–11:00 oraz rezerwację P2. Rozróżnij przyczyny przyjęcia lub odmowy.</li>
-</ol>
-<p>Kolejne karty będą udostępniane przed następnymi spotkaniami.</p>
+<p>Materiały i zadania laboratoryjne zostaną udostępnione przed 8 listopada 2026 (4 × 45 min). Na wykładzie 3 października nie realizujecie laboratorium „Od zera do CRUD”.</p>
 
 
 </section>

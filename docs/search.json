@@ -4,63 +4,35 @@
     "href": "scenariusze.html",
     "title": "Rezerwacje obiektów — zadania",
     "section": "",
-    "text": "Ta karta obejmuje wykład 3 października 2026 (2 × 45 min) oraz pierwszy etap projektu laboratoryjnego na 8 listopada 2026 (4 × 45 min). Na tym etapie skupiacie się na komunikacji klient–serwer, katalogu obiektów i rezerwacjach."
+    "text": "Ta karta obejmuje wyłącznie wykład 3 października 2026 (2 × 45 min). Analizujecie komunikację klient–serwer i projekt rezerwacji. Nie musicie jeszcze uruchamiać środowiska ani samodzielnie programować aplikacji."
   },
   {
     "objectID": "scenariusze.html#zakres-pierwszego-spotkania",
     "href": "scenariusze.html#zakres-pierwszego-spotkania",
     "title": "Rezerwacje obiektów — zadania",
     "section": "",
-    "text": "Ta karta obejmuje wykład 3 października 2026 (2 × 45 min) oraz pierwszy etap projektu laboratoryjnego na 8 listopada 2026 (4 × 45 min). Na tym etapie skupiacie się na komunikacji klient–serwer, katalogu obiektów i rezerwacjach."
+    "text": "Ta karta obejmuje wyłącznie wykład 3 października 2026 (2 × 45 min). Analizujecie komunikację klient–serwer i projekt rezerwacji. Nie musicie jeszcze uruchamiać środowiska ani samodzielnie programować aplikacji."
   },
   {
     "objectID": "scenariusze.html#wasze-zadanie",
     "href": "scenariusze.html#wasze-zadanie",
     "title": "Rezerwacje obiektów — zadania",
     "section": "Wasze zadanie",
-    "text": "Wasze zadanie\nBudujecie własną aplikację fikcyjnego ośrodka „Sosna”. Nie korzystacie z baz ani kodu innych kursów. Wymagana jest podstawowa znajomość Pythona; środowisko i stan startowy udostępnia prowadzący.\n\nP1: plac treningowy, dostępny; P2: sala symulatorów, niedostępna z powodu przeglądu.\nJednostki: A — Alfa, B — Bravo.\nT oznacza jutrzejszą datę ustaloną na zajęciach. Wszystkie czasy mają jawną, wspólną strefę.\nRezerwacja kontrolna R1: P1, jednostka A, T 08:00–10:00.\nRezerwacja wymaga istniejącego, dostępnego obiektu i istniejącej jednostki. Początek poprzedza koniec i nie może być w przeszłości.\nPrzedziały są półotwarte: zawierają początek, nie zawierają końca. Dwie rezerwacje tego samego obiektu nie mogą nachodzić na siebie.\n\nPrzed każdą próbą modyfikacji lub usunięcia odtwórzcie dane kontrolne. Zapisujcie żądanie, odpowiedź i stan danych po próbie."
+    "text": "Wasze zadanie\nBudujecie własną aplikację fikcyjnego ośrodka „Sosna”. Nie korzystacie z baz ani kodu innych kursów. Wymagana jest podstawowa znajomość Pythona; środowisko i stan startowy udostępnia prowadzący.\n\nP1: plac treningowy, dostępny; P2: sala symulatorów, niedostępna z powodu przeglądu.\nJednostki: A — Alfa, B — Bravo.\nT oznacza jutrzejszą datę ustaloną na zajęciach. Wszystkie czasy mają jawną, wspólną strefę.\nRezerwacja kontrolna R1: P1, jednostka A, T 08:00–10:00.\nRezerwacja wymaga istniejącego, dostępnego obiektu i istniejącej jednostki. Początek poprzedza koniec i nie może być w przeszłości.\nPrzedziały są półotwarte: zawierają początek, nie zawierają końca. Dwie rezerwacje tego samego obiektu nie mogą nachodzić na siebie.\n\nNa wykładzie przewidujecie wyniki żądań na podstawie tego przykładu; działanie serwera pokazuje prowadzący."
   },
   {
     "objectID": "scenariusze.html#jak-pracujemy",
     "href": "scenariusze.html#jak-pracujemy",
     "title": "Rezerwacje obiektów — zadania",
     "section": "Jak pracujemy",
-    "text": "Jak pracujemy\nKażda para oddaje rozwiązanie, opis próby i krótkie uzasadnienie. Każda osoba powinna umieć wyjaśnić wynik. Dane i zadania są niezależne od pozostałych przedmiotów."
+    "text": "Jak pracujemy\nKażda para przygotowuje schemat komunikacji, przykłady żądań i krótkie uzasadnienie. Każda osoba powinna umieć wyjaśnić wynik. Dane i zadania są niezależne od pozostałych przedmiotów."
   },
   {
     "objectID": "scenariusze.html#wykład-1-co-się-dzieje-po-kliknięciu-rezerwuj",
     "href": "scenariusze.html#wykład-1-co-się-dzieje-po-kliknięciu-rezerwuj",
     "title": "Rezerwacje obiektów — zadania",
     "section": "Wykład 1 — Co się dzieje po kliknięciu „Rezerwuj”?",
-    "text": "Wykład 1 — Co się dzieje po kliknięciu „Rezerwuj”?\nMateriał do zajęć\n\nRozrysuj drogę od kliknięcia „Rezerwuj” do zapisu i odpowiedzi. Nazwij odpowiedzialność przeglądarki, API i bazy.\nZaproponuj żądania odczytu i utworzenia rezerwacji. Co możesz stwierdzić, gdy odpowiedź po zapisie nie dotarła?"
-  },
-  {
-    "objectID": "scenariusze.html#blok-1-czy-serwer-odpowiada",
-    "href": "scenariusze.html#blok-1-czy-serwer-odpowiada",
-    "title": "Rezerwacje obiektów — zadania",
-    "section": "Blok 1 — Czy serwer odpowiada?",
-    "text": "Blok 1 — Czy serwer odpowiada?\nMateriał do zajęć\n\nUruchom przygotowany serwer i odczytaj endpoint kontrolny. Zapisz metodę, status i treść odpowiedzi.\nPorównaj żądanie pod błędny adres endpointu z próbą połączenia z wyłączonym serwerem."
-  },
-  {
-    "objectID": "scenariusze.html#blok-2-jedna-lista-dwóch-odbiorców",
-    "href": "scenariusze.html#blok-2-jedna-lista-dwóch-odbiorców",
-    "title": "Rezerwacje obiektów — zadania",
-    "section": "Blok 2 — Jedna lista, dwóch odbiorców",
-    "text": "Blok 2 — Jedna lista, dwóch odbiorców\nMateriał do zajęć\n\nUdostępnij katalog P1 i P2 jako JSON oraz odczyt pojedynczego obiektu.\nSprawdź nieistniejący identyfikator i zmianę kolejności listy. Czy klient nadal wskazuje ten sam obiekt?"
-  },
-  {
-    "objectID": "scenariusze.html#blok-3-dane-przetrwały-uruchomienie-od-nowa",
-    "href": "scenariusze.html#blok-3-dane-przetrwały-uruchomienie-od-nowa",
-    "title": "Rezerwacje obiektów — zadania",
-    "section": "Blok 3 — Dane przetrwały uruchomienie od nowa",
-    "text": "Blok 3 — Dane przetrwały uruchomienie od nowa\nMateriał do zajęć\n\nPrzenieś katalog obiektów i jednostek do SQLite. Dodaj rekord i uruchom proces ponownie.\nWskaż używany plik bazy. Sprawdź wpływ zmiany katalogu roboczego na jego lokalizację."
-  },
-  {
-    "objectID": "scenariusze.html#blok-4-pierwsze-kolidujące-terminy",
-    "href": "scenariusze.html#blok-4-pierwsze-kolidujące-terminy",
-    "title": "Rezerwacje obiektów — zadania",
-    "section": "Blok 4 — Pierwsze kolidujące terminy",
-    "text": "Blok 4 — Pierwsze kolidujące terminy\nMateriał do zajęć\n\nPrzy istniejącej R1 spróbuj utworzyć rezerwację P1 10:00–11:00 i zapisz rezultat.\nOdtwórz dane, sprawdź P1 09:00–11:00 oraz rezerwację P2. Rozróżnij przyczyny przyjęcia lub odmowy.\n\nKolejne karty będą udostępniane przed następnymi spotkaniami."
+    "text": "Wykład 1 — Co się dzieje po kliknięciu „Rezerwuj”?\nMateriał do zajęć\n\nRozrysuj drogę od kliknięcia „Rezerwuj” do zapisu i odpowiedzi. Nazwij odpowiedzialność przeglądarki, API i bazy.\nZaproponuj żądania odczytu i utworzenia rezerwacji. Co możesz stwierdzić, gdy odpowiedź po zapisie nie dotarła?\n\nMateriały i zadania laboratoryjne zostaną udostępnione przed 8 listopada 2026 (4 × 45 min). Na wykładzie 3 października nie realizujecie laboratorium „Od zera do CRUD”."
   },
   {
     "objectID": "index.html",
@@ -87,7 +59,7 @@
     "href": "index.html#kalendarz-semestr-zimowy-20262027",
     "title": "Informacje ogólne",
     "section": "Kalendarz — semestr zimowy 2026/2027",
-    "text": "Kalendarz — semestr zimowy 2026/2027\n\nWykłady\n\n\n\nSpotkanie\nTermin\nWymiar\n\n\n\n\n1\n3 października 2026\n2 × 45 min\n\n\n2\n24 października 2026\n4 × 45 min\n\n\n\nŁącznie: 6 godzin dydaktycznych. Drugie spotkanie obejmie dwa kolejne moduły materiału: projektowanie API i bezpieczeństwo oraz skalowalność i wdrażanie.\n\n\nLaboratoria\n\n\n\nSpotkanie\nTermin\nWymiar\n\n\n\n\n1\n8 listopada 2026\n4 × 45 min\n\n\n2\n13 grudnia 2026\n4 × 45 min\n\n\n\nŁącznie: 8 godzin dydaktycznych. Godziny rozpoczęcia i sale sprawdźcie w planie zajęć swojej grupy.\nObecnie udostępnione są materiały oraz zadania projektowe pierwszego spotkania. Kolejne materiały pojawią się przed odpowiednimi zajęciami.",
+    "text": "Kalendarz — semestr zimowy 2026/2027\n\nWykłady\n\n\n\nSpotkanie\nTermin\nWymiar\n\n\n\n\n1\n3 października 2026\n2 × 45 min\n\n\n2\n24 października 2026\n4 × 45 min\n\n\n\nŁącznie: 6 godzin dydaktycznych. Drugie spotkanie obejmie dwa kolejne moduły materiału: projektowanie API i bezpieczeństwo oraz skalowalność i wdrażanie.\n\n\nLaboratoria\n\n\n\nSpotkanie\nTermin\nWymiar\n\n\n\n\n1\n8 listopada 2026\n4 × 45 min\n\n\n2\n13 grudnia 2026\n4 × 45 min\n\n\n\nŁącznie: 8 godzin dydaktycznych. Godziny rozpoczęcia i sale sprawdźcie w planie zajęć swojej grupy.\nObecnie udostępniony jest tylko wykład 1 i krótkie zadania do omówienia 3 października. Laboratorium „Od zera do CRUD” odbędzie się 8 listopada; jego materiały pojawią się przed tym terminem.",
     "crumbs": [
       "Informacje ogólne"
     ]
@@ -100,270 +72,6 @@
     "text": "Scenariusze zajęć\nOtwórz zadania i opis projektu.",
     "crumbs": [
       "Informacje ogólne"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/spotkanie1.html",
-    "href": "cwiczenia/spotkanie1.html",
-    "title": "Lab, spotkanie 1: Od zera do pełnego CRUD",
-    "section": "",
-    "text": "Cztery części, jedna sesja: stawiamy pierwszy serwer, dodajemy prawdziwy model danych, podłączamy bazę i kończymy pełnym CRUD-em plus pierwszą wersją rezerwacji. Każda część to ok. 45 minut praktycznej pracy.",
-    "crumbs": [
-      "Laboratoria",
-      "Lab, spotkanie 1: Od zera do pełnego CRUD"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/spotkanie1.html#cel",
-    "href": "cwiczenia/spotkanie1.html#cel",
-    "title": "Lab, spotkanie 1: Od zera do pełnego CRUD",
-    "section": "🎯 Cel",
-    "text": "🎯 Cel\nPostawić działający serwer HTTP w Pythonie i zobaczyć swój pierwszy endpoint w przeglądarce. To fundament, na którym przez całe laboratorium (i resztę semestru) zbudujemy system rezerwacji poligonu.",
-    "crumbs": [
-      "Laboratoria",
-      "Lab, spotkanie 1: Od zera do pełnego CRUD"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/spotkanie1.html#środowisko",
-    "href": "cwiczenia/spotkanie1.html#środowisko",
-    "title": "Lab, spotkanie 1: Od zera do pełnego CRUD",
-    "section": "1️⃣ Środowisko",
-    "text": "1️⃣ Środowisko\nBędziemy używać Python 3.11+, FastAPI (framework webowy) i uvicorn (serwer, który faktycznie uruchamia aplikację).\n\n🔹 Wirtualne środowisko\nZawsze pracuj w izolowanym środowisku — nigdy nie instaluj pakietów globalnie.\npython3 -m venv .venv\nsource .venv/bin/activate      # macOS/Linux\n# .venv\\Scripts\\activate       # Windows\n\npip install fastapi uvicorn[standard]\n\n💡 .venv/ nigdy nie trafia do repozytorium git — dodaj go do .gitignore.",
-    "crumbs": [
-      "Laboratoria",
-      "Lab, spotkanie 1: Od zera do pełnego CRUD"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/spotkanie1.html#pierwszy-serwer",
-    "href": "cwiczenia/spotkanie1.html#pierwszy-serwer",
-    "title": "Lab, spotkanie 1: Od zera do pełnego CRUD",
-    "section": "2️⃣ Pierwszy serwer",
-    "text": "2️⃣ Pierwszy serwer\nUtwórz plik main.py:\nfrom fastapi import FastAPI\n\napp = FastAPI(title=\"System rezerwacji poligonu\")\n\n\n@app.get(\"/\")\ndef root():\n    return {\"komunikat\": \"System rezerwacji poligonu dziala\"}\nUruchom:\nuvicorn main:app --reload\n\nmain — nazwa pliku (main.py),\napp — nazwa obiektu FastAPI() w tym pliku,\n--reload — serwer automatycznie restartuje się po zapisaniu zmian (tylko do pracy deweloperskiej, nigdy na produkcji).\n\nOtwórz w przeglądarce http://127.0.0.1:8000/ — powinieneś zobaczyć:\n{\"komunikat\": \"System rezerwacji poligonu dziala\"}",
-    "crumbs": [
-      "Laboratoria",
-      "Lab, spotkanie 1: Od zera do pełnego CRUD"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/spotkanie1.html#automatyczna-dokumentacja-korzyść-od-razu",
-    "href": "cwiczenia/spotkanie1.html#automatyczna-dokumentacja-korzyść-od-razu",
-    "title": "Lab, spotkanie 1: Od zera do pełnego CRUD",
-    "section": "3️⃣ Automatyczna dokumentacja — korzyść od razu",
-    "text": "3️⃣ Automatyczna dokumentacja — korzyść od razu\nFastAPI, bez dodatkowej pracy z Twojej strony, generuje interaktywną dokumentację API. Otwórz:\n\nhttp://127.0.0.1:8000/docs — interfejs Swagger UI, w którym możesz od razu klikać i testować endpointy.\nhttp://127.0.0.1:8000/redoc — alternatywny, bardziej “dokumentacyjny” widok.\n\n\n🧠 Do tego mechanizmu wrócimy dokładniej przy projektowaniu API (spotkanie 2) i przy dokumentowaniu API (spotkanie laboratoryjne 3) — dziś zapamiętaj tylko, że istnieje i że jest darmowy.",
-    "crumbs": [
-      "Laboratoria",
-      "Lab, spotkanie 1: Od zera do pełnego CRUD"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/spotkanie1.html#drugi-endpoint-zapowiedź-projektu",
-    "href": "cwiczenia/spotkanie1.html#drugi-endpoint-zapowiedź-projektu",
-    "title": "Lab, spotkanie 1: Od zera do pełnego CRUD",
-    "section": "4️⃣ Drugi endpoint — zapowiedź projektu",
-    "text": "4️⃣ Drugi endpoint — zapowiedź projektu\nDodaj do main.py endpoint, który na razie zwraca dane na sztywno (żadnej bazy jeszcze nie mamy — to dopiero część III dzisiejszego spotkania):\n@app.get(\"/poligony\")\ndef lista_poligonow():\n    return [\n        {\"id\": 1, \"nazwa\": \"Poligon Nowa Dęba\", \"typ\": \"strzelnica\"},\n        {\"id\": 2, \"nazwa\": \"Poligon Drawsko\", \"typ\": \"teren manewrowy\"},\n    ]\nSprawdź http://127.0.0.1:8000/poligony w przeglądarce oraz w /docs — zobacz, jak Swagger sam wykrył nowy endpoint.",
-    "crumbs": [
-      "Laboratoria",
-      "Lab, spotkanie 1: Od zera do pełnego CRUD"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/spotkanie1.html#repozytorium",
-    "href": "cwiczenia/spotkanie1.html#repozytorium",
-    "title": "Lab, spotkanie 1: Od zera do pełnego CRUD",
-    "section": "5️⃣ Repozytorium",
-    "text": "5️⃣ Repozytorium\nZałóż repozytorium git dla swojego projektu (osobne od materiałów kursu):\ngit init\necho \".venv/\\n__pycache__/\\n*.pyc\" &gt; .gitignore\ngit add main.py .gitignore\ngit commit -m \"Init: pierwszy serwer FastAPI\"\nTen projekt będzie rósł przez cały semestr — każda kolejna część to nowy commit.",
-    "crumbs": [
-      "Laboratoria",
-      "Lab, spotkanie 1: Od zera do pełnego CRUD"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/spotkanie1.html#cel-1",
-    "href": "cwiczenia/spotkanie1.html#cel-1",
-    "title": "Lab, spotkanie 1: Od zera do pełnego CRUD",
-    "section": "🎯 Cel",
-    "text": "🎯 Cel\nZastąpić sztywno wpisane listy z części I prawdziwym modelem danych (Pydantic) i zaimplementować pierwsze operacje REST na zasobie Poligon: GET (lista, jeden) i POST (utworzenie). Dane na razie żyją w pamięci procesu (lista Pythona) — baza danych to dopiero część III.",
-    "crumbs": [
-      "Laboratoria",
-      "Lab, spotkanie 1: Od zera do pełnego CRUD"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/spotkanie1.html#model-danych-pydantic",
-    "href": "cwiczenia/spotkanie1.html#model-danych-pydantic",
-    "title": "Lab, spotkanie 1: Od zera do pełnego CRUD",
-    "section": "1️⃣ Model danych — Pydantic",
-    "text": "1️⃣ Model danych — Pydantic\nFastAPI używa biblioteki Pydantic do opisu kształtu danych i automatycznej walidacji. Zamiast zwracać gołe słowniki jak w części I, zdefiniuj klasę:\nfrom pydantic import BaseModel\n\nclass Poligon(BaseModel):\n    id: int\n    nazwa: str\n    lokalizacja: str\n    typ: str  # \"strzelnica\" albo \"teren manewrowy\"\nPydantic automatycznie sprawdzi, czy przychodzące dane pasują do tych typów — jeśli klient wyśle id jako tekst zamiast liczby, dostanie czytelny błąd 422, zanim Twój kod w ogóle zobaczy te dane.",
-    "crumbs": [
-      "Laboratoria",
-      "Lab, spotkanie 1: Od zera do pełnego CRUD"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/spotkanie1.html#dane-w-pamięci-na-razie",
-    "href": "cwiczenia/spotkanie1.html#dane-w-pamięci-na-razie",
-    "title": "Lab, spotkanie 1: Od zera do pełnego CRUD",
-    "section": "2️⃣ Dane w pamięci (na razie)",
-    "text": "2️⃣ Dane w pamięci (na razie)\npoligony: list[Poligon] = [\n    Poligon(id=1, nazwa=\"Poligon Nowa Deba\", lokalizacja=\"Nowa Deba\", typ=\"strzelnica\"),\n    Poligon(id=2, nazwa=\"Poligon Drawsko\", lokalizacja=\"Drawsko Pomorskie\", typ=\"teren manewrowy\"),\n]",
-    "crumbs": [
-      "Laboratoria",
-      "Lab, spotkanie 1: Od zera do pełnego CRUD"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/spotkanie1.html#get-lista-i-pojedynczy-zasób",
-    "href": "cwiczenia/spotkanie1.html#get-lista-i-pojedynczy-zasób",
-    "title": "Lab, spotkanie 1: Od zera do pełnego CRUD",
-    "section": "3️⃣ GET — lista i pojedynczy zasób",
-    "text": "3️⃣ GET — lista i pojedynczy zasób\nfrom fastapi import FastAPI, HTTPException\n\napp = FastAPI(title=\"System rezerwacji poligonu\")\n\n@app.get(\"/poligony\", response_model=list[Poligon])\ndef lista_poligonow():\n    return poligony\n\n\n@app.get(\"/poligony/{poligon_id}\", response_model=Poligon)\ndef pobierz_poligon(poligon_id: int):\n    for p in poligony:\n        if p.id == poligon_id:\n            return p\n    raise HTTPException(status_code=404, detail=\"Poligon nie znaleziony\")\n{poligon_id} w ścieżce to path parameter — FastAPI automatycznie wyciąga go z URL-a i konwertuje na int (dzięki adnotacji typu w parametrze funkcji). Spróbuj wywołać /poligony/abc — zobaczysz błąd walidacji zamiast crashu.\nresponse_model=Poligon mówi FastAPI, jakiego kształtu odpowiedzi się spodziewać — to też trafia do automatycznej dokumentacji w /docs.",
-    "crumbs": [
-      "Laboratoria",
-      "Lab, spotkanie 1: Od zera do pełnego CRUD"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/spotkanie1.html#post-tworzenie-nowego-zasobu",
-    "href": "cwiczenia/spotkanie1.html#post-tworzenie-nowego-zasobu",
-    "title": "Lab, spotkanie 1: Od zera do pełnego CRUD",
-    "section": "4️⃣ POST — tworzenie nowego zasobu",
-    "text": "4️⃣ POST — tworzenie nowego zasobu\n@app.post(\"/poligony\", response_model=Poligon, status_code=201)\ndef utworz_poligon(poligon: Poligon):\n    for p in poligony:\n        if p.id == poligon.id:\n            raise HTTPException(status_code=409, detail=\"Poligon o tym ID juz istnieje\")\n    poligony.append(poligon)\n    return poligon\nZwróć uwagę na status_code=201 — zgodnie ze spotkaniem 1 (część II wykładu), tworzenie zasobu powinno zwracać 201 Created, nie domyślne 200 OK. 409 Conflict to kod statusu na sytuację “żądanie jest poprawne, ale koliduje z obecnym stanem” — dokładnie pasuje do “ID już zajęte”.\nSprawdź w /docs: kliknij “Try it out” przy POST /poligony i wyślij nowy poligon — zobaczysz go od razu w GET /poligony.",
-    "crumbs": [
-      "Laboratoria",
-      "Lab, spotkanie 1: Od zera do pełnego CRUD"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/spotkanie1.html#query-parameters-filtrowanie-listy",
-    "href": "cwiczenia/spotkanie1.html#query-parameters-filtrowanie-listy",
-    "title": "Lab, spotkanie 1: Od zera do pełnego CRUD",
-    "section": "5️⃣ Query parameters — filtrowanie listy",
-    "text": "5️⃣ Query parameters — filtrowanie listy\n@app.get(\"/poligony\", response_model=list[Poligon])\ndef lista_poligonow(typ: str | None = None):\n    if typ is None:\n        return poligony\n    return [p for p in poligony if p.typ == typ]\nParametr typ, którego nie ma w ścieżce URL (/poligony), a jest w liście argumentów funkcji, FastAPI automatycznie traktuje jako query parameter: /poligony?typ=strzelnica. str | None = None oznacza “opcjonalny, domyślnie brak filtra”.\n\n✅ Mini-zadanie części II\nDodaj model Jednostka (pola: id, nazwa, garnizon) i analogiczne endpointy GET /jednostki, GET /jednostki/{id}, POST /jednostki.",
-    "crumbs": [
-      "Laboratoria",
-      "Lab, spotkanie 1: Od zera do pełnego CRUD"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/spotkanie1.html#cel-2",
-    "href": "cwiczenia/spotkanie1.html#cel-2",
-    "title": "Lab, spotkanie 1: Od zera do pełnego CRUD",
-    "section": "🎯 Cel",
-    "text": "🎯 Cel\nZastąpić listę w pamięci (część I-II) prawdziwą bazą SQLite — dane mają przetrwać restart serwera. Używamy modułu sqlite3 z biblioteki standardowej Pythona (bez ORM-a) — chodzi o projektowanie API, nie o naukę nowego narzędzia do baz danych, którą już znacie z innych kursów.",
-    "crumbs": [
-      "Laboratoria",
-      "Lab, spotkanie 1: Od zera do pełnego CRUD"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/spotkanie1.html#schemat-bazy",
-    "href": "cwiczenia/spotkanie1.html#schemat-bazy",
-    "title": "Lab, spotkanie 1: Od zera do pełnego CRUD",
-    "section": "1️⃣ Schemat bazy",
-    "text": "1️⃣ Schemat bazy\nUtwórz plik schema.sql:\nCREATE TABLE IF NOT EXISTS poligony (\n    id INTEGER PRIMARY KEY AUTOINCREMENT,\n    nazwa TEXT NOT NULL,\n    lokalizacja TEXT NOT NULL,\n    typ TEXT NOT NULL,\n    dostepny INTEGER NOT NULL DEFAULT 1\n);\n\nCREATE TABLE IF NOT EXISTS jednostki (\n    id INTEGER PRIMARY KEY AUTOINCREMENT,\n    nazwa TEXT NOT NULL,\n    garnizon TEXT NOT NULL\n);\ndostepny INTEGER zamiast BOOLEAN — SQLite nie ma natywnego typu logicznego, konwencja to 0/1 (dokładnie to, co już znacie z kursów o bazach danych).",
-    "crumbs": [
-      "Laboratoria",
-      "Lab, spotkanie 1: Od zera do pełnego CRUD"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/spotkanie1.html#połączenie-z-bazą-w-fastapi",
-    "href": "cwiczenia/spotkanie1.html#połączenie-z-bazą-w-fastapi",
-    "title": "Lab, spotkanie 1: Od zera do pełnego CRUD",
-    "section": "2️⃣ Połączenie z bazą w FastAPI",
-    "text": "2️⃣ Połączenie z bazą w FastAPI\nimport sqlite3\nfrom contextlib import contextmanager\n\nDB_PATH = \"poligony.db\"\n\ndef init_db():\n    with sqlite3.connect(DB_PATH) as conn:\n        with open(\"schema.sql\") as f:\n            conn.executescript(f.read())\n\n@contextmanager\ndef get_db():\n    conn = sqlite3.connect(DB_PATH)\n    conn.row_factory = sqlite3.Row  # dostep do kolumn po nazwie, nie tylko indeksie\n    try:\n        yield conn\n    finally:\n        conn.close()\nconn.row_factory = sqlite3.Row sprawia, że wiersze zwrócone z zapytań zachowują się trochę jak słowniki (row[\"nazwa\"]), zamiast gołych krotek (row[1]) — dużo czytelniej przy konwersji na model Pydantic.\nWywołaj init_db() raz, przy starcie aplikacji:\n@app.on_event(\"startup\")\ndef startup():\n    init_db()",
-    "crumbs": [
-      "Laboratoria",
-      "Lab, spotkanie 1: Od zera do pełnego CRUD"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/spotkanie1.html#get-z-bazy-zamiast-z-listy",
-    "href": "cwiczenia/spotkanie1.html#get-z-bazy-zamiast-z-listy",
-    "title": "Lab, spotkanie 1: Od zera do pełnego CRUD",
-    "section": "3️⃣ GET z bazy zamiast z listy",
-    "text": "3️⃣ GET z bazy zamiast z listy\n@app.get(\"/poligony\", response_model=list[Poligon])\ndef lista_poligonow(typ: str | None = None):\n    with get_db() as conn:\n        if typ:\n            rows = conn.execute(\"SELECT * FROM poligony WHERE typ = ?\", (typ,)).fetchall()\n        else:\n            rows = conn.execute(\"SELECT * FROM poligony\").fetchall()\n        return [Poligon(**dict(row)) for row in rows]\n\n\n\n\n\n\nImportantZawsze parametryzowane zapytania — nigdy sklejanie stringów\n\n\n\n# NIGDY TAK:\nconn.execute(f\"SELECT * FROM poligony WHERE typ = '{typ}'\")\n\n# ZAWSZE TAK:\nconn.execute(\"SELECT * FROM poligony WHERE typ = ?\", (typ,))\nSklejanie zapytań SQL z danych wejściowych użytkownika to klasyczna podatność SQL injection — do tego wrócimy dokładniej na spotkaniu 2 (część II, bezpieczeństwo), ale zasada obowiązuje od pierwszego zapytania, które napiszecie.",
-    "crumbs": [
-      "Laboratoria",
-      "Lab, spotkanie 1: Od zera do pełnego CRUD"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/spotkanie1.html#post-zapis-do-bazy",
-    "href": "cwiczenia/spotkanie1.html#post-zapis-do-bazy",
-    "title": "Lab, spotkanie 1: Od zera do pełnego CRUD",
-    "section": "4️⃣ POST — zapis do bazy",
-    "text": "4️⃣ POST — zapis do bazy\n@app.post(\"/poligony\", response_model=Poligon, status_code=201)\ndef utworz_poligon(poligon: PoligonCreate):  # model bez pola id -- baza je nada\n    with get_db() as conn:\n        cursor = conn.execute(\n            \"INSERT INTO poligony (nazwa, lokalizacja, typ, dostepny) VALUES (?, ?, ?, ?)\",\n            (poligon.nazwa, poligon.lokalizacja, poligon.typ, int(poligon.dostepny)),\n        )\n        conn.commit()\n        nowy_id = cursor.lastrowid\n        return Poligon(id=nowy_id, **poligon.model_dump())\nZwróć uwagę na nowy model PoligonCreate (bez pola id) — klient tworzący zasób nie powinien sam nadawać mu ID, robi to baza (AUTOINCREMENT). To częsty wzorzec w projektowaniu API: osobny model dla “danych wejściowych przy tworzeniu” i osobny dla “pełnego zasobu zwracanego klientowi”.\nclass PoligonCreate(BaseModel):\n    nazwa: str\n    lokalizacja: str\n    typ: str\n    dostepny: bool = True\n\n✅ Mini-zadanie części III\n\nRozbuduj schemat o tabelę jednostki (już w schema.sql powyżej) i migruj endpointy /jednostki na bazę, analogicznie do /poligony.\nNapisz mały skrypt seed.py, wypełniający bazę kilkoma przykładowymi poligonami i jednostkami.\nSprawdź, że dane przetrwają restart serwera.",
-    "crumbs": [
-      "Laboratoria",
-      "Lab, spotkanie 1: Od zera do pełnego CRUD"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/spotkanie1.html#cel-3",
-    "href": "cwiczenia/spotkanie1.html#cel-3",
-    "title": "Lab, spotkanie 1: Od zera do pełnego CRUD",
-    "section": "🎯 Cel",
-    "text": "🎯 Cel\nDodać brakujące operacje (PUT, PATCH, DELETE) do zasobów z części III i wprowadzić trzeci, kluczowy zasób projektu: Rezerwacja — z pierwszą wersją sprawdzania konfliktu terminów, zapowiedzianego jeszcze na spotkaniu 1 (wykład).",
-    "crumbs": [
-      "Laboratoria",
-      "Lab, spotkanie 1: Od zera do pełnego CRUD"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/spotkanie1.html#put-zastąp-cały-zasób",
-    "href": "cwiczenia/spotkanie1.html#put-zastąp-cały-zasób",
-    "title": "Lab, spotkanie 1: Od zera do pełnego CRUD",
-    "section": "1️⃣ PUT — zastąp cały zasób",
-    "text": "1️⃣ PUT — zastąp cały zasób\n@app.put(\"/poligony/{poligon_id}\", response_model=Poligon)\ndef zaktualizuj_poligon(poligon_id: int, poligon: PoligonCreate):\n    with get_db() as conn:\n        cursor = conn.execute(\n            \"UPDATE poligony SET nazwa=?, lokalizacja=?, typ=?, dostepny=? WHERE id=?\",\n            (poligon.nazwa, poligon.lokalizacja, poligon.typ, int(poligon.dostepny), poligon_id),\n        )\n        conn.commit()\n        if cursor.rowcount == 0:\n            raise HTTPException(status_code=404, detail=\"Poligon nie znaleziony\")\n        return Poligon(id=poligon_id, **poligon.model_dump())\nZgodnie ze spotkaniem 1 (część II wykładu), PUT zastępuje cały zasób — klient musi przysłać wszystkie pola, nawet te, których nie zmienia. Stąd PATCH na częściowe aktualizacje:\nclass PoligonPatch(BaseModel):\n    nazwa: str | None = None\n    lokalizacja: str | None = None\n    typ: str | None = None\n    dostepny: bool | None = None\n\n@app.patch(\"/poligony/{poligon_id}\", response_model=Poligon)\ndef czesciowa_aktualizacja(poligon_id: int, zmiany: PoligonPatch):\n    pola_do_zmiany = zmiany.model_dump(exclude_unset=True)  # tylko pola faktycznie przeslane\n    if not pola_do_zmiany:\n        raise HTTPException(status_code=400, detail=\"Brak pol do aktualizacji\")\n    # zbuduj dynamiczne zapytanie UPDATE tylko dla przeslanych pol\n    ...\nexclude_unset=True to klucz do poprawnego PATCH-a: rozróżnia “klient nie przysłał tego pola” od “klient przysłał null” — bez tego nie dałoby się odróżnić “nie zmieniaj tego pola” od “ustaw je na puste”.",
-    "crumbs": [
-      "Laboratoria",
-      "Lab, spotkanie 1: Od zera do pełnego CRUD"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/spotkanie1.html#delete",
-    "href": "cwiczenia/spotkanie1.html#delete",
-    "title": "Lab, spotkanie 1: Od zera do pełnego CRUD",
-    "section": "2️⃣ DELETE",
-    "text": "2️⃣ DELETE\n@app.delete(\"/poligony/{poligon_id}\", status_code=204)\ndef usun_poligon(poligon_id: int):\n    with get_db() as conn:\n        cursor = conn.execute(\"DELETE FROM poligony WHERE id=?\", (poligon_id,))\n        conn.commit()\n        if cursor.rowcount == 0:\n            raise HTTPException(status_code=404, detail=\"Poligon nie znaleziony\")\n204 No Content — sukces, ale świadomie bez ciała odpowiedzi (nie ma czego zwracać, zasób już nie istnieje). FastAPI z status_code=204 automatycznie nie wysyła ciała, nawet jeśli funkcja by coś zwróciła.",
-    "crumbs": [
-      "Laboratoria",
-      "Lab, spotkanie 1: Od zera do pełnego CRUD"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/spotkanie1.html#zasób-rezerwacja-model-i-tabela",
-    "href": "cwiczenia/spotkanie1.html#zasób-rezerwacja-model-i-tabela",
-    "title": "Lab, spotkanie 1: Od zera do pełnego CRUD",
-    "section": "3️⃣ Zasób Rezerwacja — model i tabela",
-    "text": "3️⃣ Zasób Rezerwacja — model i tabela\nCREATE TABLE IF NOT EXISTS rezerwacje (\n    id INTEGER PRIMARY KEY AUTOINCREMENT,\n    poligon_id INTEGER NOT NULL REFERENCES poligony(id),\n    jednostka_id INTEGER NOT NULL REFERENCES jednostki(id),\n    data_od TEXT NOT NULL,   -- ISO 8601: \"2026-03-10T08:00:00\"\n    data_do TEXT NOT NULL,\n    status TEXT NOT NULL DEFAULT 'oczekujaca'  -- oczekujaca / zatwierdzona / odrzucona\n);\nclass RezerwacjaCreate(BaseModel):\n    poligon_id: int\n    jednostka_id: int\n    data_od: str\n    data_do: str",
-    "crumbs": [
-      "Laboratoria",
-      "Lab, spotkanie 1: Od zera do pełnego CRUD"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/spotkanie1.html#sprawdzanie-konfliktu-terminów-i-dlaczego-sprawdź-potem-zapisz-nie-wystarcza",
-    "href": "cwiczenia/spotkanie1.html#sprawdzanie-konfliktu-terminów-i-dlaczego-sprawdź-potem-zapisz-nie-wystarcza",
-    "title": "Lab, spotkanie 1: Od zera do pełnego CRUD",
-    "section": "4️⃣ Sprawdzanie konfliktu terminów — i dlaczego “sprawdź, potem zapisz” nie wystarcza",
-    "text": "4️⃣ Sprawdzanie konfliktu terminów — i dlaczego “sprawdź, potem zapisz” nie wystarcza\nTo dokładnie problem zapowiedziany na spotkaniu 1: dwie jednostki nie mogą zarezerwować tego samego poligonu w nakładających się terminach.\ndef sprawdz_konflikt(conn, poligon_id: int, data_od: str, data_do: str) -&gt; bool:\n    wiersze = conn.execute(\n        \"\"\"\n        SELECT id FROM rezerwacje\n        WHERE poligon_id = ?\n          AND status != 'odrzucona'\n          AND data_od &lt; ?\n          AND data_do &gt; ?\n        \"\"\",\n        (poligon_id, data_do, data_od),\n    ).fetchall()\n    return len(wiersze) &gt; 0\nWarunek data_od &lt; ? AND data_do &gt; ? to klasyczny test nakładania się dwóch przedziałów czasowych: dwa przedziały nie nakładają się tylko wtedy, gdy jeden kończy się przed rozpoczęciem drugiego. Zanegowanie tego warunku (logicznie — de Morgan) daje właśnie powyższe zapytanie. 409 Conflict (nie 400 Bad Request!) — dane są poprawnie sformułowane, problem to konflikt ze stanem systemu, dokładnie jak w części II z duplikatem ID.\n\n\n\n\n\n\nImportant“Sprawdź, potem zapisz” ma lukę czasową — i to jest WŁAŚNIE nasz problem z wykładu 1\n\n\n\n# WERSJA Z LUKA — NIE KOPIUJ:\n@app.post(\"/rezerwacje\", status_code=201)\ndef utworz_rezerwacje(rez: RezerwacjaCreate):\n    with get_db() as conn:\n        if sprawdz_konflikt(conn, rez.poligon_id, rez.data_od, rez.data_do):\n            raise HTTPException(status_code=409, detail=\"Konflikt terminow\")\n        # &lt;-- MIEDZY TA LINIA A NASTEPNA moze wcisnac sie DRUGIE zadanie\n        conn.execute(\"INSERT INTO rezerwacje (...) VALUES (...)\", (...))\n        conn.commit()\nSELECT (sprawdzanie konfliktu) nie blokuje zapisu innym połączeniom — to zwykły odczyt. Jeśli dwa żądania POST przyjdą prawie jednocześnie, oba mogą wykonać sprawdz_konflikt zanim którekolwiek zdąży wstawić swój wiersz — oba widzą “brak konfliktu”, oba wstawiają, i mamy dokładnie to, czemu miał zapobiegać ten kod: podwójną rezerwację. To nie hipotetyczne ćwiczenie akademickie — to jest dosłownie problem zapowiedziany w pierwszym wykładzie, teraz w konkretnej, kodowej postaci.\n\n\n\n🔹 Naprawa: BEGIN IMMEDIATE — zablokuj zapis, zanim sprawdzisz\nimport sqlite3\n\n@app.post(\"/rezerwacje\", status_code=201)\ndef utworz_rezerwacje(rez: RezerwacjaCreate):\n    with get_db() as conn:\n        conn.execute(\"BEGIN IMMEDIATE\")  # zajmij blokade zapisu NATYCHMIAST, przed SELECT-em\n        try:\n            if sprawdz_konflikt(conn, rez.poligon_id, rez.data_od, rez.data_do):\n                conn.rollback()\n                raise HTTPException(status_code=409, detail=\"Konflikt terminow na tym poligonie\")\n            cursor = conn.execute(\n                \"INSERT INTO rezerwacje (poligon_id, jednostka_id, data_od, data_do) VALUES (?, ?, ?, ?)\",\n                (rez.poligon_id, rez.jednostka_id, rez.data_od, rez.data_do),\n            )\n            conn.commit()\n            return {\"id\": cursor.lastrowid, **rez.model_dump(), \"status\": \"oczekujaca\"}\n        except sqlite3.OperationalError:\n            conn.rollback()\n            raise HTTPException(status_code=503, detail=\"Baza chwilowo zajeta, sprobuj ponownie\")\nBEGIN IMMEDIATE każe SQLite zająć blokadę zapisu od razu, zanim wykonamy choćby jeden SELECT — drugie żądanie, próbujące własnego BEGIN IMMEDIATE w tym samym momencie, zostanie zablokowane (albo dostanie OperationalError: database is locked, jeśli przekroczy limit czasu), dopóki pierwsza transakcja się nie zakończy (commit albo rollback). Efekt: dwa równoczesne żądania na ten sam poligon są teraz serializowane — drugie zobaczy w swoim sprawdz_konflikt rezerwację, którą pierwsze zdążyło już zacommitować, zamiast pustego wyniku.\n\n\n\n\n\n\nNoteTo rozwiązuje problem w skali jednego procesu/pliku SQLite — nie w skali wielu serwerów\n\n\n\nJak zobaczycie na spotkaniu 3 (skalowanie), jeśli kiedyś ta aplikacja miałaby działać na wielu serwerach ze wspólną bazą sieciową (PostgreSQL), blokada BEGIN IMMEDIATE przestałaby wystarczać — trzeba by sięgnąć po blokady na poziomie bazy sieciowej (SELECT ... FOR UPDATE) albo ograniczenie UNIQUE na poziomie schematu. Na razie, z jednym plikiem SQLite i jednym procesem serwera, BEGIN IMMEDIATE w pełni rozwiązuje problem.",
-    "crumbs": [
-      "Laboratoria",
-      "Lab, spotkanie 1: Od zera do pełnego CRUD"
-    ]
-  },
-  {
-    "objectID": "cwiczenia/spotkanie1.html#zadanie-na-koniec-spotkania",
-    "href": "cwiczenia/spotkanie1.html#zadanie-na-koniec-spotkania",
-    "title": "Lab, spotkanie 1: Od zera do pełnego CRUD",
-    "section": "✅ Zadanie na koniec spotkania",
-    "text": "✅ Zadanie na koniec spotkania\n\nDokończ PATCH /poligony/{id} (dynamiczne zapytanie UPDATE tylko dla przesłanych pól).\nDodaj GET /rezerwacje z filtrowaniem po poligon_id i status (query params).\nNapisz test ręczny w /docs: spróbuj utworzyć dwie rezerwacje na ten sam poligon w nakładających się terminach — sprawdź, że druga dostaje 409.\nNapisz też test negatywny: dwie rezerwacje na ten sam poligon w terminach, które się nie nakładają — obie powinny się udać.\nZacommituj zmiany — dodaj poligony.db do .gitignore.\n\nDo oddania: link do repozytorium / commit hash — prowadzący sprawdza na następnym spotkaniu.",
-    "crumbs": [
-      "Laboratoria",
-      "Lab, spotkanie 1: Od zera do pełnego CRUD"
     ]
   },
   {
