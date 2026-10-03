@@ -30,8 +30,9 @@ materiału: projektowanie API i bezpieczeństwo oraz skalowalność i wdrażanie
 Łącznie: 8 godzin dydaktycznych. Godziny rozpoczęcia i sale sprawdźcie w planie
 zajęć swojej grupy.
 
-Obecnie udostępniony jest tylko wykład 1 i krótkie zadania do omówienia
-3 października. Laboratorium „Od zera do CRUD” odbędzie się 8 listopada;
+Udostępnione są [wykład 1](lectures/spotkanie1.qmd)
+i [wykład 2](lectures/spotkanie2.qmd) oraz krótkie zadania z pierwszego spotkania.
+Laboratorium „Od zera do CRUD” odbędzie się 8 listopada;
 jego materiały pojawią się przed tym terminem.
 
 ## Scenariusze zajęć

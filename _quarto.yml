@@ -15,7 +15,7 @@ project:
     - "*.qmd"
     - "lectures/*.qmd"
     - "cwiczenia/*.qmd"
-    - "!lectures/spotkanie2.qmd"
+    # - "!lectures/spotkanie2.qmd"
     - "!lectures/spotkanie3.qmd"
     - "!cwiczenia/spotkanie1.qmd"
     - "!cwiczenia/spotkanie2.qmd"
@@ -32,7 +32,7 @@ website:
       - section: "Wykłady"
         contents:
           - lectures/spotkanie1.qmd
-          # - lectures/spotkanie2.qmd
+          - lectures/spotkanie2.qmd
           # - lectures/spotkanie3.qmd
       # - section: "Laboratoria"
       #   contents:

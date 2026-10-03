@@ -35,46 +35,6 @@
     "text": "Wykład 1 — Co się dzieje po kliknięciu „Rezerwuj”?\nMateriał do zajęć\n\nRozrysuj drogę od kliknięcia „Rezerwuj” do zapisu i odpowiedzi. Nazwij odpowiedzialność przeglądarki, API i bazy.\nZaproponuj żądania odczytu i utworzenia rezerwacji. Co możesz stwierdzić, gdy odpowiedź po zapisie nie dotarła?\n\nMateriały i zadania laboratoryjne zostaną udostępnione przed 8 listopada 2026 (4 × 45 min). Na wykładzie 3 października nie realizujecie laboratorium „Od zera do CRUD”."
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Informacje ogólne",
-    "section": "",
-    "text": "Kod:\nSemestr: zimowy",
-    "crumbs": [
-      "Informacje ogólne"
-    ]
-  },
-  {
-    "objectID": "index.html#projektowanie-aplikacji-sieciowych",
-    "href": "index.html#projektowanie-aplikacji-sieciowych",
-    "title": "Informacje ogólne",
-    "section": "",
-    "text": "Kod:\nSemestr: zimowy",
-    "crumbs": [
-      "Informacje ogólne"
-    ]
-  },
-  {
-    "objectID": "index.html#kalendarz-semestr-zimowy-20262027",
-    "href": "index.html#kalendarz-semestr-zimowy-20262027",
-    "title": "Informacje ogólne",
-    "section": "Kalendarz — semestr zimowy 2026/2027",
-    "text": "Kalendarz — semestr zimowy 2026/2027\n\nWykłady\n\n\n\nSpotkanie\nTermin\nWymiar\n\n\n\n\n1\n3 października 2026\n2 × 45 min\n\n\n2\n24 października 2026\n4 × 45 min\n\n\n\nŁącznie: 6 godzin dydaktycznych. Drugie spotkanie obejmie dwa kolejne moduły materiału: projektowanie API i bezpieczeństwo oraz skalowalność i wdrażanie.\n\n\nLaboratoria\n\n\n\nSpotkanie\nTermin\nWymiar\n\n\n\n\n1\n8 listopada 2026\n4 × 45 min\n\n\n2\n13 grudnia 2026\n4 × 45 min\n\n\n\nŁącznie: 8 godzin dydaktycznych. Godziny rozpoczęcia i sale sprawdźcie w planie zajęć swojej grupy.\nObecnie udostępniony jest tylko wykład 1 i krótkie zadania do omówienia 3 października. Laboratorium „Od zera do CRUD” odbędzie się 8 listopada; jego materiały pojawią się przed tym terminem.",
-    "crumbs": [
-      "Informacje ogólne"
-    ]
-  },
-  {
-    "objectID": "index.html#scenariusze-zajęć",
-    "href": "index.html#scenariusze-zajęć",
-    "title": "Informacje ogólne",
-    "section": "Scenariusze zajęć",
-    "text": "Scenariusze zajęć\nOtwórz zadania i opis projektu.",
-    "crumbs": [
-      "Informacje ogólne"
-    ]
-  },
-  {
     "objectID": "lectures/spotkanie1.html",
     "href": "lectures/spotkanie1.html",
     "title": "Spotkanie 1: Architektura i protokół HTTP",
@@ -270,6 +230,233 @@
     "crumbs": [
       "Wykłady",
       "Spotkanie 1: Architektura i protokół HTTP"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Informacje ogólne",
+    "section": "",
+    "text": "Kod:\nSemestr: zimowy",
+    "crumbs": [
+      "Informacje ogólne"
+    ]
+  },
+  {
+    "objectID": "index.html#projektowanie-aplikacji-sieciowych",
+    "href": "index.html#projektowanie-aplikacji-sieciowych",
+    "title": "Informacje ogólne",
+    "section": "",
+    "text": "Kod:\nSemestr: zimowy",
+    "crumbs": [
+      "Informacje ogólne"
+    ]
+  },
+  {
+    "objectID": "index.html#kalendarz-semestr-zimowy-20262027",
+    "href": "index.html#kalendarz-semestr-zimowy-20262027",
+    "title": "Informacje ogólne",
+    "section": "Kalendarz — semestr zimowy 2026/2027",
+    "text": "Kalendarz — semestr zimowy 2026/2027\n\nWykłady\n\n\n\nSpotkanie\nTermin\nWymiar\n\n\n\n\n1\n3 października 2026\n2 × 45 min\n\n\n2\n24 października 2026\n4 × 45 min\n\n\n\nŁącznie: 6 godzin dydaktycznych. Drugie spotkanie obejmie dwa kolejne moduły materiału: projektowanie API i bezpieczeństwo oraz skalowalność i wdrażanie.\n\n\nLaboratoria\n\n\n\nSpotkanie\nTermin\nWymiar\n\n\n\n\n1\n8 listopada 2026\n4 × 45 min\n\n\n2\n13 grudnia 2026\n4 × 45 min\n\n\n\nŁącznie: 8 godzin dydaktycznych. Godziny rozpoczęcia i sale sprawdźcie w planie zajęć swojej grupy.\nUdostępnione są wykład 1 i wykład 2 oraz krótkie zadania z pierwszego spotkania. Laboratorium „Od zera do CRUD” odbędzie się 8 listopada; jego materiały pojawią się przed tym terminem.",
+    "crumbs": [
+      "Informacje ogólne"
+    ]
+  },
+  {
+    "objectID": "index.html#scenariusze-zajęć",
+    "href": "index.html#scenariusze-zajęć",
+    "title": "Informacje ogólne",
+    "section": "Scenariusze zajęć",
+    "text": "Scenariusze zajęć\nOtwórz zadania i opis projektu.",
+    "crumbs": [
+      "Informacje ogólne"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie2.html#cele",
+    "href": "lectures/spotkanie2.html#cele",
+    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
+    "section": "🎯 Cele",
+    "text": "🎯 Cele\nNauczysz się projektować adresy URL i strukturę odpowiedzi API tak, żeby były przewidywalne i łatwe w użyciu — oraz poznasz, jak FastAPI generuje dokumentację OpenAPI automatycznie z Waszego kodu.",
+    "crumbs": [
+      "Wykłady",
+      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie2.html#zasoby-nie-czynności",
+    "href": "lectures/spotkanie2.html#zasoby-nie-czynności",
+    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
+    "section": "1️⃣ Zasoby, nie czynności",
+    "text": "1️⃣ Zasoby, nie czynności\nAdres URL w REST opisuje rzecz (zasób), nie akcję — akcję wyraża metoda HTTP (spotkanie 1, część II). Dobra konwencja nazewnicza:\n\n\n\nŹle\nDobrze\n\n\n\n\n/getPoligony\nGET /poligony\n\n\n/utworzRezerwacje\nPOST /rezerwacje\n\n\n/poligon/usun/5\nDELETE /poligony/5\n\n\n\nZasady:\n\nRzeczowniki, nie czasowniki w ścieżce.\nLiczba mnoga dla kolekcji: /poligony, nie /poligon.\nMałe litery, myślniki zamiast podkreślników w wieloczłonowych nazwach.",
+    "crumbs": [
+      "Wykłady",
+      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie2.html#zasoby-zagnieżdżone",
+    "href": "lectures/spotkanie2.html#zasoby-zagnieżdżone",
+    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
+    "section": "2️⃣ Zasoby zagnieżdżone",
+    "text": "2️⃣ Zasoby zagnieżdżone\nKiedy jeden zasób “należy” logicznie do drugiego:\nGET /poligony/5/rezerwacje        -- rezerwacje na poligonie 5\nPOST /poligony/5/rezerwacje       -- nowa rezerwacja na poligonie 5\nGET /jednostki/3/rezerwacje       -- rezerwacje jednostki 3\n\n⚠️ Nie zagnieżdżaj głębiej niż 2 poziomy (/a/1/b/2/c/3 jest już nieczytelne) — jeśli potrzebujesz głębszego zagnieżdżenia, rozważ osobny, płaski endpoint z filtrowaniem przez query params zamiast ścieżki.",
+    "crumbs": [
+      "Wykłady",
+      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie2.html#filtrowanie-sortowanie-paginacja-przez-query-params",
+    "href": "lectures/spotkanie2.html#filtrowanie-sortowanie-paginacja-przez-query-params",
+    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
+    "section": "3️⃣ Filtrowanie, sortowanie, paginacja — przez query params",
+    "text": "3️⃣ Filtrowanie, sortowanie, paginacja — przez query params\nGET /rezerwacje?status=zatwierdzona          -- filtrowanie\nGET /rezerwacje?sortuj=data&kierunek=desc    -- sortowanie\nGET /rezerwacje?strona=2&na_strone=20         -- paginacja\nQuery params (po ?) nadają się do opcjonalnych modyfikatorów zapytania — ścieżka (/rezerwacje) zostaje ta sama niezależnie od tego, jak filtrujesz czy sortujesz wynik.\n\n\n\n\n\n\nNoteDlaczego paginacja jest ważna, nawet w małym projekcie?\n\n\n\nGET /rezerwacje bez paginacji, gdy tabela urośnie do 100 000 wierszy, zwróci gigantyczną odpowiedź, która obciąży i serwer, i klienta. Dobra praktyka: zawsze projektuj endpointy listujące z myślą o paginacji, nawet jeśli na start danych jest mało.",
+    "crumbs": [
+      "Wykłady",
+      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie2.html#wersjonowanie-api",
+    "href": "lectures/spotkanie2.html#wersjonowanie-api",
+    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
+    "section": "4️⃣ Wersjonowanie API",
+    "text": "4️⃣ Wersjonowanie API\nKiedy zmieniasz kształt API w sposób, który złamałby istniejących klientów (np. zmieniasz nazwę pola), potrzebujesz wersjonowania:\n/api/v1/poligony\n/api/v2/poligony\nAlternatywa: wersjonowanie przez nagłówek (Accept: application/vnd.api.v2+json) — rzadziej spotykane w praktyce, ale czystsze koncepcyjnie. Nasz projekt jest na razie za mały, żeby potrzebować którejkolwiek z tych opcji naprawdę — zapamiętajcie obie jako narzędzia na później, gdy API będzie miało zewnętrznych klientów.",
+    "crumbs": [
+      "Wykłady",
+      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie2.html#openapi-dokumentacja-blisko-kodu",
+    "href": "lectures/spotkanie2.html#openapi-dokumentacja-blisko-kodu",
+    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
+    "section": "5️⃣ OpenAPI — dokumentacja blisko kodu",
+    "text": "5️⃣ OpenAPI — dokumentacja blisko kodu\nPamiętacie /docs z pierwszego laboratorium? To nie przypadek, że działa automatycznie — FastAPI generuje specyfikację OpenAPI (JSON opisujący każdy endpoint, jego parametry, kształt odpowiedzi) bezpośrednio z Waszego kodu (adnotacji typów, modeli Pydantic). Dostępna jest pod /openapi.json.\nDlaczego to pomaga: dokumentacja pisana ręcznie (osobny plik Word/Markdown) zawsze z czasem rozjeżdża się z rzeczywistym kodem — ktoś zmienia endpoint i zapomina zaktualizować opis. Dokumentacja generowana z kodu jest bliżej prawdy, bo typy i nazwy parametrów nie mogą się rozjechać — to dosłownie ta sama adnotacja.\n\n\n\n\n\n\nImportantTo nie jest automat, o którym można zapomnieć\n\n\n\n“Blisko kodu” nie znaczy “całkowicie odporne na błędy”. FastAPI wie o kodach błędów, które zwraca domyślnie (np. 422 z Pydantic) — ale własny HTTPException(404, ...) w ciele funkcji nie pojawi się w /docs, dopóki nie zadeklarujecie go jawnie w responses (przykład niżej). Zmienisz logikę błędu w kodzie i zapomnisz zaktualizować responses — i dokumentacja jednak się rozjedzie. “Generowane z kodu” zmniejsza ryzyko, nie eliminuje go.\n\n\n@app.get(\n    \"/poligony/{poligon_id}\",\n    response_model=Poligon,\n    summary=\"Pobierz jeden poligon po ID\",\n    description=\"Zwraca 404, jesli poligon o podanym ID nie istnieje.\",\n)\ndef pobierz_poligon(poligon_id: int):\n    ...\nParametry summary/description trafiają bezpośrednio do /docs — dobra dokumentacja API to część kodu, nie osobny dokument.",
+    "crumbs": [
+      "Wykłady",
+      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie2.html#spójna-struktura-błędów",
+    "href": "lectures/spotkanie2.html#spójna-struktura-błędów",
+    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
+    "section": "6️⃣ Spójna struktura błędów",
+    "text": "6️⃣ Spójna struktura błędów\nZamiast każdy endpoint zwracający błędy w innym formacie, warto ustalić jeden wzorzec:\n{\n  \"detail\": \"Poligon nie znaleziony\"\n}\nFastAPI robi to domyślnie dla HTTPException (dokładnie ten kształt, który widzieliście już w laboratoriach) — trzymajcie się tego wzorca konsekwentnie we wszystkich endpointach.",
+    "crumbs": [
+      "Wykłady",
+      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie2.html#podsumowanie-części-i",
+    "href": "lectures/spotkanie2.html#podsumowanie-części-i",
+    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
+    "section": "🧾 Podsumowanie części I",
+    "text": "🧾 Podsumowanie części I\n\nURL opisuje zasób (rzeczownik, liczba mnoga), metoda HTTP opisuje akcję.\nZagnieżdżaj zasoby maksymalnie na 2 poziomy; filtruj/sortuj/paginuj przez query params.\nWersjonuj API (prefiks ścieżki albo nagłówek), gdy zmiana złamałaby istniejących klientów.\nOpenAPI/Swagger generowane z kodu jest bliżej prawdy niż ręcznie pisana dokumentacja — ale własne kody błędów wciąż trzeba zadeklarować jawnie (responses).",
+    "crumbs": [
+      "Wykłady",
+      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie2.html#cele-1",
+    "href": "lectures/spotkanie2.html#cele-1",
+    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
+    "section": "🎯 Cele",
+    "text": "🎯 Cele\nPoznasz różnicę między uwierzytelnianiem a autoryzacją, zrozumiesz jak działają tokeny JWT, oraz poznasz najważniejsze podatności z listy OWASP Top 10 i jak się przed nimi bronić — wiedzę, którą zastosujesz praktycznie w kolejnych laboratoriach.",
+    "crumbs": [
+      "Wykłady",
+      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie2.html#uwierzytelnianie-vs-autoryzacja",
+    "href": "lectures/spotkanie2.html#uwierzytelnianie-vs-autoryzacja",
+    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
+    "section": "1️⃣ Uwierzytelnianie vs autoryzacja",
+    "text": "1️⃣ Uwierzytelnianie vs autoryzacja\nTo dwa różne pytania, często mylone:\n\n\n\n\n\n\n\n\nPytanie\nTermin\nPrzykład\n\n\n\n\nKim jesteś?\nUwierzytelnianie (authentication)\nlogin + hasło, token\n\n\nCo wolno Ci zrobić?\nAutoryzacja (authorization)\nplanista może zatwierdzać rezerwacje, żołnierz — nie\n\n\n\nSystem może wiedzieć, kim jesteś (uwierzytelniony), ale mimo to odmówić Ci operacji (brak autoryzacji) — to dokładnie różnica między 401 a 403 ze spotkania 1.",
+    "crumbs": [
+      "Wykłady",
+      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie2.html#jak-przechowywać-hasła-nigdy-jawnym-tekstem",
+    "href": "lectures/spotkanie2.html#jak-przechowywać-hasła-nigdy-jawnym-tekstem",
+    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
+    "section": "2️⃣ Jak przechowywać hasła — nigdy jawnym tekstem",
+    "text": "2️⃣ Jak przechowywać hasła — nigdy jawnym tekstem\n# NIGDY:\nif podane_haslo == uzytkownik.haslo:  # haslo w bazie jako czysty tekst\n\n# ZAWSZE: hashowanie z \"solą\"\nimport bcrypt\n\nhash_hasla = bcrypt.hashpw(haslo.encode(), bcrypt.gensalt())\n# ... zapisz hash_hasla w bazie, NIGDY samego hasla\n\n# przy logowaniu:\nbcrypt.checkpw(podane_haslo.encode(), hash_hasla)\nbcrypt (i podobne: argon2, scrypt) to funkcje jednokierunkowe — z hasha nie da się odtworzyć hasła, a każde wywołanie z “solą” (losowym dodatkiem) daje inny wynik nawet dla tego samego hasła, co chroni przed atakami tęczowych tablic (rainbow tables). Praktykę tę zastosujecie w kolejnych laboratoriach.",
+    "crumbs": [
+      "Wykłady",
+      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie2.html#sesje-vs-tokeny-dwa-modele-uwierzytelniania",
+    "href": "lectures/spotkanie2.html#sesje-vs-tokeny-dwa-modele-uwierzytelniania",
+    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
+    "section": "3️⃣ Sesje vs tokeny — dwa modele uwierzytelniania",
+    "text": "3️⃣ Sesje vs tokeny — dwa modele uwierzytelniania\n\n\n\n\n\n\n\n\n\nSesje (cookie-based)\nTokeny (JWT)\n\n\n\n\nGdzie żyje stan\npo stronie serwera (baza sesji)\nw samym tokenie, po stronie klienta\n\n\nSkalowanie na wiele serwerów\nwymaga współdzielonej bazy sesji\ntrywialne — każdy serwer sam zweryfikuje token\n\n\nUnieważnienie przed wygaśnięciem\nłatwe (usuń z bazy)\ntrudniejsze (token jest ważny, dopóki nie wygaśnie)\n\n\n\nW tym kursie używamy JWT (JSON Web Token) — pasuje do architektury bezstanowej ze spotkania 1.",
+    "crumbs": [
+      "Wykłady",
+      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie2.html#anatomia-jwt-wariantu-którego-używamy",
+    "href": "lectures/spotkanie2.html#anatomia-jwt-wariantu-którego-używamy",
+    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
+    "section": "4️⃣ Anatomia JWT (wariantu, którego używamy)",
+    "text": "4️⃣ Anatomia JWT (wariantu, którego używamy)\nStandard JWT (RFC 7519) dopuszcza dwa warianty: JWS (JSON Web Signature — podpisany, ale czytelny) i JWE (JSON Web Encryption — faktycznie zaszyfrowany). W tym kursie, jak w zdecydowanej większości praktycznych API, używamy JWS — poniższy opis dotyczy tego wariantu, nie każdego możliwego tokenu JWT.\nToken JWS to trzy części oddzielone kropkami: header.payload.signature\neyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5rb3dhbHNraSIsInJvbGEiOiJkb3dvZGNhIn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c\n\nHeader — jaki algorytm podpisu (np. HS256).\nPayload — dane (np. {\"sub\": \"jankowalski\", \"rola\": \"dowodca\", \"exp\": 1735689600}) — czytelne dla każdego (to tylko Base64, nie szyfrowanie!), więc nigdy nie wkładajcie tam haseł czy innych sekretów.\nSignature — podpis kryptograficzny, weryfikowany kluczem znanym tylko serwerowi — to on gwarantuje, że nikt nie sfałszował payloadu.\n\n\n\n\n\n\n\nImportantNasz JWT (JWS) jest podpisany, nie zaszyfrowany\n\n\n\nKażdy, kto przechwyci token, może odczytać jego zawartość (Base64 to nie szyfrowanie) — nie może jej jednak zmienić niezauważenie, bo podpis by się nie zgadzał. Wniosek: JWS chroni przed fałszowaniem danych, nie przed ich odczytaniem — transport tokenu musi iść przez HTTPS, żeby nikt po drodze go nie podsłuchał. (JWE rozwiązałby też problem odczytu, kosztem większej złożoności — poza zakresem tego kursu.)",
+    "crumbs": [
+      "Wykłady",
+      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie2.html#owasp-top-10-trzy-podatności-które-napotkacie-w-laboratoriach",
+    "href": "lectures/spotkanie2.html#owasp-top-10-trzy-podatności-które-napotkacie-w-laboratoriach",
+    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
+    "section": "5️⃣ OWASP Top 10 — trzy podatności, które napotkacie w laboratoriach",
+    "text": "5️⃣ OWASP Top 10 — trzy podatności, które napotkacie w laboratoriach\n\nSQL Injection\n# PODATNE:\nconn.execute(f\"SELECT * FROM uzytkownicy WHERE login = '{login}'\")\n# atakujacy wpisuje: login = \"' OR '1'='1\"\nObrona: zawsze parametryzowane zapytania (widzieliście to już przy bazie danych) — conn.execute(\"... WHERE login = ?\", (login,)).\n\n\nXSS (Cross-Site Scripting)\nAtakujący wstrzykuje złośliwy JavaScript do danych, które potem są wyświetlane innemu użytkownikowi bez odpowiedniego oczyszczenia (np. komentarz zawierający &lt;script&gt;...&lt;/script&gt;, wyświetlony bez escapowania w przeglądarce ofiary).\nObrona: nowoczesne frameworki frontendowe (React i podobne) domyślnie escapują dane przy renderowaniu — problem pojawia się głównie, gdy ktoś świadomie to wyłączy (dangerouslySetInnerHTML i podobne).\n\n\nCSRF (Cross-Site Request Forgery)\nAtakujący nakłania przeglądarkę ofiary (zalogowanej w Waszej aplikacji) do wysłania żądania bez jej wiedzy (np. przez ukryty formularz na złośliwej stronie). Ponieważ przeglądarka automatycznie dołącza cookies do żądań, serwer “widzi” żądanie jako uwierzytelnione.\nObrona: API oparte o JWT w nagłówku Authorization (nie w cookies) jest z natury odporne na klasyczny CSRF — atakująca strona nie ma dostępu do tokenu przechowywanego przez Waszą aplikację (np. w pamięci JS), więc nie może go dołączyć do sfałszowanego żądania.",
+    "crumbs": [
+      "Wykłady",
+      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie2.html#httpstls-dlaczego-zawsze",
+    "href": "lectures/spotkanie2.html#httpstls-dlaczego-zawsze",
+    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
+    "section": "6️⃣ HTTPS/TLS — dlaczego zawsze",
+    "text": "6️⃣ HTTPS/TLS — dlaczego zawsze\nBez TLS każdy w tej samej sieci (Wi-Fi w kawiarni, router po drodze) może odczytać cały ruch — łącznie z tokenami JWT i hasłami przesyłanymi przy logowaniu. TLS szyfruje transport między klientem a serwerem — to warunek konieczny, nie opcjonalny dodatek, dla każdej aplikacji przyjmującej dane logowania.",
+    "crumbs": [
+      "Wykłady",
+      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie2.html#podsumowanie-części-ii",
+    "href": "lectures/spotkanie2.html#podsumowanie-części-ii",
+    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
+    "section": "🧾 Podsumowanie części II",
+    "text": "🧾 Podsumowanie części II\n\nUwierzytelnianie = kim jesteś; autoryzacja = co wolno Ci zrobić — to dwa osobne mechanizmy.\nHasła zawsze hashowane (bcrypt/argon2), nigdy przechowywane jawnym tekstem.\nNasz wariant JWT (JWS) jest podpisany (integralność), nie zaszyfrowany (poufność) — payload jest czytelny dla każdego; JWE istnieje, ale to poza zakresem kursu.\nSQL injection, XSS, CSRF — trzy klasyczne podatności; parametryzowane zapytania, escapowanie i tokeny w nagłówku to podstawowa obrona.",
+    "crumbs": [
+      "Wykłady",
+      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie2.html#źródła",
+    "href": "lectures/spotkanie2.html#źródła",
+    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
+    "section": "📚 Źródła",
+    "text": "📚 Źródła\n\nDokumentacja FastAPI — Path Operations, OpenAPI, Security\nM. Masse, REST API Design Rulebook\nOWASP Top 10 (owasp.org)\nRFC 7519 — JSON Web Token (JWT)",
+    "crumbs": [
+      "Wykłady",
+      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
     ]
   }
 ]
