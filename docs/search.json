@@ -4,14 +4,14 @@
     "href": "scenariusze.html",
     "title": "Rezerwacje obiektów — zadania",
     "section": "",
-    "text": "Ta karta obejmuje wyłącznie wykład 3 października 2026 (2 × 45 min). Analizujecie komunikację klient–serwer i projekt rezerwacji. Nie musicie jeszcze uruchamiać środowiska ani samodzielnie programować aplikacji."
+    "text": "Karta obejmuje wykład 1 z 3 października oraz wspólny blok wykładów 2 i 3 z 24 października 2026 r. (4 × 45 min). Przypadki służą analizie żądań, uprawnień i zachowania systemu. Nie wymagają ukończonej implementacji laboratoryjnej."
   },
   {
-    "objectID": "scenariusze.html#zakres-pierwszego-spotkania",
-    "href": "scenariusze.html#zakres-pierwszego-spotkania",
+    "objectID": "scenariusze.html#zakres-spotkań-wykładowych",
+    "href": "scenariusze.html#zakres-spotkań-wykładowych",
     "title": "Rezerwacje obiektów — zadania",
     "section": "",
-    "text": "Ta karta obejmuje wyłącznie wykład 3 października 2026 (2 × 45 min). Analizujecie komunikację klient–serwer i projekt rezerwacji. Nie musicie jeszcze uruchamiać środowiska ani samodzielnie programować aplikacji."
+    "text": "Karta obejmuje wykład 1 z 3 października oraz wspólny blok wykładów 2 i 3 z 24 października 2026 r. (4 × 45 min). Przypadki służą analizie żądań, uprawnień i zachowania systemu. Nie wymagają ukończonej implementacji laboratoryjnej."
   },
   {
     "objectID": "scenariusze.html#wasze-zadanie",
@@ -33,6 +33,202 @@
     "title": "Rezerwacje obiektów — zadania",
     "section": "Wykład 1 — Co się dzieje po kliknięciu „Rezerwuj”?",
     "text": "Wykład 1 — Co się dzieje po kliknięciu „Rezerwuj”?\nMateriał do zajęć\n\nRozrysuj drogę od kliknięcia „Rezerwuj” do zapisu i odpowiedzi. Nazwij odpowiedzialność przeglądarki, API i bazy.\nZaproponuj żądania odczytu i utworzenia rezerwacji. Co możesz stwierdzić, gdy odpowiedź po zapisie nie dotarła?\n\nMateriały i zadania laboratoryjne zostaną udostępnione przed 8 listopada 2026 (4 × 45 min). Na wykładzie 3 października nie realizujecie laboratorium „Od zera do CRUD”."
+  },
+  {
+    "objectID": "scenariusze.html#wyklad-2",
+    "href": "scenariusze.html#wyklad-2",
+    "title": "Rezerwacje obiektów — zadania",
+    "section": "Wykład 2 — Kto może zmienić rezerwację?",
+    "text": "Wykład 2 — Kto może zmienić rezerwację?\nAPI i bezpieczeństwo — pierwsza część 24 października.\n\nPrzy rezerwacji R1 08:00–10:00 porównaj próby 09:00–11:00 oraz 10:00–11:00 dla P1. Podaj warunek kolizji i oczekiwany kod odpowiedzi. Następnie wyjaśnij odmowę rezerwacji P2, mimo braku kolizji czasowej.\nW projektowanym wariancie z kontami użytkownik Alfy wskazuje rezerwację Bravo. Określ, jakie dane powinien sprawdzić serwer. Wyjaśnij, dlaczego ukryty przycisk i pole jednostka_id wysłane przez klienta nie wystarczają.\n\nPierwsze zadanie odnosi się do działającej walidacji demonstratora. Drugie opisuje rozszerzenie wymagające kont i kontroli uprawnień; aplikacja pierwszego etapu nie ma jeszcze tych mechanizmów."
+  },
+  {
+    "objectID": "scenariusze.html#wyklad-3",
+    "href": "scenariusze.html#wyklad-3",
+    "title": "Rezerwacje obiektów — zadania",
+    "section": "Wykład 3 — Czy usługa zachowuje poprawny stan?",
+    "text": "Wykład 3 — Czy usługa zachowuje poprawny stan?\nWspółbieżność i wdrażanie — druga część 24 października.\n\nDwa żądania rezerwują P1 na ten sam wolny termin. Zapisz przeplot operacji, w którym osobne sprawdzenie i zapis dopuszczają konflikt. Określ warunek poprawnego stanu końcowego oraz rolę transakcji rozpoczynanej przed odczytem.\nPo odtworzeniu kontenera lista rezerwacji jest pusta. Zaproponuj sprawdzenia ścieżki pliku i montowania danych. Następnie wyjaśnij, dlaczego dwie instancje z niezależnymi kopiami SQLite nie tworzą wspólnej ewidencji.\n\nUzasadnienie powinno odwoływać się do stanu danych i kolejności operacji, a nie tylko do nazw technologii. Szczegółowe zadania implementacyjne będą udostępniane wraz z laboratoriami 8 listopada i 13 grudnia."
+  },
+  {
+    "objectID": "lectures/spotkanie2.html",
+    "href": "lectures/spotkanie2.html",
+    "title": "Wykład 2: Projektowanie API i bezpieczeństwo",
+    "section": "",
+    "text": "Termin: sobota, 24 października 2026 r. — pierwsza część wspólnego bloku 4 × 45 minut.\nWykłady 2 i 3 odbywają się podczas jednego spotkania. Każdy moduł obejmuje 2 × 45 minut. Materiał na stronie rozwija przykłady omawiane na wykładzie; samodzielna praca nad implementacją będzie realizowana na laboratoriach.",
+    "crumbs": [
+      "Wykłady",
+      "Wykład 2: Projektowanie API i bezpieczeństwo"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie2.html#test-z-wykładu-1",
+    "href": "lectures/spotkanie2.html#test-z-wykładu-1",
+    "title": "Wykład 2: Projektowanie API i bezpieczeństwo",
+    "section": "Test z wykładu 1",
+    "text": "Test z wykładu 1",
+    "crumbs": [
+      "Wykłady",
+      "Wykład 2: Projektowanie API i bezpieczeństwo"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie2.html#od-działającego-żądania-do-kontraktu-api",
+    "href": "lectures/spotkanie2.html#od-działającego-żądania-do-kontraktu-api",
+    "title": "Wykład 2: Projektowanie API i bezpieczeństwo",
+    "section": "Od działającego żądania do kontraktu API",
+    "text": "Od działającego żądania do kontraktu API\nPierwszy wykład przedstawiał drogę żądania od klienta przez serwer do bazy danych. Działająca operacja zapisu nie odpowiada jednak na wszystkie pytania projektowe: jak klient rozpozna konflikt, kto może zmienić cudzą rezerwację i co oznacza ponowienie żądania po utracie odpowiedzi?\nAPI — Application Programming Interface, interfejs programowania aplikacji, określa sposób korzystania z funkcji systemu przez inne programy. Jego kontrakt obejmuje adresy, metody, formaty danych, znaczenie odpowiedzi i reguły dostępu. Nie jest tylko listą funkcji dostępnych pod /docs.\nPrzykładem pozostaje fikcyjny ośrodek „Sosna”: plac treningowy P1, sala symulatorów P2 i jednostki Alfa oraz Bravo. W demonstratorze odpowiadają im identyfikatory liczbowe 1 i 2. Rezerwacja R1 dotyczy P1 w przedziale 08:00–10:00. Data T jest ustalana względem przygotowanego stanu bazy, a czasy mają jawną strefę.\n\n\n\n\n\n\nNoteZakres demonstratora i zakres projektu\n\n\n\nAplikacja z pierwszego wykładu obsługuje obiekty, jednostki, rezerwacje, walidację, konflikty i trwały zapis SQLite. Nie zawiera kont, logowania ani kontroli właściciela rezerwacji. Część dotycząca uprawnień opisuje projektowane rozszerzenie, a nie istniejące zabezpieczenia tego programu.\nLaboratoria odbędą się 8 listopada i 13 grudnia. Przykłady wykładowe nie zakładają, że implementacja laboratoryjna została już wykonana.",
+    "crumbs": [
+      "Wykłady",
+      "Wykład 2: Projektowanie API i bezpieczeństwo"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie2.html#zasoby-adresy-i-metody",
+    "href": "lectures/spotkanie2.html#zasoby-adresy-i-metody",
+    "title": "Wykład 2: Projektowanie API i bezpieczeństwo",
+    "section": "Zasoby, adresy i metody",
+    "text": "Zasoby, adresy i metody\nREST — Representational State Transfer jest stylem architektonicznym. W stosowanej na kursie konwencji zasoby mają adresy, a metody HTTP — Hypertext Transfer Protocol wyrażają semantykę operacji. Sama liczba mnoga w adresie nie dowodzi zgodności systemu z całym stylem REST, ale pomaga tworzyć przewidywalny interfejs.\n\n\n\n\n\n\n\n\nOperacja\nPrzykład\nZnaczenie\n\n\n\n\nLista obiektów\nGET /poligony\nPobranie kolekcji\n\n\nWybrany obiekt\nGET /poligony/1\nPobranie jednej reprezentacji\n\n\nNowy obiekt\nPOST /poligony\nUtworzenie zasobu\n\n\nZastąpienie danych\nPUT /poligony/1\nPrzesłanie pełnego zestawu edytowalnych pól\n\n\nCzęściowa zmiana\nPATCH /poligony/1\nZmiana wskazanych pól\n\n\nUsunięcie obiektu\nDELETE /poligony/1\nPróba usunięcia zgodna z regułami bazy\n\n\n\nAdres, czyli URL — Uniform Resource Locator, powinien być stabilny względem kolejności wyników. Identyfikator 1 nie oznacza „pierwszego elementu obecnej listy”. Usunięcie obiektu używanego przez rezerwacje może zostać odrzucone — dostępność metody nie oznacza, że każda operacja jest dopuszczalna w każdym stanie systemu.\n\nFiltrowanie i stronicowanie\nGET /poligony?typ=sala\nGET /rezerwacje?poligon_id=1&status=zatwierdzona\nOba filtry są obsługiwane przez demonstrator. Parametry po ? zawężają kolekcję; pusta lista spełniających warunki obiektów jest poprawnym wynikiem 200 OK, a nie błędem 404 Not Found.\nDla większych zbiorów kontrakt powinien również określać stronicowanie, stabilną kolejność i limit rozmiaru odpowiedzi. Przykładowe GET /rezerwacje?limit=20&offset=40 jest propozycją rozszerzenia; obecny demonstrator nie implementuje tych parametrów. Stronicowanie bez jednoznacznego sortowania może powodować powtarzanie lub pomijanie elementów.\n\n\nWersjonowanie\nZmiana nazwy pola lub znaczenia kodu odpowiedzi może uszkodzić istniejącego klienta. Wersjonowanie, np. /api/v1/rezerwacje, pozwala rozdzielić niezgodne kontrakty, lecz nie zastępuje planu migracji. Dodanie nowego opcjonalnego pola nie zawsze wymaga nowej wersji. Decyduje zgodność z rzeczywistymi klientami, a nie sam fakt zmiany kodu.",
+    "crumbs": [
+      "Wykłady",
+      "Wykład 2: Projektowanie API i bezpieczeństwo"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie2.html#walidacja-poprawny-json-nie-wystarcza",
+    "href": "lectures/spotkanie2.html#walidacja-poprawny-json-nie-wystarcza",
+    "title": "Wykład 2: Projektowanie API i bezpieczeństwo",
+    "section": "Walidacja: poprawny JSON nie wystarcza",
+    "text": "Walidacja: poprawny JSON nie wystarcza\nJSON — JavaScript Object Notation określa sposób zapisu danych, ale nie ich poprawność biznesową. Rezerwacja może być poprawnym dokumentem JSON, a mimo to wskazywać nieistniejący obiekt albo kończyć się przed rozpoczęciem.\nWalidacja występuje na kilku poziomach:\n\n\n\n\n\n\n\n\nPoziom\nPrzykład kontroli\nMiejsce odpowiedzialności\n\n\n\n\nStruktura danych\nIdentyfikator jest dodatnią liczbą, czas zawiera strefę\nModel wejściowy API\n\n\nZnaczenie danych\nPoczątek poprzedza koniec i jest w przyszłości\nLogika aplikacji\n\n\nStan systemu\nObiekt jest dostępny, termin nie koliduje\nLogika i transakcja bazodanowa\n\n\nUprawnienia\nKonto może rezerwować dla wskazanej jednostki\nAutoryzacja po stronie serwera\n\n\n\nW demonstratorze nieznane pola są odrzucane. Przesłanie rola=planista nie stworzy zatem uprawnień, ale samo odrzucanie dodatkowych pól nie zastępuje implementacji kont i autoryzacji.\n\nNakładanie się przedziałów\nDwa przedziały tego samego obiektu kolidują, gdy:\nnew_start &lt; old_end AND new_end &gt; old_start\nPrzedziały są półotwarte: początek należy do rezerwacji, a koniec już nie. Dlatego 10:00–11:00 nie koliduje z R1 kończącą się o 10:00.\n\n\n\n\n\n\n\nPróba przy istniejącej R1: P1, 08:00–10:00\nOczekiwana odpowiedź demonstratora\n\n\n\n\nP1, 10:00–11:00\n201 — utworzenie rezerwacji\n\n\nP1, 09:00–11:00\n409 — konflikt terminów\n\n\nP2, 10:00–11:00\n409 — obiekt niedostępny z powodu przeglądu\n\n\nPoczątek równy końcowi\n422 — niepoprawny przedział\n\n\nNieistniejąca jednostka\n404 — brak wskazanego zasobu\n\n\n\nPróby wymagają znanego stanu bazy. Po udanej rezerwacji 10:00–11:00 ponowienie tego samego żądania napotka już konflikt. Dwa wyniki 409 w tabeli mają różne przyczyny; treść odpowiedzi musi je wyjaśniać.",
+    "crumbs": [
+      "Wykłady",
+      "Wykład 2: Projektowanie API i bezpieczeństwo"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie2.html#kody-odpowiedzi-jako-część-kontraktu",
+    "href": "lectures/spotkanie2.html#kody-odpowiedzi-jako-część-kontraktu",
+    "title": "Wykład 2: Projektowanie API i bezpieczeństwo",
+    "section": "Kody odpowiedzi jako część kontraktu",
+    "text": "Kody odpowiedzi jako część kontraktu\n\n\n\n\n\n\n\nKod\nZnaczenie w projekcie\n\n\n\n\n200 OK\nPoprawny odczyt lub zmiana zwracająca reprezentację\n\n\n201 Created\nUtworzenie nowego zasobu\n\n\n204 No Content\nSukces bez treści odpowiedzi\n\n\n401 Unauthorized\nBrak poprawnego uwierzytelnienia dla chronionej operacji\n\n\n403 Forbidden\nOdmowa wykonania operacji; w naszej polityce konto nie ma wymaganych uprawnień\n\n\n404 Not Found\nWskazany pojedynczy zasób nie istnieje\n\n\n409 Conflict\nKonflikt z obecnym stanem, np. zajęty termin\n\n\n422 Unprocessable Content\nDane nie spełniają przyjętych wymagań walidacji\n\n\n503 Service Unavailable\nUsługa chwilowo nie może wykonać operacji, np. wskutek zajęcia bazy\n\n\n\nWariant chroniony powinien przy 401 przesyłać odpowiednie wyzwanie WWW-Authenticate, np. Bearer. Odpowiedź 403 jest przyjętą tutaj polityką odmowy dostępu; inne systemy mogą używać 404, aby nie ujawniać istnienia zasobu.\n{\"detail\": \"Konflikt terminów.\"}\nTo przykładowy błąd biznesowy demonstratora. Błędy walidacji FastAPI mogą mieć w detail listę obiektów opisujących poszczególne pola, a nie pojedynczy tekst. Klient musi obsługiwać udokumentowane warianty zamiast zakładać jeden kształt każdej odpowiedzi błędnej.",
+    "crumbs": [
+      "Wykłady",
+      "Wykład 2: Projektowanie API i bezpieczeństwo"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie2.html#openapi-dokumentacja-i-rzeczywiste-zachowanie",
+    "href": "lectures/spotkanie2.html#openapi-dokumentacja-i-rzeczywiste-zachowanie",
+    "title": "Wykład 2: Projektowanie API i bezpieczeństwo",
+    "section": "OpenAPI: dokumentacja i rzeczywiste zachowanie",
+    "text": "OpenAPI: dokumentacja i rzeczywiste zachowanie\nOpenAPI jest specyfikacją opisu interfejsów HTTP. FastAPI tworzy dokument /openapi.json na podstawie modeli i deklaracji operacji. Swagger UI pod /docs jest interaktywną prezentacją tego opisu. UI — User Interface oznacza interfejs użytkownika.\nGenerowanie dokumentacji ogranicza powielanie definicji pól, ale nie analizuje całej logiki funkcji. Wyjątek HTTPException(404, ...) w ciele funkcji nie jest sam w sobie deklaracją odpowiedzi w OpenAPI. Własne odpowiedzi należy opisać jawnie, np. przez responses.\nPoniższy kompletny, mały przykład pokazuje deklarację; jest osobną ilustracją, a nie zmianą zainstalowanej aplikacji „Sosna”:\nfrom fastapi import FastAPI, HTTPException\nfrom pydantic import BaseModel\n\napp = FastAPI()\n\nclass Resource(BaseModel):\n    id: int\n    name: str\n\n@app.get(\n    \"/poligony/{resource_id}\",\n    response_model=Resource,\n    responses={404: {\"description\": \"Resource not found\"}},\n)\ndef get_resource(resource_id: int) -&gt; Resource:\n    if resource_id != 1:\n        raise HTTPException(status_code=404, detail=\"Resource not found\")\n    return Resource(id=1, name=\"Training ground\")\nDeklaracja responses dokumentuje możliwość błędu. Dopiero warunek i wyjątek realizują ją podczas wykonania. Dokumentację należy sprawdzać przez rzeczywiste wywołania, także dla przypadków niepoprawnych.",
+    "crumbs": [
+      "Wykłady",
+      "Wykład 2: Projektowanie API i bezpieczeństwo"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie2.html#uwierzytelnianie-i-autoryzacja",
+    "href": "lectures/spotkanie2.html#uwierzytelnianie-i-autoryzacja",
+    "title": "Wykład 2: Projektowanie API i bezpieczeństwo",
+    "section": "Uwierzytelnianie i autoryzacja",
+    "text": "Uwierzytelnianie i autoryzacja\nAuthentication — uwierzytelnianie ustala tożsamość klienta. Authorization — autoryzacja ustala, czy ten klient może wykonać konkretną operację na konkretnym zasobie. Poprawne logowanie nie daje prawa do wszystkich danych.\nProponowana polityka rozbudowanej aplikacji:\n\n\n\nOperacja\nGość\nKonto jednostki Alfa\nPlanista\n\n\n\n\nOdczyt ogólnej dostępności\nTak\nTak\nTak\n\n\nOdczyt szczegółów rezerwacji jednostki Alfa\nNie\nTak\nTak\n\n\nOdczyt szczegółów rezerwacji Bravo\nNie\nNie\nTak\n\n\nUtworzenie rezerwacji dla Alfy\nNie\nTak\nTak\n\n\nUtworzenie rezerwacji dla Bravo\nNie\nNie\nTak\n\n\nZmiana dostępności obiektu\nNie\nNie\nTak\n\n\n\nSzczegóły polityki są decyzją projektową. Publiczna dostępność obiektu nie musi oznaczać publicznej listy jednostek, które go rezerwują.\n\nPrzypadek: zmiana identyfikatora\nKonto Alfy wysyła żądanie dotyczące rezerwacji Bravo. Ukrycie przycisku w przeglądarce nie zapobiega ręcznemu wysłaniu tego żądania. Serwer powinien:\n\nZweryfikować uwierzytelnienie.\nUstalić rolę i jednostkę z zaufanych danych konta.\nOdczytać wskazany obiekt i sprawdzić uprawnienie do żądanej operacji.\nDopiero po spełnieniu warunków wykonać zmianę.\n\nIdentyfikator jednostki w JSON nie stanowi dowodu przynależności użytkownika. Rola przekazana przez klienta przy rejestracji nie może samodzielnie nadawać uprawnień planisty. Zasady powinny obowiązywać również przy listowaniu, a nie wyłącznie przy pobraniu pojedynczej rezerwacji.",
+    "crumbs": [
+      "Wykłady",
+      "Wykład 2: Projektowanie API i bezpieczeństwo"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie2.html#hasła-sesje-i-tokeny",
+    "href": "lectures/spotkanie2.html#hasła-sesje-i-tokeny",
+    "title": "Wykład 2: Projektowanie API i bezpieczeństwo",
+    "section": "Hasła, sesje i tokeny",
+    "text": "Hasła, sesje i tokeny\nHasła są przechowywane jako wyniki funkcji przeznaczonych do hashowania haseł, z indywidualną losową solą i odpowiednim kosztem obliczeń. Przykładem jest Argon2id; bcrypt pozostaje spotykany w istniejących systemach. Zwykły szybki skrót, np. SHA-256 bez mechanizmu przeznaczonego do haseł, nie spełnia tego celu. Hashowanie nie uniemożliwia zgadywania słabego hasła — podnosi koszt prób.\nPo zalogowaniu klient może używać identyfikatora sesji lub tokenu:\n\n\n\n\n\n\n\n\nRozwiązanie\nGdzie ustalany jest stan\nIstotny koszt\n\n\n\n\nSesja po stronie serwera\nMagazyn sesji powiązany z identyfikatorem klienta\nDostęp do magazynu i utrzymanie sesji\n\n\nSamodzielnie weryfikowany token\nPodpisane informacje i polityka weryfikacji\nCzas ważności, rotacja kluczy i unieważnianie\n\n\n\nCookie i token nie są przeciwstawnymi kategoriami: cookie jest sposobem przechowania i przesyłania wartości przez przeglądarkę, a JWT formatem tokenu. JWT również może być przesyłany w cookie.\n\nJWT i JWS\nJWT — JSON Web Token jest formatem przenoszenia deklaracji o podmiocie. W omawianym wariancie JWS — JSON Web Signature zapewnia ochronę integralności:\nheader.payload.signature\nNagłówek i dane są kodowane Base64url, a nie szyfrowane. Podpis cyfrowy lub MAC — Message Authentication Code, kod uwierzytelniający wiadomość, pozwala wykryć modyfikację. W wariancie symetrycznym HS256 strony weryfikujące znają wspólny sekret; przy podpisie asymetrycznym weryfikacja używa klucza publicznego.\nSerwer sprawdza dozwolony algorytm, integralność i wymagane deklaracje, np. exp — czas wygaśnięcia, iss — wystawcę, aud — odbiorcę. Samo odkodowanie payloadu nie jest weryfikacją tokenu. JWE — JSON Web Encryption jest odrębnym mechanizmem szyfrowania; nie należy przypisywać jego właściwości JWS.\nToken typu Bearer może wykorzystać jego posiadacz. Transport wymaga HTTPS — Hypertext Transfer Protocol Secure, czyli HTTP chronionego przez TLS — Transport Layer Security. Tokeny i hasła nie powinny trafiać do logów.",
+    "crumbs": [
+      "Wykłady",
+      "Wykład 2: Projektowanie API i bezpieczeństwo"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie2.html#wybrane-zagrożenia-aplikacji-sieciowej",
+    "href": "lectures/spotkanie2.html#wybrane-zagrożenia-aplikacji-sieciowej",
+    "title": "Wykład 2: Projektowanie API i bezpieczeństwo",
+    "section": "Wybrane zagrożenia aplikacji sieciowej",
+    "text": "Wybrane zagrożenia aplikacji sieciowej\nOWASP — Open Worldwide Application Security Project publikuje materiały poświęcone bezpieczeństwu aplikacji. Dla projektu szczególnie istotne są:\n\n\n\n\n\n\n\n\nZagrożenie\nPrzykład\nPodstawowa ochrona\n\n\n\n\nBrak kontroli dostępu do obiektu\nAlfa zmienia rezerwację Bravo\nSprawdzenie roli i właściciela na serwerze\n\n\nSQL injection\nDane wejściowe zmieniają strukturę zapytania\nParametryzacja wartości, kontrolowana lista nazw kolumn\n\n\nXSS — Cross-Site Scripting\nOpis obiektu zostaje wykonany jako skrypt\nKodowanie wyjścia odpowiednie do kontekstu; unikanie wstawiania niezaufanego HTML\n\n\nCSRF — Cross-Site Request Forgery\nPrzeglądarka wysyła niezamierzone żądanie z automatycznie dołączonym cookie\nOchrona CSRF, kontrola pochodzenia i odpowiednie ustawienia cookies\n\n\n\n# Values are parameters, not fragments of SQL syntax.\nrow = connection.execute(\n    \"SELECT * FROM poligony WHERE id = ?\", (resource_id,)\n).fetchone()\nNagłówek Authorization dodawany jawnie przez aplikację zmienia model ryzyka klasycznego CSRF, lecz nie chroni przed XSS ani kradzieżą tokenu. CORS — Cross-Origin Resource Sharing określa zasady dostępu skryptów przeglądarki między originami. Nie zastępuje uwierzytelniania ani autoryzacji; klient spoza przeglądarki nie staje się przez CORS niezdolny do wysłania żądania.",
+    "crumbs": [
+      "Wykłady",
+      "Wykład 2: Projektowanie API i bezpieczeństwo"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie2.html#przypadki-do-przeanalizowania",
+    "href": "lectures/spotkanie2.html#przypadki-do-przeanalizowania",
+    "title": "Wykład 2: Projektowanie API i bezpieczeństwo",
+    "section": "Przypadki do przeanalizowania",
+    "text": "Przypadki do przeanalizowania\n\nR1 kończy się o 10:00. Porównanie prób 09:00–11:00 i 10:00–11:00 powinno odwoływać się do konkretnego warunku kolizji, nie tylko do kodu odpowiedzi.\nAlfa zna identyfikator rezerwacji Bravo. Należy wskazać miejsce kontroli uprawnień oraz dane, którym serwer może zaufać.\nOdpowiedź na POST nie dotarła. Klient nie wie jeszcze, czy zapis nastąpił. Poprawny format API nie zapewnia automatycznie bezpiecznego ponowienia.\n\nTrzeci przypadek prowadzi do wykładu 3: współbieżność, trwałość danych i odpowiedzialność infrastruktury.",
+    "crumbs": [
+      "Wykłady",
+      "Wykład 2: Projektowanie API i bezpieczeństwo"
+    ]
+  },
+  {
+    "objectID": "lectures/spotkanie2.html#źródła",
+    "href": "lectures/spotkanie2.html#źródła",
+    "title": "Wykład 2: Projektowanie API i bezpieczeństwo",
+    "section": "Źródła",
+    "text": "Źródła\n\nFastAPI — Additional Responses in OpenAPI.\nOWASP — Authorization Cheat Sheet.\nOWASP — Password Storage Cheat Sheet.\nOWASP — JSON Web Token Cheat Sheet.\nRFC 7519 — JSON Web Token.",
+    "crumbs": [
+      "Wykłady",
+      "Wykład 2: Projektowanie API i bezpieczeństwo"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Informacje ogólne",
+    "section": "",
+    "text": "Kod:\nSemestr: zimowy",
+    "crumbs": [
+      "Informacje ogólne"
+    ]
+  },
+  {
+    "objectID": "index.html#projektowanie-aplikacji-sieciowych",
+    "href": "index.html#projektowanie-aplikacji-sieciowych",
+    "title": "Informacje ogólne",
+    "section": "",
+    "text": "Kod:\nSemestr: zimowy",
+    "crumbs": [
+      "Informacje ogólne"
+    ]
+  },
+  {
+    "objectID": "index.html#kalendarz-semestr-zimowy-20262027",
+    "href": "index.html#kalendarz-semestr-zimowy-20262027",
+    "title": "Informacje ogólne",
+    "section": "Kalendarz — semestr zimowy 2026/2027",
+    "text": "Kalendarz — semestr zimowy 2026/2027\n\nWykłady\n\n\n\nSpotkanie\nTermin\nWymiar\n\n\n\n\n1\n3 października 2026\n2 × 45 min\n\n\n2\n24 października 2026\n4 × 45 min\n\n\n\nŁącznie: 6 godzin dydaktycznych. W sobotę 24 października odbywają się oba pozostałe wykłady, po 2 × 45 minut każdy, w ramach jednego spotkania.\n\n\n\nCzęść spotkania 24 października\nMateriał\nGłówny problem\n\n\n\n\nPierwsze 2 × 45 min\nWykład 2: projektowanie API i bezpieczeństwo\nJak zdefiniować operację i ustalić, kto może ją wykonać?\n\n\nKolejne 2 × 45 min\nWykład 3: współbieżność, skalowalność i wdrażanie\nJak zachować poprawność przy równoczesnych żądaniach, restartach i rozbudowie systemu?\n\n\n\nPrzykładem obu części jest aplikacja rezerwacji fikcyjnego ośrodka „Sosna”. Strony zawierają rozwinięte wyjaśnienia, przykłady żądań, diagramy i przypadki do analizy. Testy pozostają na początku poszczególnych modułów.\n\n\nLaboratoria\n\n\n\nSpotkanie\nTermin\nWymiar\n\n\n\n\n1\n8 listopada 2026\n4 × 45 min\n\n\n2\n13 grudnia 2026\n4 × 45 min\n\n\n\nŁącznie: 8 godzin dydaktycznych. Godziny rozpoczęcia i sale sprawdźcie w planie zajęć swojej grupy.\nUdostępnione są wszystkie trzy moduły wykładowe: wykład 1, wykład 2 oraz wykład 3. Materiały laboratoryjne zostaną opublikowane przed odpowiednimi terminami.",
+    "crumbs": [
+      "Informacje ogólne"
+    ]
+  },
+  {
+    "objectID": "index.html#wykład-i-samodzielna-praca",
+    "href": "index.html#wykład-i-samodzielna-praca",
+    "title": "Informacje ogólne",
+    "section": "Wykład i samodzielna praca",
+    "text": "Wykład i samodzielna praca\nDemonstracje służą analizie zachowania aplikacji oraz decyzji projektowych. Laboratoria będą przeznaczone na samodzielną implementację i sprawdzenie rozwiązań na podstawie zadań oraz kryteriów odbioru. Omówienie danego mechanizmu na wykładzie nie oznacza, że został on już zaimplementowany w aplikacji startowej.\nDemonstrator pierwszego etapu obsługuje zasoby, walidację i konflikty rezerwacji. Konta, autoryzacja, kolejki i pamięć podręczna są opisane jako rozszerzenia. Strona kursu udostępnia materiały; serwer demonstracyjny działa osobno.",
+    "crumbs": [
+      "Informacje ogólne"
+    ]
+  },
+  {
+    "objectID": "index.html#scenariusze-zajęć",
+    "href": "index.html#scenariusze-zajęć",
+    "title": "Informacje ogólne",
+    "section": "Scenariusze zajęć",
+    "text": "Scenariusze zajęć\nOtwórz zadania i opis projektu.",
+    "crumbs": [
+      "Informacje ogólne"
+    ]
   },
   {
     "objectID": "lectures/spotkanie1.html",
@@ -233,230 +429,157 @@
     ]
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Informacje ogólne",
+    "objectID": "lectures/spotkanie3.html",
+    "href": "lectures/spotkanie3.html",
+    "title": "Wykład 3: Współbieżność, skalowalność i wdrażanie",
     "section": "",
-    "text": "Kod:\nSemestr: zimowy",
-    "crumbs": [
-      "Informacje ogólne"
-    ]
-  },
-  {
-    "objectID": "index.html#projektowanie-aplikacji-sieciowych",
-    "href": "index.html#projektowanie-aplikacji-sieciowych",
-    "title": "Informacje ogólne",
-    "section": "",
-    "text": "Kod:\nSemestr: zimowy",
-    "crumbs": [
-      "Informacje ogólne"
-    ]
-  },
-  {
-    "objectID": "index.html#kalendarz-semestr-zimowy-20262027",
-    "href": "index.html#kalendarz-semestr-zimowy-20262027",
-    "title": "Informacje ogólne",
-    "section": "Kalendarz — semestr zimowy 2026/2027",
-    "text": "Kalendarz — semestr zimowy 2026/2027\n\nWykłady\n\n\n\nSpotkanie\nTermin\nWymiar\n\n\n\n\n1\n3 października 2026\n2 × 45 min\n\n\n2\n24 października 2026\n4 × 45 min\n\n\n\nŁącznie: 6 godzin dydaktycznych. Drugie spotkanie obejmie dwa kolejne moduły materiału: projektowanie API i bezpieczeństwo oraz skalowalność i wdrażanie.\n\n\nLaboratoria\n\n\n\nSpotkanie\nTermin\nWymiar\n\n\n\n\n1\n8 listopada 2026\n4 × 45 min\n\n\n2\n13 grudnia 2026\n4 × 45 min\n\n\n\nŁącznie: 8 godzin dydaktycznych. Godziny rozpoczęcia i sale sprawdźcie w planie zajęć swojej grupy.\nUdostępnione są wykład 1 i wykład 2 oraz krótkie zadania z pierwszego spotkania. Laboratorium „Od zera do CRUD” odbędzie się 8 listopada; jego materiały pojawią się przed tym terminem.",
-    "crumbs": [
-      "Informacje ogólne"
-    ]
-  },
-  {
-    "objectID": "index.html#scenariusze-zajęć",
-    "href": "index.html#scenariusze-zajęć",
-    "title": "Informacje ogólne",
-    "section": "Scenariusze zajęć",
-    "text": "Scenariusze zajęć\nOtwórz zadania i opis projektu.",
-    "crumbs": [
-      "Informacje ogólne"
-    ]
-  },
-  {
-    "objectID": "lectures/spotkanie2.html#cele",
-    "href": "lectures/spotkanie2.html#cele",
-    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
-    "section": "🎯 Cele",
-    "text": "🎯 Cele\nNauczysz się projektować adresy URL i strukturę odpowiedzi API tak, żeby były przewidywalne i łatwe w użyciu — oraz poznasz, jak FastAPI generuje dokumentację OpenAPI automatycznie z Waszego kodu.",
+    "text": "Termin: sobota, 24 października 2026 r. — druga część wspólnego bloku 4 × 45 minut.\nWykłady 2 i 3 odbywają się podczas jednego spotkania. Każdy moduł obejmuje 2 × 45 minut. Materiał na stronie rozwija przykłady omawiane na wykładzie; samodzielna praca nad implementacją będzie realizowana na laboratoriach.",
     "crumbs": [
       "Wykłady",
-      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
+      "Wykład 3: Współbieżność, skalowalność i wdrażanie"
     ]
   },
   {
-    "objectID": "lectures/spotkanie2.html#zasoby-nie-czynności",
-    "href": "lectures/spotkanie2.html#zasoby-nie-czynności",
-    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
-    "section": "1️⃣ Zasoby, nie czynności",
-    "text": "1️⃣ Zasoby, nie czynności\nAdres URL w REST opisuje rzecz (zasób), nie akcję — akcję wyraża metoda HTTP (spotkanie 1, część II). Dobra konwencja nazewnicza:\n\n\n\nŹle\nDobrze\n\n\n\n\n/getPoligony\nGET /poligony\n\n\n/utworzRezerwacje\nPOST /rezerwacje\n\n\n/poligon/usun/5\nDELETE /poligony/5\n\n\n\nZasady:\n\nRzeczowniki, nie czasowniki w ścieżce.\nLiczba mnoga dla kolekcji: /poligony, nie /poligon.\nMałe litery, myślniki zamiast podkreślników w wieloczłonowych nazwach.",
+    "objectID": "lectures/spotkanie3.html#test-z-wykładu-2",
+    "href": "lectures/spotkanie3.html#test-z-wykładu-2",
+    "title": "Wykład 3: Współbieżność, skalowalność i wdrażanie",
+    "section": "Test z wykładu 2",
+    "text": "Test z wykładu 2",
     "crumbs": [
       "Wykłady",
-      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
+      "Wykład 3: Współbieżność, skalowalność i wdrażanie"
     ]
   },
   {
-    "objectID": "lectures/spotkanie2.html#zasoby-zagnieżdżone",
-    "href": "lectures/spotkanie2.html#zasoby-zagnieżdżone",
-    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
-    "section": "2️⃣ Zasoby zagnieżdżone",
-    "text": "2️⃣ Zasoby zagnieżdżone\nKiedy jeden zasób “należy” logicznie do drugiego:\nGET /poligony/5/rezerwacje        -- rezerwacje na poligonie 5\nPOST /poligony/5/rezerwacje       -- nowa rezerwacja na poligonie 5\nGET /jednostki/3/rezerwacje       -- rezerwacje jednostki 3\n\n⚠️ Nie zagnieżdżaj głębiej niż 2 poziomy (/a/1/b/2/c/3 jest już nieczytelne) — jeśli potrzebujesz głębszego zagnieżdżenia, rozważ osobny, płaski endpoint z filtrowaniem przez query params zamiast ścieżki.",
+    "objectID": "lectures/spotkanie3.html#od-poprawnej-operacji-do-działającej-usługi",
+    "href": "lectures/spotkanie3.html#od-poprawnej-operacji-do-działającej-usługi",
+    "title": "Wykład 3: Współbieżność, skalowalność i wdrażanie",
+    "section": "Od poprawnej operacji do działającej usługi",
+    "text": "Od poprawnej operacji do działającej usługi\nKontrakt API określa znaczenie żądania i odpowiedzi. System musi jeszcze zachować poprawność, gdy żądania przychodzą równocześnie, proces zostaje uruchomiony ponownie albo odpowiedź ginie w sieci. Rozbudowa infrastruktury nie usuwa tych problemów automatycznie.\nDruga część sobotniego bloku rozwija aplikację rezerwacji ośrodka „Sosna”. Punktem odniesienia jest jedna aplikacja FastAPI i jeden plik SQLite. Kolejki, pamięć podręczna i wiele serwerów są wariantami rozwoju, a nie usługami już uruchomionymi w demonstratorze.",
     "crumbs": [
       "Wykłady",
-      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
+      "Wykład 3: Współbieżność, skalowalność i wdrażanie"
     ]
   },
   {
-    "objectID": "lectures/spotkanie2.html#filtrowanie-sortowanie-paginacja-przez-query-params",
-    "href": "lectures/spotkanie2.html#filtrowanie-sortowanie-paginacja-przez-query-params",
-    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
-    "section": "3️⃣ Filtrowanie, sortowanie, paginacja — przez query params",
-    "text": "3️⃣ Filtrowanie, sortowanie, paginacja — przez query params\nGET /rezerwacje?status=zatwierdzona          -- filtrowanie\nGET /rezerwacje?sortuj=data&kierunek=desc    -- sortowanie\nGET /rezerwacje?strona=2&na_strone=20         -- paginacja\nQuery params (po ?) nadają się do opcjonalnych modyfikatorów zapytania — ścieżka (/rezerwacje) zostaje ta sama niezależnie od tego, jak filtrujesz czy sortujesz wynik.\n\n\n\n\n\n\nNoteDlaczego paginacja jest ważna, nawet w małym projekcie?\n\n\n\nGET /rezerwacje bez paginacji, gdy tabela urośnie do 100 000 wierszy, zwróci gigantyczną odpowiedź, która obciąży i serwer, i klienta. Dobra praktyka: zawsze projektuj endpointy listujące z myślą o paginacji, nawet jeśli na start danych jest mało.",
+    "objectID": "lectures/spotkanie3.html#dwa-żądania-i-jeden-wolny-termin",
+    "href": "lectures/spotkanie3.html#dwa-żądania-i-jeden-wolny-termin",
+    "title": "Wykład 3: Współbieżność, skalowalność i wdrażanie",
+    "section": "Dwa żądania i jeden wolny termin",
+    "text": "Dwa żądania i jeden wolny termin\nR1 zajmuje P1 od 08:00 do 10:00. Dwa żądania próbują zarezerwować P1 od 10:00 do 11:00. Każde z osobna ma poprawne dane i nie koliduje z R1. Problem powstaje między nowymi rezerwacjami.\nNiepoprawny podział kontroli i zapisu może dopuścić taki przebieg:\n\n\n\nKrok\nŻądanie A\nŻądanie B\n\n\n\n\n1\nOdczyt: brak konfliktu\n—\n\n\n2\n—\nOdczyt: brak konfliktu\n\n\n3\nZapis nowej rezerwacji\n—\n\n\n4\n—\nZapis drugiej rezerwacji\n\n\n\nJest to race condition — wyścig, w którym wynik zależy od przeplotu operacji. Pojedynczy odczyt „wolne” nie rezerwuje terminu na czas późniejszego zapisu. Sprawdzenie i zmiana muszą stanowić odpowiednio chronioną całość.\n\nCo robi obecny demonstrator\nW aplikacji „Sosna” operacja zapisu otwiera transakcję SQLite poleceniem BEGIN IMMEDIATE przed odczytem konfliktów. Dopiero potem sprawdza obiekt, jednostkę i terminy, a następnie dodaje rezerwację i zatwierdza transakcję.\nBEGIN IMMEDIATE\n    sprawdzenie obiektu i jednostki\n    sprawdzenie konfliktów\n    INSERT rezerwacji, jeśli termin jest wolny\nCOMMIT\nTo schemat działania, nie kompletny skrypt SQL. SQLite dopuszcza jednego piszącego naraz. Drugie połączenie może zaczekać lub otrzymać błąd zajęcia; po uzyskaniu możliwości zapisu musi wykonać kontrolę wobec aktualnego stanu.\nDla krótkich operacji oczekiwany wynik próby to jedna odpowiedź 201 i jedna 409. Gdy oczekiwanie na bazę przekroczy limit demonstratora, możliwe jest 503. Kryterium poprawności jest stan bazy: najwyżej jedna nowa kolidująca rezerwacja, nie założenie, że każde równoczesne żądanie zawsze skończy się jednym konkretnym kodem.\nOchrona zależy od stosowania tej ścieżki przez wszystkich zapisujących. Sam schemat obecnej bazy nie zawiera ograniczenia wykluczającego wszystkie nakładające się przedziały. Bezpośredni zapis inną ścieżką może ominąć regułę.",
     "crumbs": [
       "Wykłady",
-      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
+      "Wykład 3: Współbieżność, skalowalność i wdrażanie"
     ]
   },
   {
-    "objectID": "lectures/spotkanie2.html#wersjonowanie-api",
-    "href": "lectures/spotkanie2.html#wersjonowanie-api",
-    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
-    "section": "4️⃣ Wersjonowanie API",
-    "text": "4️⃣ Wersjonowanie API\nKiedy zmieniasz kształt API w sposób, który złamałby istniejących klientów (np. zmieniasz nazwę pola), potrzebujesz wersjonowania:\n/api/v1/poligony\n/api/v2/poligony\nAlternatywa: wersjonowanie przez nagłówek (Accept: application/vnd.api.v2+json) — rzadziej spotykane w praktyce, ale czystsze koncepcyjnie. Nasz projekt jest na razie za mały, żeby potrzebować którejkolwiek z tych opcji naprawdę — zapamiętajcie obie jako narzędzia na później, gdy API będzie miało zewnętrznych klientów.",
+    "objectID": "lectures/spotkanie3.html#ponowienie-żądania-a-wynik-operacji",
+    "href": "lectures/spotkanie3.html#ponowienie-żądania-a-wynik-operacji",
+    "title": "Wykład 3: Współbieżność, skalowalność i wdrażanie",
+    "section": "Ponowienie żądania a wynik operacji",
+    "text": "Ponowienie żądania a wynik operacji\nBrak odpowiedzi nie jest dowodem braku zapisu. Możliwy jest przebieg:\n\n\n\n\n\nsequenceDiagram\n    participant K as Klient\n    participant A as API\n    participant B as Baza danych\n    K-&gt;&gt;A: POST /rezerwacje\n    A-&gt;&gt;B: Zapis i COMMIT\n    B--&gt;&gt;A: Zatwierdzono\n    A--xK: Odpowiedź nie dociera\n    Note over K: Wynik jest nieznany klientowi\n\n\n\n\n\n\nIdempotencja — idempotency oznacza, że powtarzanie tej samej operacji ma zamierzony efekt taki jak wykonanie jej raz. Nie wymaga identycznych odpowiedzi HTTP przy każdym wywołaniu. Metoda POST sama nie zapewnia tej właściwości, choć konkretne API może zaprojektować idempotentne przetwarzanie.\nW obecnej aplikacji powtórzony zapis tego samego terminu może zwrócić 409. Nie jest to pełny mechanizm identyfikowania ponowień: konflikt nie dowodzi, że istniejącą rezerwację utworzyło właśnie poprzednie żądanie tego klienta.\nRozszerzenie z kluczem operacji, np. Idempotency-Key, wymaga zapisania klucza, powiązania go z użytkownikiem i treścią żądania oraz zachowania wyniku. Rozpoznanie klucza i utworzenie rezerwacji muszą być skoordynowane atomowo. Ponowne użycie klucza dla innych danych powinno zostać odrzucone. Samo dodanie nagłówka po stronie klienta nie implementuje tego mechanizmu.",
     "crumbs": [
       "Wykłady",
-      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
+      "Wykład 3: Współbieżność, skalowalność i wdrażanie"
     ]
   },
   {
-    "objectID": "lectures/spotkanie2.html#openapi-dokumentacja-blisko-kodu",
-    "href": "lectures/spotkanie2.html#openapi-dokumentacja-blisko-kodu",
-    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
-    "section": "5️⃣ OpenAPI — dokumentacja blisko kodu",
-    "text": "5️⃣ OpenAPI — dokumentacja blisko kodu\nPamiętacie /docs z pierwszego laboratorium? To nie przypadek, że działa automatycznie — FastAPI generuje specyfikację OpenAPI (JSON opisujący każdy endpoint, jego parametry, kształt odpowiedzi) bezpośrednio z Waszego kodu (adnotacji typów, modeli Pydantic). Dostępna jest pod /openapi.json.\nDlaczego to pomaga: dokumentacja pisana ręcznie (osobny plik Word/Markdown) zawsze z czasem rozjeżdża się z rzeczywistym kodem — ktoś zmienia endpoint i zapomina zaktualizować opis. Dokumentacja generowana z kodu jest bliżej prawdy, bo typy i nazwy parametrów nie mogą się rozjechać — to dosłownie ta sama adnotacja.\n\n\n\n\n\n\nImportantTo nie jest automat, o którym można zapomnieć\n\n\n\n“Blisko kodu” nie znaczy “całkowicie odporne na błędy”. FastAPI wie o kodach błędów, które zwraca domyślnie (np. 422 z Pydantic) — ale własny HTTPException(404, ...) w ciele funkcji nie pojawi się w /docs, dopóki nie zadeklarujecie go jawnie w responses (przykład niżej). Zmienisz logikę błędu w kodzie i zapomnisz zaktualizować responses — i dokumentacja jednak się rozjedzie. “Generowane z kodu” zmniejsza ryzyko, nie eliminuje go.\n\n\n@app.get(\n    \"/poligony/{poligon_id}\",\n    response_model=Poligon,\n    summary=\"Pobierz jeden poligon po ID\",\n    description=\"Zwraca 404, jesli poligon o podanym ID nie istnieje.\",\n)\ndef pobierz_poligon(poligon_id: int):\n    ...\nParametry summary/description trafiają bezpośrednio do /docs — dobra dokumentacja API to część kodu, nie osobny dokument.",
+    "objectID": "lectures/spotkanie3.html#trwałość-proces-kontener-i-plik-danych",
+    "href": "lectures/spotkanie3.html#trwałość-proces-kontener-i-plik-danych",
+    "title": "Wykład 3: Współbieżność, skalowalność i wdrażanie",
+    "section": "Trwałość: proces, kontener i plik danych",
+    "text": "Trwałość: proces, kontener i plik danych\nRestart procesu nie oznacza wymazania bazy, jeżeli dane znajdują się w trwałym pliku. Inaczej zachowuje się lista przechowywana wyłącznie w pamięci procesu.\nW paczce demonstracyjnej konfiguracja zawiera:\nservices:\n  api:\n    build: .\n    ports:\n      - \"127.0.0.1:8000:8000\"\n    volumes:\n      - ./data:/data\n    restart: \"no\"\nŚcieżka ./data na komputerze jest montowana jako /data w kontenerze. Jest to bind mount — montowanie katalogu hosta, mimo użycia klucza volumes w składni Compose. Baza /data/sosna.db znajduje się dzięki temu poza zapisywalną warstwą kontenera.\n\n\n\n\n\n\n\nZdarzenie\nOczekiwany skutek w tej konfiguracji\n\n\n\n\nZatrzymanie i uruchomienie procesu\nZapisany plik pozostaje\n\n\nOdtworzenie kontenera z tym samym katalogiem data\nRezerwacje pozostają\n\n\nUruchomienie z innym, pustym katalogiem danych\nAplikacja widzi inną bazę\n\n\nUsunięcie pliku z katalogu data\nUtrata danych z tego pliku; potrzebne odtworzenie z kopii\n\n\n\nPróba trwałości powinna zapisać rozpoznawalny rekord, odtworzyć kontener z zachowanym katalogiem i ponownie odczytać ten rekord. Samo uruchomienie pustego serwera nie sprawdza trwałości.\n\n\n\n\n\n\nNoteTrwały katalog nie jest kopią zapasową\n\n\n\nBłąd aplikacji lub użytkownika może zmienić także plik znajdujący się poza kontenerem. Kopia zapasowa musi być spójna i sprawdzona przez odtworzenie. Dla aktywnej bazy SQLite należy użyć odpowiedniego mechanizmu backupu; zwykłe skopiowanie jednego pliku podczas zapisu nie jest uniwersalną procedurą.",
     "crumbs": [
       "Wykłady",
-      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
+      "Wykład 3: Współbieżność, skalowalność i wdrażanie"
     ]
   },
   {
-    "objectID": "lectures/spotkanie2.html#spójna-struktura-błędów",
-    "href": "lectures/spotkanie2.html#spójna-struktura-błędów",
-    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
-    "section": "6️⃣ Spójna struktura błędów",
-    "text": "6️⃣ Spójna struktura błędów\nZamiast każdy endpoint zwracający błędy w innym formacie, warto ustalić jeden wzorzec:\n{\n  \"detail\": \"Poligon nie znaleziony\"\n}\nFastAPI robi to domyślnie dla HTTPException (dokładnie ten kształt, który widzieliście już w laboratoriach) — trzymajcie się tego wzorca konsekwentnie we wszystkich endpointach.",
+    "objectID": "lectures/spotkanie3.html#docker-powtarzalne-uruchomienie",
+    "href": "lectures/spotkanie3.html#docker-powtarzalne-uruchomienie",
+    "title": "Wykład 3: Współbieżność, skalowalność i wdrażanie",
+    "section": "Docker: powtarzalne uruchomienie",
+    "text": "Docker: powtarzalne uruchomienie\nObraz — image zawiera aplikację i zależności przestrzeni użytkownika. Kontener — container jest uruchomioną instancją obrazu. Docker nie eliminuje różnic architektury procesora, konfiguracji ani uprawnień do katalogów. Na macOS kontenery linuksowe korzystają z maszyny wirtualnej Docker Desktop.\nPoniższy Dockerfile odpowiada środowisku pierwszego etapu:\nFROM python:3.12-slim\nWORKDIR /app\nCOPY requirements.txt .\nRUN pip install --no-cache-dir -r requirements.txt\nCOPY main.py .\nENV DATABASE_PATH=/data/sosna.db\nCMD [\"uvicorn\", \"main:app\", \"--host\", \"0.0.0.0\", \"--port\", \"8000\"]\nUvicorn jest serwerem obsługującym aplikację przez ASGI — Asynchronous Server Gateway Interface. Adres 0.0.0.0 wewnątrz kontenera oznacza nasłuchiwanie na wszystkich jego interfejsach. Mapowanie 127.0.0.1:8000:8000 w Compose ogranicza opublikowany port hosta do lokalnego komputera. To odrębne ustawienia.\nZakresy wersji bibliotek z requirements.txt pozwalają instalować różne zgodne wydania podczas kolejnych budów. Pełna odtwarzalność wymaga kontroli konkretnych wersji zależności i obrazu bazowego, a nie tylko posiadania Dockerfile.",
     "crumbs": [
       "Wykłady",
-      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
+      "Wykład 3: Współbieżność, skalowalność i wdrażanie"
     ]
   },
   {
-    "objectID": "lectures/spotkanie2.html#podsumowanie-części-i",
-    "href": "lectures/spotkanie2.html#podsumowanie-części-i",
-    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
-    "section": "🧾 Podsumowanie części I",
-    "text": "🧾 Podsumowanie części I\n\nURL opisuje zasób (rzeczownik, liczba mnoga), metoda HTTP opisuje akcję.\nZagnieżdżaj zasoby maksymalnie na 2 poziomy; filtruj/sortuj/paginuj przez query params.\nWersjonuj API (prefiks ścieżki albo nagłówek), gdy zmiana złamałaby istniejących klientów.\nOpenAPI/Swagger generowane z kodu jest bliżej prawdy niż ręcznie pisana dokumentacja — ale własne kody błędów wciąż trzeba zadeklarować jawnie (responses).",
+    "objectID": "lectures/spotkanie3.html#skalowanie-i-współdzielony-stan",
+    "href": "lectures/spotkanie3.html#skalowanie-i-współdzielony-stan",
+    "title": "Wykład 3: Współbieżność, skalowalność i wdrażanie",
+    "section": "Skalowanie i współdzielony stan",
+    "text": "Skalowanie i współdzielony stan\nSkalowanie pionowe — vertical scaling polega na zwiększeniu zasobów jednego środowiska: procesora, pamięci lub wydajności dysku. Skalowanie poziome — horizontal scaling dodaje instancje obsługujące ruch. Oba podejścia mają ograniczenia, a dodatkowe instancje nie usuwają wąskiego obszaru systemu, np. kosztownego zapisu do wspólnej bazy.\nLoad balancer — mechanizm rozdzielania ruchu wybiera instancję obsługującą żądanie. Przykładowy układ rozbudowanego systemu:\n\n\n\n\n\nflowchart LR\n    C[Klient] --&gt; LB[HTTPS i rozdzielanie ruchu]\n    LB --&gt; A[Instancja API A]\n    LB --&gt; B[Instancja API B]\n    A --&gt; DB[(Wspólny system danych)]\n    B --&gt; DB\n\n\n\n\n\n\nDwie niezależne kopie pliku SQLite nie tworzą wspólnej bazy. Jeżeli A zapisze rezerwację we własnym pliku, B jej nie zobaczy. Skopiowanie aplikacji i tokenu użytkownika nie rozwiązuje tego problemu.\nW typowym wariancie z wieloma hostami aplikacje korzystają z usługi danych, np. PostgreSQL. Przypadkowe udostępnienie pliku SQLite przez sieciowy katalog nie zastępuje projektu współbieżności i trwałości. SQLite może natomiast obsługiwać wiele połączeń na jednym hoście — problemem nie jest sam fakt istnienia dwóch klientów, lecz model dostępu do wspólnego stanu.\n\nBezstanowe HTTP nie oznacza aplikacji bez danych\nHTTP — Hypertext Transfer Protocol jest bezstanowe w sensie semantyki żądań. Aplikacja nadal może przechowywać rezerwacje, sesje i uprawnienia. Token JWT — JSON Web Token może ułatwić weryfikację tożsamości przez różne instancje, ale nie synchronizuje rezerwacji.\nSesje także mogą działać przy wielu instancjach, jeżeli ich stan jest dostępny w uzgodnionym wspólnym magazynie. Wybór wymaga uwzględnienia unieważniania, rotacji kluczy, dostępności magazynu i aktualności uprawnień.",
     "crumbs": [
       "Wykłady",
-      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
+      "Wykład 3: Współbieżność, skalowalność i wdrażanie"
     ]
   },
   {
-    "objectID": "lectures/spotkanie2.html#cele-1",
-    "href": "lectures/spotkanie2.html#cele-1",
-    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
-    "section": "🎯 Cele",
-    "text": "🎯 Cele\nPoznasz różnicę między uwierzytelnianiem a autoryzacją, zrozumiesz jak działają tokeny JWT, oraz poznasz najważniejsze podatności z listy OWASP Top 10 i jak się przed nimi bronić — wiedzę, którą zastosujesz praktycznie w kolejnych laboratoriach.",
+    "objectID": "lectures/spotkanie3.html#pamięć-podręczna-szybszy-odczyt-możliwa-nieaktualność",
+    "href": "lectures/spotkanie3.html#pamięć-podręczna-szybszy-odczyt-możliwa-nieaktualność",
+    "title": "Wykład 3: Współbieżność, skalowalność i wdrażanie",
+    "section": "Pamięć podręczna: szybszy odczyt, możliwa nieaktualność",
+    "text": "Pamięć podręczna: szybszy odczyt, możliwa nieaktualność\nCache — pamięć podręczna przechowuje wynik, aby ograniczyć powtarzalną pracę. Katalog nazw i lokalizacji obiektów może być dobrym kandydatem. Informacja „termin wolny” jest znacznie bardziej wrażliwa na zmianę.\nPrzykład: klient odczytał wolne 10:00–11:00, po czym inny użytkownik dokonał rezerwacji. Nawet jeśli odczyt był poprawny w swojej chwili, zapis musi ponownie sprawdzić warunek w chronionej operacji. Cache nie może być ostatecznym źródłem zgody na rezerwację.\nTTL — Time To Live ogranicza czas przechowywania wpisu. Krótszy TTL zmniejsza czas możliwej nieaktualności, lecz zwiększa liczbę odczytów źródła. Inne strategie obejmują unieważnianie po zapisie i wersjonowanie danych. Wyniki zależne od uprawnień wymagają klucza cache uwzględniającego właściwy kontekst dostępu.",
     "crumbs": [
       "Wykłady",
-      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
+      "Wykład 3: Współbieżność, skalowalność i wdrażanie"
     ]
   },
   {
-    "objectID": "lectures/spotkanie2.html#uwierzytelnianie-vs-autoryzacja",
-    "href": "lectures/spotkanie2.html#uwierzytelnianie-vs-autoryzacja",
-    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
-    "section": "1️⃣ Uwierzytelnianie vs autoryzacja",
-    "text": "1️⃣ Uwierzytelnianie vs autoryzacja\nTo dwa różne pytania, często mylone:\n\n\n\n\n\n\n\n\nPytanie\nTermin\nPrzykład\n\n\n\n\nKim jesteś?\nUwierzytelnianie (authentication)\nlogin + hasło, token\n\n\nCo wolno Ci zrobić?\nAutoryzacja (authorization)\nplanista może zatwierdzać rezerwacje, żołnierz — nie\n\n\n\nSystem może wiedzieć, kim jesteś (uwierzytelniony), ale mimo to odmówić Ci operacji (brak autoryzacji) — to dokładnie różnica między 401 a 403 ze spotkania 1.",
+    "objectID": "lectures/spotkanie3.html#kolejka-rezerwacja-i-powiadomienie-to-różne-wyniki",
+    "href": "lectures/spotkanie3.html#kolejka-rezerwacja-i-powiadomienie-to-różne-wyniki",
+    "title": "Wykład 3: Współbieżność, skalowalność i wdrażanie",
+    "section": "Kolejka: rezerwacja i powiadomienie to różne wyniki",
+    "text": "Kolejka: rezerwacja i powiadomienie to różne wyniki\nWysłanie powiadomienia może trwać dłużej niż zapis rezerwacji. Kolejka pozwala przekazać pracę do osobnego procesu, ale wymaga określenia znaczenia sukcesu.\n\n201 Created może potwierdzać utworzenie rezerwacji, nawet jeśli wiadomość jeszcze nie została wysłana.\n202 Accepted oznacza przyjęcie operacji do późniejszego przetworzenia; samo w sobie nie potwierdza utworzenia docelowej rezerwacji.\n\nPomiędzy zatwierdzeniem rezerwacji a dodaniem zadania do kolejki może wystąpić awaria. Wzorzec transactional outbox zapisuje rezerwację i informację o zdarzeniu w jednej transakcji; osobny proces później przekazuje zdarzenie. Powtórne dostarczenie komunikatu wymaga obsługi duplikatów. Kolejka nie gwarantuje sama z siebie jednorazowego skutku w systemie odbiorcy.\nW demonstratorze nie ma jeszcze kolejki ani wysyłania wiadomości. Jest to wariant architektury do analizy, nie dodatkowy warunek uruchomienia zajęć.",
     "crumbs": [
       "Wykłady",
-      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
+      "Wykład 3: Współbieżność, skalowalność i wdrażanie"
     ]
   },
   {
-    "objectID": "lectures/spotkanie2.html#jak-przechowywać-hasła-nigdy-jawnym-tekstem",
-    "href": "lectures/spotkanie2.html#jak-przechowywać-hasła-nigdy-jawnym-tekstem",
-    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
-    "section": "2️⃣ Jak przechowywać hasła — nigdy jawnym tekstem",
-    "text": "2️⃣ Jak przechowywać hasła — nigdy jawnym tekstem\n# NIGDY:\nif podane_haslo == uzytkownik.haslo:  # haslo w bazie jako czysty tekst\n\n# ZAWSZE: hashowanie z \"solą\"\nimport bcrypt\n\nhash_hasla = bcrypt.hashpw(haslo.encode(), bcrypt.gensalt())\n# ... zapisz hash_hasla w bazie, NIGDY samego hasla\n\n# przy logowaniu:\nbcrypt.checkpw(podane_haslo.encode(), hash_hasla)\nbcrypt (i podobne: argon2, scrypt) to funkcje jednokierunkowe — z hasha nie da się odtworzyć hasła, a każde wywołanie z “solą” (losowym dodatkiem) daje inny wynik nawet dla tego samego hasła, co chroni przed atakami tęczowych tablic (rainbow tables). Praktykę tę zastosujecie w kolejnych laboratoriach.",
+    "objectID": "lectures/spotkanie3.html#monolit-mikroserwisy-i-cdn",
+    "href": "lectures/spotkanie3.html#monolit-mikroserwisy-i-cdn",
+    "title": "Wykład 3: Współbieżność, skalowalność i wdrażanie",
+    "section": "Monolit, mikroserwisy i CDN",
+    "text": "Monolit, mikroserwisy i CDN\nMonolit jest jedną jednostką wdrożenia aplikacji; może mieć wiele modułów oraz wiele procesów lub instancji. Mikroserwisy rozdzielają odpowiedzialności na niezależnie wdrażane usługi. Taki podział może wspierać niezależne zespoły, różne profile obciążenia i izolowanie awarii, lecz dodaje komunikację sieciową, koordynację zmian i problemy spójności.\nDla obecnego projektu modułowa aplikacja FastAPI jest wystarczającym punktem wyjścia. Wydzielenie usługi powinno odpowiadać konkretnemu problemowi, a nie być celem samym w sobie.\nCDN — Content Delivery Network, sieć dystrybucji treści, może obsługiwać statyczne zasoby blisko użytkowników: pliki JavaScript, arkusze CSS — Cascading Style Sheets i obrazy. Nie zastępuje logiki rezerwacji. Także strona kursu na GitHub Pages jest statyczna: publikuje materiały, ale nie uruchamia procesu FastAPI ani lokalnej bazy z demonstratora.",
     "crumbs": [
       "Wykłady",
-      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
+      "Wykład 3: Współbieżność, skalowalność i wdrażanie"
     ]
   },
   {
-    "objectID": "lectures/spotkanie2.html#sesje-vs-tokeny-dwa-modele-uwierzytelniania",
-    "href": "lectures/spotkanie2.html#sesje-vs-tokeny-dwa-modele-uwierzytelniania",
-    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
-    "section": "3️⃣ Sesje vs tokeny — dwa modele uwierzytelniania",
-    "text": "3️⃣ Sesje vs tokeny — dwa modele uwierzytelniania\n\n\n\n\n\n\n\n\n\nSesje (cookie-based)\nTokeny (JWT)\n\n\n\n\nGdzie żyje stan\npo stronie serwera (baza sesji)\nw samym tokenie, po stronie klienta\n\n\nSkalowanie na wiele serwerów\nwymaga współdzielonej bazy sesji\ntrywialne — każdy serwer sam zweryfikuje token\n\n\nUnieważnienie przed wygaśnięciem\nłatwe (usuń z bazy)\ntrudniejsze (token jest ważny, dopóki nie wygaśnie)\n\n\n\nW tym kursie używamy JWT (JSON Web Token) — pasuje do architektury bezstanowej ze spotkania 1.",
+    "objectID": "lectures/spotkanie3.html#wdrożenie-i-obserwacja-działania",
+    "href": "lectures/spotkanie3.html#wdrożenie-i-obserwacja-działania",
+    "title": "Wykład 3: Współbieżność, skalowalność i wdrażanie",
+    "section": "Wdrożenie i obserwacja działania",
+    "text": "Wdrożenie i obserwacja działania\nCI — Continuous Integration, ciągła integracja, obejmuje automatyczne sprawdzanie zmian, np. testy i budowę obrazu. CD może oznaczać Continuous Delivery — gotowość do kontrolowanego wydania — albo Continuous Deployment — automatyczne wdrożenie po spełnieniu warunków.\nLogiczny przebieg wydania:\nzmiana kodu → testy → budowa oznaczonego obrazu → próba uruchomienia\n→ wdrożenie → kontrola odpowiedzi i danych → obserwacja lub wycofanie\nZielony wynik testów nie dowodzi, że środowisko produkcyjne ma poprawną konfigurację. Zmiana schematu bazy może również utrudnić powrót do starej wersji aplikacji, nawet jeśli jej obraz nadal istnieje.\n\nCo powinno być widoczne po uruchomieniu\n\n\n\n\n\n\n\nSygnał\nPytanie, na które odpowiada\n\n\n\n\nLog żądania z identyfikatorem\nKtóra operacja się nie powiodła i z jakim kodem?\n\n\nOdsetek odpowiedzi 5xx\nCzy rośnie liczba błędów serwera?\n\n\nCzas odpowiedzi, np. percentyl 95\nJak długo czeka większość wolniejszych żądań?\n\n\nLiczba konfliktów i zajęć bazy\nCzy występuje presja na zapis lub konflikt terminów?\n\n\nKontrola gotowości\nCzy instancja może obsługiwać wymagane zależności?\n\n\n\nLogi nie powinny zawierać haseł, pełnych tokenów ani niepotrzebnych danych osobowych. „Proces żyje” i „usługa jest gotowa” to różne stany. Odpowiedź kontrolnego endpointu bez dostępu do bazy może potwierdzać działanie serwera, ale nie całej funkcji rezerwacji.",
     "crumbs": [
       "Wykłady",
-      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
+      "Wykład 3: Współbieżność, skalowalność i wdrażanie"
     ]
   },
   {
-    "objectID": "lectures/spotkanie2.html#anatomia-jwt-wariantu-którego-używamy",
-    "href": "lectures/spotkanie2.html#anatomia-jwt-wariantu-którego-używamy",
-    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
-    "section": "4️⃣ Anatomia JWT (wariantu, którego używamy)",
-    "text": "4️⃣ Anatomia JWT (wariantu, którego używamy)\nStandard JWT (RFC 7519) dopuszcza dwa warianty: JWS (JSON Web Signature — podpisany, ale czytelny) i JWE (JSON Web Encryption — faktycznie zaszyfrowany). W tym kursie, jak w zdecydowanej większości praktycznych API, używamy JWS — poniższy opis dotyczy tego wariantu, nie każdego możliwego tokenu JWT.\nToken JWS to trzy części oddzielone kropkami: header.payload.signature\neyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5rb3dhbHNraSIsInJvbGEiOiJkb3dvZGNhIn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c\n\nHeader — jaki algorytm podpisu (np. HS256).\nPayload — dane (np. {\"sub\": \"jankowalski\", \"rola\": \"dowodca\", \"exp\": 1735689600}) — czytelne dla każdego (to tylko Base64, nie szyfrowanie!), więc nigdy nie wkładajcie tam haseł czy innych sekretów.\nSignature — podpis kryptograficzny, weryfikowany kluczem znanym tylko serwerowi — to on gwarantuje, że nikt nie sfałszował payloadu.\n\n\n\n\n\n\n\nImportantNasz JWT (JWS) jest podpisany, nie zaszyfrowany\n\n\n\nKażdy, kto przechwyci token, może odczytać jego zawartość (Base64 to nie szyfrowanie) — nie może jej jednak zmienić niezauważenie, bo podpis by się nie zgadzał. Wniosek: JWS chroni przed fałszowaniem danych, nie przed ich odczytaniem — transport tokenu musi iść przez HTTPS, żeby nikt po drodze go nie podsłuchał. (JWE rozwiązałby też problem odczytu, kosztem większej złożoności — poza zakresem tego kursu.)",
+    "objectID": "lectures/spotkanie3.html#przypadki-do-przeanalizowania",
+    "href": "lectures/spotkanie3.html#przypadki-do-przeanalizowania",
+    "title": "Wykład 3: Współbieżność, skalowalność i wdrażanie",
+    "section": "Przypadki do przeanalizowania",
+    "text": "Przypadki do przeanalizowania\n\nDwa żądania rezerwują ten sam termin. Należy opisać kolejność sprawdzenia i zapisu oraz sprawdzić końcową liczbę rezerwacji.\nKontener zostaje odtworzony, ale rezerwacje znikają. Analiza obejmuje faktyczną ścieżkę pliku i montowanie katalogu, nie tylko kod API.\nDwie instancje mają dwie kopie SQLite. Poprawne logowanie na obu nie dowodzi, że przedstawiają ten sam stan rezerwacji.\nRezerwacja została zatwierdzona, a powiadomienie nie dotarło. Należy rozdzielić trwały stan rezerwacji od stanu zadania wysyłki.\n\nNa laboratoriach samodzielna implementacja i próby odbiorcze obejmą wybrane mechanizmy. Zakres wykładu pokazuje również kierunki rozwoju, których nie trzeba wszystkich implementować, aby przygotować poprawną małą aplikację.",
     "crumbs": [
       "Wykłady",
-      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
+      "Wykład 3: Współbieżność, skalowalność i wdrażanie"
     ]
   },
   {
-    "objectID": "lectures/spotkanie2.html#owasp-top-10-trzy-podatności-które-napotkacie-w-laboratoriach",
-    "href": "lectures/spotkanie2.html#owasp-top-10-trzy-podatności-które-napotkacie-w-laboratoriach",
-    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
-    "section": "5️⃣ OWASP Top 10 — trzy podatności, które napotkacie w laboratoriach",
-    "text": "5️⃣ OWASP Top 10 — trzy podatności, które napotkacie w laboratoriach\n\nSQL Injection\n# PODATNE:\nconn.execute(f\"SELECT * FROM uzytkownicy WHERE login = '{login}'\")\n# atakujacy wpisuje: login = \"' OR '1'='1\"\nObrona: zawsze parametryzowane zapytania (widzieliście to już przy bazie danych) — conn.execute(\"... WHERE login = ?\", (login,)).\n\n\nXSS (Cross-Site Scripting)\nAtakujący wstrzykuje złośliwy JavaScript do danych, które potem są wyświetlane innemu użytkownikowi bez odpowiedniego oczyszczenia (np. komentarz zawierający &lt;script&gt;...&lt;/script&gt;, wyświetlony bez escapowania w przeglądarce ofiary).\nObrona: nowoczesne frameworki frontendowe (React i podobne) domyślnie escapują dane przy renderowaniu — problem pojawia się głównie, gdy ktoś świadomie to wyłączy (dangerouslySetInnerHTML i podobne).\n\n\nCSRF (Cross-Site Request Forgery)\nAtakujący nakłania przeglądarkę ofiary (zalogowanej w Waszej aplikacji) do wysłania żądania bez jej wiedzy (np. przez ukryty formularz na złośliwej stronie). Ponieważ przeglądarka automatycznie dołącza cookies do żądań, serwer “widzi” żądanie jako uwierzytelnione.\nObrona: API oparte o JWT w nagłówku Authorization (nie w cookies) jest z natury odporne na klasyczny CSRF — atakująca strona nie ma dostępu do tokenu przechowywanego przez Waszą aplikację (np. w pamięci JS), więc nie może go dołączyć do sfałszowanego żądania.",
+    "objectID": "lectures/spotkanie3.html#źródła",
+    "href": "lectures/spotkanie3.html#źródła",
+    "title": "Wykład 3: Współbieżność, skalowalność i wdrażanie",
+    "section": "Źródła",
+    "text": "Źródła\n\nSQLite — Transaction.\nSQLite — Online Backup API.\nDocker — Bind mounts.\nDocker — Volumes.\nGitHub Actions — Understanding GitHub Actions.\nRFC 9110 — HTTP Semantics.",
     "crumbs": [
       "Wykłady",
-      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
-    ]
-  },
-  {
-    "objectID": "lectures/spotkanie2.html#httpstls-dlaczego-zawsze",
-    "href": "lectures/spotkanie2.html#httpstls-dlaczego-zawsze",
-    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
-    "section": "6️⃣ HTTPS/TLS — dlaczego zawsze",
-    "text": "6️⃣ HTTPS/TLS — dlaczego zawsze\nBez TLS każdy w tej samej sieci (Wi-Fi w kawiarni, router po drodze) może odczytać cały ruch — łącznie z tokenami JWT i hasłami przesyłanymi przy logowaniu. TLS szyfruje transport między klientem a serwerem — to warunek konieczny, nie opcjonalny dodatek, dla każdej aplikacji przyjmującej dane logowania.",
-    "crumbs": [
-      "Wykłady",
-      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
-    ]
-  },
-  {
-    "objectID": "lectures/spotkanie2.html#podsumowanie-części-ii",
-    "href": "lectures/spotkanie2.html#podsumowanie-części-ii",
-    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
-    "section": "🧾 Podsumowanie części II",
-    "text": "🧾 Podsumowanie części II\n\nUwierzytelnianie = kim jesteś; autoryzacja = co wolno Ci zrobić — to dwa osobne mechanizmy.\nHasła zawsze hashowane (bcrypt/argon2), nigdy przechowywane jawnym tekstem.\nNasz wariant JWT (JWS) jest podpisany (integralność), nie zaszyfrowany (poufność) — payload jest czytelny dla każdego; JWE istnieje, ale to poza zakresem kursu.\nSQL injection, XSS, CSRF — trzy klasyczne podatności; parametryzowane zapytania, escapowanie i tokeny w nagłówku to podstawowa obrona.",
-    "crumbs": [
-      "Wykłady",
-      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
-    ]
-  },
-  {
-    "objectID": "lectures/spotkanie2.html#źródła",
-    "href": "lectures/spotkanie2.html#źródła",
-    "title": "Spotkanie 2: Projektowanie API i bezpieczeństwo",
-    "section": "📚 Źródła",
-    "text": "📚 Źródła\n\nDokumentacja FastAPI — Path Operations, OpenAPI, Security\nM. Masse, REST API Design Rulebook\nOWASP Top 10 (owasp.org)\nRFC 7519 — JSON Web Token (JWT)",
-    "crumbs": [
-      "Wykłady",
-      "Spotkanie 2: Projektowanie API i bezpieczeństwo"
+      "Wykład 3: Współbieżność, skalowalność i wdrażanie"
     ]
   }
 ]

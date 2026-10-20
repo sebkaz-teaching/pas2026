@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Spotkanie 2: Projektowanie API i bezpieczeństwo – Projektowanie Aplikacji Sieciowych</title>
+<title>Wykład 2: Projektowanie API i bezpieczeństwo – Projektowanie Aplikacji Sieciowych</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -121,7 +121,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/spotkanie1.html">Wykłady</a></li><li class="breadcrumb-item"><a href="../lectures/spotkanie2.html">Spotkanie 2: Projektowanie API i bezpieczeństwo</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/spotkanie1.html">Wykłady</a></li><li class="breadcrumb-item"><a href="../lectures/spotkanie2.html">Wykład 2: Projektowanie API i bezpieczeństwo</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -170,7 +170,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/spotkanie2.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Spotkanie 2: Projektowanie API i bezpieczeństwo</span></a>
+ <span class="menu-text">Wykład 2: Projektowanie API i bezpieczeństwo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/spotkanie3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Wykład 3: Współbieżność, skalowalność i wdrażanie</span></a>
   </div>
 </li>
       </ul>
@@ -185,39 +191,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title"><strong>Sections</strong></h2>
    
   <ul class="collapse">
-  <li><a href="#sprawdź-się-ze-spotkania-1" id="toc-sprawdź-się-ze-spotkania-1" class="nav-link active" data-scroll-target="#sprawdź-się-ze-spotkania-1">✅ Sprawdź się ze spotkania 1</a></li>
-  <li><a href="#część-i-projektowanie-api-rest" id="toc-część-i-projektowanie-api-rest" class="nav-link" data-scroll-target="#część-i-projektowanie-api-rest">🧩 Część I — Projektowanie API REST</a>
-  <ul class="collapse">
-  <li><a href="#cele" id="toc-cele" class="nav-link" data-scroll-target="#cele">🎯 Cele</a></li>
-  <li><a href="#zasoby-nie-czynności" id="toc-zasoby-nie-czynności" class="nav-link" data-scroll-target="#zasoby-nie-czynności">1️⃣ Zasoby, nie czynności</a></li>
-  <li><a href="#zasoby-zagnieżdżone" id="toc-zasoby-zagnieżdżone" class="nav-link" data-scroll-target="#zasoby-zagnieżdżone">2️⃣ Zasoby zagnieżdżone</a></li>
-  <li><a href="#filtrowanie-sortowanie-paginacja-przez-query-params" id="toc-filtrowanie-sortowanie-paginacja-przez-query-params" class="nav-link" data-scroll-target="#filtrowanie-sortowanie-paginacja-przez-query-params">3️⃣ Filtrowanie, sortowanie, paginacja — przez query params</a></li>
-  <li><a href="#wersjonowanie-api" id="toc-wersjonowanie-api" class="nav-link" data-scroll-target="#wersjonowanie-api">4️⃣ Wersjonowanie API</a></li>
-  <li><a href="#openapi-dokumentacja-blisko-kodu" id="toc-openapi-dokumentacja-blisko-kodu" class="nav-link" data-scroll-target="#openapi-dokumentacja-blisko-kodu">5️⃣ OpenAPI — dokumentacja blisko kodu</a></li>
-  <li><a href="#spójna-struktura-błędów" id="toc-spójna-struktura-błędów" class="nav-link" data-scroll-target="#spójna-struktura-błędów">6️⃣ Spójna struktura błędów</a></li>
-  <li><a href="#podsumowanie-części-i" id="toc-podsumowanie-części-i" class="nav-link" data-scroll-target="#podsumowanie-części-i">🧾 Podsumowanie części I</a></li>
-  </ul></li>
-  <li><a href="#część-ii-bezpieczeństwo-aplikacji-sieciowych" id="toc-część-ii-bezpieczeństwo-aplikacji-sieciowych" class="nav-link" data-scroll-target="#część-ii-bezpieczeństwo-aplikacji-sieciowych">🔒 Część II — Bezpieczeństwo aplikacji sieciowych</a>
-  <ul class="collapse">
-  <li><a href="#cele-1" id="toc-cele-1" class="nav-link" data-scroll-target="#cele-1">🎯 Cele</a></li>
-  <li><a href="#uwierzytelnianie-vs-autoryzacja" id="toc-uwierzytelnianie-vs-autoryzacja" class="nav-link" data-scroll-target="#uwierzytelnianie-vs-autoryzacja">1️⃣ Uwierzytelnianie vs autoryzacja</a></li>
-  <li><a href="#jak-przechowywać-hasła-nigdy-jawnym-tekstem" id="toc-jak-przechowywać-hasła-nigdy-jawnym-tekstem" class="nav-link" data-scroll-target="#jak-przechowywać-hasła-nigdy-jawnym-tekstem">2️⃣ Jak przechowywać hasła — nigdy jawnym tekstem</a></li>
-  <li><a href="#sesje-vs-tokeny-dwa-modele-uwierzytelniania" id="toc-sesje-vs-tokeny-dwa-modele-uwierzytelniania" class="nav-link" data-scroll-target="#sesje-vs-tokeny-dwa-modele-uwierzytelniania">3️⃣ Sesje vs tokeny — dwa modele uwierzytelniania</a></li>
-  <li><a href="#anatomia-jwt-wariantu-którego-używamy" id="toc-anatomia-jwt-wariantu-którego-używamy" class="nav-link" data-scroll-target="#anatomia-jwt-wariantu-którego-używamy">4️⃣ Anatomia JWT (wariantu, którego używamy)</a></li>
-  <li><a href="#owasp-top-10-trzy-podatności-które-napotkacie-w-laboratoriach" id="toc-owasp-top-10-trzy-podatności-które-napotkacie-w-laboratoriach" class="nav-link" data-scroll-target="#owasp-top-10-trzy-podatności-które-napotkacie-w-laboratoriach">5️⃣ OWASP Top 10 — trzy podatności, które napotkacie w laboratoriach</a></li>
-  <li><a href="#httpstls-dlaczego-zawsze" id="toc-httpstls-dlaczego-zawsze" class="nav-link" data-scroll-target="#httpstls-dlaczego-zawsze">6️⃣ HTTPS/TLS — dlaczego zawsze</a></li>
-  <li><a href="#podsumowanie-części-ii" id="toc-podsumowanie-części-ii" class="nav-link" data-scroll-target="#podsumowanie-części-ii">🧾 Podsumowanie części II</a></li>
-  <li><a href="#źródła" id="toc-źródła" class="nav-link" data-scroll-target="#źródła">📚 Źródła</a></li>
-  </ul></li>
+  <li><a href="#test-z-wykładu-1" id="toc-test-z-wykładu-1" class="nav-link active" data-scroll-target="#test-z-wykładu-1">Test z wykładu 1</a></li>
+  <li><a href="#od-działającego-żądania-do-kontraktu-api" id="toc-od-działającego-żądania-do-kontraktu-api" class="nav-link" data-scroll-target="#od-działającego-żądania-do-kontraktu-api">Od działającego żądania do kontraktu API</a></li>
+  <li><a href="#zasoby-adresy-i-metody" id="toc-zasoby-adresy-i-metody" class="nav-link" data-scroll-target="#zasoby-adresy-i-metody">Zasoby, adresy i metody</a></li>
+  <li><a href="#walidacja-poprawny-json-nie-wystarcza" id="toc-walidacja-poprawny-json-nie-wystarcza" class="nav-link" data-scroll-target="#walidacja-poprawny-json-nie-wystarcza">Walidacja: poprawny JSON nie wystarcza</a></li>
+  <li><a href="#kody-odpowiedzi-jako-część-kontraktu" id="toc-kody-odpowiedzi-jako-część-kontraktu" class="nav-link" data-scroll-target="#kody-odpowiedzi-jako-część-kontraktu">Kody odpowiedzi jako część kontraktu</a></li>
+  <li><a href="#openapi-dokumentacja-i-rzeczywiste-zachowanie" id="toc-openapi-dokumentacja-i-rzeczywiste-zachowanie" class="nav-link" data-scroll-target="#openapi-dokumentacja-i-rzeczywiste-zachowanie">OpenAPI: dokumentacja i rzeczywiste zachowanie</a></li>
+  <li><a href="#uwierzytelnianie-i-autoryzacja" id="toc-uwierzytelnianie-i-autoryzacja" class="nav-link" data-scroll-target="#uwierzytelnianie-i-autoryzacja">Uwierzytelnianie i autoryzacja</a></li>
+  <li><a href="#hasła-sesje-i-tokeny" id="toc-hasła-sesje-i-tokeny" class="nav-link" data-scroll-target="#hasła-sesje-i-tokeny">Hasła, sesje i tokeny</a></li>
+  <li><a href="#wybrane-zagrożenia-aplikacji-sieciowej" id="toc-wybrane-zagrożenia-aplikacji-sieciowej" class="nav-link" data-scroll-target="#wybrane-zagrożenia-aplikacji-sieciowej">Wybrane zagrożenia aplikacji sieciowej</a></li>
+  <li><a href="#przypadki-do-przeanalizowania" id="toc-przypadki-do-przeanalizowania" class="nav-link" data-scroll-target="#przypadki-do-przeanalizowania">Przypadki do przeanalizowania</a></li>
+  <li><a href="#źródła" id="toc-źródła" class="nav-link" data-scroll-target="#źródła">Źródła</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/spotkanie1.html">Wykłady</a></li><li class="breadcrumb-item"><a href="../lectures/spotkanie2.html">Spotkanie 2: Projektowanie API i bezpieczeństwo</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/spotkanie1.html">Wykłady</a></li><li class="breadcrumb-item"><a href="../lectures/spotkanie2.html">Wykład 2: Projektowanie API i bezpieczeństwo</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Spotkanie 2: Projektowanie API i bezpieczeństwo</h1>
+<h1 class="title">Wykład 2: Projektowanie API i bezpieczeństwo</h1>
 </div>
 
 
@@ -234,8 +227,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="sprawdź-się-ze-spotkania-1" class="level2">
-<h2 class="anchored" data-anchor-id="sprawdź-się-ze-spotkania-1">✅ Sprawdź się ze spotkania 1</h2>
+<p><strong>Termin: sobota, 24 października 2026 r. — pierwsza część wspólnego bloku 4 × 45 minut.</strong></p>
+<p>Wykłady 2 i 3 odbywają się podczas jednego spotkania. Każdy moduł obejmuje 2 × 45 minut. Materiał na stronie rozwija przykłady omawiane na wykładzie; samodzielna praca nad implementacją będzie realizowana na laboratoriach.</p>
+<section id="test-z-wykładu-1" class="level2">
+<h2 class="anchored" data-anchor-id="test-z-wykładu-1">Test z wykładu 1</h2>
 <div id="pas-quiz">
 
 </div>
@@ -244,12 +239,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 CourseQuiz.mount(document.getElementById('pas-quiz'), {
   course: "pas2026",
   lecture: "spotkanie2",
-  title: "Spotkanie 1: Architektura i protokół HTTP",
+  title: "Wykład 1: Architektura i protokół HTTP",
   submitUrl: "https://sebastianzajac.pl/rsod-quiz/submit.php",
   questions: [
     {
       id: "q1", points: 1, diff: "bardzo łatwe",
-      text: "Kto zawsze inicjuje komunikację w modelu klient-serwer (poza wyjątkami jak WebSocket)?",
+      text: "Kto wysyła żądanie w podstawowym modelu żądanie–odpowiedź HTTP?",
       options: [
         {v:"A", t:"Serwer"},
         {v:"B", t:"Klient"},
@@ -272,7 +267,7 @@ CourseQuiz.mount(document.getElementById('pas-quiz'), {
       text: "Czym różni się 401 od 403?",
       options: [
         {v:"A", t:"To synonimy, oba znaczą brak dostępu"},
-        {v:"B", t:"401 = nie wiadomo kim jesteś (brak/zły login), 403 = wiadomo kim jesteś, ale brak uprawnień"},
+        {v:"B", t:"401 = brak poprawnego uwierzytelnienia dla chronionej operacji; 403 = odmowa dostępu, np. brak uprawnień konta"},
         {v:"C", t:"401 dotyczy tylko GET, 403 tylko POST"},
         {v:"D", t:"403 jest starszą wersją 401"}
       ]
@@ -282,7 +277,7 @@ CourseQuiz.mount(document.getElementById('pas-quiz'), {
       text: "Dlaczego HTTP nazywamy protokołem bezstanowym?",
       options: [
         {v:"A", t:"Bo nie obsługuje żadnych danych"},
-        {v:"B", t:"Bo serwer nie pamięta niczego między żądaniami — każde musi nieść potrzebne dane samo"},
+        {v:"B", t:"Bo każde żądanie jest interpretowane samodzielnie; aplikacja nadal może przechowywać dane i sesje"},
         {v:"C", t:"Bo działa tylko na jednym porcie"},
         {v:"D", t:"Bo nie wspiera szyfrowania"}
       ]
@@ -292,7 +287,7 @@ CourseQuiz.mount(document.getElementById('pas-quiz'), {
       text: "Klient wysyła POST /rezerwacje, ale traci połączenie zanim dostanie odpowiedź — nie wie, czy żądanie dotarło do serwera. Czy bezpiecznie może po prostu wysłać ten sam POST ponownie?",
       options: [
         {v:"A", t:"Tak, POST zawsze można bezpiecznie powtórzyć"},
-        {v:"B", t:"Nie — POST nie jest idempotentny, powtórzenie może utworzyć DRUGĄ, zduplikowaną rezerwację"},
+        {v:"B", t:"Nie ma takiej gwarancji — samo POST nie zapewnia idempotencji, więc powtórzenie może utworzyć duplikat"},
         {v:"C", t:"Tak, bo HTTP gwarantuje brak duplikatów"},
         {v:"D", t:"Nie da się tego ocenić bez znajomości nagłówków"}
       ]
@@ -300,186 +295,93 @@ CourseQuiz.mount(document.getElementById('pas-quiz'), {
   ]
 });
 </script>
-<hr>
 </section>
-<section id="część-i-projektowanie-api-rest" class="level1">
-<h1>🧩 Część I — Projektowanie API REST</h1>
-<section id="cele" class="level2">
-<h2 class="anchored" data-anchor-id="cele">🎯 Cele</h2>
-<p>Nauczysz się projektować adresy URL i strukturę odpowiedzi API tak, żeby były przewidywalne i łatwe w użyciu — oraz poznasz, jak FastAPI generuje dokumentację OpenAPI automatycznie z Waszego kodu.</p>
-<hr>
-</section>
-<section id="zasoby-nie-czynności" class="level2">
-<h2 class="anchored" data-anchor-id="zasoby-nie-czynności">1️⃣ Zasoby, nie czynności</h2>
-<p>Adres URL w REST opisuje <strong>rzecz</strong> (zasób), nie akcję — akcję wyraża metoda HTTP (spotkanie 1, część II). Dobra konwencja nazewnicza:</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Źle</th>
-<th>Dobrze</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>/getPoligony</code></td>
-<td><code>GET /poligony</code></td>
-</tr>
-<tr class="even">
-<td><code>/utworzRezerwacje</code></td>
-<td><code>POST /rezerwacje</code></td>
-</tr>
-<tr class="odd">
-<td><code>/poligon/usun/5</code></td>
-<td><code>DELETE /poligony/5</code></td>
-</tr>
-</tbody>
-</table>
-<p>Zasady:</p>
-<ul>
-<li><strong>Rzeczowniki, nie czasowniki</strong> w ścieżce.</li>
-<li><strong>Liczba mnoga</strong> dla kolekcji: <code>/poligony</code>, nie <code>/poligon</code>.</li>
-<li><strong>Małe litery</strong>, myślniki zamiast podkreślników w wieloczłonowych nazwach.</li>
-</ul>
-</section>
-<section id="zasoby-zagnieżdżone" class="level2">
-<h2 class="anchored" data-anchor-id="zasoby-zagnieżdżone">2️⃣ Zasoby zagnieżdżone</h2>
-<p>Kiedy jeden zasób “należy” logicznie do drugiego:</p>
-<pre><code>GET /poligony/5/rezerwacje        -- rezerwacje na poligonie 5
-POST /poligony/5/rezerwacje       -- nowa rezerwacja na poligonie 5
-GET /jednostki/3/rezerwacje       -- rezerwacje jednostki 3</code></pre>
-<blockquote class="blockquote">
-<p>⚠️ Nie zagnieżdżaj głębiej niż 2 poziomy (<code>/a/1/b/2/c/3</code> jest już nieczytelne) — jeśli potrzebujesz głębszego zagnieżdżenia, rozważ osobny, płaski endpoint z filtrowaniem przez query params zamiast ścieżki.</p>
-</blockquote>
-</section>
-<section id="filtrowanie-sortowanie-paginacja-przez-query-params" class="level2">
-<h2 class="anchored" data-anchor-id="filtrowanie-sortowanie-paginacja-przez-query-params">3️⃣ Filtrowanie, sortowanie, paginacja — przez query params</h2>
-<pre><code>GET /rezerwacje?status=zatwierdzona          -- filtrowanie
-GET /rezerwacje?sortuj=data&amp;kierunek=desc    -- sortowanie
-GET /rezerwacje?strona=2&amp;na_strone=20         -- paginacja</code></pre>
-<p>Query params (po <code>?</code>) nadają się do <strong>opcjonalnych</strong> modyfikatorów zapytania — ścieżka (<code>/rezerwacje</code>) zostaje ta sama niezależnie od tego, jak filtrujesz czy sortujesz wynik.</p>
+<section id="od-działającego-żądania-do-kontraktu-api" class="level2">
+<h2 class="anchored" data-anchor-id="od-działającego-żądania-do-kontraktu-api">Od działającego żądania do kontraktu API</h2>
+<p>Pierwszy wykład przedstawiał drogę żądania od klienta przez serwer do bazy danych. Działająca operacja zapisu nie odpowiada jednak na wszystkie pytania projektowe: jak klient rozpozna konflikt, kto może zmienić cudzą rezerwację i co oznacza ponowienie żądania po utracie odpowiedzi?</p>
+<p><strong>API — Application Programming Interface</strong>, interfejs programowania aplikacji, określa sposób korzystania z funkcji systemu przez inne programy. Jego kontrakt obejmuje adresy, metody, formaty danych, znaczenie odpowiedzi i reguły dostępu. Nie jest tylko listą funkcji dostępnych pod <code>/docs</code>.</p>
+<p>Przykładem pozostaje fikcyjny ośrodek „Sosna”: plac treningowy P1, sala symulatorów P2 i jednostki Alfa oraz Bravo. W demonstratorze odpowiadają im identyfikatory liczbowe 1 i 2. Rezerwacja R1 dotyczy P1 w przedziale 08:00–10:00. Data T jest ustalana względem przygotowanego stanu bazy, a czasy mają jawną strefę.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Dlaczego paginacja jest ważna, nawet w małym projekcie?
+<span class="screen-reader-only">Note</span>Zakres demonstratora i zakres projektu
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><code>GET /rezerwacje</code> bez paginacji, gdy tabela urośnie do 100 000 wierszy, zwróci gigantyczną odpowiedź, która obciąży i serwer, i klienta. Dobra praktyka: <strong>zawsze</strong> projektuj endpointy listujące z myślą o paginacji, nawet jeśli na start danych jest mało.</p>
+<p>Aplikacja z pierwszego wykładu obsługuje obiekty, jednostki, rezerwacje, walidację, konflikty i trwały zapis SQLite. Nie zawiera kont, logowania ani kontroli właściciela rezerwacji. Część dotycząca uprawnień opisuje <strong>projektowane rozszerzenie</strong>, a nie istniejące zabezpieczenia tego programu.</p>
+<p>Laboratoria odbędą się 8 listopada i 13 grudnia. Przykłady wykładowe nie zakładają, że implementacja laboratoryjna została już wykonana.</p>
 </div>
 </div>
 </section>
-<section id="wersjonowanie-api" class="level2">
-<h2 class="anchored" data-anchor-id="wersjonowanie-api">4️⃣ Wersjonowanie API</h2>
-<p>Kiedy zmieniasz kształt API w sposób, który złamałby istniejących klientów (np. zmieniasz nazwę pola), potrzebujesz wersjonowania:</p>
-<pre><code>/api/v1/poligony
-/api/v2/poligony</code></pre>
-<p>Alternatywa: wersjonowanie przez nagłówek (<code>Accept: application/vnd.api.v2+json</code>) — rzadziej spotykane w praktyce, ale czystsze koncepcyjnie. Nasz projekt jest na razie za mały, żeby potrzebować którejkolwiek z tych opcji naprawdę — zapamiętajcie obie jako narzędzia na później, gdy API będzie miało zewnętrznych klientów.</p>
-</section>
-<section id="openapi-dokumentacja-blisko-kodu" class="level2">
-<h2 class="anchored" data-anchor-id="openapi-dokumentacja-blisko-kodu">5️⃣ OpenAPI — dokumentacja blisko kodu</h2>
-<p>Pamiętacie <code>/docs</code> z pierwszego laboratorium? To nie przypadek, że działa automatycznie — FastAPI <strong>generuje specyfikację OpenAPI</strong> (JSON opisujący każdy endpoint, jego parametry, kształt odpowiedzi) bezpośrednio z Waszego kodu (adnotacji typów, modeli Pydantic). Dostępna jest pod <code>/openapi.json</code>.</p>
-<p><strong>Dlaczego to pomaga</strong>: dokumentacja pisana ręcznie (osobny plik Word/Markdown) <strong>zawsze</strong> z czasem rozjeżdża się z rzeczywistym kodem — ktoś zmienia endpoint i zapomina zaktualizować opis. Dokumentacja generowana z kodu jest bliżej prawdy, bo typy i nazwy parametrów <strong>nie mogą</strong> się rozjechać — to dosłownie ta sama adnotacja.</p>
-<div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>To nie jest automat, o którym można zapomnieć
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>“Blisko kodu” nie znaczy “całkowicie odporne na błędy”. FastAPI wie o kodach błędów, które zwraca <em>domyślnie</em> (np. <code>422</code> z Pydantic) — ale własny <code>HTTPException(404, ...)</code> w ciele funkcji <strong>nie pojawi się</strong> w <code>/docs</code>, dopóki nie zadeklarujecie go jawnie w <code>responses</code> (przykład niżej). Zmienisz logikę błędu w kodzie i zapomnisz zaktualizować <code>responses</code> — i dokumentacja jednak się rozjedzie. “Generowane z kodu” zmniejsza ryzyko, nie eliminuje go.</p>
-</div>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="at">@app.get</span>(</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"/poligony/</span><span class="sc">{poligon_id}</span><span class="st">"</span>,</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    response_model<span class="op">=</span>Poligon,</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    summary<span class="op">=</span><span class="st">"Pobierz jeden poligon po ID"</span>,</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    description<span class="op">=</span><span class="st">"Zwraca 404, jesli poligon o podanym ID nie istnieje."</span>,</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> pobierz_poligon(poligon_id: <span class="bu">int</span>):</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    ...</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Parametry <code>summary</code>/<code>description</code> trafiają bezpośrednio do <code>/docs</code> — dobra dokumentacja API to część kodu, nie osobny dokument.</p>
-</section>
-<section id="spójna-struktura-błędów" class="level2">
-<h2 class="anchored" data-anchor-id="spójna-struktura-błędów">6️⃣ Spójna struktura błędów</h2>
-<p>Zamiast każdy endpoint zwracający błędy w innym formacie, warto ustalić jeden wzorzec:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"detail"</span><span class="fu">:</span> <span class="st">"Poligon nie znaleziony"</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>FastAPI robi to domyślnie dla <code>HTTPException</code> (dokładnie ten kształt, który widzieliście już w laboratoriach) — trzymajcie się tego wzorca konsekwentnie we wszystkich endpointach.</p>
-<hr>
-</section>
-<section id="podsumowanie-części-i" class="level2">
-<h2 class="anchored" data-anchor-id="podsumowanie-części-i">🧾 Podsumowanie części I</h2>
-<ul>
-<li>URL opisuje zasób (rzeczownik, liczba mnoga), metoda HTTP opisuje akcję.</li>
-<li>Zagnieżdżaj zasoby maksymalnie na 2 poziomy; filtruj/sortuj/paginuj przez query params.</li>
-<li>Wersjonuj API (prefiks ścieżki albo nagłówek), gdy zmiana złamałaby istniejących klientów.</li>
-<li>OpenAPI/Swagger generowane z kodu jest bliżej prawdy niż ręcznie pisana dokumentacja — ale własne kody błędów wciąż trzeba zadeklarować jawnie (<code>responses</code>).</li>
-</ul>
-<hr>
-</section>
-</section>
-<section id="część-ii-bezpieczeństwo-aplikacji-sieciowych" class="level1">
-<h1>🔒 Część II — Bezpieczeństwo aplikacji sieciowych</h1>
-<section id="cele-1" class="level2">
-<h2 class="anchored" data-anchor-id="cele-1">🎯 Cele</h2>
-<p>Poznasz różnicę między uwierzytelnianiem a autoryzacją, zrozumiesz jak działają tokeny JWT, oraz poznasz najważniejsze podatności z listy OWASP Top 10 i jak się przed nimi bronić — wiedzę, którą zastosujesz praktycznie w kolejnych laboratoriach.</p>
-<hr>
-</section>
-<section id="uwierzytelnianie-vs-autoryzacja" class="level2">
-<h2 class="anchored" data-anchor-id="uwierzytelnianie-vs-autoryzacja">1️⃣ Uwierzytelnianie vs autoryzacja</h2>
-<p>To dwa <strong>różne</strong> pytania, często mylone:</p>
+<section id="zasoby-adresy-i-metody" class="level2">
+<h2 class="anchored" data-anchor-id="zasoby-adresy-i-metody">Zasoby, adresy i metody</h2>
+<p><strong>REST — Representational State Transfer</strong> jest stylem architektonicznym. W stosowanej na kursie konwencji zasoby mają adresy, a metody <strong>HTTP — Hypertext Transfer Protocol</strong> wyrażają semantykę operacji. Sama liczba mnoga w adresie nie dowodzi zgodności systemu z całym stylem REST, ale pomaga tworzyć przewidywalny interfejs.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 33%">
-<col style="width: 29%">
-<col style="width: 37%">
+<col style="width: 33%">
+<col style="width: 33%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>Pytanie</th>
-<th>Termin</th>
+<th>Operacja</th>
 <th>Przykład</th>
+<th>Znaczenie</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Kim jesteś?</strong></td>
-<td>Uwierzytelnianie (<em>authentication</em>)</td>
-<td>login + hasło, token</td>
+<td>Lista obiektów</td>
+<td><code>GET /poligony</code></td>
+<td>Pobranie kolekcji</td>
 </tr>
 <tr class="even">
-<td><strong>Co wolno Ci zrobić?</strong></td>
-<td>Autoryzacja (<em>authorization</em>)</td>
-<td>planista może zatwierdzać rezerwacje, żołnierz — nie</td>
+<td>Wybrany obiekt</td>
+<td><code>GET /poligony/1</code></td>
+<td>Pobranie jednej reprezentacji</td>
+</tr>
+<tr class="odd">
+<td>Nowy obiekt</td>
+<td><code>POST /poligony</code></td>
+<td>Utworzenie zasobu</td>
+</tr>
+<tr class="even">
+<td>Zastąpienie danych</td>
+<td><code>PUT /poligony/1</code></td>
+<td>Przesłanie pełnego zestawu edytowalnych pól</td>
+</tr>
+<tr class="odd">
+<td>Częściowa zmiana</td>
+<td><code>PATCH /poligony/1</code></td>
+<td>Zmiana wskazanych pól</td>
+</tr>
+<tr class="even">
+<td>Usunięcie obiektu</td>
+<td><code>DELETE /poligony/1</code></td>
+<td>Próba usunięcia zgodna z regułami bazy</td>
 </tr>
 </tbody>
 </table>
-<p>System może <strong>wiedzieć, kim jesteś</strong> (uwierzytelniony), ale mimo to <strong>odmówić Ci operacji</strong> (brak autoryzacji) — to dokładnie różnica między <code>401</code> a <code>403</code> ze spotkania 1.</p>
+<p>Adres, czyli <strong>URL — Uniform Resource Locator</strong>, powinien być stabilny względem kolejności wyników. Identyfikator 1 nie oznacza „pierwszego elementu obecnej listy”. Usunięcie obiektu używanego przez rezerwacje może zostać odrzucone — dostępność metody nie oznacza, że każda operacja jest dopuszczalna w każdym stanie systemu.</p>
+<section id="filtrowanie-i-stronicowanie" class="level3">
+<h3 class="anchored" data-anchor-id="filtrowanie-i-stronicowanie">Filtrowanie i stronicowanie</h3>
+<pre class="http"><code>GET /poligony?typ=sala
+GET /rezerwacje?poligon_id=1&amp;status=zatwierdzona</code></pre>
+<p>Oba filtry są obsługiwane przez demonstrator. Parametry po <code>?</code> zawężają kolekcję; pusta lista spełniających warunki obiektów jest poprawnym wynikiem <code>200 OK</code>, a nie błędem <code>404 Not Found</code>.</p>
+<p>Dla większych zbiorów kontrakt powinien również określać stronicowanie, stabilną kolejność i limit rozmiaru odpowiedzi. Przykładowe <code>GET /rezerwacje?limit=20&amp;offset=40</code> jest <strong>propozycją rozszerzenia</strong>; obecny demonstrator nie implementuje tych parametrów. Stronicowanie bez jednoznacznego sortowania może powodować powtarzanie lub pomijanie elementów.</p>
 </section>
-<section id="jak-przechowywać-hasła-nigdy-jawnym-tekstem" class="level2">
-<h2 class="anchored" data-anchor-id="jak-przechowywać-hasła-nigdy-jawnym-tekstem">2️⃣ Jak przechowywać hasła — nigdy jawnym tekstem</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># NIGDY:</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> podane_haslo <span class="op">==</span> uzytkownik.haslo:  <span class="co"># haslo w bazie jako czysty tekst</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># ZAWSZE: hashowanie z "solą"</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> bcrypt</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>hash_hasla <span class="op">=</span> bcrypt.hashpw(haslo.encode(), bcrypt.gensalt())</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co"># ... zapisz hash_hasla w bazie, NIGDY samego hasla</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co"># przy logowaniu:</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>bcrypt.checkpw(podane_haslo.encode(), hash_hasla)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><code>bcrypt</code> (i podobne: <code>argon2</code>, <code>scrypt</code>) to <strong>funkcje jednokierunkowe</strong> — z hasha nie da się odtworzyć hasła, a każde wywołanie z “solą” (losowym dodatkiem) daje inny wynik nawet dla tego samego hasła, co chroni przed atakami tęczowych tablic (<em>rainbow tables</em>). Praktykę tę zastosujecie w kolejnych laboratoriach.</p>
+<section id="wersjonowanie" class="level3">
+<h3 class="anchored" data-anchor-id="wersjonowanie">Wersjonowanie</h3>
+<p>Zmiana nazwy pola lub znaczenia kodu odpowiedzi może uszkodzić istniejącego klienta. Wersjonowanie, np. <code>/api/v1/rezerwacje</code>, pozwala rozdzielić niezgodne kontrakty, lecz nie zastępuje planu migracji. Dodanie nowego opcjonalnego pola nie zawsze wymaga nowej wersji. Decyduje zgodność z rzeczywistymi klientami, a nie sam fakt zmiany kodu.</p>
 </section>
-<section id="sesje-vs-tokeny-dwa-modele-uwierzytelniania" class="level2">
-<h2 class="anchored" data-anchor-id="sesje-vs-tokeny-dwa-modele-uwierzytelniania">3️⃣ Sesje vs tokeny — dwa modele uwierzytelniania</h2>
+</section>
+<section id="walidacja-poprawny-json-nie-wystarcza" class="level2">
+<h2 class="anchored" data-anchor-id="walidacja-poprawny-json-nie-wystarcza">Walidacja: poprawny JSON nie wystarcza</h2>
+<p><strong>JSON — JavaScript Object Notation</strong> określa sposób zapisu danych, ale nie ich poprawność biznesową. Rezerwacja może być poprawnym dokumentem JSON, a mimo to wskazywać nieistniejący obiekt albo kończyć się przed rozpoczęciem.</p>
+<p>Walidacja występuje na kilku poziomach:</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 33%">
@@ -488,100 +390,328 @@ GET /rezerwacje?strona=2&amp;na_strone=20         -- paginacja</code></pre>
 </colgroup>
 <thead>
 <tr class="header">
-<th></th>
-<th>Sesje (cookie-based)</th>
-<th>Tokeny (JWT)</th>
+<th>Poziom</th>
+<th>Przykład kontroli</th>
+<th>Miejsce odpowiedzialności</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Gdzie żyje stan</td>
-<td>po stronie serwera (baza sesji)</td>
-<td>w samym tokenie, po stronie klienta</td>
+<td>Struktura danych</td>
+<td>Identyfikator jest dodatnią liczbą, czas zawiera strefę</td>
+<td>Model wejściowy API</td>
 </tr>
 <tr class="even">
-<td>Skalowanie na wiele serwerów</td>
-<td>wymaga współdzielonej bazy sesji</td>
-<td>trywialne — każdy serwer sam zweryfikuje token</td>
+<td>Znaczenie danych</td>
+<td>Początek poprzedza koniec i jest w przyszłości</td>
+<td>Logika aplikacji</td>
 </tr>
 <tr class="odd">
-<td>Unieważnienie przed wygaśnięciem</td>
-<td>łatwe (usuń z bazy)</td>
-<td>trudniejsze (token jest ważny, dopóki nie wygaśnie)</td>
+<td>Stan systemu</td>
+<td>Obiekt jest dostępny, termin nie koliduje</td>
+<td>Logika i transakcja bazodanowa</td>
+</tr>
+<tr class="even">
+<td>Uprawnienia</td>
+<td>Konto może rezerwować dla wskazanej jednostki</td>
+<td>Autoryzacja po stronie serwera</td>
 </tr>
 </tbody>
 </table>
-<p>W tym kursie używamy <strong>JWT</strong> (JSON Web Token) — pasuje do architektury bezstanowej ze spotkania 1.</p>
-</section>
-<section id="anatomia-jwt-wariantu-którego-używamy" class="level2">
-<h2 class="anchored" data-anchor-id="anatomia-jwt-wariantu-którego-używamy">4️⃣ Anatomia JWT (wariantu, którego używamy)</h2>
-<p>Standard JWT (RFC 7519) dopuszcza dwa warianty: <strong>JWS</strong> (JSON Web <em>Signature</em> — podpisany, ale czytelny) i <strong>JWE</strong> (JSON Web <em>Encryption</em> — faktycznie zaszyfrowany). <strong>W tym kursie, jak w zdecydowanej większości praktycznych API, używamy JWS</strong> — poniższy opis dotyczy tego wariantu, nie każdego możliwego tokenu JWT.</p>
-<p>Token JWS to trzy części oddzielone kropkami: <code>header.payload.signature</code></p>
-<pre><code>eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5rb3dhbHNraSIsInJvbGEiOiJkb3dvZGNhIn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c</code></pre>
-<ul>
-<li><strong>Header</strong> — jaki algorytm podpisu (np. <code>HS256</code>).</li>
-<li><strong>Payload</strong> — dane (np. <code>{"sub": "jankowalski", "rola": "dowodca", "exp": 1735689600}</code>) — <strong>czytelne dla każdego</strong> (to tylko Base64, nie szyfrowanie!), więc <strong>nigdy</strong> nie wkładajcie tam haseł czy innych sekretów.</li>
-<li><strong>Signature</strong> — podpis kryptograficzny, weryfikowany kluczem znanym tylko serwerowi — to on gwarantuje, że nikt nie sfałszował payloadu.</li>
-</ul>
-<div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Nasz JWT (JWS) jest podpisany, nie zaszyfrowany
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Każdy, kto przechwyci token, może <strong>odczytać</strong> jego zawartość (Base64 to nie szyfrowanie) — nie może jej jednak <strong>zmienić</strong> niezauważenie, bo podpis by się nie zgadzał. Wniosek: JWS chroni przed fałszowaniem danych, nie przed ich odczytaniem — transport tokenu musi iść przez HTTPS, żeby nikt po drodze go nie podsłuchał. (JWE rozwiązałby też problem odczytu, kosztem większej złożoności — poza zakresem tego kursu.)</p>
-</div>
-</div>
-</section>
-<section id="owasp-top-10-trzy-podatności-które-napotkacie-w-laboratoriach" class="level2">
-<h2 class="anchored" data-anchor-id="owasp-top-10-trzy-podatności-które-napotkacie-w-laboratoriach">5️⃣ OWASP Top 10 — trzy podatności, które napotkacie w laboratoriach</h2>
-<section id="sql-injection" class="level3">
-<h3 class="anchored" data-anchor-id="sql-injection">SQL Injection</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># PODATNE:</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>conn.execute(<span class="ss">f"SELECT * FROM uzytkownicy WHERE login = '</span><span class="sc">{</span>login<span class="sc">}</span><span class="ss">'"</span>)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># atakujacy wpisuje: login = "' OR '1'='1"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Obrona: <strong>zawsze</strong> parametryzowane zapytania (widzieliście to już przy bazie danych) — <code>conn.execute("... WHERE login = ?", (login,))</code>.</p>
-</section>
-<section id="xss-cross-site-scripting" class="level3">
-<h3 class="anchored" data-anchor-id="xss-cross-site-scripting">XSS (Cross-Site Scripting)</h3>
-<p>Atakujący wstrzykuje złośliwy JavaScript do danych, które potem są wyświetlane innemu użytkownikowi bez odpowiedniego oczyszczenia (np. komentarz zawierający <code>&lt;script&gt;...&lt;/script&gt;</code>, wyświetlony bez escapowania w przeglądarce ofiary).</p>
-<p>Obrona: nowoczesne frameworki frontendowe (React i podobne) domyślnie escapują dane przy renderowaniu — problem pojawia się głównie, gdy ktoś świadomie to wyłączy (<code>dangerouslySetInnerHTML</code> i podobne).</p>
-</section>
-<section id="csrf-cross-site-request-forgery" class="level3">
-<h3 class="anchored" data-anchor-id="csrf-cross-site-request-forgery">CSRF (Cross-Site Request Forgery)</h3>
-<p>Atakujący nakłania przeglądarkę ofiary (zalogowanej w Waszej aplikacji) do wysłania żądania bez jej wiedzy (np. przez ukryty formularz na złośliwej stronie). Ponieważ przeglądarka automatycznie dołącza cookies do żądań, serwer “widzi” żądanie jako uwierzytelnione.</p>
-<p>Obrona: API oparte o JWT w nagłówku <code>Authorization</code> (nie w cookies) jest <strong>z natury odporne</strong> na klasyczny CSRF — atakująca strona nie ma dostępu do tokenu przechowywanego przez Waszą aplikację (np. w pamięci JS), więc nie może go dołączyć do sfałszowanego żądania.</p>
+<p>W demonstratorze nieznane pola są odrzucane. Przesłanie <code>rola=planista</code> nie stworzy zatem uprawnień, ale samo odrzucanie dodatkowych pól nie zastępuje implementacji kont i autoryzacji.</p>
+<section id="nakładanie-się-przedziałów" class="level3">
+<h3 class="anchored" data-anchor-id="nakładanie-się-przedziałów">Nakładanie się przedziałów</h3>
+<p>Dwa przedziały tego samego obiektu kolidują, gdy:</p>
+<pre class="text"><code>new_start &lt; old_end AND new_end &gt; old_start</code></pre>
+<p>Przedziały są półotwarte: początek należy do rezerwacji, a koniec już nie. Dlatego 10:00–11:00 nie koliduje z R1 kończącą się o 10:00.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Próba przy istniejącej R1: P1, 08:00–10:00</th>
+<th>Oczekiwana odpowiedź demonstratora</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>P1, 10:00–11:00</td>
+<td><code>201</code> — utworzenie rezerwacji</td>
+</tr>
+<tr class="even">
+<td>P1, 09:00–11:00</td>
+<td><code>409</code> — konflikt terminów</td>
+</tr>
+<tr class="odd">
+<td>P2, 10:00–11:00</td>
+<td><code>409</code> — obiekt niedostępny z powodu przeglądu</td>
+</tr>
+<tr class="even">
+<td>Początek równy końcowi</td>
+<td><code>422</code> — niepoprawny przedział</td>
+</tr>
+<tr class="odd">
+<td>Nieistniejąca jednostka</td>
+<td><code>404</code> — brak wskazanego zasobu</td>
+</tr>
+</tbody>
+</table>
+<p>Próby wymagają znanego stanu bazy. Po udanej rezerwacji 10:00–11:00 ponowienie tego samego żądania napotka już konflikt. Dwa wyniki <code>409</code> w tabeli mają różne przyczyny; treść odpowiedzi musi je wyjaśniać.</p>
 </section>
 </section>
-<section id="httpstls-dlaczego-zawsze" class="level2">
-<h2 class="anchored" data-anchor-id="httpstls-dlaczego-zawsze">6️⃣ HTTPS/TLS — dlaczego zawsze</h2>
-<p>Bez TLS każdy w tej samej sieci (Wi-Fi w kawiarni, router po drodze) może odczytać <strong>cały</strong> ruch — łącznie z tokenami JWT i hasłami przesyłanymi przy logowaniu. TLS szyfruje transport między klientem a serwerem — to warunek konieczny, nie opcjonalny dodatek, dla każdej aplikacji przyjmującej dane logowania.</p>
-<hr>
+<section id="kody-odpowiedzi-jako-część-kontraktu" class="level2">
+<h2 class="anchored" data-anchor-id="kody-odpowiedzi-jako-część-kontraktu">Kody odpowiedzi jako część kontraktu</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Kod</th>
+<th>Znaczenie w projekcie</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>200 OK</code></td>
+<td>Poprawny odczyt lub zmiana zwracająca reprezentację</td>
+</tr>
+<tr class="even">
+<td><code>201 Created</code></td>
+<td>Utworzenie nowego zasobu</td>
+</tr>
+<tr class="odd">
+<td><code>204 No Content</code></td>
+<td>Sukces bez treści odpowiedzi</td>
+</tr>
+<tr class="even">
+<td><code>401 Unauthorized</code></td>
+<td>Brak poprawnego uwierzytelnienia dla chronionej operacji</td>
+</tr>
+<tr class="odd">
+<td><code>403 Forbidden</code></td>
+<td>Odmowa wykonania operacji; w naszej polityce konto nie ma wymaganych uprawnień</td>
+</tr>
+<tr class="even">
+<td><code>404 Not Found</code></td>
+<td>Wskazany pojedynczy zasób nie istnieje</td>
+</tr>
+<tr class="odd">
+<td><code>409 Conflict</code></td>
+<td>Konflikt z obecnym stanem, np. zajęty termin</td>
+</tr>
+<tr class="even">
+<td><code>422 Unprocessable Content</code></td>
+<td>Dane nie spełniają przyjętych wymagań walidacji</td>
+</tr>
+<tr class="odd">
+<td><code>503 Service Unavailable</code></td>
+<td>Usługa chwilowo nie może wykonać operacji, np. wskutek zajęcia bazy</td>
+</tr>
+</tbody>
+</table>
+<p>Wariant chroniony powinien przy <code>401</code> przesyłać odpowiednie wyzwanie <code>WWW-Authenticate</code>, np. <code>Bearer</code>. Odpowiedź <code>403</code> jest przyjętą tutaj polityką odmowy dostępu; inne systemy mogą używać <code>404</code>, aby nie ujawniać istnienia zasobu.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span><span class="dt">"detail"</span><span class="fu">:</span> <span class="st">"Konflikt terminów."</span><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>To przykładowy błąd biznesowy demonstratora. Błędy walidacji FastAPI mogą mieć w <code>detail</code> listę obiektów opisujących poszczególne pola, a nie pojedynczy tekst. Klient musi obsługiwać udokumentowane warianty zamiast zakładać jeden kształt każdej odpowiedzi błędnej.</p>
 </section>
-<section id="podsumowanie-części-ii" class="level2">
-<h2 class="anchored" data-anchor-id="podsumowanie-części-ii">🧾 Podsumowanie części II</h2>
-<ul>
-<li>Uwierzytelnianie = kim jesteś; autoryzacja = co wolno Ci zrobić — to dwa osobne mechanizmy.</li>
-<li>Hasła zawsze hashowane (bcrypt/argon2), nigdy przechowywane jawnym tekstem.</li>
-<li>Nasz wariant JWT (JWS) jest podpisany (integralność), nie zaszyfrowany (poufność) — payload jest czytelny dla każdego; JWE istnieje, ale to poza zakresem kursu.</li>
-<li>SQL injection, XSS, CSRF — trzy klasyczne podatności; parametryzowane zapytania, escapowanie i tokeny w nagłówku to podstawowa obrona.</li>
-</ul>
+<section id="openapi-dokumentacja-i-rzeczywiste-zachowanie" class="level2">
+<h2 class="anchored" data-anchor-id="openapi-dokumentacja-i-rzeczywiste-zachowanie">OpenAPI: dokumentacja i rzeczywiste zachowanie</h2>
+<p>OpenAPI jest specyfikacją opisu interfejsów HTTP. FastAPI tworzy dokument <code>/openapi.json</code> na podstawie modeli i deklaracji operacji. Swagger UI pod <code>/docs</code> jest interaktywną prezentacją tego opisu. <strong>UI — User Interface</strong> oznacza interfejs użytkownika.</p>
+<p>Generowanie dokumentacji ogranicza powielanie definicji pól, ale nie analizuje całej logiki funkcji. Wyjątek <code>HTTPException(404, ...)</code> w ciele funkcji nie jest sam w sobie deklaracją odpowiedzi w OpenAPI. Własne odpowiedzi należy opisać jawnie, np. przez <code>responses</code>.</p>
+<p>Poniższy kompletny, mały przykład pokazuje deklarację; jest osobną ilustracją, a nie zmianą zainstalowanej aplikacji „Sosna”:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastapi <span class="im">import</span> FastAPI, HTTPException</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pydantic <span class="im">import</span> BaseModel</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> FastAPI()</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Resource(BaseModel):</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">id</span>: <span class="bu">int</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    name: <span class="bu">str</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="at">@app.get</span>(</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"/poligony/</span><span class="sc">{resource_id}</span><span class="st">"</span>,</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    response_model<span class="op">=</span>Resource,</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    responses<span class="op">=</span>{<span class="dv">404</span>: {<span class="st">"description"</span>: <span class="st">"Resource not found"</span>}},</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_resource(resource_id: <span class="bu">int</span>) <span class="op">-&gt;</span> Resource:</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> resource_id <span class="op">!=</span> <span class="dv">1</span>:</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> HTTPException(status_code<span class="op">=</span><span class="dv">404</span>, detail<span class="op">=</span><span class="st">"Resource not found"</span>)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> Resource(<span class="bu">id</span><span class="op">=</span><span class="dv">1</span>, name<span class="op">=</span><span class="st">"Training ground"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Deklaracja <code>responses</code> dokumentuje możliwość błędu. Dopiero warunek i wyjątek realizują ją podczas wykonania. Dokumentację należy sprawdzać przez rzeczywiste wywołania, także dla przypadków niepoprawnych.</p>
+</section>
+<section id="uwierzytelnianie-i-autoryzacja" class="level2">
+<h2 class="anchored" data-anchor-id="uwierzytelnianie-i-autoryzacja">Uwierzytelnianie i autoryzacja</h2>
+<p><strong>Authentication — uwierzytelnianie</strong> ustala tożsamość klienta. <strong>Authorization — autoryzacja</strong> ustala, czy ten klient może wykonać konkretną operację na konkretnym zasobie. Poprawne logowanie nie daje prawa do wszystkich danych.</p>
+<p>Proponowana polityka rozbudowanej aplikacji:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Operacja</th>
+<th>Gość</th>
+<th>Konto jednostki Alfa</th>
+<th>Planista</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Odczyt ogólnej dostępności</td>
+<td>Tak</td>
+<td>Tak</td>
+<td>Tak</td>
+</tr>
+<tr class="even">
+<td>Odczyt szczegółów rezerwacji jednostki Alfa</td>
+<td>Nie</td>
+<td>Tak</td>
+<td>Tak</td>
+</tr>
+<tr class="odd">
+<td>Odczyt szczegółów rezerwacji Bravo</td>
+<td>Nie</td>
+<td>Nie</td>
+<td>Tak</td>
+</tr>
+<tr class="even">
+<td>Utworzenie rezerwacji dla Alfy</td>
+<td>Nie</td>
+<td>Tak</td>
+<td>Tak</td>
+</tr>
+<tr class="odd">
+<td>Utworzenie rezerwacji dla Bravo</td>
+<td>Nie</td>
+<td>Nie</td>
+<td>Tak</td>
+</tr>
+<tr class="even">
+<td>Zmiana dostępności obiektu</td>
+<td>Nie</td>
+<td>Nie</td>
+<td>Tak</td>
+</tr>
+</tbody>
+</table>
+<p>Szczegóły polityki są decyzją projektową. Publiczna dostępność obiektu nie musi oznaczać publicznej listy jednostek, które go rezerwują.</p>
+<section id="przypadek-zmiana-identyfikatora" class="level3">
+<h3 class="anchored" data-anchor-id="przypadek-zmiana-identyfikatora">Przypadek: zmiana identyfikatora</h3>
+<p>Konto Alfy wysyła żądanie dotyczące rezerwacji Bravo. Ukrycie przycisku w przeglądarce nie zapobiega ręcznemu wysłaniu tego żądania. Serwer powinien:</p>
+<ol type="1">
+<li>Zweryfikować uwierzytelnienie.</li>
+<li>Ustalić rolę i jednostkę z zaufanych danych konta.</li>
+<li>Odczytać wskazany obiekt i sprawdzić uprawnienie do żądanej operacji.</li>
+<li>Dopiero po spełnieniu warunków wykonać zmianę.</li>
+</ol>
+<p>Identyfikator jednostki w JSON nie stanowi dowodu przynależności użytkownika. Rola przekazana przez klienta przy rejestracji nie może samodzielnie nadawać uprawnień planisty. Zasady powinny obowiązywać również przy listowaniu, a nie wyłącznie przy pobraniu pojedynczej rezerwacji.</p>
+</section>
+</section>
+<section id="hasła-sesje-i-tokeny" class="level2">
+<h2 class="anchored" data-anchor-id="hasła-sesje-i-tokeny">Hasła, sesje i tokeny</h2>
+<p>Hasła są przechowywane jako wyniki funkcji przeznaczonych do hashowania haseł, z indywidualną losową solą i odpowiednim kosztem obliczeń. Przykładem jest Argon2id; bcrypt pozostaje spotykany w istniejących systemach. Zwykły szybki skrót, np. SHA-256 bez mechanizmu przeznaczonego do haseł, nie spełnia tego celu. Hashowanie nie uniemożliwia zgadywania słabego hasła — podnosi koszt prób.</p>
+<p>Po zalogowaniu klient może używać identyfikatora sesji lub tokenu:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Rozwiązanie</th>
+<th>Gdzie ustalany jest stan</th>
+<th>Istotny koszt</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Sesja po stronie serwera</td>
+<td>Magazyn sesji powiązany z identyfikatorem klienta</td>
+<td>Dostęp do magazynu i utrzymanie sesji</td>
+</tr>
+<tr class="even">
+<td>Samodzielnie weryfikowany token</td>
+<td>Podpisane informacje i polityka weryfikacji</td>
+<td>Czas ważności, rotacja kluczy i unieważnianie</td>
+</tr>
+</tbody>
+</table>
+<p>Cookie i token nie są przeciwstawnymi kategoriami: cookie jest sposobem przechowania i przesyłania wartości przez przeglądarkę, a JWT formatem tokenu. JWT również może być przesyłany w cookie.</p>
+<section id="jwt-i-jws" class="level3">
+<h3 class="anchored" data-anchor-id="jwt-i-jws">JWT i JWS</h3>
+<p><strong>JWT — JSON Web Token</strong> jest formatem przenoszenia deklaracji o podmiocie. W omawianym wariancie <strong>JWS — JSON Web Signature</strong> zapewnia ochronę integralności:</p>
+<pre class="text"><code>header.payload.signature</code></pre>
+<p>Nagłówek i dane są kodowane Base64url, a nie szyfrowane. Podpis cyfrowy lub <strong>MAC — Message Authentication Code</strong>, kod uwierzytelniający wiadomość, pozwala wykryć modyfikację. W wariancie symetrycznym HS256 strony weryfikujące znają wspólny sekret; przy podpisie asymetrycznym weryfikacja używa klucza publicznego.</p>
+<p>Serwer sprawdza dozwolony algorytm, integralność i wymagane deklaracje, np. <code>exp</code> — czas wygaśnięcia, <code>iss</code> — wystawcę, <code>aud</code> — odbiorcę. Samo odkodowanie payloadu nie jest weryfikacją tokenu. <strong>JWE — JSON Web Encryption</strong> jest odrębnym mechanizmem szyfrowania; nie należy przypisywać jego właściwości JWS.</p>
+<p>Token typu <strong>Bearer</strong> może wykorzystać jego posiadacz. Transport wymaga <strong>HTTPS — Hypertext Transfer Protocol Secure</strong>, czyli HTTP chronionego przez <strong>TLS — Transport Layer Security</strong>. Tokeny i hasła nie powinny trafiać do logów.</p>
+</section>
+</section>
+<section id="wybrane-zagrożenia-aplikacji-sieciowej" class="level2">
+<h2 class="anchored" data-anchor-id="wybrane-zagrożenia-aplikacji-sieciowej">Wybrane zagrożenia aplikacji sieciowej</h2>
+<p><strong>OWASP — Open Worldwide Application Security Project</strong> publikuje materiały poświęcone bezpieczeństwu aplikacji. Dla projektu szczególnie istotne są:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Zagrożenie</th>
+<th>Przykład</th>
+<th>Podstawowa ochrona</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Brak kontroli dostępu do obiektu</td>
+<td>Alfa zmienia rezerwację Bravo</td>
+<td>Sprawdzenie roli i właściciela na serwerze</td>
+</tr>
+<tr class="even">
+<td>SQL injection</td>
+<td>Dane wejściowe zmieniają strukturę zapytania</td>
+<td>Parametryzacja wartości, kontrolowana lista nazw kolumn</td>
+</tr>
+<tr class="odd">
+<td>XSS — Cross-Site Scripting</td>
+<td>Opis obiektu zostaje wykonany jako skrypt</td>
+<td>Kodowanie wyjścia odpowiednie do kontekstu; unikanie wstawiania niezaufanego HTML</td>
+</tr>
+<tr class="even">
+<td>CSRF — Cross-Site Request Forgery</td>
+<td>Przeglądarka wysyła niezamierzone żądanie z automatycznie dołączonym cookie</td>
+<td>Ochrona CSRF, kontrola pochodzenia i odpowiednie ustawienia cookies</td>
+</tr>
+</tbody>
+</table>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Values are parameters, not fragments of SQL syntax.</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>row <span class="op">=</span> connection.execute(</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"SELECT * FROM poligony WHERE id = ?"</span>, (resource_id,)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>).fetchone()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Nagłówek <code>Authorization</code> dodawany jawnie przez aplikację zmienia model ryzyka klasycznego CSRF, lecz nie chroni przed XSS ani kradzieżą tokenu. <strong>CORS — Cross-Origin Resource Sharing</strong> określa zasady dostępu skryptów przeglądarki między originami. Nie zastępuje uwierzytelniania ani autoryzacji; klient spoza przeglądarki nie staje się przez CORS niezdolny do wysłania żądania.</p>
+</section>
+<section id="przypadki-do-przeanalizowania" class="level2">
+<h2 class="anchored" data-anchor-id="przypadki-do-przeanalizowania">Przypadki do przeanalizowania</h2>
+<ol type="1">
+<li>R1 kończy się o 10:00. Porównanie prób 09:00–11:00 i 10:00–11:00 powinno odwoływać się do konkretnego warunku kolizji, nie tylko do kodu odpowiedzi.</li>
+<li>Alfa zna identyfikator rezerwacji Bravo. Należy wskazać miejsce kontroli uprawnień oraz dane, którym serwer może zaufać.</li>
+<li>Odpowiedź na <code>POST</code> nie dotarła. Klient nie wie jeszcze, czy zapis nastąpił. Poprawny format API nie zapewnia automatycznie bezpiecznego ponowienia.</li>
+</ol>
+<p>Trzeci przypadek prowadzi do <a href="../lectures/spotkanie3.html">wykładu 3</a>: współbieżność, trwałość danych i odpowiedzialność infrastruktury.</p>
 </section>
 <section id="źródła" class="level2">
-<h2 class="anchored" data-anchor-id="źródła">📚 Źródła</h2>
+<h2 class="anchored" data-anchor-id="źródła">Źródła</h2>
 <ul>
-<li>Dokumentacja FastAPI — <em>Path Operations</em>, <em>OpenAPI</em>, <em>Security</em></li>
-<li>M. Masse, <em>REST API Design Rulebook</em></li>
-<li>OWASP Top 10 (owasp.org)</li>
-<li>RFC 7519 — <em>JSON Web Token (JWT)</em></li>
+<li><a href="https://fastapi.tiangolo.com/advanced/additional-responses/">FastAPI — Additional Responses in OpenAPI</a>.</li>
+<li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html">OWASP — Authorization Cheat Sheet</a>.</li>
+<li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html">OWASP — Password Storage Cheat Sheet</a>.</li>
+<li><a href="https://cheatsheetseries.owasp.org/cheatsheets/JSON_Web_Token_Cheat_Sheet.html">OWASP — JSON Web Token Cheat Sheet</a>.</li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc7519">RFC 7519 — JSON Web Token</a>.</li>
 </ul>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->

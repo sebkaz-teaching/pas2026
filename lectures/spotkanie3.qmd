@@ -1,8 +1,14 @@
 ---
-title: "Spotkanie 3: Skalowalność i wdrażanie"
+title: "Wykład 3: Współbieżność, skalowalność i wdrażanie"
 ---
 
-## ✅ Sprawdź się ze spotkania 2
+**Termin: sobota, 24 października 2026 r. — druga część wspólnego bloku 4 × 45 minut.**
+
+Wykłady 2 i 3 odbywają się podczas jednego spotkania. Każdy moduł obejmuje
+2 × 45 minut. Materiał na stronie rozwija przykłady omawiane na wykładzie;
+samodzielna praca nad implementacją będzie realizowana na laboratoriach.
+
+## Test z wykładu 2
 
 <div id="pas-quiz"></div>
 <script src="../assets/js/quiz-engine.js"></script>
@@ -10,7 +16,7 @@ title: "Spotkanie 3: Skalowalność i wdrażanie"
 CourseQuiz.mount(document.getElementById('pas-quiz'), {
   course: "pas2026",
   lecture: "spotkanie3",
-  title: "Spotkanie 2: Projektowanie API i bezpieczeństwo",
+  title: "Wykład 2: Projektowanie API i bezpieczeństwo",
   submitUrl: "https://sebastianzajac.pl/rsod-quiz/submit.php",
   questions: [
     {
@@ -35,20 +41,20 @@ CourseQuiz.mount(document.getElementById('pas-quiz'), {
     },
     {
       id: "q3", points: 2, diff: "średnie",
-      text: "Dlaczego dokumentacja OpenAPI generowana z kodu jest lepsza od osobnego pliku z opisem API?",
+      text: "Dlaczego generowanie OpenAPI z deklaracji w kodzie ogranicza ryzyko niespójności dokumentacji?",
       options: [
         {v:"A", t:"Bo jest ładniejsza wizualnie"},
-        {v:"B", t:"Bo nie może się rozjechać z rzeczywistym kodem — to dosłownie ten sam kod"},
+        {v:"B", t:"Bo współdzieli definicje modeli i parametrów z kodem; własne odpowiedzi i reguły nadal trzeba opisać i sprawdzić"},
         {v:"C", t:"Bo działa szybciej"},
         {v:"D", t:"Nie ma żadnej różnicy"}
       ]
     },
     {
       id: "q4", points: 2, diff: "trudne",
-      text: "Czy token JWT jest zaszyfrowany?",
+      text: "Czy omawiany token JWT w postaci JWS zapewnia poufność swojej zawartości?",
       options: [
         {v:"A", t:"Tak, nikt bez klucza nie odczyta jego zawartości"},
-        {v:"B", t:"Nie — jest podpisany (chroni przed fałszowaniem), ale payload jest czytelny dla każdego (to tylko Base64)"},
+        {v:"B", t:"Nie — podpis lub MAC chroni integralność, ale payload kodowany Base64url pozostaje czytelny"},
         {v:"C", t:"Zależy od długości tokenu"},
         {v:"D", t:"Tylko header jest zaszyfrowany, payload nie"}
       ]
@@ -67,246 +73,315 @@ CourseQuiz.mount(document.getElementById('pas-quiz'), {
 });
 </script>
 
----
+## Od poprawnej operacji do działającej usługi
 
-# 📈 Część I — Skalowalność i architektura rozproszona
+Kontrakt API określa znaczenie żądania i odpowiedzi. System musi jeszcze
+zachować poprawność, gdy żądania przychodzą równocześnie, proces zostaje
+uruchomiony ponownie albo odpowiedź ginie w sieci. Rozbudowa infrastruktury
+nie usuwa tych problemów automatycznie.
 
-## 🎯 Cele
+Druga część sobotniego bloku rozwija aplikację rezerwacji ośrodka „Sosna”.
+Punktem odniesienia jest jedna aplikacja FastAPI i jeden plik SQLite.
+Kolejki, pamięć podręczna i wiele serwerów są wariantami rozwoju,
+a nie usługami już uruchomionymi w demonstratorze.
 
-Poznasz podstawowe techniki skalowania aplikacji sieciowych (load balancing, cache,
-kolejki) oraz różnicę między architekturą monolityczną a mikroserwisową — z myślą o
-tym, kiedy dana technika w ogóle ma sens (nie każdy projekt potrzebuje mikroserwisów).
+## Dwa żądania i jeden wolny termin
 
----
+R1 zajmuje P1 od 08:00 do 10:00. Dwa żądania próbują zarezerwować P1
+od 10:00 do 11:00. Każde z osobna ma poprawne dane i nie koliduje z R1.
+Problem powstaje między nowymi rezerwacjami.
 
-## 1️⃣ Skalowanie pionowe vs poziome
+Niepoprawny podział kontroli i zapisu może dopuścić taki przebieg:
 
-| | Skalowanie pionowe (*vertical*) | Skalowanie poziome (*horizontal*) |
+| Krok | Żądanie A | Żądanie B |
 |---|---|---|
-| Jak | mocniejszy serwer (więcej RAM/CPU) | więcej serwerów równolegle |
-| Limit | fizyczny sufit sprzętu | teoretycznie brak |
-| Złożoność | prosta — nic w kodzie się nie zmienia | wymaga architektury bezstanowej (pamiętacie HTTP ze spotkania 1?) |
+| 1 | Odczyt: brak konfliktu | — |
+| 2 | — | Odczyt: brak konfliktu |
+| 3 | Zapis nowej rezerwacji | — |
+| 4 | — | Zapis drugiej rezerwacji |
 
-Bezstanowość (JWT zamiast sesji trzymanych w pamięci jednego serwera) usuwa **jedną**
-przeszkodę w skalowaniu poziomym: dowolny serwer może zweryfikować dowolne żądanie,
-nie pytając "czy to ja go zalogowałem". To jednak nie znaczy, że wystarczy JWT, żeby
-skalować się "bez zmian w kodzie" — patrz zastrzeżenie w sekcji o load balancerze.
+Jest to **race condition — wyścig**, w którym wynik zależy od przeplotu
+operacji. Pojedynczy odczyt „wolne” nie rezerwuje terminu na czas późniejszego
+zapisu. Sprawdzenie i zmiana muszą stanowić odpowiednio chronioną całość.
 
-::: {.callout-note}
-## Sesje serwerowe też się skalują — jeśli są wspólne
-Sesje trzymane **lokalnie w pamięci** jednego serwera faktycznie blokują skalowanie
-poziome. Ale sesje trzymane we **wspólnym magazynie** (np. Redis, dostępnym z każdego
-serwera) skalują się tak samo dobrze jak JWT — różnica jest w tym, że wymagają
-dodatkowej usługi (Redis) i jednego zapytania sieciowego więcej na żądanie, podczas
-gdy JWT weryfikuje się lokalnie, bez pytania czegokolwiek. To kompromis wydajność
-kontra prostota infrastruktury, nie "JWT jedyny słuszny sposób".
-:::
+### Co robi obecny demonstrator
 
-## 2️⃣ Load balancer — rozdzielanie ruchu
+W aplikacji „Sosna” operacja zapisu otwiera transakcję SQLite poleceniem
+`BEGIN IMMEDIATE` **przed** odczytem konfliktów. Dopiero potem sprawdza
+obiekt, jednostkę i terminy, a następnie dodaje rezerwację i zatwierdza transakcję.
 
-**Load balancer** stoi przed wieloma kopiami Waszej aplikacji i rozdziela
-przychodzące żądania między nie (np. round-robin — po kolei, albo według obciążenia).
-
-```
-Klient → Load Balancer → [Serwer A, Serwer B, Serwer C] → wspólna baza danych
+```text
+BEGIN IMMEDIATE
+    sprawdzenie obiektu i jednostki
+    sprawdzenie konfliktów
+    INSERT rezerwacji, jeśli termin jest wolny
+COMMIT
 ```
 
-::: {.callout-important}
-## Bezstanowość rozwiązuje tylko połowę problemu
+To schemat działania, nie kompletny skrypt SQL. SQLite dopuszcza jednego
+piszącego naraz. Drugie połączenie może zaczekać lub otrzymać błąd zajęcia;
+po uzyskaniu możliwości zapisu musi wykonać kontrolę wobec aktualnego stanu.
 
-Gdyby serwer A "pamiętał" sesję zalogowanego użytkownika w swojej pamięci lokalnej, a
-load balancer wysłał kolejne żądanie tego samego użytkownika do serwera B — serwer B
-nie miałby pojęcia, kim jest ten użytkownik. JWT (token niosący całą potrzebną
-informację w sobie, weryfikowalny przez **każdy** serwer niezależnie) rozwiązuje
-dokładnie ten problem.
+Dla krótkich operacji oczekiwany wynik próby to jedna odpowiedź `201` i jedna
+`409`. Gdy oczekiwanie na bazę przekroczy limit demonstratora, możliwe jest
+`503`. Kryterium poprawności jest stan bazy: **najwyżej jedna nowa kolidująca
+rezerwacja**, nie założenie, że każde równoczesne żądanie zawsze skończy się
+jednym konkretnym kodem.
 
-Ale spójrzcie na diagram wyżej: wszystkie trzy serwery i tak muszą sięgać do
-**wspólnej bazy danych**. Nasz projekt używa **lokalnego pliku SQLite** — a plik na
-dysku serwera A jest niewidoczny dla serwera B. Żeby ten diagram naprawdę zadziałał,
-`poligony.db` musiałby stać się bazą sieciową (PostgreSQL, MySQL) dostępną z każdego
-serwera. JWT rozwiązuje problem *tożsamości użytkownika*; problem *współdzielonych
-danych* to osobna decyzja architektoniczna, którą nasz projekt na razie świadomie
-odkłada — działa świetnie na jednym serwerze, nie skalowałby się poziomo bez zmiany
-bazy danych.
-:::
+Ochrona zależy od stosowania tej ścieżki przez wszystkich zapisujących.
+Sam schemat obecnej bazy nie zawiera ograniczenia wykluczającego wszystkie
+nakładające się przedziały. Bezpośredni zapis inną ścieżką może ominąć regułę.
 
-## 3️⃣ Cache — nie licz tego samego dwa razy
+## Ponowienie żądania a wynik operacji
 
-Jeśli `GET /poligony` zwraca te same dane tysiąc razy na minutę, a dane zmieniają się
-raz dziennie, po co odpytywać bazę za każdym razem? **Cache** (np. Redis — szybka baza
-w pamięci RAM) przechowuje gotową odpowiedź i serwuje ją bez dotykania właściwej bazy
-danych, dopóki dane się nie zmienią.
+Brak odpowiedzi nie jest dowodem braku zapisu. Możliwy jest przebieg:
 
-```
-Klient → Serwer → sprawdź cache → jest? zwróć od razu
-                                → nie ma? zapytaj baze, zapisz wynik w cache, zwróc
-```
-
-## 4️⃣ Kolejki komunikatów — odkładanie pracy na później
-
-Nie każda operacja musi zakończyć się **od razu**, zanim serwer odpowie klientowi.
-Przykład: zatwierdzenie rezerwacji mogłoby wysyłać e-mail powiadomienia — ale klient
-nie musi czekać, aż e-mail faktycznie wyjdzie.
-
-```
-POST /rezerwacje/5/zatwierdz
-  → zapisz w bazie (szybko)
-  → wrzuć zadanie "wyslij powiadomienie" na kolejke (np. RabbitMQ)
-  → odpowiedz klientowi od razu (201)
-  → osobny proces w tle odbiera z kolejki i wysyla e-mail, kiedy moze
+```{mermaid}
+sequenceDiagram
+    participant K as Klient
+    participant A as API
+    participant B as Baza danych
+    K->>A: POST /rezerwacje
+    A->>B: Zapis i COMMIT
+    B-->>A: Zatwierdzono
+    A--xK: Odpowiedź nie dociera
+    Note over K: Wynik jest nieznany klientowi
 ```
 
-To rozdziela "co musi się stać natychmiast" od "co może poczekać kilka sekund" —
-klient dostaje szybką odpowiedź niezależnie od tego, jak wolny jest serwer pocztowy.
+**Idempotencja — idempotency** oznacza, że powtarzanie tej samej operacji ma
+zamierzony efekt taki jak wykonanie jej raz. Nie wymaga identycznych odpowiedzi
+HTTP przy każdym wywołaniu. Metoda `POST` sama nie zapewnia tej właściwości,
+choć konkretne API może zaprojektować idempotentne przetwarzanie.
 
-## 5️⃣ Monolit vs mikroserwisy
+W obecnej aplikacji powtórzony zapis tego samego terminu może zwrócić `409`.
+Nie jest to pełny mechanizm identyfikowania ponowień: konflikt nie dowodzi,
+że istniejącą rezerwację utworzyło właśnie poprzednie żądanie tego klienta.
 
-| | Monolit | Mikroserwisy |
-|---|---|---|
-| Struktura | jedna aplikacja, jeden proces | wiele małych, niezależnych usług |
-| Wdrażanie | całość naraz | każda usługa osobno |
-| Złożoność operacyjna | niska | wysoka (sieć między usługami, monitoring, ...) |
-| Kiedy sensowne | mały/średni zespół, projekt jak nasz | duża organizacja, wiele zespołów pracujących niezależnie |
+Rozszerzenie z kluczem operacji, np. `Idempotency-Key`, wymaga zapisania klucza,
+powiązania go z użytkownikiem i treścią żądania oraz zachowania wyniku.
+Rozpoznanie klucza i utworzenie rezerwacji muszą być skoordynowane atomowo.
+Ponowne użycie klucza dla innych danych powinno zostać odrzucone. Samo dodanie
+nagłówka po stronie klienta nie implementuje tego mechanizmu.
 
-::: {.callout-note}
-## Nasz projekt jest (świadomie) monolitem
-System rezerwacji poligonu, który budujecie, to jedna aplikacja FastAPI — i to jest
-**poprawna** decyzja dla tej skali, nie kompromis czy uproszczenie "bo to tylko
-zajęcia". Mikroserwisy rozwiązują problem **organizacyjny** (setki programistów
-pracujących nad jednym systemem, potrzebujących niezależnego wdrażania) — nie problem
-techniczny małej aplikacji. Rozbicie tego projektu na mikroserwisy dodałoby złożoność
-bez żadnej korzyści przy obecnej skali.
-:::
+## Trwałość: proces, kontener i plik danych
 
-## 6️⃣ CDN — bliżej użytkownika
+Restart procesu nie oznacza wymazania bazy, jeżeli dane znajdują się w trwałym
+pliku. Inaczej zachowuje się lista przechowywana wyłącznie w pamięci procesu.
 
-**CDN** (*Content Delivery Network*) to sieć serwerów rozmieszczonych geograficznie,
-serwujących statyczne pliki (obrazy, CSS, JS) z lokalizacji najbliższej użytkownikowi
-— zamiast każdego żądania lecącego przez pół świata do jednego centralnego serwera.
-
----
-
-## 🧾 Podsumowanie części I
-
-- Skalowanie poziome wymaga bezstanowości (JWT albo sesje we wspólnym magazynie) **i** wspólnej, sieciowej bazy danych — sam JWT nie wystarczy, jeśli baza to lokalny plik.
-- Cache oszczędza powtarzalną pracę; kolejki odkładają nie-krytyczną pracę na później.
-- Monolit vs mikroserwisy to decyzja organizacyjna, nie techniczna — mikroserwisy nie są "lepsze z zasady".
-
----
-
-# 🚀 Część II — Wdrażanie i utrzymanie
-
-## 🎯 Cele
-
-Poznasz podstawy konteneryzacji (Docker), automatyzacji wdrożeń (CI/CD) oraz
-monitorowania działającej aplikacji — ostatni krok między "działa na moim
-komputerze" a "działa dla prawdziwych użytkowników".
-
----
-
-## 1️⃣ "Działa u mnie" — problem, który rozwiązuje Docker
-
-Klasyczny problem: aplikacja działa na Waszym laptopie, ale nie na serwerze
-kolegi/produkcji — bo inna wersja Pythona, brakująca biblioteka systemowa, inny
-system operacyjny. **Docker** pakuje aplikację **razem z całym środowiskiem**
-potrzebnym do jej uruchomienia w jeden, przenośny obraz.
-
-```dockerfile
-FROM python:3.12-slim
-WORKDIR /app
-COPY requirements.txt .
-RUN pip install -r requirements.txt
-COPY . .
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
-```
-
-`docker build` tworzy obraz z tego przepisu; `docker run` uruchamia go — identycznie
-na Waszym laptopie, na serwerze kolegi, i na produkcji.
-
-## 2️⃣ docker-compose — wiele kontenerów naraz
-
-Prawdziwa aplikacja to zwykle więcej niż jeden kontener (aplikacja + baza danych +
-cache). `docker-compose.yml` opisuje je wszystkie razem:
+W paczce demonstracyjnej konfiguracja zawiera:
 
 ```yaml
 services:
   api:
     build: .
     ports:
-      - "8000:8000"
-    depends_on:
-      - db
-  db:
-    image: postgres:16
-    environment:
-      POSTGRES_PASSWORD: haslo
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - ./data:/data
+    restart: "no"
 ```
 
-`docker-compose up` startuje całą architekturę jedną komendą.
+Ścieżka `./data` na komputerze jest montowana jako `/data` w kontenerze.
+Jest to **bind mount — montowanie katalogu hosta**, mimo użycia klucza
+`volumes` w składni Compose. Baza `/data/sosna.db` znajduje się dzięki temu
+poza zapisywalną warstwą kontenera.
 
-## 3️⃣ CI/CD — automatyzacja od commita do produkcji
+| Zdarzenie | Oczekiwany skutek w tej konfiguracji |
+|---|---|
+| Zatrzymanie i uruchomienie procesu | Zapisany plik pozostaje |
+| Odtworzenie kontenera z tym samym katalogiem `data` | Rezerwacje pozostają |
+| Uruchomienie z innym, pustym katalogiem danych | Aplikacja widzi inną bazę |
+| Usunięcie pliku z katalogu `data` | Utrata danych z tego pliku; potrzebne odtworzenie z kopii |
 
-**CI** (*Continuous Integration*) — każdy commit automatycznie uruchamia testy,
-zanim ktokolwiek ręcznie sprawdzi, czy kod działa. **CD** (*Continuous Deployment*) —
-jeśli testy przejdą, kod automatycznie trafia na serwer produkcyjny, bez ręcznego
-wgrywania plików.
+Próba trwałości powinna zapisać rozpoznawalny rekord, odtworzyć kontener
+z zachowanym katalogiem i ponownie odczytać ten rekord. Samo uruchomienie
+pustego serwera nie sprawdza trwałości.
 
-```yaml
-# .github/workflows/deploy.yml (uproszczone)
-on: [push]
-jobs:
-  test-and-deploy:
-    steps:
-      - run: pytest
-      - run: docker build -t moja-app .
-      - run: ./deploy.sh   # tylko jesli testy przeszly
-```
+::: {.callout-note}
+## Trwały katalog nie jest kopią zapasową
 
-::: {.callout-tip}
-## Dlaczego to ważne, nawet w małym projekcie zaliczeniowym?
-Ręczne wdrażanie ("skopiuj pliki przez FTP, zrestartuj serwer") jest podatne na
-pomyłki i nie skaluje się na zespół więcej niż jednej osoby. Automatyzacja tego
-procesu — nawet najprostsza — to nawyk warty wyrobienia od pierwszego projektu.
+Błąd aplikacji lub użytkownika może zmienić także plik znajdujący się poza
+kontenerem. Kopia zapasowa musi być spójna i sprawdzona przez odtworzenie.
+Dla aktywnej bazy SQLite należy użyć odpowiedniego mechanizmu backupu;
+zwykłe skopiowanie jednego pliku podczas zapisu nie jest uniwersalną procedurą.
 :::
 
-## 4️⃣ Monitorowanie i logowanie
+## Docker: powtarzalne uruchomienie
 
-Wdrożona aplikacja, w przeciwieństwie do tej na Waszym laptopie, **nie ma nikogo
-patrzącego na terminal**, gdy coś pójdzie źle. Dlatego potrzebuje:
+**Obraz — image** zawiera aplikację i zależności przestrzeni użytkownika.
+**Kontener — container** jest uruchomioną instancją obrazu. Docker nie
+eliminuje różnic architektury procesora, konfiguracji ani uprawnień do katalogów.
+Na macOS kontenery linuksowe korzystają z maszyny wirtualnej Docker Desktop.
 
-- **Logów** — zapisu tego, co się dzieje (`logging` w Pythonie zamiast `print`),
-- **Monitoringu** — automatycznego alarmowania, gdy coś nie działa (np. serwer nie
-  odpowiada, błędy `500` rosną gwałtownie).
+Poniższy Dockerfile odpowiada środowisku pierwszego etapu:
 
-```python
-import logging
-logger = logging.getLogger(__name__)
-
-@app.post("/rezerwacje")
-def utworz_rezerwacje(rez: RezerwacjaCreate):
-    logger.info(f"Nowa rezerwacja: poligon={rez.poligon_id}, jednostka={rez.jednostka_id}")
-    ...
+```dockerfile
+FROM python:3.12-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY main.py .
+ENV DATABASE_PATH=/data/sosna.db
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 ```
 
----
+Uvicorn jest serwerem obsługującym aplikację przez
+**ASGI — Asynchronous Server Gateway Interface**. Adres `0.0.0.0` wewnątrz
+kontenera oznacza nasłuchiwanie na wszystkich jego interfejsach. Mapowanie
+`127.0.0.1:8000:8000` w Compose ogranicza opublikowany port hosta do lokalnego
+komputera. To odrębne ustawienia.
 
-## 🧾 Podsumowanie części II
+Zakresy wersji bibliotek z `requirements.txt` pozwalają instalować różne
+zgodne wydania podczas kolejnych budów. Pełna odtwarzalność wymaga kontroli
+konkretnych wersji zależności i obrazu bazowego, a nie tylko posiadania Dockerfile.
 
-- Docker pakuje aplikację z jej środowiskiem — eliminuje "działa u mnie, nie działa tam".
-- docker-compose orkiestruje wiele kontenerów (aplikacja + baza) jedną komendą.
-- CI/CD automatyzuje testowanie i wdrażanie — mniej miejsca na błąd ludzki.
-- Logi i monitoring to oczy zespołu nad aplikacją, której nikt ręcznie nie obserwuje.
+## Skalowanie i współdzielony stan
 
-## 🎓 Podsumowanie całego kursu
+**Skalowanie pionowe — vertical scaling** polega na zwiększeniu zasobów
+jednego środowiska: procesora, pamięci lub wydajności dysku.
+**Skalowanie poziome — horizontal scaling** dodaje instancje obsługujące ruch.
+Oba podejścia mają ograniczenia, a dodatkowe instancje nie usuwają wąskiego
+obszaru systemu, np. kosztownego zapisu do wspólnej bazy.
 
-Od architektury klient-serwer, przez projektowanie API i bezpieczeństwo, po
-skalowanie i wdrażanie — pokryliście pełny cykl życia aplikacji sieciowej. System
-rezerwacji poligonu, który zbudowaliście na laboratoriach, przeszedł dokładnie tę
-samą drogę, którą przechodzi każda prawdziwa aplikacja produkcyjna: od pierwszego
-`Hello World` do (docelowo) wdrożonego, monitorowanego systemu.
+**Load balancer — mechanizm rozdzielania ruchu** wybiera instancję obsługującą
+żądanie. Przykładowy układ rozbudowanego systemu:
 
-## 📚 Źródła
+```{mermaid}
+flowchart LR
+    C[Klient] --> LB[HTTPS i rozdzielanie ruchu]
+    LB --> A[Instancja API A]
+    LB --> B[Instancja API B]
+    A --> DB[(Wspólny system danych)]
+    B --> DB
+```
 
-- M. Kleppmann, *Designing Data-Intensive Applications* (rozdziały o skalowaniu i replikacji)
-- Docker — oficjalna dokumentacja, *Get Started*
-- GitHub Actions — oficjalna dokumentacja
+Dwie niezależne kopie pliku SQLite nie tworzą wspólnej bazy. Jeżeli A zapisze
+rezerwację we własnym pliku, B jej nie zobaczy. Skopiowanie aplikacji i tokenu
+użytkownika nie rozwiązuje tego problemu.
+
+W typowym wariancie z wieloma hostami aplikacje korzystają z usługi danych,
+np. PostgreSQL. Przypadkowe udostępnienie pliku SQLite przez sieciowy katalog
+nie zastępuje projektu współbieżności i trwałości. SQLite może natomiast
+obsługiwać wiele połączeń na jednym hoście — problemem nie jest sam fakt
+istnienia dwóch klientów, lecz model dostępu do wspólnego stanu.
+
+### Bezstanowe HTTP nie oznacza aplikacji bez danych
+
+**HTTP — Hypertext Transfer Protocol** jest bezstanowe w sensie semantyki
+żądań. Aplikacja nadal może przechowywać rezerwacje, sesje i uprawnienia.
+Token **JWT — JSON Web Token** może ułatwić weryfikację tożsamości przez różne
+instancje, ale nie synchronizuje rezerwacji.
+
+Sesje także mogą działać przy wielu instancjach, jeżeli ich stan jest dostępny
+w uzgodnionym wspólnym magazynie. Wybór wymaga uwzględnienia unieważniania,
+rotacji kluczy, dostępności magazynu i aktualności uprawnień.
+
+## Pamięć podręczna: szybszy odczyt, możliwa nieaktualność
+
+**Cache — pamięć podręczna** przechowuje wynik, aby ograniczyć powtarzalną pracę.
+Katalog nazw i lokalizacji obiektów może być dobrym kandydatem. Informacja
+„termin wolny” jest znacznie bardziej wrażliwa na zmianę.
+
+Przykład: klient odczytał wolne 10:00–11:00, po czym inny użytkownik dokonał
+rezerwacji. Nawet jeśli odczyt był poprawny w swojej chwili, zapis musi ponownie
+sprawdzić warunek w chronionej operacji. Cache nie może być ostatecznym źródłem
+zgody na rezerwację.
+
+**TTL — Time To Live** ogranicza czas przechowywania wpisu. Krótszy TTL zmniejsza
+czas możliwej nieaktualności, lecz zwiększa liczbę odczytów źródła. Inne strategie
+obejmują unieważnianie po zapisie i wersjonowanie danych. Wyniki zależne od
+uprawnień wymagają klucza cache uwzględniającego właściwy kontekst dostępu.
+
+## Kolejka: rezerwacja i powiadomienie to różne wyniki
+
+Wysłanie powiadomienia może trwać dłużej niż zapis rezerwacji. Kolejka pozwala
+przekazać pracę do osobnego procesu, ale wymaga określenia znaczenia sukcesu.
+
+- `201 Created` może potwierdzać utworzenie rezerwacji, nawet jeśli wiadomość
+  jeszcze nie została wysłana.
+- `202 Accepted` oznacza przyjęcie operacji do późniejszego przetworzenia;
+  samo w sobie nie potwierdza utworzenia docelowej rezerwacji.
+
+Pomiędzy zatwierdzeniem rezerwacji a dodaniem zadania do kolejki może wystąpić
+awaria. Wzorzec **transactional outbox** zapisuje rezerwację i informację
+o zdarzeniu w jednej transakcji; osobny proces później przekazuje zdarzenie.
+Powtórne dostarczenie komunikatu wymaga obsługi duplikatów. Kolejka nie gwarantuje
+sama z siebie jednorazowego skutku w systemie odbiorcy.
+
+W demonstratorze nie ma jeszcze kolejki ani wysyłania wiadomości. Jest to
+wariant architektury do analizy, nie dodatkowy warunek uruchomienia zajęć.
+
+## Monolit, mikroserwisy i CDN
+
+**Monolit** jest jedną jednostką wdrożenia aplikacji; może mieć wiele modułów
+oraz wiele procesów lub instancji. **Mikroserwisy** rozdzielają odpowiedzialności
+na niezależnie wdrażane usługi. Taki podział może wspierać niezależne zespoły,
+różne profile obciążenia i izolowanie awarii, lecz dodaje komunikację sieciową,
+koordynację zmian i problemy spójności.
+
+Dla obecnego projektu modułowa aplikacja FastAPI jest wystarczającym punktem
+wyjścia. Wydzielenie usługi powinno odpowiadać konkretnemu problemowi,
+a nie być celem samym w sobie.
+
+**CDN — Content Delivery Network**, sieć dystrybucji treści, może obsługiwać
+statyczne zasoby blisko użytkowników: pliki JavaScript, arkusze
+**CSS — Cascading Style Sheets** i obrazy. Nie zastępuje logiki rezerwacji.
+Także strona kursu na GitHub Pages jest statyczna: publikuje materiały,
+ale nie uruchamia procesu FastAPI ani lokalnej bazy z demonstratora.
+
+## Wdrożenie i obserwacja działania
+
+**CI — Continuous Integration**, ciągła integracja, obejmuje automatyczne
+sprawdzanie zmian, np. testy i budowę obrazu. **CD** może oznaczać
+**Continuous Delivery** — gotowość do kontrolowanego wydania — albo
+**Continuous Deployment** — automatyczne wdrożenie po spełnieniu warunków.
+
+Logiczny przebieg wydania:
+
+```text
+zmiana kodu → testy → budowa oznaczonego obrazu → próba uruchomienia
+→ wdrożenie → kontrola odpowiedzi i danych → obserwacja lub wycofanie
+```
+
+Zielony wynik testów nie dowodzi, że środowisko produkcyjne ma poprawną
+konfigurację. Zmiana schematu bazy może również utrudnić powrót do starej wersji
+aplikacji, nawet jeśli jej obraz nadal istnieje.
+
+### Co powinno być widoczne po uruchomieniu
+
+| Sygnał | Pytanie, na które odpowiada |
+|---|---|
+| Log żądania z identyfikatorem | Która operacja się nie powiodła i z jakim kodem? |
+| Odsetek odpowiedzi 5xx | Czy rośnie liczba błędów serwera? |
+| Czas odpowiedzi, np. percentyl 95 | Jak długo czeka większość wolniejszych żądań? |
+| Liczba konfliktów i zajęć bazy | Czy występuje presja na zapis lub konflikt terminów? |
+| Kontrola gotowości | Czy instancja może obsługiwać wymagane zależności? |
+
+Logi nie powinny zawierać haseł, pełnych tokenów ani niepotrzebnych danych
+osobowych. „Proces żyje” i „usługa jest gotowa” to różne stany. Odpowiedź
+kontrolnego endpointu bez dostępu do bazy może potwierdzać działanie serwera,
+ale nie całej funkcji rezerwacji.
+
+## Przypadki do przeanalizowania
+
+1. Dwa żądania rezerwują ten sam termin. Należy opisać kolejność sprawdzenia
+   i zapisu oraz sprawdzić końcową liczbę rezerwacji.
+2. Kontener zostaje odtworzony, ale rezerwacje znikają. Analiza obejmuje
+   faktyczną ścieżkę pliku i montowanie katalogu, nie tylko kod API.
+3. Dwie instancje mają dwie kopie SQLite. Poprawne logowanie na obu nie
+   dowodzi, że przedstawiają ten sam stan rezerwacji.
+4. Rezerwacja została zatwierdzona, a powiadomienie nie dotarło. Należy
+   rozdzielić trwały stan rezerwacji od stanu zadania wysyłki.
+
+Na laboratoriach samodzielna implementacja i próby odbiorcze obejmą wybrane
+mechanizmy. Zakres wykładu pokazuje również kierunki rozwoju, których nie trzeba
+wszystkich implementować, aby przygotować poprawną małą aplikację.
+
+## Źródła
+
+- [SQLite — Transaction](https://www.sqlite.org/lang_transaction.html).
+- [SQLite — Online Backup API](https://www.sqlite.org/backup.html).
+- [Docker — Bind mounts](https://docs.docker.com/engine/storage/bind-mounts/).
+- [Docker — Volumes](https://docs.docker.com/engine/storage/volumes/).
+- [GitHub Actions — Understanding GitHub Actions](https://docs.github.com/en/actions/about-github-actions/understanding-github-actions).
+- [RFC 9110 — HTTP Semantics](https://www.rfc-editor.org/rfc/rfc9110).

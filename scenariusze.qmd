@@ -3,11 +3,11 @@ title: "Rezerwacje obiektów — zadania"
 toc: true
 ---
 
-## Zakres pierwszego spotkania
+## Zakres spotkań wykładowych
 
-Ta karta obejmuje wyłącznie wykład 3 października 2026 (2 × 45 min).
-Analizujecie komunikację klient–serwer i projekt rezerwacji. Nie musicie jeszcze
-uruchamiać środowiska ani samodzielnie programować aplikacji.
+Karta obejmuje wykład 1 z 3 października oraz wspólny blok wykładów 2 i 3
+z **24 października 2026 r. (4 × 45 min)**. Przypadki służą analizie żądań,
+uprawnień i zachowania systemu. Nie wymagają ukończonej implementacji laboratoryjnej.
 
 ## Wasze zadanie
 
@@ -35,3 +35,34 @@ Każda para przygotowuje schemat komunikacji, przykłady żądań i krótkie uza
 
 Materiały i zadania laboratoryjne zostaną udostępnione przed 8 listopada 2026
 (4 × 45 min). Na wykładzie 3 października nie realizujecie laboratorium „Od zera do CRUD”.
+
+
+## Wykład 2 — Kto może zmienić rezerwację? {#wyklad-2}
+
+[API i bezpieczeństwo — pierwsza część 24 października](lectures/spotkanie2.qmd).
+
+1. Przy rezerwacji R1 08:00–10:00 porównaj próby 09:00–11:00 oraz
+   10:00–11:00 dla P1. Podaj warunek kolizji i oczekiwany kod odpowiedzi.
+   Następnie wyjaśnij odmowę rezerwacji P2, mimo braku kolizji czasowej.
+2. W projektowanym wariancie z kontami użytkownik Alfy wskazuje rezerwację
+   Bravo. Określ, jakie dane powinien sprawdzić serwer. Wyjaśnij, dlaczego
+   ukryty przycisk i pole `jednostka_id` wysłane przez klienta nie wystarczają.
+
+Pierwsze zadanie odnosi się do działającej walidacji demonstratora. Drugie
+opisuje rozszerzenie wymagające kont i kontroli uprawnień; aplikacja pierwszego
+etapu nie ma jeszcze tych mechanizmów.
+
+## Wykład 3 — Czy usługa zachowuje poprawny stan? {#wyklad-3}
+
+[Współbieżność i wdrażanie — druga część 24 października](lectures/spotkanie3.qmd).
+
+1. Dwa żądania rezerwują P1 na ten sam wolny termin. Zapisz przeplot operacji,
+   w którym osobne sprawdzenie i zapis dopuszczają konflikt. Określ warunek
+   poprawnego stanu końcowego oraz rolę transakcji rozpoczynanej przed odczytem.
+2. Po odtworzeniu kontenera lista rezerwacji jest pusta. Zaproponuj sprawdzenia
+   ścieżki pliku i montowania danych. Następnie wyjaśnij, dlaczego dwie instancje
+   z niezależnymi kopiami SQLite nie tworzą wspólnej ewidencji.
+
+Uzasadnienie powinno odwoływać się do stanu danych i kolejności operacji,
+a nie tylko do nazw technologii. Szczegółowe zadania implementacyjne będą
+udostępniane wraz z laboratoriami 8 listopada i 13 grudnia.

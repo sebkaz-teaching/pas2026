@@ -137,7 +137,13 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./lectures/spotkanie2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Spotkanie 2: Projektowanie API i bezpieczeństwo</span></a>
+ <span class="menu-text">Wykład 2: Projektowanie API i bezpieczeństwo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./lectures/spotkanie3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Wykład 3: Współbieżność, skalowalność i wdrażanie</span></a>
   </div>
 </li>
       </ul>
@@ -152,10 +158,12 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title"><strong>Sections</strong></h2>
    
   <ul class="collapse">
-  <li><a href="#zakres-pierwszego-spotkania" id="toc-zakres-pierwszego-spotkania" class="nav-link active" data-scroll-target="#zakres-pierwszego-spotkania">Zakres pierwszego spotkania</a></li>
+  <li><a href="#zakres-spotkań-wykładowych" id="toc-zakres-spotkań-wykładowych" class="nav-link active" data-scroll-target="#zakres-spotkań-wykładowych">Zakres spotkań wykładowych</a></li>
   <li><a href="#wasze-zadanie" id="toc-wasze-zadanie" class="nav-link" data-scroll-target="#wasze-zadanie">Wasze zadanie</a></li>
   <li><a href="#jak-pracujemy" id="toc-jak-pracujemy" class="nav-link" data-scroll-target="#jak-pracujemy">Jak pracujemy</a></li>
   <li><a href="#wykład-1-co-się-dzieje-po-kliknięciu-rezerwuj" id="toc-wykład-1-co-się-dzieje-po-kliknięciu-rezerwuj" class="nav-link" data-scroll-target="#wykład-1-co-się-dzieje-po-kliknięciu-rezerwuj">Wykład 1 — Co się dzieje po kliknięciu „Rezerwuj”?</a></li>
+  <li><a href="#wyklad-2" id="toc-wyklad-2" class="nav-link" data-scroll-target="#wyklad-2">Wykład 2 — Kto może zmienić rezerwację?</a></li>
+  <li><a href="#wyklad-3" id="toc-wyklad-3" class="nav-link" data-scroll-target="#wyklad-3">Wykład 3 — Czy usługa zachowuje poprawny stan?</a></li>
   </ul>
 </nav>
     </div>
@@ -181,9 +189,9 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="zakres-pierwszego-spotkania" class="level2">
-<h2 class="anchored" data-anchor-id="zakres-pierwszego-spotkania">Zakres pierwszego spotkania</h2>
-<p>Ta karta obejmuje wyłącznie wykład 3 października 2026 (2 × 45 min). Analizujecie komunikację klient–serwer i projekt rezerwacji. Nie musicie jeszcze uruchamiać środowiska ani samodzielnie programować aplikacji.</p>
+<section id="zakres-spotkań-wykładowych" class="level2">
+<h2 class="anchored" data-anchor-id="zakres-spotkań-wykładowych">Zakres spotkań wykładowych</h2>
+<p>Karta obejmuje wykład 1 z 3 października oraz wspólny blok wykładów 2 i 3 z <strong>24 października 2026 r. (4 × 45 min)</strong>. Przypadki służą analizie żądań, uprawnień i zachowania systemu. Nie wymagają ukończonej implementacji laboratoryjnej.</p>
 </section>
 <section id="wasze-zadanie" class="level2">
 <h2 class="anchored" data-anchor-id="wasze-zadanie">Wasze zadanie</h2>
@@ -210,6 +218,24 @@ ul.task-list li input[type="checkbox"] {
 <li>Zaproponuj żądania odczytu i utworzenia rezerwacji. Co możesz stwierdzić, gdy odpowiedź po zapisie nie dotarła?</li>
 </ol>
 <p>Materiały i zadania laboratoryjne zostaną udostępnione przed 8 listopada 2026 (4 × 45 min). Na wykładzie 3 października nie realizujecie laboratorium „Od zera do CRUD”.</p>
+</section>
+<section id="wyklad-2" class="level2">
+<h2 class="anchored" data-anchor-id="wyklad-2">Wykład 2 — Kto może zmienić rezerwację?</h2>
+<p><a href="./lectures/spotkanie2.html">API i bezpieczeństwo — pierwsza część 24 października</a>.</p>
+<ol type="1">
+<li>Przy rezerwacji R1 08:00–10:00 porównaj próby 09:00–11:00 oraz 10:00–11:00 dla P1. Podaj warunek kolizji i oczekiwany kod odpowiedzi. Następnie wyjaśnij odmowę rezerwacji P2, mimo braku kolizji czasowej.</li>
+<li>W projektowanym wariancie z kontami użytkownik Alfy wskazuje rezerwację Bravo. Określ, jakie dane powinien sprawdzić serwer. Wyjaśnij, dlaczego ukryty przycisk i pole <code>jednostka_id</code> wysłane przez klienta nie wystarczają.</li>
+</ol>
+<p>Pierwsze zadanie odnosi się do działającej walidacji demonstratora. Drugie opisuje rozszerzenie wymagające kont i kontroli uprawnień; aplikacja pierwszego etapu nie ma jeszcze tych mechanizmów.</p>
+</section>
+<section id="wyklad-3" class="level2">
+<h2 class="anchored" data-anchor-id="wyklad-3">Wykład 3 — Czy usługa zachowuje poprawny stan?</h2>
+<p><a href="./lectures/spotkanie3.html">Współbieżność i wdrażanie — druga część 24 października</a>.</p>
+<ol type="1">
+<li>Dwa żądania rezerwują P1 na ten sam wolny termin. Zapisz przeplot operacji, w którym osobne sprawdzenie i zapis dopuszczają konflikt. Określ warunek poprawnego stanu końcowego oraz rolę transakcji rozpoczynanej przed odczytem.</li>
+<li>Po odtworzeniu kontenera lista rezerwacji jest pusta. Zaproponuj sprawdzenia ścieżki pliku i montowania danych. Następnie wyjaśnij, dlaczego dwie instancje z niezależnymi kopiami SQLite nie tworzą wspólnej ewidencji.</li>
+</ol>
+<p>Uzasadnienie powinno odwoływać się do stanu danych i kolejności operacji, a nie tylko do nazw technologii. Szczegółowe zadania implementacyjne będą udostępniane wraz z laboratoriami 8 listopada i 13 grudnia.</p>
 
 
 </section>

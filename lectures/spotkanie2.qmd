@@ -1,8 +1,14 @@
 ---
-title: "Spotkanie 2: Projektowanie API i bezpieczeństwo"
+title: "Wykład 2: Projektowanie API i bezpieczeństwo"
 ---
 
-## ✅ Sprawdź się ze spotkania 1
+**Termin: sobota, 24 października 2026 r. — pierwsza część wspólnego bloku 4 × 45 minut.**
+
+Wykłady 2 i 3 odbywają się podczas jednego spotkania. Każdy moduł obejmuje
+2 × 45 minut. Materiał na stronie rozwija przykłady omawiane na wykładzie;
+samodzielna praca nad implementacją będzie realizowana na laboratoriach.
+
+## Test z wykładu 1
 
 <div id="pas-quiz"></div>
 <script src="../assets/js/quiz-engine.js"></script>
@@ -10,12 +16,12 @@ title: "Spotkanie 2: Projektowanie API i bezpieczeństwo"
 CourseQuiz.mount(document.getElementById('pas-quiz'), {
   course: "pas2026",
   lecture: "spotkanie2",
-  title: "Spotkanie 1: Architektura i protokół HTTP",
+  title: "Wykład 1: Architektura i protokół HTTP",
   submitUrl: "https://sebastianzajac.pl/rsod-quiz/submit.php",
   questions: [
     {
       id: "q1", points: 1, diff: "bardzo łatwe",
-      text: "Kto zawsze inicjuje komunikację w modelu klient-serwer (poza wyjątkami jak WebSocket)?",
+      text: "Kto wysyła żądanie w podstawowym modelu żądanie–odpowiedź HTTP?",
       options: [
         {v:"A", t:"Serwer"},
         {v:"B", t:"Klient"},
@@ -38,7 +44,7 @@ CourseQuiz.mount(document.getElementById('pas-quiz'), {
       text: "Czym różni się 401 od 403?",
       options: [
         {v:"A", t:"To synonimy, oba znaczą brak dostępu"},
-        {v:"B", t:"401 = nie wiadomo kim jesteś (brak/zły login), 403 = wiadomo kim jesteś, ale brak uprawnień"},
+        {v:"B", t:"401 = brak poprawnego uwierzytelnienia dla chronionej operacji; 403 = odmowa dostępu, np. brak uprawnień konta"},
         {v:"C", t:"401 dotyczy tylko GET, 403 tylko POST"},
         {v:"D", t:"403 jest starszą wersją 401"}
       ]
@@ -48,7 +54,7 @@ CourseQuiz.mount(document.getElementById('pas-quiz'), {
       text: "Dlaczego HTTP nazywamy protokołem bezstanowym?",
       options: [
         {v:"A", t:"Bo nie obsługuje żadnych danych"},
-        {v:"B", t:"Bo serwer nie pamięta niczego między żądaniami — każde musi nieść potrzebne dane samo"},
+        {v:"B", t:"Bo każde żądanie jest interpretowane samodzielnie; aplikacja nadal może przechowywać dane i sesje"},
         {v:"C", t:"Bo działa tylko na jednym porcie"},
         {v:"D", t:"Bo nie wspiera szyfrowania"}
       ]
@@ -58,7 +64,7 @@ CourseQuiz.mount(document.getElementById('pas-quiz'), {
       text: "Klient wysyła POST /rezerwacje, ale traci połączenie zanim dostanie odpowiedź — nie wie, czy żądanie dotarło do serwera. Czy bezpiecznie może po prostu wysłać ten sam POST ponownie?",
       options: [
         {v:"A", t:"Tak, POST zawsze można bezpiecznie powtórzyć"},
-        {v:"B", t:"Nie — POST nie jest idempotentny, powtórzenie może utworzyć DRUGĄ, zduplikowaną rezerwację"},
+        {v:"B", t:"Nie ma takiej gwarancji — samo POST nie zapewnia idempotencji, więc powtórzenie może utworzyć duplikat"},
         {v:"C", t:"Tak, bo HTTP gwarantuje brak duplikatów"},
         {v:"D", t:"Nie da się tego ocenić bez znajomości nagłówków"}
       ]
@@ -67,282 +73,309 @@ CourseQuiz.mount(document.getElementById('pas-quiz'), {
 });
 </script>
 
----
+## Od działającego żądania do kontraktu API
 
-# 🧩 Część I — Projektowanie API REST
+Pierwszy wykład przedstawiał drogę żądania od klienta przez serwer do bazy danych.
+Działająca operacja zapisu nie odpowiada jednak na wszystkie pytania projektowe:
+jak klient rozpozna konflikt, kto może zmienić cudzą rezerwację i co oznacza
+ponowienie żądania po utracie odpowiedzi?
 
-## 🎯 Cele
+**API — Application Programming Interface**, interfejs programowania aplikacji,
+określa sposób korzystania z funkcji systemu przez inne programy. Jego kontrakt
+obejmuje adresy, metody, formaty danych, znaczenie odpowiedzi i reguły dostępu.
+Nie jest tylko listą funkcji dostępnych pod `/docs`.
 
-Nauczysz się projektować adresy URL i strukturę odpowiedzi API tak, żeby były
-przewidywalne i łatwe w użyciu — oraz poznasz, jak FastAPI generuje dokumentację
-OpenAPI automatycznie z Waszego kodu.
-
----
-
-## 1️⃣ Zasoby, nie czynności
-
-Adres URL w REST opisuje **rzecz** (zasób), nie akcję — akcję wyraża metoda HTTP
-(spotkanie 1, część II). Dobra konwencja nazewnicza:
-
-| Źle | Dobrze |
-|-----|--------|
-| `/getPoligony` | `GET /poligony` |
-| `/utworzRezerwacje` | `POST /rezerwacje` |
-| `/poligon/usun/5` | `DELETE /poligony/5` |
-
-Zasady:
-
-- **Rzeczowniki, nie czasowniki** w ścieżce.
-- **Liczba mnoga** dla kolekcji: `/poligony`, nie `/poligon`.
-- **Małe litery**, myślniki zamiast podkreślników w wieloczłonowych nazwach.
-
-## 2️⃣ Zasoby zagnieżdżone
-
-Kiedy jeden zasób "należy" logicznie do drugiego:
-
-```
-GET /poligony/5/rezerwacje        -- rezerwacje na poligonie 5
-POST /poligony/5/rezerwacje       -- nowa rezerwacja na poligonie 5
-GET /jednostki/3/rezerwacje       -- rezerwacje jednostki 3
-```
-
-> ⚠️ Nie zagnieżdżaj głębiej niż 2 poziomy (`/a/1/b/2/c/3` jest już nieczytelne) —
-> jeśli potrzebujesz głębszego zagnieżdżenia, rozważ osobny, płaski endpoint z
-> filtrowaniem przez query params zamiast ścieżki.
-
-## 3️⃣ Filtrowanie, sortowanie, paginacja — przez query params
-
-```
-GET /rezerwacje?status=zatwierdzona          -- filtrowanie
-GET /rezerwacje?sortuj=data&kierunek=desc    -- sortowanie
-GET /rezerwacje?strona=2&na_strone=20         -- paginacja
-```
-
-Query params (po `?`) nadają się do **opcjonalnych** modyfikatorów zapytania —
-ścieżka (`/rezerwacje`) zostaje ta sama niezależnie od tego, jak filtrujesz czy
-sortujesz wynik.
+Przykładem pozostaje fikcyjny ośrodek „Sosna”: plac treningowy P1, sala
+symulatorów P2 i jednostki Alfa oraz Bravo. W demonstratorze odpowiadają im
+identyfikatory liczbowe 1 i 2. Rezerwacja R1 dotyczy P1 w przedziale 08:00–10:00.
+Data T jest ustalana względem przygotowanego stanu bazy, a czasy mają jawną strefę.
 
 ::: {.callout-note}
-## Dlaczego paginacja jest ważna, nawet w małym projekcie?
-`GET /rezerwacje` bez paginacji, gdy tabela urośnie do 100 000 wierszy, zwróci
-gigantyczną odpowiedź, która obciąży i serwer, i klienta. Dobra praktyka: **zawsze**
-projektuj endpointy listujące z myślą o paginacji, nawet jeśli na start danych jest
-mało.
+## Zakres demonstratora i zakres projektu
+
+Aplikacja z pierwszego wykładu obsługuje obiekty, jednostki, rezerwacje,
+walidację, konflikty i trwały zapis SQLite. Nie zawiera kont, logowania ani
+kontroli właściciela rezerwacji. Część dotycząca uprawnień opisuje **projektowane
+rozszerzenie**, a nie istniejące zabezpieczenia tego programu.
+
+Laboratoria odbędą się 8 listopada i 13 grudnia. Przykłady wykładowe nie zakładają,
+że implementacja laboratoryjna została już wykonana.
 :::
 
-## 4️⃣ Wersjonowanie API
+## Zasoby, adresy i metody
 
-Kiedy zmieniasz kształt API w sposób, który złamałby istniejących klientów (np.
-zmieniasz nazwę pola), potrzebujesz wersjonowania:
+**REST — Representational State Transfer** jest stylem architektonicznym.
+W stosowanej na kursie konwencji zasoby mają adresy, a metody
+**HTTP — Hypertext Transfer Protocol** wyrażają semantykę operacji.
+Sama liczba mnoga w adresie nie dowodzi zgodności systemu z całym stylem REST,
+ale pomaga tworzyć przewidywalny interfejs.
 
-```
-/api/v1/poligony
-/api/v2/poligony
-```
+| Operacja | Przykład | Znaczenie |
+|---|---|---|
+| Lista obiektów | `GET /poligony` | Pobranie kolekcji |
+| Wybrany obiekt | `GET /poligony/1` | Pobranie jednej reprezentacji |
+| Nowy obiekt | `POST /poligony` | Utworzenie zasobu |
+| Zastąpienie danych | `PUT /poligony/1` | Przesłanie pełnego zestawu edytowalnych pól |
+| Częściowa zmiana | `PATCH /poligony/1` | Zmiana wskazanych pól |
+| Usunięcie obiektu | `DELETE /poligony/1` | Próba usunięcia zgodna z regułami bazy |
 
-Alternatywa: wersjonowanie przez nagłówek (`Accept: application/vnd.api.v2+json`) —
-rzadziej spotykane w praktyce, ale czystsze koncepcyjnie. Nasz projekt jest na razie
-za mały, żeby potrzebować którejkolwiek z tych opcji naprawdę — zapamiętajcie obie
-jako narzędzia na później, gdy API będzie miało zewnętrznych klientów.
+Adres, czyli **URL — Uniform Resource Locator**, powinien być stabilny względem
+kolejności wyników. Identyfikator 1 nie oznacza „pierwszego elementu obecnej listy”.
+Usunięcie obiektu używanego przez rezerwacje może zostać odrzucone — dostępność
+metody nie oznacza, że każda operacja jest dopuszczalna w każdym stanie systemu.
 
-## 5️⃣ OpenAPI — dokumentacja blisko kodu
+### Filtrowanie i stronicowanie
 
-Pamiętacie `/docs` z pierwszego laboratorium? To nie przypadek, że działa automatycznie —
-FastAPI **generuje specyfikację OpenAPI** (JSON opisujący każdy endpoint, jego
-parametry, kształt odpowiedzi) bezpośrednio z Waszego kodu (adnotacji typów,
-modeli Pydantic). Dostępna jest pod `/openapi.json`.
-
-**Dlaczego to pomaga**: dokumentacja pisana ręcznie (osobny plik Word/Markdown)
-**zawsze** z czasem rozjeżdża się z rzeczywistym kodem — ktoś zmienia endpoint i
-zapomina zaktualizować opis. Dokumentacja generowana z kodu jest bliżej prawdy, bo
-typy i nazwy parametrów **nie mogą** się rozjechać — to dosłownie ta sama adnotacja.
-
-::: {.callout-important}
-## To nie jest automat, o którym można zapomnieć
-"Blisko kodu" nie znaczy "całkowicie odporne na błędy". FastAPI wie o kodach błędów,
-które zwraca *domyślnie* (np. `422` z Pydantic) — ale własny `HTTPException(404, ...)`
-w ciele funkcji **nie pojawi się** w `/docs`, dopóki nie zadeklarujecie go jawnie w
-`responses` (przykład niżej). Zmienisz logikę błędu w kodzie i zapomnisz
-zaktualizować `responses` — i dokumentacja jednak się rozjedzie. "Generowane z kodu"
-zmniejsza ryzyko, nie eliminuje go.
-:::
-
-```python
-@app.get(
-    "/poligony/{poligon_id}",
-    response_model=Poligon,
-    summary="Pobierz jeden poligon po ID",
-    description="Zwraca 404, jesli poligon o podanym ID nie istnieje.",
-)
-def pobierz_poligon(poligon_id: int):
-    ...
+```http
+GET /poligony?typ=sala
+GET /rezerwacje?poligon_id=1&status=zatwierdzona
 ```
 
-Parametry `summary`/`description` trafiają bezpośrednio do `/docs` — dobra
-dokumentacja API to część kodu, nie osobny dokument.
+Oba filtry są obsługiwane przez demonstrator. Parametry po `?` zawężają kolekcję;
+pusta lista spełniających warunki obiektów jest poprawnym wynikiem `200 OK`,
+a nie błędem `404 Not Found`.
 
-## 6️⃣ Spójna struktura błędów
+Dla większych zbiorów kontrakt powinien również określać stronicowanie,
+stabilną kolejność i limit rozmiaru odpowiedzi. Przykładowe
+`GET /rezerwacje?limit=20&offset=40` jest **propozycją rozszerzenia**;
+obecny demonstrator nie implementuje tych parametrów. Stronicowanie bez
+jednoznacznego sortowania może powodować powtarzanie lub pomijanie elementów.
 
-Zamiast każdy endpoint zwracający błędy w innym formacie, warto ustalić jeden wzorzec:
+### Wersjonowanie
+
+Zmiana nazwy pola lub znaczenia kodu odpowiedzi może uszkodzić istniejącego
+klienta. Wersjonowanie, np. `/api/v1/rezerwacje`, pozwala rozdzielić niezgodne
+kontrakty, lecz nie zastępuje planu migracji. Dodanie nowego opcjonalnego pola
+nie zawsze wymaga nowej wersji. Decyduje zgodność z rzeczywistymi klientami,
+a nie sam fakt zmiany kodu.
+
+## Walidacja: poprawny JSON nie wystarcza
+
+**JSON — JavaScript Object Notation** określa sposób zapisu danych, ale nie
+ich poprawność biznesową. Rezerwacja może być poprawnym dokumentem JSON,
+a mimo to wskazywać nieistniejący obiekt albo kończyć się przed rozpoczęciem.
+
+Walidacja występuje na kilku poziomach:
+
+| Poziom | Przykład kontroli | Miejsce odpowiedzialności |
+|---|---|---|
+| Struktura danych | Identyfikator jest dodatnią liczbą, czas zawiera strefę | Model wejściowy API |
+| Znaczenie danych | Początek poprzedza koniec i jest w przyszłości | Logika aplikacji |
+| Stan systemu | Obiekt jest dostępny, termin nie koliduje | Logika i transakcja bazodanowa |
+| Uprawnienia | Konto może rezerwować dla wskazanej jednostki | Autoryzacja po stronie serwera |
+
+W demonstratorze nieznane pola są odrzucane. Przesłanie `rola=planista` nie
+stworzy zatem uprawnień, ale samo odrzucanie dodatkowych pól nie zastępuje
+implementacji kont i autoryzacji.
+
+### Nakładanie się przedziałów
+
+Dwa przedziały tego samego obiektu kolidują, gdy:
+
+```text
+new_start < old_end AND new_end > old_start
+```
+
+Przedziały są półotwarte: początek należy do rezerwacji, a koniec już nie.
+Dlatego 10:00–11:00 nie koliduje z R1 kończącą się o 10:00.
+
+| Próba przy istniejącej R1: P1, 08:00–10:00 | Oczekiwana odpowiedź demonstratora |
+|---|---|
+| P1, 10:00–11:00 | `201` — utworzenie rezerwacji |
+| P1, 09:00–11:00 | `409` — konflikt terminów |
+| P2, 10:00–11:00 | `409` — obiekt niedostępny z powodu przeglądu |
+| Początek równy końcowi | `422` — niepoprawny przedział |
+| Nieistniejąca jednostka | `404` — brak wskazanego zasobu |
+
+Próby wymagają znanego stanu bazy. Po udanej rezerwacji 10:00–11:00 ponowienie
+tego samego żądania napotka już konflikt. Dwa wyniki `409` w tabeli mają różne
+przyczyny; treść odpowiedzi musi je wyjaśniać.
+
+## Kody odpowiedzi jako część kontraktu
+
+| Kod | Znaczenie w projekcie |
+|---|---|
+| `200 OK` | Poprawny odczyt lub zmiana zwracająca reprezentację |
+| `201 Created` | Utworzenie nowego zasobu |
+| `204 No Content` | Sukces bez treści odpowiedzi |
+| `401 Unauthorized` | Brak poprawnego uwierzytelnienia dla chronionej operacji |
+| `403 Forbidden` | Odmowa wykonania operacji; w naszej polityce konto nie ma wymaganych uprawnień |
+| `404 Not Found` | Wskazany pojedynczy zasób nie istnieje |
+| `409 Conflict` | Konflikt z obecnym stanem, np. zajęty termin |
+| `422 Unprocessable Content` | Dane nie spełniają przyjętych wymagań walidacji |
+| `503 Service Unavailable` | Usługa chwilowo nie może wykonać operacji, np. wskutek zajęcia bazy |
+
+Wariant chroniony powinien przy `401` przesyłać odpowiednie wyzwanie
+`WWW-Authenticate`, np. `Bearer`. Odpowiedź `403` jest przyjętą tutaj polityką
+odmowy dostępu; inne systemy mogą używać `404`, aby nie ujawniać istnienia zasobu.
 
 ```json
-{
-  "detail": "Poligon nie znaleziony"
-}
+{"detail": "Konflikt terminów."}
 ```
 
-FastAPI robi to domyślnie dla `HTTPException` (dokładnie ten kształt, który
-widzieliście już w laboratoriach) — trzymajcie się tego wzorca konsekwentnie we
-wszystkich endpointach.
+To przykładowy błąd biznesowy demonstratora. Błędy walidacji FastAPI mogą mieć
+w `detail` listę obiektów opisujących poszczególne pola, a nie pojedynczy tekst.
+Klient musi obsługiwać udokumentowane warianty zamiast zakładać jeden kształt
+każdej odpowiedzi błędnej.
 
----
+## OpenAPI: dokumentacja i rzeczywiste zachowanie
 
-## 🧾 Podsumowanie części I
+OpenAPI jest specyfikacją opisu interfejsów HTTP. FastAPI tworzy dokument
+`/openapi.json` na podstawie modeli i deklaracji operacji. Swagger UI pod
+`/docs` jest interaktywną prezentacją tego opisu. **UI — User Interface**
+oznacza interfejs użytkownika.
 
-- URL opisuje zasób (rzeczownik, liczba mnoga), metoda HTTP opisuje akcję.
-- Zagnieżdżaj zasoby maksymalnie na 2 poziomy; filtruj/sortuj/paginuj przez query params.
-- Wersjonuj API (prefiks ścieżki albo nagłówek), gdy zmiana złamałaby istniejących klientów.
-- OpenAPI/Swagger generowane z kodu jest bliżej prawdy niż ręcznie pisana dokumentacja — ale własne kody błędów wciąż trzeba zadeklarować jawnie (`responses`).
+Generowanie dokumentacji ogranicza powielanie definicji pól, ale nie analizuje
+całej logiki funkcji. Wyjątek `HTTPException(404, ...)` w ciele funkcji nie
+jest sam w sobie deklaracją odpowiedzi w OpenAPI. Własne odpowiedzi należy
+opisać jawnie, np. przez `responses`.
 
----
-
-# 🔒 Część II — Bezpieczeństwo aplikacji sieciowych
-
-## 🎯 Cele
-
-Poznasz różnicę między uwierzytelnianiem a autoryzacją, zrozumiesz jak działają
-tokeny JWT, oraz poznasz najważniejsze podatności z listy OWASP Top 10 i jak się
-przed nimi bronić — wiedzę, którą zastosujesz praktycznie w kolejnych laboratoriach.
-
----
-
-## 1️⃣ Uwierzytelnianie vs autoryzacja
-
-To dwa **różne** pytania, często mylone:
-
-| Pytanie | Termin | Przykład |
-|---------|--------|----------|
-| **Kim jesteś?** | Uwierzytelnianie (*authentication*) | login + hasło, token |
-| **Co wolno Ci zrobić?** | Autoryzacja (*authorization*) | planista może zatwierdzać rezerwacje, żołnierz — nie |
-
-System może **wiedzieć, kim jesteś** (uwierzytelniony), ale mimo to **odmówić Ci
-operacji** (brak autoryzacji) — to dokładnie różnica między `401` a `403` ze spotkania 1.
-
-## 2️⃣ Jak przechowywać hasła — nigdy jawnym tekstem
+Poniższy kompletny, mały przykład pokazuje deklarację; jest osobną ilustracją,
+a nie zmianą zainstalowanej aplikacji „Sosna”:
 
 ```python
-# NIGDY:
-if podane_haslo == uzytkownik.haslo:  # haslo w bazie jako czysty tekst
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
 
-# ZAWSZE: hashowanie z "solą"
-import bcrypt
+app = FastAPI()
 
-hash_hasla = bcrypt.hashpw(haslo.encode(), bcrypt.gensalt())
-# ... zapisz hash_hasla w bazie, NIGDY samego hasla
+class Resource(BaseModel):
+    id: int
+    name: str
 
-# przy logowaniu:
-bcrypt.checkpw(podane_haslo.encode(), hash_hasla)
+@app.get(
+    "/poligony/{resource_id}",
+    response_model=Resource,
+    responses={404: {"description": "Resource not found"}},
+)
+def get_resource(resource_id: int) -> Resource:
+    if resource_id != 1:
+        raise HTTPException(status_code=404, detail="Resource not found")
+    return Resource(id=1, name="Training ground")
 ```
 
-`bcrypt` (i podobne: `argon2`, `scrypt`) to **funkcje jednokierunkowe** — z hasha nie
-da się odtworzyć hasła, a każde wywołanie z "solą" (losowym dodatkiem) daje inny
-wynik nawet dla tego samego hasła, co chroni przed atakami tęczowych tablic
-(*rainbow tables*). Praktykę tę zastosujecie w kolejnych laboratoriach.
+Deklaracja `responses` dokumentuje możliwość błędu. Dopiero warunek i wyjątek
+realizują ją podczas wykonania. Dokumentację należy sprawdzać przez rzeczywiste
+wywołania, także dla przypadków niepoprawnych.
 
-## 3️⃣ Sesje vs tokeny — dwa modele uwierzytelniania
+## Uwierzytelnianie i autoryzacja
 
-| | Sesje (cookie-based) | Tokeny (JWT) |
+**Authentication — uwierzytelnianie** ustala tożsamość klienta.
+**Authorization — autoryzacja** ustala, czy ten klient może wykonać konkretną
+operację na konkretnym zasobie. Poprawne logowanie nie daje prawa do wszystkich danych.
+
+Proponowana polityka rozbudowanej aplikacji:
+
+| Operacja | Gość | Konto jednostki Alfa | Planista |
+|---|---|---|---|
+| Odczyt ogólnej dostępności | Tak | Tak | Tak |
+| Odczyt szczegółów rezerwacji jednostki Alfa | Nie | Tak | Tak |
+| Odczyt szczegółów rezerwacji Bravo | Nie | Nie | Tak |
+| Utworzenie rezerwacji dla Alfy | Nie | Tak | Tak |
+| Utworzenie rezerwacji dla Bravo | Nie | Nie | Tak |
+| Zmiana dostępności obiektu | Nie | Nie | Tak |
+
+Szczegóły polityki są decyzją projektową. Publiczna dostępność obiektu nie musi
+oznaczać publicznej listy jednostek, które go rezerwują.
+
+### Przypadek: zmiana identyfikatora
+
+Konto Alfy wysyła żądanie dotyczące rezerwacji Bravo. Ukrycie przycisku
+w przeglądarce nie zapobiega ręcznemu wysłaniu tego żądania. Serwer powinien:
+
+1. Zweryfikować uwierzytelnienie.
+2. Ustalić rolę i jednostkę z zaufanych danych konta.
+3. Odczytać wskazany obiekt i sprawdzić uprawnienie do żądanej operacji.
+4. Dopiero po spełnieniu warunków wykonać zmianę.
+
+Identyfikator jednostki w JSON nie stanowi dowodu przynależności użytkownika.
+Rola przekazana przez klienta przy rejestracji nie może samodzielnie nadawać
+uprawnień planisty. Zasady powinny obowiązywać również przy listowaniu,
+a nie wyłącznie przy pobraniu pojedynczej rezerwacji.
+
+## Hasła, sesje i tokeny
+
+Hasła są przechowywane jako wyniki funkcji przeznaczonych do hashowania haseł,
+z indywidualną losową solą i odpowiednim kosztem obliczeń. Przykładem jest
+Argon2id; bcrypt pozostaje spotykany w istniejących systemach. Zwykły szybki
+skrót, np. SHA-256 bez mechanizmu przeznaczonego do haseł, nie spełnia tego celu.
+Hashowanie nie uniemożliwia zgadywania słabego hasła — podnosi koszt prób.
+
+Po zalogowaniu klient może używać identyfikatora sesji lub tokenu:
+
+| Rozwiązanie | Gdzie ustalany jest stan | Istotny koszt |
 |---|---|---|
-| Gdzie żyje stan | po stronie serwera (baza sesji) | w samym tokenie, po stronie klienta |
-| Skalowanie na wiele serwerów | wymaga współdzielonej bazy sesji | trywialne — każdy serwer sam zweryfikuje token |
-| Unieważnienie przed wygaśnięciem | łatwe (usuń z bazy) | trudniejsze (token jest ważny, dopóki nie wygaśnie) |
+| Sesja po stronie serwera | Magazyn sesji powiązany z identyfikatorem klienta | Dostęp do magazynu i utrzymanie sesji |
+| Samodzielnie weryfikowany token | Podpisane informacje i polityka weryfikacji | Czas ważności, rotacja kluczy i unieważnianie |
 
-W tym kursie używamy **JWT** (JSON Web Token) — pasuje do architektury bezstanowej ze spotkania 1.
+Cookie i token nie są przeciwstawnymi kategoriami: cookie jest sposobem
+przechowania i przesyłania wartości przez przeglądarkę, a JWT formatem tokenu.
+JWT również może być przesyłany w cookie.
 
-## 4️⃣ Anatomia JWT (wariantu, którego używamy)
+### JWT i JWS
 
-Standard JWT (RFC 7519) dopuszcza dwa warianty: **JWS** (JSON Web *Signature* —
-podpisany, ale czytelny) i **JWE** (JSON Web *Encryption* — faktycznie zaszyfrowany).
-**W tym kursie, jak w zdecydowanej większości praktycznych API, używamy JWS** —
-poniższy opis dotyczy tego wariantu, nie każdego możliwego tokenu JWT.
+**JWT — JSON Web Token** jest formatem przenoszenia deklaracji o podmiocie.
+W omawianym wariancie **JWS — JSON Web Signature** zapewnia ochronę integralności:
 
-Token JWS to trzy części oddzielone kropkami: `header.payload.signature`
-
-```
-eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5rb3dhbHNraSIsInJvbGEiOiJkb3dvZGNhIn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+```text
+header.payload.signature
 ```
 
-- **Header** — jaki algorytm podpisu (np. `HS256`).
-- **Payload** — dane (np. `{"sub": "jankowalski", "rola": "dowodca", "exp": 1735689600}`)
-  — **czytelne dla każdego** (to tylko Base64, nie szyfrowanie!), więc **nigdy** nie
-  wkładajcie tam haseł czy innych sekretów.
-- **Signature** — podpis kryptograficzny, weryfikowany kluczem znanym tylko serwerowi
-  — to on gwarantuje, że nikt nie sfałszował payloadu.
+Nagłówek i dane są kodowane Base64url, a nie szyfrowane. Podpis cyfrowy lub
+**MAC — Message Authentication Code**, kod uwierzytelniający wiadomość,
+pozwala wykryć modyfikację. W wariancie symetrycznym HS256 strony weryfikujące
+znają wspólny sekret; przy podpisie asymetrycznym weryfikacja używa klucza publicznego.
 
-::: {.callout-important}
-## Nasz JWT (JWS) jest podpisany, nie zaszyfrowany
-Każdy, kto przechwyci token, może **odczytać** jego zawartość (Base64 to nie
-szyfrowanie) — nie może jej jednak **zmienić** niezauważenie, bo podpis by się nie
-zgadzał. Wniosek: JWS chroni przed fałszowaniem danych, nie przed ich odczytaniem —
-transport tokenu musi iść przez HTTPS, żeby nikt po drodze go nie podsłuchał. (JWE
-rozwiązałby też problem odczytu, kosztem większej złożoności — poza zakresem tego
-kursu.)
-:::
+Serwer sprawdza dozwolony algorytm, integralność i wymagane deklaracje, np.
+`exp` — czas wygaśnięcia, `iss` — wystawcę, `aud` — odbiorcę. Samo odkodowanie
+payloadu nie jest weryfikacją tokenu. **JWE — JSON Web Encryption** jest
+odrębnym mechanizmem szyfrowania; nie należy przypisywać jego właściwości JWS.
 
-## 5️⃣ OWASP Top 10 — trzy podatności, które napotkacie w laboratoriach
+Token typu **Bearer** może wykorzystać jego posiadacz. Transport wymaga
+**HTTPS — Hypertext Transfer Protocol Secure**, czyli HTTP chronionego przez
+**TLS — Transport Layer Security**. Tokeny i hasła nie powinny trafiać do logów.
 
-### SQL Injection
+## Wybrane zagrożenia aplikacji sieciowej
+
+**OWASP — Open Worldwide Application Security Project** publikuje materiały
+poświęcone bezpieczeństwu aplikacji. Dla projektu szczególnie istotne są:
+
+| Zagrożenie | Przykład | Podstawowa ochrona |
+|---|---|---|
+| Brak kontroli dostępu do obiektu | Alfa zmienia rezerwację Bravo | Sprawdzenie roli i właściciela na serwerze |
+| SQL injection | Dane wejściowe zmieniają strukturę zapytania | Parametryzacja wartości, kontrolowana lista nazw kolumn |
+| XSS — Cross-Site Scripting | Opis obiektu zostaje wykonany jako skrypt | Kodowanie wyjścia odpowiednie do kontekstu; unikanie wstawiania niezaufanego HTML |
+| CSRF — Cross-Site Request Forgery | Przeglądarka wysyła niezamierzone żądanie z automatycznie dołączonym cookie | Ochrona CSRF, kontrola pochodzenia i odpowiednie ustawienia cookies |
 
 ```python
-# PODATNE:
-conn.execute(f"SELECT * FROM uzytkownicy WHERE login = '{login}'")
-# atakujacy wpisuje: login = "' OR '1'='1"
+# Values are parameters, not fragments of SQL syntax.
+row = connection.execute(
+    "SELECT * FROM poligony WHERE id = ?", (resource_id,)
+).fetchone()
 ```
 
-Obrona: **zawsze** parametryzowane zapytania (widzieliście to już przy bazie danych) —
-`conn.execute("... WHERE login = ?", (login,))`.
+Nagłówek `Authorization` dodawany jawnie przez aplikację zmienia model ryzyka
+klasycznego CSRF, lecz nie chroni przed XSS ani kradzieżą tokenu.
+**CORS — Cross-Origin Resource Sharing** określa zasady dostępu skryptów
+przeglądarki między originami. Nie zastępuje uwierzytelniania ani autoryzacji;
+klient spoza przeglądarki nie staje się przez CORS niezdolny do wysłania żądania.
 
-### XSS (Cross-Site Scripting)
+## Przypadki do przeanalizowania
 
-Atakujący wstrzykuje złośliwy JavaScript do danych, które potem są wyświetlane
-innemu użytkownikowi bez odpowiedniego oczyszczenia (np. komentarz zawierający
-`<script>...</script>`, wyświetlony bez escapowania w przeglądarce ofiary).
+1. R1 kończy się o 10:00. Porównanie prób 09:00–11:00 i 10:00–11:00 powinno
+   odwoływać się do konkretnego warunku kolizji, nie tylko do kodu odpowiedzi.
+2. Alfa zna identyfikator rezerwacji Bravo. Należy wskazać miejsce kontroli
+   uprawnień oraz dane, którym serwer może zaufać.
+3. Odpowiedź na `POST` nie dotarła. Klient nie wie jeszcze, czy zapis nastąpił.
+   Poprawny format API nie zapewnia automatycznie bezpiecznego ponowienia.
 
-Obrona: nowoczesne frameworki frontendowe (React i podobne) domyślnie escapują dane
-przy renderowaniu — problem pojawia się głównie, gdy ktoś świadomie to wyłączy
-(`dangerouslySetInnerHTML` i podobne).
+Trzeci przypadek prowadzi do [wykładu 3](spotkanie3.qmd): współbieżność,
+trwałość danych i odpowiedzialność infrastruktury.
 
-### CSRF (Cross-Site Request Forgery)
+## Źródła
 
-Atakujący nakłania przeglądarkę ofiary (zalogowanej w Waszej aplikacji) do wysłania
-żądania bez jej wiedzy (np. przez ukryty formularz na złośliwej stronie). Ponieważ
-przeglądarka automatycznie dołącza cookies do żądań, serwer "widzi" żądanie jako
-uwierzytelnione.
-
-Obrona: API oparte o JWT w nagłówku `Authorization` (nie w cookies) jest **z natury
-odporne** na klasyczny CSRF — atakująca strona nie ma dostępu do tokenu
-przechowywanego przez Waszą aplikację (np. w pamięci JS), więc nie może go dołączyć
-do sfałszowanego żądania.
-
-## 6️⃣ HTTPS/TLS — dlaczego zawsze
-
-Bez TLS każdy w tej samej sieci (Wi-Fi w kawiarni, router po drodze) może odczytać
-**cały** ruch — łącznie z tokenami JWT i hasłami przesyłanymi przy logowaniu. TLS
-szyfruje transport między klientem a serwerem — to warunek konieczny, nie opcjonalny
-dodatek, dla każdej aplikacji przyjmującej dane logowania.
-
----
-
-## 🧾 Podsumowanie części II
-
-- Uwierzytelnianie = kim jesteś; autoryzacja = co wolno Ci zrobić — to dwa osobne mechanizmy.
-- Hasła zawsze hashowane (bcrypt/argon2), nigdy przechowywane jawnym tekstem.
-- Nasz wariant JWT (JWS) jest podpisany (integralność), nie zaszyfrowany (poufność) — payload jest czytelny dla każdego; JWE istnieje, ale to poza zakresem kursu.
-- SQL injection, XSS, CSRF — trzy klasyczne podatności; parametryzowane zapytania, escapowanie i tokeny w nagłówku to podstawowa obrona.
-
-## 📚 Źródła
-
-- Dokumentacja FastAPI — *Path Operations*, *OpenAPI*, *Security*
-- M. Masse, *REST API Design Rulebook*
-- OWASP Top 10 (owasp.org)
-- RFC 7519 — *JSON Web Token (JWT)*
+- [FastAPI — Additional Responses in OpenAPI](https://fastapi.tiangolo.com/advanced/additional-responses/).
+- [OWASP — Authorization Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html).
+- [OWASP — Password Storage Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html).
+- [OWASP — JSON Web Token Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/JSON_Web_Token_Cheat_Sheet.html).
+- [RFC 7519 — JSON Web Token](https://www.rfc-editor.org/rfc/rfc7519).

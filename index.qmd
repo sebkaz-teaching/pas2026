@@ -17,8 +17,17 @@ Semestr: zimowy
 | 1 | 3 października 2026 | 2 × 45 min |
 | 2 | 24 października 2026 | 4 × 45 min |
 
-Łącznie: 6 godzin dydaktycznych. Drugie spotkanie obejmie dwa kolejne moduły
-materiału: projektowanie API i bezpieczeństwo oraz skalowalność i wdrażanie.
+Łącznie: 6 godzin dydaktycznych. **W sobotę 24 października odbywają się
+oba pozostałe wykłady, po 2 × 45 minut każdy**, w ramach jednego spotkania.
+
+| Część spotkania 24 października | Materiał | Główny problem |
+|---|---|---|
+| Pierwsze 2 × 45 min | [Wykład 2: projektowanie API i bezpieczeństwo](lectures/spotkanie2.qmd) | Jak zdefiniować operację i ustalić, kto może ją wykonać? |
+| Kolejne 2 × 45 min | [Wykład 3: współbieżność, skalowalność i wdrażanie](lectures/spotkanie3.qmd) | Jak zachować poprawność przy równoczesnych żądaniach, restartach i rozbudowie systemu? |
+
+Przykładem obu części jest aplikacja rezerwacji fikcyjnego ośrodka „Sosna”.
+Strony zawierają rozwinięte wyjaśnienia, przykłady żądań, diagramy i przypadki
+do analizy. Testy pozostają na początku poszczególnych modułów.
 
 ### Laboratoria
 
@@ -30,10 +39,22 @@ materiału: projektowanie API i bezpieczeństwo oraz skalowalność i wdrażanie
 Łącznie: 8 godzin dydaktycznych. Godziny rozpoczęcia i sale sprawdźcie w planie
 zajęć swojej grupy.
 
-Udostępnione są [wykład 1](lectures/spotkanie1.qmd)
-i [wykład 2](lectures/spotkanie2.qmd) oraz krótkie zadania z pierwszego spotkania.
-Laboratorium „Od zera do CRUD” odbędzie się 8 listopada;
-jego materiały pojawią się przed tym terminem.
+Udostępnione są wszystkie trzy moduły wykładowe:
+[wykład 1](lectures/spotkanie1.qmd),
+[wykład 2](lectures/spotkanie2.qmd) oraz
+[wykład 3](lectures/spotkanie3.qmd).
+Materiały laboratoryjne zostaną opublikowane przed odpowiednimi terminami.
+
+## Wykład i samodzielna praca
+
+Demonstracje służą analizie zachowania aplikacji oraz decyzji projektowych.
+Laboratoria będą przeznaczone na samodzielną implementację i sprawdzenie
+rozwiązań na podstawie zadań oraz kryteriów odbioru. Omówienie danego mechanizmu
+na wykładzie nie oznacza, że został on już zaimplementowany w aplikacji startowej.
+
+Demonstrator pierwszego etapu obsługuje zasoby, walidację i konflikty rezerwacji.
+Konta, autoryzacja, kolejki i pamięć podręczna są opisane jako rozszerzenia.
+Strona kursu udostępnia materiały; serwer demonstracyjny działa osobno.
 
 ## Scenariusze zajęć
 

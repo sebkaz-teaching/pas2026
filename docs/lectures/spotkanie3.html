@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Wykład 3: Współbieżność, skalowalność i wdrażanie – Projektowanie Aplikacji Sieciowych</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-94ae530b1fc9924793afbc3bb7de9d3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="../style.css">
+</head>
+
+<body class="nav-sidebar docked quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/spotkanie1.html">Wykłady</a></li><li class="breadcrumb-item"><a href="../lectures/spotkanie3.html">Wykład 3: Współbieżność, skalowalność i wdrażanie</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Projektowanie Aplikacji Sieciowych</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Informacje ogólne</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Wykłady</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/spotkanie1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Spotkanie 1: Architektura i protokół HTTP</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/spotkanie2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Wykład 2: Projektowanie API i bezpieczeństwo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/spotkanie3.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Wykład 3: Współbieżność, skalowalność i wdrażanie</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title"><strong>Sections</strong></h2>
+   
+  <ul class="collapse">
+  <li><a href="#test-z-wykładu-2" id="toc-test-z-wykładu-2" class="nav-link active" data-scroll-target="#test-z-wykładu-2">Test z wykładu 2</a></li>
+  <li><a href="#od-poprawnej-operacji-do-działającej-usługi" id="toc-od-poprawnej-operacji-do-działającej-usługi" class="nav-link" data-scroll-target="#od-poprawnej-operacji-do-działającej-usługi">Od poprawnej operacji do działającej usługi</a></li>
+  <li><a href="#dwa-żądania-i-jeden-wolny-termin" id="toc-dwa-żądania-i-jeden-wolny-termin" class="nav-link" data-scroll-target="#dwa-żądania-i-jeden-wolny-termin">Dwa żądania i jeden wolny termin</a></li>
+  <li><a href="#ponowienie-żądania-a-wynik-operacji" id="toc-ponowienie-żądania-a-wynik-operacji" class="nav-link" data-scroll-target="#ponowienie-żądania-a-wynik-operacji">Ponowienie żądania a wynik operacji</a></li>
+  <li><a href="#trwałość-proces-kontener-i-plik-danych" id="toc-trwałość-proces-kontener-i-plik-danych" class="nav-link" data-scroll-target="#trwałość-proces-kontener-i-plik-danych">Trwałość: proces, kontener i plik danych</a></li>
+  <li><a href="#docker-powtarzalne-uruchomienie" id="toc-docker-powtarzalne-uruchomienie" class="nav-link" data-scroll-target="#docker-powtarzalne-uruchomienie">Docker: powtarzalne uruchomienie</a></li>
+  <li><a href="#skalowanie-i-współdzielony-stan" id="toc-skalowanie-i-współdzielony-stan" class="nav-link" data-scroll-target="#skalowanie-i-współdzielony-stan">Skalowanie i współdzielony stan</a></li>
+  <li><a href="#pamięć-podręczna-szybszy-odczyt-możliwa-nieaktualność" id="toc-pamięć-podręczna-szybszy-odczyt-możliwa-nieaktualność" class="nav-link" data-scroll-target="#pamięć-podręczna-szybszy-odczyt-możliwa-nieaktualność">Pamięć podręczna: szybszy odczyt, możliwa nieaktualność</a></li>
+  <li><a href="#kolejka-rezerwacja-i-powiadomienie-to-różne-wyniki" id="toc-kolejka-rezerwacja-i-powiadomienie-to-różne-wyniki" class="nav-link" data-scroll-target="#kolejka-rezerwacja-i-powiadomienie-to-różne-wyniki">Kolejka: rezerwacja i powiadomienie to różne wyniki</a></li>
+  <li><a href="#monolit-mikroserwisy-i-cdn" id="toc-monolit-mikroserwisy-i-cdn" class="nav-link" data-scroll-target="#monolit-mikroserwisy-i-cdn">Monolit, mikroserwisy i CDN</a></li>
+  <li><a href="#wdrożenie-i-obserwacja-działania" id="toc-wdrożenie-i-obserwacja-działania" class="nav-link" data-scroll-target="#wdrożenie-i-obserwacja-działania">Wdrożenie i obserwacja działania</a></li>
+  <li><a href="#przypadki-do-przeanalizowania" id="toc-przypadki-do-przeanalizowania" class="nav-link" data-scroll-target="#przypadki-do-przeanalizowania">Przypadki do przeanalizowania</a></li>
+  <li><a href="#źródła" id="toc-źródła" class="nav-link" data-scroll-target="#źródła">Źródła</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/spotkanie1.html">Wykłady</a></li><li class="breadcrumb-item"><a href="../lectures/spotkanie3.html">Wykład 3: Współbieżność, skalowalność i wdrażanie</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Wykład 3: Współbieżność, skalowalność i wdrażanie</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><strong>Termin: sobota, 24 października 2026 r. — druga część wspólnego bloku 4 × 45 minut.</strong></p>
+<p>Wykłady 2 i 3 odbywają się podczas jednego spotkania. Każdy moduł obejmuje 2 × 45 minut. Materiał na stronie rozwija przykłady omawiane na wykładzie; samodzielna praca nad implementacją będzie realizowana na laboratoriach.</p>
+<section id="test-z-wykładu-2" class="level2">
+<h2 class="anchored" data-anchor-id="test-z-wykładu-2">Test z wykładu 2</h2>
+<div id="pas-quiz">
+
+</div>
+<script src="../assets/js/quiz-engine.js"></script>
+<script>
+CourseQuiz.mount(document.getElementById('pas-quiz'), {
+  course: "pas2026",
+  lecture: "spotkanie3",
+  title: "Wykład 2: Projektowanie API i bezpieczeństwo",
+  submitUrl: "https://sebastianzajac.pl/rsod-quiz/submit.php",
+  questions: [
+    {
+      id: "q1", points: 1, diff: "bardzo łatwe",
+      text: "Który adres jest zgodny z konwencją REST dla listy poligonów?",
+      options: [
+        {v:"A", t:"/getPoligony"},
+        {v:"B", t:"/poligony"},
+        {v:"C", t:"/poligon/lista"},
+        {v:"D", t:"/API/POLIGON"}
+      ]
+    },
+    {
+      id: "q2", points: 1, diff: "łatwe",
+      text: "Czym różni się autoryzacja od uwierzytelniania?",
+      options: [
+        {v:"A", t:"To synonimy"},
+        {v:"B", t:"Uwierzytelnianie odpowiada 'kim jesteś', autoryzacja — 'co wolno Ci zrobić'"},
+        {v:"C", t:"Autoryzacja dotyczy tylko haseł, uwierzytelnianie — tokenów"},
+        {v:"D", t:"Autoryzacja jest starszym mechanizmem, zastąpionym przez uwierzytelnianie"}
+      ]
+    },
+    {
+      id: "q3", points: 2, diff: "średnie",
+      text: "Dlaczego generowanie OpenAPI z deklaracji w kodzie ogranicza ryzyko niespójności dokumentacji?",
+      options: [
+        {v:"A", t:"Bo jest ładniejsza wizualnie"},
+        {v:"B", t:"Bo współdzieli definicje modeli i parametrów z kodem; własne odpowiedzi i reguły nadal trzeba opisać i sprawdzić"},
+        {v:"C", t:"Bo działa szybciej"},
+        {v:"D", t:"Nie ma żadnej różnicy"}
+      ]
+    },
+    {
+      id: "q4", points: 2, diff: "trudne",
+      text: "Czy omawiany token JWT w postaci JWS zapewnia poufność swojej zawartości?",
+      options: [
+        {v:"A", t:"Tak, nikt bez klucza nie odczyta jego zawartości"},
+        {v:"B", t:"Nie — podpis lub MAC chroni integralność, ale payload kodowany Base64url pozostaje czytelny"},
+        {v:"C", t:"Zależy od długości tokenu"},
+        {v:"D", t:"Tylko header jest zaszyfrowany, payload nie"}
+      ]
+    },
+    {
+      id: "q5", points: 3, diff: "wnioskowanie",
+      text: "Napisaliście endpoint @app.get('/poligony/{id}') zwracający w kodzie HTTPException(status_code=404, ...), ale NIE dodaliście do dekoratora parametru responses={404: {...}}. Co pokaże /docs (Swagger) na temat tego endpointu?",
+      options: [
+        {v:"A", t:"Swagger sam wykryje HTTPException w kodzie i pokaże 404 w dokumentacji"},
+        {v:"B", t:"Swagger NIE pokaże wcale, że endpoint może zwrócić 404 — dokumentacja będzie milczeć o kodzie błędu, który w praktyce naprawdę się zdarza"},
+        {v:"C", t:"Endpoint przestanie działać, dopóki responses nie zostanie dodane"},
+        {v:"D", t:"FastAPI automatycznie doda responses na podstawie treści funkcji"}
+      ]
+    }
+  ]
+});
+</script>
+</section>
+<section id="od-poprawnej-operacji-do-działającej-usługi" class="level2">
+<h2 class="anchored" data-anchor-id="od-poprawnej-operacji-do-działającej-usługi">Od poprawnej operacji do działającej usługi</h2>
+<p>Kontrakt API określa znaczenie żądania i odpowiedzi. System musi jeszcze zachować poprawność, gdy żądania przychodzą równocześnie, proces zostaje uruchomiony ponownie albo odpowiedź ginie w sieci. Rozbudowa infrastruktury nie usuwa tych problemów automatycznie.</p>
+<p>Druga część sobotniego bloku rozwija aplikację rezerwacji ośrodka „Sosna”. Punktem odniesienia jest jedna aplikacja FastAPI i jeden plik SQLite. Kolejki, pamięć podręczna i wiele serwerów są wariantami rozwoju, a nie usługami już uruchomionymi w demonstratorze.</p>
+</section>
+<section id="dwa-żądania-i-jeden-wolny-termin" class="level2">
+<h2 class="anchored" data-anchor-id="dwa-żądania-i-jeden-wolny-termin">Dwa żądania i jeden wolny termin</h2>
+<p>R1 zajmuje P1 od 08:00 do 10:00. Dwa żądania próbują zarezerwować P1 od 10:00 do 11:00. Każde z osobna ma poprawne dane i nie koliduje z R1. Problem powstaje między nowymi rezerwacjami.</p>
+<p>Niepoprawny podział kontroli i zapisu może dopuścić taki przebieg:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Krok</th>
+<th>Żądanie A</th>
+<th>Żądanie B</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Odczyt: brak konfliktu</td>
+<td>—</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>—</td>
+<td>Odczyt: brak konfliktu</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Zapis nowej rezerwacji</td>
+<td>—</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>—</td>
+<td>Zapis drugiej rezerwacji</td>
+</tr>
+</tbody>
+</table>
+<p>Jest to <strong>race condition — wyścig</strong>, w którym wynik zależy od przeplotu operacji. Pojedynczy odczyt „wolne” nie rezerwuje terminu na czas późniejszego zapisu. Sprawdzenie i zmiana muszą stanowić odpowiednio chronioną całość.</p>
+<section id="co-robi-obecny-demonstrator" class="level3">
+<h3 class="anchored" data-anchor-id="co-robi-obecny-demonstrator">Co robi obecny demonstrator</h3>
+<p>W aplikacji „Sosna” operacja zapisu otwiera transakcję SQLite poleceniem <code>BEGIN IMMEDIATE</code> <strong>przed</strong> odczytem konfliktów. Dopiero potem sprawdza obiekt, jednostkę i terminy, a następnie dodaje rezerwację i zatwierdza transakcję.</p>
+<pre class="text"><code>BEGIN IMMEDIATE
+    sprawdzenie obiektu i jednostki
+    sprawdzenie konfliktów
+    INSERT rezerwacji, jeśli termin jest wolny
+COMMIT</code></pre>
+<p>To schemat działania, nie kompletny skrypt SQL. SQLite dopuszcza jednego piszącego naraz. Drugie połączenie może zaczekać lub otrzymać błąd zajęcia; po uzyskaniu możliwości zapisu musi wykonać kontrolę wobec aktualnego stanu.</p>
+<p>Dla krótkich operacji oczekiwany wynik próby to jedna odpowiedź <code>201</code> i jedna <code>409</code>. Gdy oczekiwanie na bazę przekroczy limit demonstratora, możliwe jest <code>503</code>. Kryterium poprawności jest stan bazy: <strong>najwyżej jedna nowa kolidująca rezerwacja</strong>, nie założenie, że każde równoczesne żądanie zawsze skończy się jednym konkretnym kodem.</p>
+<p>Ochrona zależy od stosowania tej ścieżki przez wszystkich zapisujących. Sam schemat obecnej bazy nie zawiera ograniczenia wykluczającego wszystkie nakładające się przedziały. Bezpośredni zapis inną ścieżką może ominąć regułę.</p>
+</section>
+</section>
+<section id="ponowienie-żądania-a-wynik-operacji" class="level2">
+<h2 class="anchored" data-anchor-id="ponowienie-żądania-a-wynik-operacji">Ponowienie żądania a wynik operacji</h2>
+<p>Brak odpowiedzi nie jest dowodem braku zapisu. Możliwy jest przebieg:</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">sequenceDiagram
+    participant K as Klient
+    participant A as API
+    participant B as Baza danych
+    K-&gt;&gt;A: POST /rezerwacje
+    A-&gt;&gt;B: Zapis i COMMIT
+    B--&gt;&gt;A: Zatwierdzono
+    A--xK: Odpowiedź nie dociera
+    Note over K: Wynik jest nieznany klientowi
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p><strong>Idempotencja — idempotency</strong> oznacza, że powtarzanie tej samej operacji ma zamierzony efekt taki jak wykonanie jej raz. Nie wymaga identycznych odpowiedzi HTTP przy każdym wywołaniu. Metoda <code>POST</code> sama nie zapewnia tej właściwości, choć konkretne API może zaprojektować idempotentne przetwarzanie.</p>
+<p>W obecnej aplikacji powtórzony zapis tego samego terminu może zwrócić <code>409</code>. Nie jest to pełny mechanizm identyfikowania ponowień: konflikt nie dowodzi, że istniejącą rezerwację utworzyło właśnie poprzednie żądanie tego klienta.</p>
+<p>Rozszerzenie z kluczem operacji, np. <code>Idempotency-Key</code>, wymaga zapisania klucza, powiązania go z użytkownikiem i treścią żądania oraz zachowania wyniku. Rozpoznanie klucza i utworzenie rezerwacji muszą być skoordynowane atomowo. Ponowne użycie klucza dla innych danych powinno zostać odrzucone. Samo dodanie nagłówka po stronie klienta nie implementuje tego mechanizmu.</p>
+</section>
+<section id="trwałość-proces-kontener-i-plik-danych" class="level2">
+<h2 class="anchored" data-anchor-id="trwałość-proces-kontener-i-plik-danych">Trwałość: proces, kontener i plik danych</h2>
+<p>Restart procesu nie oznacza wymazania bazy, jeżeli dane znajdują się w trwałym pliku. Inaczej zachowuje się lista przechowywana wyłącznie w pamięci procesu.</p>
+<p>W paczce demonstracyjnej konfiguracja zawiera:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">api</span><span class="kw">:</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">build</span><span class="kw">:</span><span class="at"> .</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"127.0.0.1:8000:8000"</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">volumes</span><span class="kw">:</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> ./data:/data</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">restart</span><span class="kw">:</span><span class="at"> </span><span class="st">"no"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Ścieżka <code>./data</code> na komputerze jest montowana jako <code>/data</code> w kontenerze. Jest to <strong>bind mount — montowanie katalogu hosta</strong>, mimo użycia klucza <code>volumes</code> w składni Compose. Baza <code>/data/sosna.db</code> znajduje się dzięki temu poza zapisywalną warstwą kontenera.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Zdarzenie</th>
+<th>Oczekiwany skutek w tej konfiguracji</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Zatrzymanie i uruchomienie procesu</td>
+<td>Zapisany plik pozostaje</td>
+</tr>
+<tr class="even">
+<td>Odtworzenie kontenera z tym samym katalogiem <code>data</code></td>
+<td>Rezerwacje pozostają</td>
+</tr>
+<tr class="odd">
+<td>Uruchomienie z innym, pustym katalogiem danych</td>
+<td>Aplikacja widzi inną bazę</td>
+</tr>
+<tr class="even">
+<td>Usunięcie pliku z katalogu <code>data</code></td>
+<td>Utrata danych z tego pliku; potrzebne odtworzenie z kopii</td>
+</tr>
+</tbody>
+</table>
+<p>Próba trwałości powinna zapisać rozpoznawalny rekord, odtworzyć kontener z zachowanym katalogiem i ponownie odczytać ten rekord. Samo uruchomienie pustego serwera nie sprawdza trwałości.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Trwały katalog nie jest kopią zapasową
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Błąd aplikacji lub użytkownika może zmienić także plik znajdujący się poza kontenerem. Kopia zapasowa musi być spójna i sprawdzona przez odtworzenie. Dla aktywnej bazy SQLite należy użyć odpowiedniego mechanizmu backupu; zwykłe skopiowanie jednego pliku podczas zapisu nie jest uniwersalną procedurą.</p>
+</div>
+</div>
+</section>
+<section id="docker-powtarzalne-uruchomienie" class="level2">
+<h2 class="anchored" data-anchor-id="docker-powtarzalne-uruchomienie">Docker: powtarzalne uruchomienie</h2>
+<p><strong>Obraz — image</strong> zawiera aplikację i zależności przestrzeni użytkownika. <strong>Kontener — container</strong> jest uruchomioną instancją obrazu. Docker nie eliminuje różnic architektury procesora, konfiguracji ani uprawnień do katalogów. Na macOS kontenery linuksowe korzystają z maszyny wirtualnej Docker Desktop.</p>
+<p>Poniższy Dockerfile odpowiada środowisku pierwszego etapu:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> python:3.12-slim</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">WORKDIR</span> /app</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> requirements.txt .</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">pip</span> install <span class="at">--no-cache-dir</span> <span class="at">-r</span> requirements.txt</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> main.py .</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="kw">ENV</span> DATABASE_PATH=/data/sosna.db</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="kw">CMD</span> [<span class="st">"uvicorn"</span>, <span class="st">"main:app"</span>, <span class="st">"--host"</span>, <span class="st">"0.0.0.0"</span>, <span class="st">"--port"</span>, <span class="st">"8000"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Uvicorn jest serwerem obsługującym aplikację przez <strong>ASGI — Asynchronous Server Gateway Interface</strong>. Adres <code>0.0.0.0</code> wewnątrz kontenera oznacza nasłuchiwanie na wszystkich jego interfejsach. Mapowanie <code>127.0.0.1:8000:8000</code> w Compose ogranicza opublikowany port hosta do lokalnego komputera. To odrębne ustawienia.</p>
+<p>Zakresy wersji bibliotek z <code>requirements.txt</code> pozwalają instalować różne zgodne wydania podczas kolejnych budów. Pełna odtwarzalność wymaga kontroli konkretnych wersji zależności i obrazu bazowego, a nie tylko posiadania Dockerfile.</p>
+</section>
+<section id="skalowanie-i-współdzielony-stan" class="level2">
+<h2 class="anchored" data-anchor-id="skalowanie-i-współdzielony-stan">Skalowanie i współdzielony stan</h2>
+<p><strong>Skalowanie pionowe — vertical scaling</strong> polega na zwiększeniu zasobów jednego środowiska: procesora, pamięci lub wydajności dysku. <strong>Skalowanie poziome — horizontal scaling</strong> dodaje instancje obsługujące ruch. Oba podejścia mają ograniczenia, a dodatkowe instancje nie usuwają wąskiego obszaru systemu, np. kosztownego zapisu do wspólnej bazy.</p>
+<p><strong>Load balancer — mechanizm rozdzielania ruchu</strong> wybiera instancję obsługującą żądanie. Przykładowy układ rozbudowanego systemu:</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    C[Klient] --&gt; LB[HTTPS i rozdzielanie ruchu]
+    LB --&gt; A[Instancja API A]
+    LB --&gt; B[Instancja API B]
+    A --&gt; DB[(Wspólny system danych)]
+    B --&gt; DB
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>Dwie niezależne kopie pliku SQLite nie tworzą wspólnej bazy. Jeżeli A zapisze rezerwację we własnym pliku, B jej nie zobaczy. Skopiowanie aplikacji i tokenu użytkownika nie rozwiązuje tego problemu.</p>
+<p>W typowym wariancie z wieloma hostami aplikacje korzystają z usługi danych, np. PostgreSQL. Przypadkowe udostępnienie pliku SQLite przez sieciowy katalog nie zastępuje projektu współbieżności i trwałości. SQLite może natomiast obsługiwać wiele połączeń na jednym hoście — problemem nie jest sam fakt istnienia dwóch klientów, lecz model dostępu do wspólnego stanu.</p>
+<section id="bezstanowe-http-nie-oznacza-aplikacji-bez-danych" class="level3">
+<h3 class="anchored" data-anchor-id="bezstanowe-http-nie-oznacza-aplikacji-bez-danych">Bezstanowe HTTP nie oznacza aplikacji bez danych</h3>
+<p><strong>HTTP — Hypertext Transfer Protocol</strong> jest bezstanowe w sensie semantyki żądań. Aplikacja nadal może przechowywać rezerwacje, sesje i uprawnienia. Token <strong>JWT — JSON Web Token</strong> może ułatwić weryfikację tożsamości przez różne instancje, ale nie synchronizuje rezerwacji.</p>
+<p>Sesje także mogą działać przy wielu instancjach, jeżeli ich stan jest dostępny w uzgodnionym wspólnym magazynie. Wybór wymaga uwzględnienia unieważniania, rotacji kluczy, dostępności magazynu i aktualności uprawnień.</p>
+</section>
+</section>
+<section id="pamięć-podręczna-szybszy-odczyt-możliwa-nieaktualność" class="level2">
+<h2 class="anchored" data-anchor-id="pamięć-podręczna-szybszy-odczyt-możliwa-nieaktualność">Pamięć podręczna: szybszy odczyt, możliwa nieaktualność</h2>
+<p><strong>Cache — pamięć podręczna</strong> przechowuje wynik, aby ograniczyć powtarzalną pracę. Katalog nazw i lokalizacji obiektów może być dobrym kandydatem. Informacja „termin wolny” jest znacznie bardziej wrażliwa na zmianę.</p>
+<p>Przykład: klient odczytał wolne 10:00–11:00, po czym inny użytkownik dokonał rezerwacji. Nawet jeśli odczyt był poprawny w swojej chwili, zapis musi ponownie sprawdzić warunek w chronionej operacji. Cache nie może być ostatecznym źródłem zgody na rezerwację.</p>
+<p><strong>TTL — Time To Live</strong> ogranicza czas przechowywania wpisu. Krótszy TTL zmniejsza czas możliwej nieaktualności, lecz zwiększa liczbę odczytów źródła. Inne strategie obejmują unieważnianie po zapisie i wersjonowanie danych. Wyniki zależne od uprawnień wymagają klucza cache uwzględniającego właściwy kontekst dostępu.</p>
+</section>
+<section id="kolejka-rezerwacja-i-powiadomienie-to-różne-wyniki" class="level2">
+<h2 class="anchored" data-anchor-id="kolejka-rezerwacja-i-powiadomienie-to-różne-wyniki">Kolejka: rezerwacja i powiadomienie to różne wyniki</h2>
+<p>Wysłanie powiadomienia może trwać dłużej niż zapis rezerwacji. Kolejka pozwala przekazać pracę do osobnego procesu, ale wymaga określenia znaczenia sukcesu.</p>
+<ul>
+<li><code>201 Created</code> może potwierdzać utworzenie rezerwacji, nawet jeśli wiadomość jeszcze nie została wysłana.</li>
+<li><code>202 Accepted</code> oznacza przyjęcie operacji do późniejszego przetworzenia; samo w sobie nie potwierdza utworzenia docelowej rezerwacji.</li>
+</ul>
+<p>Pomiędzy zatwierdzeniem rezerwacji a dodaniem zadania do kolejki może wystąpić awaria. Wzorzec <strong>transactional outbox</strong> zapisuje rezerwację i informację o zdarzeniu w jednej transakcji; osobny proces później przekazuje zdarzenie. Powtórne dostarczenie komunikatu wymaga obsługi duplikatów. Kolejka nie gwarantuje sama z siebie jednorazowego skutku w systemie odbiorcy.</p>
+<p>W demonstratorze nie ma jeszcze kolejki ani wysyłania wiadomości. Jest to wariant architektury do analizy, nie dodatkowy warunek uruchomienia zajęć.</p>
+</section>
+<section id="monolit-mikroserwisy-i-cdn" class="level2">
+<h2 class="anchored" data-anchor-id="monolit-mikroserwisy-i-cdn">Monolit, mikroserwisy i CDN</h2>
+<p><strong>Monolit</strong> jest jedną jednostką wdrożenia aplikacji; może mieć wiele modułów oraz wiele procesów lub instancji. <strong>Mikroserwisy</strong> rozdzielają odpowiedzialności na niezależnie wdrażane usługi. Taki podział może wspierać niezależne zespoły, różne profile obciążenia i izolowanie awarii, lecz dodaje komunikację sieciową, koordynację zmian i problemy spójności.</p>
+<p>Dla obecnego projektu modułowa aplikacja FastAPI jest wystarczającym punktem wyjścia. Wydzielenie usługi powinno odpowiadać konkretnemu problemowi, a nie być celem samym w sobie.</p>
+<p><strong>CDN — Content Delivery Network</strong>, sieć dystrybucji treści, może obsługiwać statyczne zasoby blisko użytkowników: pliki JavaScript, arkusze <strong>CSS — Cascading Style Sheets</strong> i obrazy. Nie zastępuje logiki rezerwacji. Także strona kursu na GitHub Pages jest statyczna: publikuje materiały, ale nie uruchamia procesu FastAPI ani lokalnej bazy z demonstratora.</p>
+</section>
+<section id="wdrożenie-i-obserwacja-działania" class="level2">
+<h2 class="anchored" data-anchor-id="wdrożenie-i-obserwacja-działania">Wdrożenie i obserwacja działania</h2>
+<p><strong>CI — Continuous Integration</strong>, ciągła integracja, obejmuje automatyczne sprawdzanie zmian, np. testy i budowę obrazu. <strong>CD</strong> może oznaczać <strong>Continuous Delivery</strong> — gotowość do kontrolowanego wydania — albo <strong>Continuous Deployment</strong> — automatyczne wdrożenie po spełnieniu warunków.</p>
+<p>Logiczny przebieg wydania:</p>
+<pre class="text"><code>zmiana kodu → testy → budowa oznaczonego obrazu → próba uruchomienia
+→ wdrożenie → kontrola odpowiedzi i danych → obserwacja lub wycofanie</code></pre>
+<p>Zielony wynik testów nie dowodzi, że środowisko produkcyjne ma poprawną konfigurację. Zmiana schematu bazy może również utrudnić powrót do starej wersji aplikacji, nawet jeśli jej obraz nadal istnieje.</p>
+<section id="co-powinno-być-widoczne-po-uruchomieniu" class="level3">
+<h3 class="anchored" data-anchor-id="co-powinno-być-widoczne-po-uruchomieniu">Co powinno być widoczne po uruchomieniu</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Sygnał</th>
+<th>Pytanie, na które odpowiada</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Log żądania z identyfikatorem</td>
+<td>Która operacja się nie powiodła i z jakim kodem?</td>
+</tr>
+<tr class="even">
+<td>Odsetek odpowiedzi 5xx</td>
+<td>Czy rośnie liczba błędów serwera?</td>
+</tr>
+<tr class="odd">
+<td>Czas odpowiedzi, np. percentyl 95</td>
+<td>Jak długo czeka większość wolniejszych żądań?</td>
+</tr>
+<tr class="even">
+<td>Liczba konfliktów i zajęć bazy</td>
+<td>Czy występuje presja na zapis lub konflikt terminów?</td>
+</tr>
+<tr class="odd">
+<td>Kontrola gotowości</td>
+<td>Czy instancja może obsługiwać wymagane zależności?</td>
+</tr>
+</tbody>
+</table>
+<p>Logi nie powinny zawierać haseł, pełnych tokenów ani niepotrzebnych danych osobowych. „Proces żyje” i „usługa jest gotowa” to różne stany. Odpowiedź kontrolnego endpointu bez dostępu do bazy może potwierdzać działanie serwera, ale nie całej funkcji rezerwacji.</p>
+</section>
+</section>
+<section id="przypadki-do-przeanalizowania" class="level2">
+<h2 class="anchored" data-anchor-id="przypadki-do-przeanalizowania">Przypadki do przeanalizowania</h2>
+<ol type="1">
+<li>Dwa żądania rezerwują ten sam termin. Należy opisać kolejność sprawdzenia i zapisu oraz sprawdzić końcową liczbę rezerwacji.</li>
+<li>Kontener zostaje odtworzony, ale rezerwacje znikają. Analiza obejmuje faktyczną ścieżkę pliku i montowanie katalogu, nie tylko kod API.</li>
+<li>Dwie instancje mają dwie kopie SQLite. Poprawne logowanie na obu nie dowodzi, że przedstawiają ten sam stan rezerwacji.</li>
+<li>Rezerwacja została zatwierdzona, a powiadomienie nie dotarło. Należy rozdzielić trwały stan rezerwacji od stanu zadania wysyłki.</li>
+</ol>
+<p>Na laboratoriach samodzielna implementacja i próby odbiorcze obejmą wybrane mechanizmy. Zakres wykładu pokazuje również kierunki rozwoju, których nie trzeba wszystkich implementować, aby przygotować poprawną małą aplikację.</p>
+</section>
+<section id="źródła" class="level2">
+<h2 class="anchored" data-anchor-id="źródła">Źródła</h2>
+<ul>
+<li><a href="https://www.sqlite.org/lang_transaction.html">SQLite — Transaction</a>.</li>
+<li><a href="https://www.sqlite.org/backup.html">SQLite — Online Backup API</a>.</li>
+<li><a href="https://docs.docker.com/engine/storage/bind-mounts/">Docker — Bind mounts</a>.</li>
+<li><a href="https://docs.docker.com/engine/storage/volumes/">Docker — Volumes</a>.</li>
+<li><a href="https://docs.github.com/en/actions/about-github-actions/understanding-github-actions">GitHub Actions — Understanding GitHub Actions</a>.</li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc9110">RFC 9110 — HTTP Semantics</a>.</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/sebkaz-teaching\.github\.io\/pas2026");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>Copyright 2026, Sebastian Zając</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
