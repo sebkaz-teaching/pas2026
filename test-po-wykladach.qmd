@@ -1,0 +1,268 @@
+---
+title: "Test po wykładach"
+toc: false
+---
+
+Wspólny test do wykonania po bloku wykładowym **24 października 2026 r.**
+Łączy pytania z dotychczasowych testów umieszczonych przy wykładach 2 i 3:
+architekturę i HTTP oraz projektowanie API i bezpieczeństwo.
+
+Test zawiera **10 pytań**, po jednej poprawnej odpowiedzi w każdym.
+Maksymalny wynik wynosi **18 punktów**. Wpisz e-mail, uzupełnij całą kartę
+i wyślij ją jeden raz. Wynik pojawi się po potwierdzeniu zapisu przez serwer.
+
+<div id="rsod-quiz"></div>
+<script src="assets/js/quiz-engine.js"></script>
+<script>
+CourseQuiz.mount(document.getElementById('rsod-quiz'), {
+  "course": "pas2026",
+  "lecture": "test-po-wykladach",
+  "title": "PAS — test po wykładach",
+  "submitUrl": "https://sebastianzajac.pl/rsod-quiz/submit.php",
+  "questions": [
+    {
+      "id": "q1",
+      "points": 1,
+      "diff": "bardzo łatwe",
+      "text": "Kto wysyła żądanie w podstawowym modelu żądanie–odpowiedź HTTP?",
+      "options": [
+        {
+          "v": "A",
+          "t": "Serwer"
+        },
+        {
+          "v": "B",
+          "t": "Klient"
+        },
+        {
+          "v": "C",
+          "t": "Oboje jednocześnie"
+        },
+        {
+          "v": "D",
+          "t": "Zależy od implementacji bazy danych"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "points": 1,
+      "diff": "łatwe",
+      "text": "Które trzy warstwy tworzą typową aplikację sieciową?",
+      "options": [
+        {
+          "v": "A",
+          "t": "Sieciowa, transportowa, fizyczna"
+        },
+        {
+          "v": "B",
+          "t": "Prezentacji, logiki biznesowej, danych"
+        },
+        {
+          "v": "C",
+          "t": "Klient, router, serwer"
+        },
+        {
+          "v": "D",
+          "t": "HTTP, TCP, IP"
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "points": 2,
+      "diff": "średnie",
+      "text": "Czym różni się 401 od 403?",
+      "options": [
+        {
+          "v": "A",
+          "t": "To synonimy, oba znaczą brak dostępu"
+        },
+        {
+          "v": "B",
+          "t": "401 = brak poprawnego uwierzytelnienia dla chronionej operacji; 403 = odmowa dostępu, np. brak uprawnień konta"
+        },
+        {
+          "v": "C",
+          "t": "401 dotyczy tylko GET, 403 tylko POST"
+        },
+        {
+          "v": "D",
+          "t": "403 jest starszą wersją 401"
+        }
+      ]
+    },
+    {
+      "id": "q4",
+      "points": 2,
+      "diff": "trudne",
+      "text": "Dlaczego HTTP nazywamy protokołem bezstanowym?",
+      "options": [
+        {
+          "v": "A",
+          "t": "Bo nie obsługuje żadnych danych"
+        },
+        {
+          "v": "B",
+          "t": "Bo każde żądanie jest interpretowane samodzielnie; aplikacja nadal może przechowywać dane i sesje"
+        },
+        {
+          "v": "C",
+          "t": "Bo działa tylko na jednym porcie"
+        },
+        {
+          "v": "D",
+          "t": "Bo nie wspiera szyfrowania"
+        }
+      ]
+    },
+    {
+      "id": "q5",
+      "points": 3,
+      "diff": "wnioskowanie",
+      "text": "Klient wysyła POST /rezerwacje, ale traci połączenie zanim dostanie odpowiedź — nie wie, czy żądanie dotarło do serwera. Czy bezpiecznie może po prostu wysłać ten sam POST ponownie?",
+      "options": [
+        {
+          "v": "A",
+          "t": "Tak, POST zawsze można bezpiecznie powtórzyć"
+        },
+        {
+          "v": "B",
+          "t": "Nie ma takiej gwarancji — samo POST nie zapewnia idempotencji, więc powtórzenie może utworzyć duplikat"
+        },
+        {
+          "v": "C",
+          "t": "Tak, bo HTTP gwarantuje brak duplikatów"
+        },
+        {
+          "v": "D",
+          "t": "Nie da się tego ocenić bez znajomości nagłówków"
+        }
+      ]
+    },
+    {
+      "id": "q6",
+      "points": 1,
+      "diff": "bardzo łatwe",
+      "text": "Który adres jest zgodny z konwencją REST dla listy poligonów?",
+      "options": [
+        {
+          "v": "A",
+          "t": "/getPoligony"
+        },
+        {
+          "v": "B",
+          "t": "/poligony"
+        },
+        {
+          "v": "C",
+          "t": "/poligon/lista"
+        },
+        {
+          "v": "D",
+          "t": "/API/POLIGON"
+        }
+      ]
+    },
+    {
+      "id": "q7",
+      "points": 1,
+      "diff": "łatwe",
+      "text": "Czym różni się autoryzacja od uwierzytelniania?",
+      "options": [
+        {
+          "v": "A",
+          "t": "To synonimy"
+        },
+        {
+          "v": "B",
+          "t": "Uwierzytelnianie odpowiada 'kim jesteś', autoryzacja — 'co wolno Ci zrobić'"
+        },
+        {
+          "v": "C",
+          "t": "Autoryzacja dotyczy tylko haseł, uwierzytelnianie — tokenów"
+        },
+        {
+          "v": "D",
+          "t": "Autoryzacja jest starszym mechanizmem, zastąpionym przez uwierzytelnianie"
+        }
+      ]
+    },
+    {
+      "id": "q8",
+      "points": 2,
+      "diff": "średnie",
+      "text": "Dlaczego generowanie OpenAPI z deklaracji w kodzie ogranicza ryzyko niespójności dokumentacji?",
+      "options": [
+        {
+          "v": "A",
+          "t": "Bo jest ładniejsza wizualnie"
+        },
+        {
+          "v": "B",
+          "t": "Bo współdzieli definicje modeli i parametrów z kodem; własne odpowiedzi i reguły nadal trzeba opisać i sprawdzić"
+        },
+        {
+          "v": "C",
+          "t": "Bo działa szybciej"
+        },
+        {
+          "v": "D",
+          "t": "Nie ma żadnej różnicy"
+        }
+      ]
+    },
+    {
+      "id": "q9",
+      "points": 2,
+      "diff": "trudne",
+      "text": "Czy omawiany token JWT w postaci JWS zapewnia poufność swojej zawartości?",
+      "options": [
+        {
+          "v": "A",
+          "t": "Tak, nikt bez klucza nie odczyta jego zawartości"
+        },
+        {
+          "v": "B",
+          "t": "Nie — podpis lub MAC chroni integralność, ale payload kodowany Base64url pozostaje czytelny"
+        },
+        {
+          "v": "C",
+          "t": "Zależy od długości tokenu"
+        },
+        {
+          "v": "D",
+          "t": "Tylko header jest zaszyfrowany, payload nie"
+        }
+      ]
+    },
+    {
+      "id": "q10",
+      "points": 3,
+      "diff": "wnioskowanie",
+      "text": "Napisaliście endpoint @app.get('/poligony/{id}') zwracający w kodzie HTTPException(status_code=404, ...), ale NIE dodaliście do dekoratora parametru responses={404: {...}}. Co pokaże /docs (Swagger) na temat tego endpointu?",
+      "options": [
+        {
+          "v": "A",
+          "t": "Swagger sam wykryje HTTPException w kodzie i pokaże 404 w dokumentacji"
+        },
+        {
+          "v": "B",
+          "t": "Swagger NIE pokaże wcale, że endpoint może zwrócić 404 — dokumentacja będzie milczeć o kodzie błędu, który w praktyce naprawdę się zdarza"
+        },
+        {
+          "v": "C",
+          "t": "Endpoint przestanie działać, dopóki responses nie zostanie dodane"
+        },
+        {
+          "v": "D",
+          "t": "FastAPI automatycznie doda responses na podstawie treści funkcji"
+        }
+      ]
+    }
+  ]
+});
+</script>
+
+W razie błędu zapisu odpowiedzi pozostają na otwartej stronie; po przywróceniu
+połączenia można ponowić wysyłkę. Nie odświeżaj strony podczas wypełniania.

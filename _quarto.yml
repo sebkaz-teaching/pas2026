@@ -34,6 +34,7 @@ website:
           - lectures/spotkanie1.qmd
           - lectures/spotkanie2.qmd
           - lectures/spotkanie3.qmd
+      - test-po-wykladach.qmd
       # - section: "Laboratoria"
       #   contents:
       #     - cwiczenia/spotkanie1.qmd

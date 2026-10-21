@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://sebkaz-teaching.github.io/pas2026/scenariusze.html</loc>
-    <lastmod>2026-10-20T17:53:56.153Z</lastmod>
+    <loc>https://sebkaz-teaching.github.io/pas2026/test-po-wykladach.html</loc>
+    <lastmod>2026-10-20T18:28:38.660Z</lastmod>
   </url>
   <url>
-    <loc>https://sebkaz-teaching.github.io/pas2026/lectures/spotkanie2.html</loc>
-    <lastmod>2026-10-20T17:54:45.911Z</lastmod>
-  </url>
-  <url>
-    <loc>https://sebkaz-teaching.github.io/pas2026/index.html</loc>
-    <lastmod>2026-10-20T17:53:56.153Z</lastmod>
+    <loc>https://sebkaz-teaching.github.io/pas2026/lectures/spotkanie3.html</loc>
+    <lastmod>2026-10-20T18:28:38.659Z</lastmod>
   </url>
   <url>
     <loc>https://sebkaz-teaching.github.io/pas2026/lectures/spotkanie1.html</loc>
     <lastmod>2026-09-22T09:11:23.711Z</lastmod>
   </url>
   <url>
-    <loc>https://sebkaz-teaching.github.io/pas2026/lectures/spotkanie3.html</loc>
-    <lastmod>2026-10-20T17:54:45.917Z</lastmod>
+    <loc>https://sebkaz-teaching.github.io/pas2026/index.html</loc>
+    <lastmod>2026-10-20T18:28:38.704Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sebkaz-teaching.github.io/pas2026/lectures/spotkanie2.html</loc>
+    <lastmod>2026-10-20T18:28:38.658Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sebkaz-teaching.github.io/pas2026/scenariusze.html</loc>
+    <lastmod>2026-10-20T17:53:56.153Z</lastmod>
   </url>
 </urlset>

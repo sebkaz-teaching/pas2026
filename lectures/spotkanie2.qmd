@@ -8,71 +8,6 @@ Wykłady 2 i 3 odbywają się podczas jednego spotkania. Każdy moduł obejmuje
 2 × 45 minut. Materiał na stronie rozwija przykłady omawiane na wykładzie;
 samodzielna praca nad implementacją będzie realizowana na laboratoriach.
 
-## Test z wykładu 1
-
-<div id="pas-quiz"></div>
-<script src="../assets/js/quiz-engine.js"></script>
-<script>
-CourseQuiz.mount(document.getElementById('pas-quiz'), {
-  course: "pas2026",
-  lecture: "spotkanie2",
-  title: "Wykład 1: Architektura i protokół HTTP",
-  submitUrl: "https://sebastianzajac.pl/rsod-quiz/submit.php",
-  questions: [
-    {
-      id: "q1", points: 1, diff: "bardzo łatwe",
-      text: "Kto wysyła żądanie w podstawowym modelu żądanie–odpowiedź HTTP?",
-      options: [
-        {v:"A", t:"Serwer"},
-        {v:"B", t:"Klient"},
-        {v:"C", t:"Oboje jednocześnie"},
-        {v:"D", t:"Zależy od implementacji bazy danych"}
-      ]
-    },
-    {
-      id: "q2", points: 1, diff: "łatwe",
-      text: "Które trzy warstwy tworzą typową aplikację sieciową?",
-      options: [
-        {v:"A", t:"Sieciowa, transportowa, fizyczna"},
-        {v:"B", t:"Prezentacji, logiki biznesowej, danych"},
-        {v:"C", t:"Klient, router, serwer"},
-        {v:"D", t:"HTTP, TCP, IP"}
-      ]
-    },
-    {
-      id: "q3", points: 2, diff: "średnie",
-      text: "Czym różni się 401 od 403?",
-      options: [
-        {v:"A", t:"To synonimy, oba znaczą brak dostępu"},
-        {v:"B", t:"401 = brak poprawnego uwierzytelnienia dla chronionej operacji; 403 = odmowa dostępu, np. brak uprawnień konta"},
-        {v:"C", t:"401 dotyczy tylko GET, 403 tylko POST"},
-        {v:"D", t:"403 jest starszą wersją 401"}
-      ]
-    },
-    {
-      id: "q4", points: 2, diff: "trudne",
-      text: "Dlaczego HTTP nazywamy protokołem bezstanowym?",
-      options: [
-        {v:"A", t:"Bo nie obsługuje żadnych danych"},
-        {v:"B", t:"Bo każde żądanie jest interpretowane samodzielnie; aplikacja nadal może przechowywać dane i sesje"},
-        {v:"C", t:"Bo działa tylko na jednym porcie"},
-        {v:"D", t:"Bo nie wspiera szyfrowania"}
-      ]
-    },
-    {
-      id: "q5", points: 3, diff: "wnioskowanie",
-      text: "Klient wysyła POST /rezerwacje, ale traci połączenie zanim dostanie odpowiedź — nie wie, czy żądanie dotarło do serwera. Czy bezpiecznie może po prostu wysłać ten sam POST ponownie?",
-      options: [
-        {v:"A", t:"Tak, POST zawsze można bezpiecznie powtórzyć"},
-        {v:"B", t:"Nie ma takiej gwarancji — samo POST nie zapewnia idempotencji, więc powtórzenie może utworzyć duplikat"},
-        {v:"C", t:"Tak, bo HTTP gwarantuje brak duplikatów"},
-        {v:"D", t:"Nie da się tego ocenić bez znajomości nagłówków"}
-      ]
-    }
-  ]
-});
-</script>
-
 ## Od działającego żądania do kontraktu API
 
 Pierwszy wykład przedstawiał drogę żądania od klienta przez serwer do bazy danych.
@@ -371,6 +306,11 @@ klient spoza przeglądarki nie staje się przez CORS niezdolny do wysłania żą
 
 Trzeci przypadek prowadzi do [wykładu 3](spotkanie3.qmd): współbieżność,
 trwałość danych i odpowiedzialność infrastruktury.
+
+## Test po wykładach
+
+[Otwórz wspólny test po wykładach](../test-po-wykladach.qmd) — jedna karta
+z 10 pytaniami i jednym wynikiem.
 
 ## Źródła
 

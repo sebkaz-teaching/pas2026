@@ -184,6 +184,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
       </ul>
   </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../test-po-wykladach.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Test po wykładach</span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -194,8 +200,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title"><strong>Sections</strong></h2>
    
   <ul class="collapse">
-  <li><a href="#test-z-wykładu-2" id="toc-test-z-wykładu-2" class="nav-link active" data-scroll-target="#test-z-wykładu-2">Test z wykładu 2</a></li>
-  <li><a href="#od-poprawnej-operacji-do-działającej-usługi" id="toc-od-poprawnej-operacji-do-działającej-usługi" class="nav-link" data-scroll-target="#od-poprawnej-operacji-do-działającej-usługi">Od poprawnej operacji do działającej usługi</a></li>
+  <li><a href="#od-poprawnej-operacji-do-działającej-usługi" id="toc-od-poprawnej-operacji-do-działającej-usługi" class="nav-link active" data-scroll-target="#od-poprawnej-operacji-do-działającej-usługi">Od poprawnej operacji do działającej usługi</a></li>
   <li><a href="#dwa-żądania-i-jeden-wolny-termin" id="toc-dwa-żądania-i-jeden-wolny-termin" class="nav-link" data-scroll-target="#dwa-żądania-i-jeden-wolny-termin">Dwa żądania i jeden wolny termin</a></li>
   <li><a href="#ponowienie-żądania-a-wynik-operacji" id="toc-ponowienie-żądania-a-wynik-operacji" class="nav-link" data-scroll-target="#ponowienie-żądania-a-wynik-operacji">Ponowienie żądania a wynik operacji</a></li>
   <li><a href="#trwałość-proces-kontener-i-plik-danych" id="toc-trwałość-proces-kontener-i-plik-danych" class="nav-link" data-scroll-target="#trwałość-proces-kontener-i-plik-danych">Trwałość: proces, kontener i plik danych</a></li>
@@ -206,6 +211,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#monolit-mikroserwisy-i-cdn" id="toc-monolit-mikroserwisy-i-cdn" class="nav-link" data-scroll-target="#monolit-mikroserwisy-i-cdn">Monolit, mikroserwisy i CDN</a></li>
   <li><a href="#wdrożenie-i-obserwacja-działania" id="toc-wdrożenie-i-obserwacja-działania" class="nav-link" data-scroll-target="#wdrożenie-i-obserwacja-działania">Wdrożenie i obserwacja działania</a></li>
   <li><a href="#przypadki-do-przeanalizowania" id="toc-przypadki-do-przeanalizowania" class="nav-link" data-scroll-target="#przypadki-do-przeanalizowania">Przypadki do przeanalizowania</a></li>
+  <li><a href="#test-po-wykładach" id="toc-test-po-wykładach" class="nav-link" data-scroll-target="#test-po-wykładach">Test po wykładach</a></li>
   <li><a href="#źródła" id="toc-źródła" class="nav-link" data-scroll-target="#źródła">Źródła</a></li>
   </ul>
 </nav>
@@ -234,73 +240,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <p><strong>Termin: sobota, 24 października 2026 r. — druga część wspólnego bloku 4 × 45 minut.</strong></p>
 <p>Wykłady 2 i 3 odbywają się podczas jednego spotkania. Każdy moduł obejmuje 2 × 45 minut. Materiał na stronie rozwija przykłady omawiane na wykładzie; samodzielna praca nad implementacją będzie realizowana na laboratoriach.</p>
-<section id="test-z-wykładu-2" class="level2">
-<h2 class="anchored" data-anchor-id="test-z-wykładu-2">Test z wykładu 2</h2>
-<div id="pas-quiz">
-
-</div>
-<script src="../assets/js/quiz-engine.js"></script>
-<script>
-CourseQuiz.mount(document.getElementById('pas-quiz'), {
-  course: "pas2026",
-  lecture: "spotkanie3",
-  title: "Wykład 2: Projektowanie API i bezpieczeństwo",
-  submitUrl: "https://sebastianzajac.pl/rsod-quiz/submit.php",
-  questions: [
-    {
-      id: "q1", points: 1, diff: "bardzo łatwe",
-      text: "Który adres jest zgodny z konwencją REST dla listy poligonów?",
-      options: [
-        {v:"A", t:"/getPoligony"},
-        {v:"B", t:"/poligony"},
-        {v:"C", t:"/poligon/lista"},
-        {v:"D", t:"/API/POLIGON"}
-      ]
-    },
-    {
-      id: "q2", points: 1, diff: "łatwe",
-      text: "Czym różni się autoryzacja od uwierzytelniania?",
-      options: [
-        {v:"A", t:"To synonimy"},
-        {v:"B", t:"Uwierzytelnianie odpowiada 'kim jesteś', autoryzacja — 'co wolno Ci zrobić'"},
-        {v:"C", t:"Autoryzacja dotyczy tylko haseł, uwierzytelnianie — tokenów"},
-        {v:"D", t:"Autoryzacja jest starszym mechanizmem, zastąpionym przez uwierzytelnianie"}
-      ]
-    },
-    {
-      id: "q3", points: 2, diff: "średnie",
-      text: "Dlaczego generowanie OpenAPI z deklaracji w kodzie ogranicza ryzyko niespójności dokumentacji?",
-      options: [
-        {v:"A", t:"Bo jest ładniejsza wizualnie"},
-        {v:"B", t:"Bo współdzieli definicje modeli i parametrów z kodem; własne odpowiedzi i reguły nadal trzeba opisać i sprawdzić"},
-        {v:"C", t:"Bo działa szybciej"},
-        {v:"D", t:"Nie ma żadnej różnicy"}
-      ]
-    },
-    {
-      id: "q4", points: 2, diff: "trudne",
-      text: "Czy omawiany token JWT w postaci JWS zapewnia poufność swojej zawartości?",
-      options: [
-        {v:"A", t:"Tak, nikt bez klucza nie odczyta jego zawartości"},
-        {v:"B", t:"Nie — podpis lub MAC chroni integralność, ale payload kodowany Base64url pozostaje czytelny"},
-        {v:"C", t:"Zależy od długości tokenu"},
-        {v:"D", t:"Tylko header jest zaszyfrowany, payload nie"}
-      ]
-    },
-    {
-      id: "q5", points: 3, diff: "wnioskowanie",
-      text: "Napisaliście endpoint @app.get('/poligony/{id}') zwracający w kodzie HTTPException(status_code=404, ...), ale NIE dodaliście do dekoratora parametru responses={404: {...}}. Co pokaże /docs (Swagger) na temat tego endpointu?",
-      options: [
-        {v:"A", t:"Swagger sam wykryje HTTPException w kodzie i pokaże 404 w dokumentacji"},
-        {v:"B", t:"Swagger NIE pokaże wcale, że endpoint może zwrócić 404 — dokumentacja będzie milczeć o kodzie błędu, który w praktyce naprawdę się zdarza"},
-        {v:"C", t:"Endpoint przestanie działać, dopóki responses nie zostanie dodane"},
-        {v:"D", t:"FastAPI automatycznie doda responses na podstawie treści funkcji"}
-      ]
-    }
-  ]
-});
-</script>
-</section>
 <section id="od-poprawnej-operacji-do-działającej-usługi" class="level2">
 <h2 class="anchored" data-anchor-id="od-poprawnej-operacji-do-działającej-usługi">Od poprawnej operacji do działającej usługi</h2>
 <p>Kontrakt API określa znaczenie żądania i odpowiedzi. System musi jeszcze zachować poprawność, gdy żądania przychodzą równocześnie, proces zostaje uruchomiony ponownie albo odpowiedź ginie w sieci. Rozbudowa infrastruktury nie usuwa tych problemów automatycznie.</p>
@@ -560,6 +499,10 @@ COMMIT</code></pre>
 <li>Rezerwacja została zatwierdzona, a powiadomienie nie dotarło. Należy rozdzielić trwały stan rezerwacji od stanu zadania wysyłki.</li>
 </ol>
 <p>Na laboratoriach samodzielna implementacja i próby odbiorcze obejmą wybrane mechanizmy. Zakres wykładu pokazuje również kierunki rozwoju, których nie trzeba wszystkich implementować, aby przygotować poprawną małą aplikację.</p>
+</section>
+<section id="test-po-wykładach" class="level2">
+<h2 class="anchored" data-anchor-id="test-po-wykładach">Test po wykładach</h2>
+<p><a href="../test-po-wykladach.html">Otwórz wspólny test po wykładach</a> — jedna karta z 10 pytaniami i jednym wynikiem.</p>
 </section>
 <section id="źródła" class="level2">
 <h2 class="anchored" data-anchor-id="źródła">Źródła</h2>

@@ -181,6 +181,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
       </ul>
   </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../test-po-wykladach.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Test po wykładach</span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -191,8 +197,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title"><strong>Sections</strong></h2>
    
   <ul class="collapse">
-  <li><a href="#test-z-wykładu-1" id="toc-test-z-wykładu-1" class="nav-link active" data-scroll-target="#test-z-wykładu-1">Test z wykładu 1</a></li>
-  <li><a href="#od-działającego-żądania-do-kontraktu-api" id="toc-od-działającego-żądania-do-kontraktu-api" class="nav-link" data-scroll-target="#od-działającego-żądania-do-kontraktu-api">Od działającego żądania do kontraktu API</a></li>
+  <li><a href="#od-działającego-żądania-do-kontraktu-api" id="toc-od-działającego-żądania-do-kontraktu-api" class="nav-link active" data-scroll-target="#od-działającego-żądania-do-kontraktu-api">Od działającego żądania do kontraktu API</a></li>
   <li><a href="#zasoby-adresy-i-metody" id="toc-zasoby-adresy-i-metody" class="nav-link" data-scroll-target="#zasoby-adresy-i-metody">Zasoby, adresy i metody</a></li>
   <li><a href="#walidacja-poprawny-json-nie-wystarcza" id="toc-walidacja-poprawny-json-nie-wystarcza" class="nav-link" data-scroll-target="#walidacja-poprawny-json-nie-wystarcza">Walidacja: poprawny JSON nie wystarcza</a></li>
   <li><a href="#kody-odpowiedzi-jako-część-kontraktu" id="toc-kody-odpowiedzi-jako-część-kontraktu" class="nav-link" data-scroll-target="#kody-odpowiedzi-jako-część-kontraktu">Kody odpowiedzi jako część kontraktu</a></li>
@@ -201,6 +206,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#hasła-sesje-i-tokeny" id="toc-hasła-sesje-i-tokeny" class="nav-link" data-scroll-target="#hasła-sesje-i-tokeny">Hasła, sesje i tokeny</a></li>
   <li><a href="#wybrane-zagrożenia-aplikacji-sieciowej" id="toc-wybrane-zagrożenia-aplikacji-sieciowej" class="nav-link" data-scroll-target="#wybrane-zagrożenia-aplikacji-sieciowej">Wybrane zagrożenia aplikacji sieciowej</a></li>
   <li><a href="#przypadki-do-przeanalizowania" id="toc-przypadki-do-przeanalizowania" class="nav-link" data-scroll-target="#przypadki-do-przeanalizowania">Przypadki do przeanalizowania</a></li>
+  <li><a href="#test-po-wykładach" id="toc-test-po-wykładach" class="nav-link" data-scroll-target="#test-po-wykładach">Test po wykładach</a></li>
   <li><a href="#źródła" id="toc-źródła" class="nav-link" data-scroll-target="#źródła">Źródła</a></li>
   </ul>
 </nav>
@@ -229,73 +235,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <p><strong>Termin: sobota, 24 października 2026 r. — pierwsza część wspólnego bloku 4 × 45 minut.</strong></p>
 <p>Wykłady 2 i 3 odbywają się podczas jednego spotkania. Każdy moduł obejmuje 2 × 45 minut. Materiał na stronie rozwija przykłady omawiane na wykładzie; samodzielna praca nad implementacją będzie realizowana na laboratoriach.</p>
-<section id="test-z-wykładu-1" class="level2">
-<h2 class="anchored" data-anchor-id="test-z-wykładu-1">Test z wykładu 1</h2>
-<div id="pas-quiz">
-
-</div>
-<script src="../assets/js/quiz-engine.js"></script>
-<script>
-CourseQuiz.mount(document.getElementById('pas-quiz'), {
-  course: "pas2026",
-  lecture: "spotkanie2",
-  title: "Wykład 1: Architektura i protokół HTTP",
-  submitUrl: "https://sebastianzajac.pl/rsod-quiz/submit.php",
-  questions: [
-    {
-      id: "q1", points: 1, diff: "bardzo łatwe",
-      text: "Kto wysyła żądanie w podstawowym modelu żądanie–odpowiedź HTTP?",
-      options: [
-        {v:"A", t:"Serwer"},
-        {v:"B", t:"Klient"},
-        {v:"C", t:"Oboje jednocześnie"},
-        {v:"D", t:"Zależy od implementacji bazy danych"}
-      ]
-    },
-    {
-      id: "q2", points: 1, diff: "łatwe",
-      text: "Które trzy warstwy tworzą typową aplikację sieciową?",
-      options: [
-        {v:"A", t:"Sieciowa, transportowa, fizyczna"},
-        {v:"B", t:"Prezentacji, logiki biznesowej, danych"},
-        {v:"C", t:"Klient, router, serwer"},
-        {v:"D", t:"HTTP, TCP, IP"}
-      ]
-    },
-    {
-      id: "q3", points: 2, diff: "średnie",
-      text: "Czym różni się 401 od 403?",
-      options: [
-        {v:"A", t:"To synonimy, oba znaczą brak dostępu"},
-        {v:"B", t:"401 = brak poprawnego uwierzytelnienia dla chronionej operacji; 403 = odmowa dostępu, np. brak uprawnień konta"},
-        {v:"C", t:"401 dotyczy tylko GET, 403 tylko POST"},
-        {v:"D", t:"403 jest starszą wersją 401"}
-      ]
-    },
-    {
-      id: "q4", points: 2, diff: "trudne",
-      text: "Dlaczego HTTP nazywamy protokołem bezstanowym?",
-      options: [
-        {v:"A", t:"Bo nie obsługuje żadnych danych"},
-        {v:"B", t:"Bo każde żądanie jest interpretowane samodzielnie; aplikacja nadal może przechowywać dane i sesje"},
-        {v:"C", t:"Bo działa tylko na jednym porcie"},
-        {v:"D", t:"Bo nie wspiera szyfrowania"}
-      ]
-    },
-    {
-      id: "q5", points: 3, diff: "wnioskowanie",
-      text: "Klient wysyła POST /rezerwacje, ale traci połączenie zanim dostanie odpowiedź — nie wie, czy żądanie dotarło do serwera. Czy bezpiecznie może po prostu wysłać ten sam POST ponownie?",
-      options: [
-        {v:"A", t:"Tak, POST zawsze można bezpiecznie powtórzyć"},
-        {v:"B", t:"Nie ma takiej gwarancji — samo POST nie zapewnia idempotencji, więc powtórzenie może utworzyć duplikat"},
-        {v:"C", t:"Tak, bo HTTP gwarantuje brak duplikatów"},
-        {v:"D", t:"Nie da się tego ocenić bez znajomości nagłówków"}
-      ]
-    }
-  ]
-});
-</script>
-</section>
 <section id="od-działającego-żądania-do-kontraktu-api" class="level2">
 <h2 class="anchored" data-anchor-id="od-działającego-żądania-do-kontraktu-api">Od działającego żądania do kontraktu API</h2>
 <p>Pierwszy wykład przedstawiał drogę żądania od klienta przez serwer do bazy danych. Działająca operacja zapisu nie odpowiada jednak na wszystkie pytania projektowe: jak klient rozpozna konflikt, kto może zmienić cudzą rezerwację i co oznacza ponowienie żądania po utracie odpowiedzi?</p>
@@ -700,6 +639,10 @@ GET /rezerwacje?poligon_id=1&amp;status=zatwierdzona</code></pre>
 <li>Odpowiedź na <code>POST</code> nie dotarła. Klient nie wie jeszcze, czy zapis nastąpił. Poprawny format API nie zapewnia automatycznie bezpiecznego ponowienia.</li>
 </ol>
 <p>Trzeci przypadek prowadzi do <a href="../lectures/spotkanie3.html">wykładu 3</a>: współbieżność, trwałość danych i odpowiedzialność infrastruktury.</p>
+</section>
+<section id="test-po-wykładach" class="level2">
+<h2 class="anchored" data-anchor-id="test-po-wykładach">Test po wykładach</h2>
+<p><a href="../test-po-wykladach.html">Otwórz wspólny test po wykładach</a> — jedna karta z 10 pytaniami i jednym wynikiem.</p>
 </section>
 <section id="źródła" class="level2">
 <h2 class="anchored" data-anchor-id="źródła">Źródła</h2>
