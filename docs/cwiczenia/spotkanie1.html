@@ -227,6 +227,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#sekcja-3.-podstawy-css-i-wspólny-arkusz-stylów" id="toc-sekcja-3.-podstawy-css-i-wspólny-arkusz-stylów" class="nav-link" data-scroll-target="#sekcja-3.-podstawy-css-i-wspólny-arkusz-stylów">Sekcja 3. Podstawy CSS i wspólny arkusz stylów</a></li>
   <li><a href="#sekcja-4.-flask-jedna-strona-html-i-endpoint-json" id="toc-sekcja-4.-flask-jedna-strona-html-i-endpoint-json" class="nav-link" data-scroll-target="#sekcja-4.-flask-jedna-strona-html-i-endpoint-json">Sekcja 4. Flask: jedna strona HTML i endpoint JSON</a></li>
   <li><a href="#sekcja-5.-fetch-wynik-json-na-stronie-html" id="toc-sekcja-5.-fetch-wynik-json-na-stronie-html" class="nav-link" data-scroll-target="#sekcja-5.-fetch-wynik-json-na-stronie-html">Sekcja 5. Fetch: wynik JSON na stronie HTML</a></li>
+  <li><a href="#dockerfile" id="toc-dockerfile" class="nav-link" data-scroll-target="#dockerfile">Sekcja 6. Dockerfile: aplikacja bez lokalnego Pythona</a></li>
+  <li><a href="#sekcja-7.-ta-sama-aplikacja-przez-docker-compose" id="toc-sekcja-7.-ta-sama-aplikacja-przez-docker-compose" class="nav-link" data-scroll-target="#sekcja-7.-ta-sama-aplikacja-przez-docker-compose">Sekcja 7. Ta sama aplikacja przez Docker Compose</a></li>
   </ul>
 </nav>
     </div>
@@ -236,7 +238,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../cwiczenia/spotkanie1.html">Laboratoria</a></li><li class="breadcrumb-item"><a href="../cwiczenia/spotkanie1.html">Laboratorium 1: HTML5, CSS i Flask</a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title">Laboratorium 1: HTML5, CSS i Flask</h1>
-<p class="subtitle lead">HTML5, CSS i Flask: strona HTML, API JSON i fetch</p>
+<p class="subtitle lead">HTML5, CSS, API Flask i kontenery Docker</p>
 </div>
 
 
@@ -1316,6 +1318,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Nie tworzymy trzech tras HTML ani wspólnego szablonu bazowego. Jedyny szablon to strona kalkulatora. Najpierw uruchomisz stronę i API, potem połączysz je JavaScriptem.</p>
 <section id="przygotuj-środowisko" class="level3">
 <h3 class="anchored" data-anchor-id="przygotuj-środowisko">1. Przygotuj środowisko</h3>
+<p><strong>Wariant bez lokalnego Pythona:</strong> pomiń tworzenie <code>.venv</code> i instalację Flask. Przygotuj pliki z kroków 2–7 oraz sekcji 5, a uruchomienie i próby wykonaj według <a href="#dockerfile">sekcji Dockerfile</a>. Wszystkie polecenia <code>python</code> i instalacja zależności zostaną wykonane w obrazie.</p>
 <p>Otwórz <code>flask-calculator</code> w edytorze i terminalu. Korzystamy z Pythona 3.11 lub nowszego.</p>
 <p><strong>macOS / Linux:</strong></p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">--version</span></span>
@@ -1705,6 +1708,328 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p><strong>Rezultat:</strong> masz aplikację Flask z jednym dokumentem HTML i niezależnym endpointem obliczeniowym JSON. Ten sam wzorzec komunikacji wykorzystamy później do wyświetlania danych z API. Następny etap to konteneryzacja przez <code>Dockerfile</code>.</p>
 <p>Dokumentacja: <a href="https://flask.palletsprojects.com/en/stable/quickstart/">Flask — Quickstart</a>, <a href="https://flask.palletsprojects.com/en/stable/api/#flask.Request.args">Flask — request.args</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch">MDN — Fetch API</a>.</p>
+</section>
+</section>
+<section id="dockerfile" class="level2">
+<h2 class="anchored" data-anchor-id="dockerfile">Sekcja 6. Dockerfile: aplikacja bez lokalnego Pythona</h2>
+<p>Uruchomisz ten sam kalkulator w kontenerze. Na komputerze potrzebujesz edytora, przeglądarki oraz działającego Dockera. Python i Flask będą zainstalowane wewnątrz obrazu. Kod <code>app.py</code>, szablon HTML, CSS i JavaScript pozostają takie jak w poprzednich sekcjach.</p>
+<section id="sprawdź-docker" class="level3">
+<h3 class="anchored" data-anchor-id="sprawdź-docker">1. Sprawdź Docker</h3>
+<p>Uruchom Docker Desktop, jeśli używasz go na swoim komputerze, i poczekaj na gotowość silnika. W terminalu wykonaj:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> version</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose version</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Pierwsze polecenie powinno pokazać informacje o kliencie i serwerze. Sam numer wersji klienta nie potwierdza działającego silnika. Jeśli pojawia się błąd połączenia, uruchom Docker lub zgłoś problem prowadzącemu. Nie rozwiązuj go przez przypadkowe użycie <code>sudo</code>.</p>
+<p>Pierwsze budowanie obrazu wymaga internetu do pobrania obrazu Pythona i pakietów. Przygotuj środowisko przed wykonywaniem zadania.</p>
+</section>
+<section id="dodaj-pliki-konteneryzacji" class="level3">
+<h3 class="anchored" data-anchor-id="dodaj-pliki-konteneryzacji">2. Dodaj pliki konteneryzacji</h3>
+<p>W katalogu <code>flask-calculator</code>, obok <code>app.py</code>, utwórz <code>requirements.txt</code>, <code>Dockerfile</code> i <code>.dockerignore</code>. Za chwilę dodasz również <code>docker-compose.yml</code>:</p>
+<pre class="text"><code>flask-calculator/
+├── app.py
+├── requirements.txt
+├── Dockerfile
+├── .dockerignore
+├── docker-compose.yml
+├── templates/
+│   └── index.html
+└── static/
+    ├── style.css
+    └── app.js</code></pre>
+<p>Jeśli wcześniej utworzyłeś <code>.venv</code>, może pozostać na komputerze. Nie będzie wykorzystywane do uruchomienia aplikacji w kontenerze.</p>
+<p>Do <code>requirements.txt</code> wpisz:</p>
+<pre class="text"><code>Flask==3.1.3</code></pre>
+<p>To wersja Flask przyjęta w tym ćwiczeniu. Zależności zostaną zainstalowane poleceniem z <code>Dockerfile</code>, bez uruchamiania lokalnego <code>pip</code>. Plik przypina bezpośrednią zależność; nie jest pełnym plikiem blokady wszystkich zależności pośrednich.</p>
+</section>
+<section id="napisz-kompletny-dockerfile" class="level3">
+<h3 class="anchored" data-anchor-id="napisz-kompletny-dockerfile">3. Napisz kompletny Dockerfile</h3>
+<p>Plik ma nazywać się dokładnie <code>Dockerfile</code>, bez rozszerzenia <code>.txt</code>. Wpisz:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> python:3.12-slim</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WORKDIR</span> /app</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> requirements.txt ./</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">python</span> <span class="at">-m</span> pip install <span class="at">--no-cache-dir</span> <span class="at">-r</span> requirements.txt</span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> app.py ./</span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> templates/ ./templates/</span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> static/ ./static/</span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a><span class="kw">EXPOSE</span> 5000</span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a><span class="kw">CMD</span> [<span class="st">"python"</span>, <span class="st">"-m"</span>, <span class="st">"flask"</span>, <span class="st">"--app"</span>, <span class="st">"app"</span>, <span class="st">"run"</span>, <span class="st">"--host=0.0.0.0"</span>, <span class="st">"--port=5000"</span>]</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Instrukcja</th>
+<th>Działanie</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>FROM python:3.12-slim</code></td>
+<td>Wybiera bazowy obraz z Pythonem 3.12 i ograniczonym zestawem narzędzi systemowych.</td>
+</tr>
+<tr class="even">
+<td><code>WORKDIR /app</code></td>
+<td>Ustawia katalog roboczy wewnątrz obrazu.</td>
+</tr>
+<tr class="odd">
+<td><code>COPY requirements.txt ./</code></td>
+<td>Kopiuje listę zależności do katalogu roboczego.</td>
+</tr>
+<tr class="even">
+<td><code>RUN ... pip install ...</code></td>
+<td>Instaluje Flask podczas budowania obrazu.</td>
+</tr>
+<tr class="odd">
+<td>Kolejne <code>COPY</code></td>
+<td>Umieszczają kod i zasoby w obrazie.</td>
+</tr>
+<tr class="even">
+<td><code>EXPOSE 5000</code></td>
+<td>Dokumentuje port używany przez aplikację.</td>
+</tr>
+<tr class="odd">
+<td><code>CMD [...]</code></td>
+<td>Określa polecenie uruchamiane przy starcie kontenera.</td>
+</tr>
+</tbody>
+</table>
+<p>Instrukcja <code>RUN</code> wykonuje się przy budowie, a <code>CMD</code> przy uruchomieniu kontenera. Najpierw kopiujemy zależności, później kod: Docker może wykorzystać warstwę z instalacją pakietów, jeśli zmienił się kod, ale nie lista zależności.</p>
+<p>Nie aktywujemy <code>.venv</code> i nie kopiujemy środowiska z komputera. Obraz ma własnego Pythona i własne pakiety.</p>
+</section>
+<section id="rozróżnij-adres-nasłuchiwania-i-port" class="level3">
+<h3 class="anchored" data-anchor-id="rozróżnij-adres-nasłuchiwania-i-port">4. Rozróżnij adres nasłuchiwania i port</h3>
+<p>W kontenerze Flask nasłuchuje na <code>0.0.0.0:5000</code>, czyli na wszystkich jego interfejsach IPv4. Nasłuchiwanie wyłącznie na <code>127.0.0.1</code> wewnątrz kontenera nie wystarcza do obsługi połączeń przekazanych z komputera.</p>
+<p>W przeglądarce nadal wpiszesz <code>http://localhost:5000</code>, a nie <code>http://0.0.0.0:5000</code>. Port komputera połączymy z portem kontenera w poleceniu <code>docker run</code>. Samo <code>EXPOSE</code> nie wykonuje tego mapowania.</p>
+<p>Używamy lokalnego serwera laboratoryjnego bez trybu debugowania. Konfiguracja serwera produkcyjnego nie jest częścią tego ćwiczenia.</p>
+</section>
+<section id="przygotuj-.dockerignore" class="level3">
+<h3 class="anchored" data-anchor-id="przygotuj-.dockerignore">5. Przygotuj .dockerignore</h3>
+<p>Do <code>.dockerignore</code> wpisz:</p>
+<pre class="text"><code>.venv/
+.git/
+__pycache__/
+*.pyc
+.env
+.DS_Store</code></pre>
+<p>Plik ogranicza zawartość kontekstu przekazywanego do budowania. Dzięki temu lokalne środowisko i historia Git nie są przesyłane jako część kontekstu. Nasz <code>Dockerfile</code> dodatkowo kopiuje jawnie tylko wymagane pliki aplikacji.</p>
+<p><code>.dockerignore</code> nie zastępuje <code>.gitignore</code>: te pliki służą różnym narzędziom.</p>
+</section>
+<section id="zbuduj-obraz" class="level3">
+<h3 class="anchored" data-anchor-id="zbuduj-obraz">6. Zbuduj obraz</h3>
+<p>Otwórz terminal w katalogu zawierającym <code>Dockerfile</code> i wykonaj:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> build <span class="at">-t</span> flask-calculator:lab .</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>-t</code> nadaje obrazowi nazwę i tag. Końcowa kropka wskazuje bieżący katalog jako kontekst budowania. Ścieżki źródłowe w <code>COPY</code> odnoszą się do tego kontekstu.</p>
+<p>Sprawdź utworzony obraz:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb42"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> image ls flask-calculator</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Obraz</strong> jest przygotowanym środowiskiem z kodem. <strong>Kontener</strong> będzie uruchomioną instancją tego obrazu. Zbudowanie obrazu nie uruchamia jeszcze strony.</p>
+</section>
+<section id="uruchom-kontener" class="level3">
+<h3 class="anchored" data-anchor-id="uruchom-kontener">7. Uruchom kontener</h3>
+<p>Jeśli lokalny Flask nadal działa na porcie <code>5000</code>, zatrzymaj go przez Ctrl+C. Następnie wykonaj:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--rm</span> <span class="at">--name</span> flask-calculator-lab <span class="at">-p</span> 127.0.0.1:5000:5000 flask-calculator:lab</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Fragment</th>
+<th>Znaczenie</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>--rm</code></td>
+<td>Usuwa kontener po jego zakończeniu; obraz pozostaje.</td>
+</tr>
+<tr class="even">
+<td><code>--name flask-calculator-lab</code></td>
+<td>Nadaje nazwę kontenerowi.</td>
+</tr>
+<tr class="odd">
+<td><code>-p 127.0.0.1:5000:5000</code></td>
+<td>Udostępnia port kontenera <code>5000</code> na lokalnym porcie komputera <code>5000</code>.</td>
+</tr>
+<tr class="even">
+<td><code>flask-calculator:lab</code></td>
+<td>Wskazuje obraz, z którego uruchamiamy kontener.</td>
+</tr>
+</tbody>
+</table>
+<p>Adres <code>127.0.0.1</code> w mapowaniu ogranicza dostęp do komputera, na którym pracujesz. To inny kontekst niż <code>0.0.0.0</code> w poleceniu Flaska: pierwszy określa publikację portu na komputerze, drugi nasłuchiwanie procesu wewnątrz kontenera.</p>
+<p>Terminal będzie pokazywał logi. Otwórz:</p>
+<ul>
+<li><a href="http://localhost:5000/">stronę kalkulatora</a>;</li>
+<li><a href="http://localhost:5000/api/add?a=2&amp;b=3">API dla liczb 2 i 3</a>.</li>
+</ul>
+<p>Formularz powinien pokazać sumę bez przeładowania, a bezpośredni adres API odpowiedź JSON. To działa również wtedy, gdy na komputerze nie ma polecenia <code>python</code>.</p>
+</section>
+<section id="sprawdź-proces-i-zatrzymaj-aplikację" class="level3">
+<h3 class="anchored" data-anchor-id="sprawdź-proces-i-zatrzymaj-aplikację">8. Sprawdź proces i zatrzymaj aplikację</h3>
+<p>W drugim terminalu:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb44"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> ps</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> logs flask-calculator-lab</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> exec flask-calculator-lab python <span class="at">--version</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Ostatnie polecenie wykonuje Pythona <strong>wewnątrz działającego kontenera</strong>. Nie wymaga lokalnego interpretera.</p>
+<p>Zatrzymaj kontener przez Ctrl+C w jego terminalu albo poleceniem:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb45"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> stop flask-calculator-lab</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Po zakończeniu <code>--rm</code> usuwa kontener. Obraz pozostaje dostępny do kolejnego <code>docker run</code>.</p>
+</section>
+<section id="zmień-kod-i-przebuduj-obraz" class="level3">
+<h3 class="anchored" data-anchor-id="zmień-kod-i-przebuduj-obraz">9. Zmień kod i przebuduj obraz</h3>
+<p>Zmień tekst nagłówka w <code>templates/index.html</code>. W tym wariancie pliki są kopiowane przy budowie: edycja pliku na komputerze nie aktualizuje automatycznie kontenera.</p>
+<p>Zatrzymaj kontener, ponownie wykonaj <code>docker build</code>, a następnie <code>docker run</code> z poprzednich kroków. Odśwież stronę i sprawdź zmianę.</p>
+<p>Jeśli port <code>5000</code> jest zajęty, możesz użyć:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb46"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--rm</span> <span class="at">--name</span> flask-calculator-lab <span class="at">-p</span> 127.0.0.1:5001:5000 flask-calculator:lab</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Stronę otwórz wtedy na <code>http://localhost:5001</code>. Port wewnątrz kontenera nadal wynosi <code>5000</code>. Względny adres <code>fetch('/api/add...')</code> automatycznie korzysta z portu strony, więc nie zmieniasz JavaScriptu.</p>
+</section>
+</section>
+<section id="sekcja-7.-ta-sama-aplikacja-przez-docker-compose" class="level2">
+<h2 class="anchored" data-anchor-id="sekcja-7.-ta-sama-aplikacja-przez-docker-compose">Sekcja 7. Ta sama aplikacja przez Docker Compose</h2>
+<p>Compose zapisuje sposób budowania i uruchomienia w pliku YAML. Nadal używa tego samego <code>Dockerfile</code>, kodu i obrazu Pythona. Dla tego ćwiczenia definiujemy jedną usługę <code>web</code>.</p>
+<section id="utwórz-docker-compose.yml" class="level3">
+<h3 class="anchored" data-anchor-id="utwórz-docker-compose.yml">1. Utwórz docker-compose.yml</h3>
+<p>W katalogu obok <code>Dockerfile</code> wpisz kompletną konfigurację:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb47"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">web</span><span class="kw">:</span></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">build</span><span class="kw">:</span><span class="at"> .</span></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> flask-calculator:lab</span></span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"127.0.0.1:5000:5000"</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p>W YAML stosuj spacje, nie tabulatory, i zachowaj wcięcia. Korzystamy z polecenia <code>docker compose</code>, z odstępem. Nie dodajemy starego pola <code>version</code>.</p>
+</section>
+<section id="porównaj-z-wcześniejszymi-poleceniami" class="level3">
+<h3 class="anchored" data-anchor-id="porównaj-z-wcześniejszymi-poleceniami">2. Porównaj z wcześniejszymi poleceniami</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Konfiguracja Compose</th>
+<th>Odpowiednik</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>build: .</code></td>
+<td>Kontekst użyty przez <code>docker build ... .</code>.</td>
+</tr>
+<tr class="even">
+<td><code>image: flask-calculator:lab</code></td>
+<td>Nazwa i tag budowanego obrazu.</td>
+</tr>
+<tr class="odd">
+<td><code>ports</code></td>
+<td>Mapowanie z <code>docker run -p ...</code>.</td>
+</tr>
+<tr class="even">
+<td>Polecenie startowe</td>
+<td>Nadal pochodzi z <code>CMD</code> w <code>Dockerfile</code>.</td>
+</tr>
+</tbody>
+</table>
+<p>Nie przepisujemy instalacji pakietów do YAML. Compose opisuje usługę, a <code>Dockerfile</code> budowę jej obrazu.</p>
+<p>Nie ustawiamy <code>container_name</code>: Compose sam nada nazwę związaną z projektem i usługą. W poleceniach Compose będziemy używać nazwy usługi <code>web</code>.</p>
+</section>
+<section id="sprawdź-i-uruchom-konfigurację" class="level3">
+<h3 class="anchored" data-anchor-id="sprawdź-i-uruchom-konfigurację">3. Sprawdź i uruchom konfigurację</h3>
+<p>Najpierw zatrzymaj kontener uruchomiony przez <code>docker run</code>, aby zwolnić port. W katalogu z <code>docker-compose.yml</code> wykonaj:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb48"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose config</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose up <span class="at">--build</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>config</code> odczytuje i sprawdza konfigurację. <code>up --build</code> buduje obraz według <code>Dockerfile</code> i uruchamia usługę. Sprawdź ponownie stronę, formularz i bezpośredni adres API.</p>
+<p>Ctrl+C zatrzymuje usługę uruchomioną na pierwszym planie. Aby usunąć jej kontener i utworzoną sieć, wykonaj:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb49"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose down</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="uruchom-w-tle-i-odczytaj-logi" class="level3">
+<h3 class="anchored" data-anchor-id="uruchom-w-tle-i-odczytaj-logi">4. Uruchom w tle i odczytaj logi</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb50"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose up <span class="at">--build</span> <span class="at">-d</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose ps</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose logs web</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>-d</code> pozwala wrócić do terminala, gdy kontener działa w tle. Aby obserwować logi na bieżąco:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb51"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose logs <span class="at">-f</span> web</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Ctrl+C kończy obserwację logów, ale nie zatrzymuje usługi działającej w tle. Zatrzymasz ją przez <code>docker compose down</code>.</p>
+<p>Sprawdź interpreter w usłudze:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb52"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose exec web python <span class="at">--version</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="zmień-kod-lub-port" class="level3">
+<h3 class="anchored" data-anchor-id="zmień-kod-lub-port">5. Zmień kod lub port</h3>
+<p>Po zmianie HTML, CSS, JavaScriptu lub Pythona wykonaj:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb53"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose up <span class="at">--build</span> <span class="at">-d</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Compose przebuduje obraz i w razie potrzeby odtworzy kontener. Sam <code>docker compose restart</code> nie kopiuje zmienionych plików do obrazu. Na tym etapie nie dodajemy montowania katalogów ani automatycznej synchronizacji.</p>
+<p>Aby użyć portu <code>5001</code> na komputerze, zmień tylko wpis <code>ports</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb54"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="st">"127.0.0.1:5001:5000"</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Zachowaj jego położenie wewnątrz usługi <code>web</code> i uruchom ponownie <code>docker compose up --build -d</code>. Korzystaj z <code>http://localhost:5001</code>.</p>
+</section>
+<section id="rozwiąż-typowe-problemy" class="level3">
+<h3 class="anchored" data-anchor-id="rozwiąż-typowe-problemy">6. Rozwiąż typowe problemy</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Problem</th>
+<th>Co sprawdzić?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Nie można połączyć się z silnikiem Docker</td>
+<td>Czy Docker Desktop lub silnik jest uruchomiony i gotowy?</td>
+</tr>
+<tr class="even">
+<td>Budowanie nie znajduje <code>requirements.txt</code></td>
+<td>Czy terminal jest w katalogu projektu i czy nazwa pliku jest poprawna?</td>
+</tr>
+<tr class="odd">
+<td>Pobieranie obrazu lub pakietów nie działa</td>
+<td>Dostęp do internetu i komunikat błędu w logach budowania.</td>
+</tr>
+<tr class="even">
+<td>Port jest zajęty</td>
+<td>Zatrzymaj poprzedni serwer lub użyj innego portu komputera.</td>
+</tr>
+<tr class="odd">
+<td>Kontener startuje, ale strona nie odpowiada</td>
+<td><code>--host=0.0.0.0</code>, mapowanie portów i logi procesu.</td>
+</tr>
+<tr class="even">
+<td>Nadal widać stary kod</td>
+<td>Przebuduj obraz i uruchom nowy kontener, potem odśwież przeglądarkę.</td>
+</tr>
+<tr class="odd">
+<td>Compose zgłasza błąd YAML</td>
+<td>Wcięcia, spacje i położenie <code>ports</code> w usłudze <code>web</code>.</td>
+</tr>
+<tr class="even">
+<td>Nazwa kontenera jest zajęta przy <code>docker run</code></td>
+<td>Sprawdź <code>docker ps -a</code> i zatrzymaj poprzedni kontener tego ćwiczenia.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="punkt-kontrolny-konteneryzacji" class="level3">
+<h3 class="anchored" data-anchor-id="punkt-kontrolny-konteneryzacji">7. Punkt kontrolny konteneryzacji</h3>
+<ul class="task-list">
+<li><label><input type="checkbox">Potrafisz wskazać, gdzie instalowane są Python i Flask.</label></li>
+<li><label><input type="checkbox"><code>docker build</code> tworzy obraz, a <code>docker run</code> uruchamia aplikację.</label></li>
+<li><label><input type="checkbox">Strona i endpoint GET działają przez opublikowany port.</label></li>
+<li><label><input type="checkbox">Rozróżniasz port komputera i port kontenera.</label></li>
+<li><label><input type="checkbox">Compose uruchamia tę samą aplikację z tego samego <code>Dockerfile</code>.</label></li>
+<li><label><input type="checkbox">Potrafisz sprawdzić stan, odczytać logi i zatrzymać usługę.</label></li>
+<li><label><input type="checkbox">Po zmianie kodu przebudowujesz obraz.</label></li>
+</ul>
+<p>Na końcu zatrzymaj zasoby tego ćwiczenia:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb55"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose down</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Rezultat:</strong> aplikacja HTML + JSON API + fetch działa w kontenerze bez lokalnej instalacji Pythona. Potrafisz uruchomić ją zarówno ręcznie, jak i przez konfigurację Compose.</p>
+<p>Dokumentacja: <a href="https://docs.docker.com/reference/dockerfile/">Dockerfile</a>, <a href="https://docs.docker.com/get-started/docker-concepts/running-containers/publishing-ports/">publikowanie portów</a> i <a href="https://docs.docker.com/compose/gettingstarted/">Docker Compose</a>.</p>
 
 
 </section>

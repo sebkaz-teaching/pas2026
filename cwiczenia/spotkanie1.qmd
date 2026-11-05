@@ -1,6 +1,6 @@
 ---
 title: "Laboratorium 1: HTML5, CSS i Flask"
-subtitle: "HTML5, CSS i Flask: strona HTML, API JSON i fetch"
+subtitle: "HTML5, CSS, API Flask i kontenery Docker"
 lang: pl
 toc-title: "Na tej stronie"
 code-copy: true
@@ -846,6 +846,8 @@ Nie tworzymy trzech tras HTML ani wspólnego szablonu bazowego. Jedyny szablon t
 
 ### 1. Przygotuj środowisko
 
+**Wariant bez lokalnego Pythona:** pomiń tworzenie `.venv` i instalację Flask. Przygotuj pliki z kroków 2–7 oraz sekcji 5, a uruchomienie i próby wykonaj według [sekcji Dockerfile](#dockerfile). Wszystkie polecenia `python` i instalacja zależności zostaną wykonane w obrazie.
+
 Otwórz `flask-calculator` w edytorze i terminalu. Korzystamy z Pythona 3.11 lub nowszego.
 
 **macOS / Linux:**
@@ -1252,3 +1254,308 @@ Odpowiedz: które obliczenie wykonuje Python, co robi JavaScript i dlaczego po d
 **Rezultat:** masz aplikację Flask z jednym dokumentem HTML i niezależnym endpointem obliczeniowym JSON. Ten sam wzorzec komunikacji wykorzystamy później do wyświetlania danych z API. Następny etap to konteneryzacja przez `Dockerfile`.
 
 Dokumentacja: [Flask — Quickstart](https://flask.palletsprojects.com/en/stable/quickstart/), [Flask — request.args](https://flask.palletsprojects.com/en/stable/api/#flask.Request.args), [MDN — Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch).
+
+
+## Sekcja 6. Dockerfile: aplikacja bez lokalnego Pythona {#dockerfile}
+
+Uruchomisz ten sam kalkulator w kontenerze. Na komputerze potrzebujesz edytora, przeglądarki oraz działającego Dockera. Python i Flask będą zainstalowane wewnątrz obrazu. Kod `app.py`, szablon HTML, CSS i JavaScript pozostają takie jak w poprzednich sekcjach.
+
+### 1. Sprawdź Docker
+
+Uruchom Docker Desktop, jeśli używasz go na swoim komputerze, i poczekaj na gotowość silnika. W terminalu wykonaj:
+
+```bash
+docker version
+docker compose version
+```
+
+Pierwsze polecenie powinno pokazać informacje o kliencie i serwerze. Sam numer wersji klienta nie potwierdza działającego silnika. Jeśli pojawia się błąd połączenia, uruchom Docker lub zgłoś problem prowadzącemu. Nie rozwiązuj go przez przypadkowe użycie `sudo`.
+
+Pierwsze budowanie obrazu wymaga internetu do pobrania obrazu Pythona i pakietów. Przygotuj środowisko przed wykonywaniem zadania.
+
+### 2. Dodaj pliki konteneryzacji
+
+W katalogu `flask-calculator`, obok `app.py`, utwórz `requirements.txt`, `Dockerfile` i `.dockerignore`. Za chwilę dodasz również `docker-compose.yml`:
+
+```text
+flask-calculator/
+├── app.py
+├── requirements.txt
+├── Dockerfile
+├── .dockerignore
+├── docker-compose.yml
+├── templates/
+│   └── index.html
+└── static/
+    ├── style.css
+    └── app.js
+```
+
+Jeśli wcześniej utworzyłeś `.venv`, może pozostać na komputerze. Nie będzie wykorzystywane do uruchomienia aplikacji w kontenerze.
+
+Do `requirements.txt` wpisz:
+
+```text
+Flask==3.1.3
+```
+
+To wersja Flask przyjęta w tym ćwiczeniu. Zależności zostaną zainstalowane poleceniem z `Dockerfile`, bez uruchamiania lokalnego `pip`. Plik przypina bezpośrednią zależność; nie jest pełnym plikiem blokady wszystkich zależności pośrednich.
+
+### 3. Napisz kompletny Dockerfile
+
+Plik ma nazywać się dokładnie `Dockerfile`, bez rozszerzenia `.txt`. Wpisz:
+
+```dockerfile
+FROM python:3.12-slim
+
+WORKDIR /app
+
+COPY requirements.txt ./
+RUN python -m pip install --no-cache-dir -r requirements.txt
+
+COPY app.py ./
+COPY templates/ ./templates/
+COPY static/ ./static/
+
+EXPOSE 5000
+
+CMD ["python", "-m", "flask", "--app", "app", "run", "--host=0.0.0.0", "--port=5000"]
+```
+
+| Instrukcja | Działanie |
+|---|---|
+| `FROM python:3.12-slim` | Wybiera bazowy obraz z Pythonem 3.12 i ograniczonym zestawem narzędzi systemowych. |
+| `WORKDIR /app` | Ustawia katalog roboczy wewnątrz obrazu. |
+| `COPY requirements.txt ./` | Kopiuje listę zależności do katalogu roboczego. |
+| `RUN ... pip install ...` | Instaluje Flask podczas budowania obrazu. |
+| Kolejne `COPY` | Umieszczają kod i zasoby w obrazie. |
+| `EXPOSE 5000` | Dokumentuje port używany przez aplikację. |
+| `CMD [...]` | Określa polecenie uruchamiane przy starcie kontenera. |
+
+Instrukcja `RUN` wykonuje się przy budowie, a `CMD` przy uruchomieniu kontenera. Najpierw kopiujemy zależności, później kod: Docker może wykorzystać warstwę z instalacją pakietów, jeśli zmienił się kod, ale nie lista zależności.
+
+Nie aktywujemy `.venv` i nie kopiujemy środowiska z komputera. Obraz ma własnego Pythona i własne pakiety.
+
+### 4. Rozróżnij adres nasłuchiwania i port
+
+W kontenerze Flask nasłuchuje na `0.0.0.0:5000`, czyli na wszystkich jego interfejsach IPv4. Nasłuchiwanie wyłącznie na `127.0.0.1` wewnątrz kontenera nie wystarcza do obsługi połączeń przekazanych z komputera.
+
+W przeglądarce nadal wpiszesz `http://localhost:5000`, a nie `http://0.0.0.0:5000`. Port komputera połączymy z portem kontenera w poleceniu `docker run`. Samo `EXPOSE` nie wykonuje tego mapowania.
+
+Używamy lokalnego serwera laboratoryjnego bez trybu debugowania. Konfiguracja serwera produkcyjnego nie jest częścią tego ćwiczenia.
+
+### 5. Przygotuj .dockerignore
+
+Do `.dockerignore` wpisz:
+
+```text
+.venv/
+.git/
+__pycache__/
+*.pyc
+.env
+.DS_Store
+```
+
+Plik ogranicza zawartość kontekstu przekazywanego do budowania. Dzięki temu lokalne środowisko i historia Git nie są przesyłane jako część kontekstu. Nasz `Dockerfile` dodatkowo kopiuje jawnie tylko wymagane pliki aplikacji.
+
+`.dockerignore` nie zastępuje `.gitignore`: te pliki służą różnym narzędziom.
+
+### 6. Zbuduj obraz
+
+Otwórz terminal w katalogu zawierającym `Dockerfile` i wykonaj:
+
+```bash
+docker build -t flask-calculator:lab .
+```
+
+`-t` nadaje obrazowi nazwę i tag. Końcowa kropka wskazuje bieżący katalog jako kontekst budowania. Ścieżki źródłowe w `COPY` odnoszą się do tego kontekstu.
+
+Sprawdź utworzony obraz:
+
+```bash
+docker image ls flask-calculator
+```
+
+**Obraz** jest przygotowanym środowiskiem z kodem. **Kontener** będzie uruchomioną instancją tego obrazu. Zbudowanie obrazu nie uruchamia jeszcze strony.
+
+### 7. Uruchom kontener
+
+Jeśli lokalny Flask nadal działa na porcie `5000`, zatrzymaj go przez Ctrl+C. Następnie wykonaj:
+
+```bash
+docker run --rm --name flask-calculator-lab -p 127.0.0.1:5000:5000 flask-calculator:lab
+```
+
+| Fragment | Znaczenie |
+|---|---|
+| `--rm` | Usuwa kontener po jego zakończeniu; obraz pozostaje. |
+| `--name flask-calculator-lab` | Nadaje nazwę kontenerowi. |
+| `-p 127.0.0.1:5000:5000` | Udostępnia port kontenera `5000` na lokalnym porcie komputera `5000`. |
+| `flask-calculator:lab` | Wskazuje obraz, z którego uruchamiamy kontener. |
+
+Adres `127.0.0.1` w mapowaniu ogranicza dostęp do komputera, na którym pracujesz. To inny kontekst niż `0.0.0.0` w poleceniu Flaska: pierwszy określa publikację portu na komputerze, drugi nasłuchiwanie procesu wewnątrz kontenera.
+
+Terminal będzie pokazywał logi. Otwórz:
+
+- [stronę kalkulatora](http://localhost:5000/);
+- [API dla liczb 2 i 3](http://localhost:5000/api/add?a=2&b=3).
+
+Formularz powinien pokazać sumę bez przeładowania, a bezpośredni adres API odpowiedź JSON. To działa również wtedy, gdy na komputerze nie ma polecenia `python`.
+
+### 8. Sprawdź proces i zatrzymaj aplikację
+
+W drugim terminalu:
+
+```bash
+docker ps
+docker logs flask-calculator-lab
+docker exec flask-calculator-lab python --version
+```
+
+Ostatnie polecenie wykonuje Pythona **wewnątrz działającego kontenera**. Nie wymaga lokalnego interpretera.
+
+Zatrzymaj kontener przez Ctrl+C w jego terminalu albo poleceniem:
+
+```bash
+docker stop flask-calculator-lab
+```
+
+Po zakończeniu `--rm` usuwa kontener. Obraz pozostaje dostępny do kolejnego `docker run`.
+
+### 9. Zmień kod i przebuduj obraz
+
+Zmień tekst nagłówka w `templates/index.html`. W tym wariancie pliki są kopiowane przy budowie: edycja pliku na komputerze nie aktualizuje automatycznie kontenera.
+
+Zatrzymaj kontener, ponownie wykonaj `docker build`, a następnie `docker run` z poprzednich kroków. Odśwież stronę i sprawdź zmianę.
+
+Jeśli port `5000` jest zajęty, możesz użyć:
+
+```bash
+docker run --rm --name flask-calculator-lab -p 127.0.0.1:5001:5000 flask-calculator:lab
+```
+
+Stronę otwórz wtedy na `http://localhost:5001`. Port wewnątrz kontenera nadal wynosi `5000`. Względny adres `fetch('/api/add...')` automatycznie korzysta z portu strony, więc nie zmieniasz JavaScriptu.
+
+## Sekcja 7. Ta sama aplikacja przez Docker Compose
+
+Compose zapisuje sposób budowania i uruchomienia w pliku YAML. Nadal używa tego samego `Dockerfile`, kodu i obrazu Pythona. Dla tego ćwiczenia definiujemy jedną usługę `web`.
+
+### 1. Utwórz docker-compose.yml
+
+W katalogu obok `Dockerfile` wpisz kompletną konfigurację:
+
+```yaml
+services:
+  web:
+    build: .
+    image: flask-calculator:lab
+    ports:
+      - "127.0.0.1:5000:5000"
+```
+
+W YAML stosuj spacje, nie tabulatory, i zachowaj wcięcia. Korzystamy z polecenia `docker compose`, z odstępem. Nie dodajemy starego pola `version`.
+
+### 2. Porównaj z wcześniejszymi poleceniami
+
+| Konfiguracja Compose | Odpowiednik |
+|---|---|
+| `build: .` | Kontekst użyty przez `docker build ... .`. |
+| `image: flask-calculator:lab` | Nazwa i tag budowanego obrazu. |
+| `ports` | Mapowanie z `docker run -p ...`. |
+| Polecenie startowe | Nadal pochodzi z `CMD` w `Dockerfile`. |
+
+Nie przepisujemy instalacji pakietów do YAML. Compose opisuje usługę, a `Dockerfile` budowę jej obrazu.
+
+Nie ustawiamy `container_name`: Compose sam nada nazwę związaną z projektem i usługą. W poleceniach Compose będziemy używać nazwy usługi `web`.
+
+### 3. Sprawdź i uruchom konfigurację
+
+Najpierw zatrzymaj kontener uruchomiony przez `docker run`, aby zwolnić port. W katalogu z `docker-compose.yml` wykonaj:
+
+```bash
+docker compose config
+docker compose up --build
+```
+
+`config` odczytuje i sprawdza konfigurację. `up --build` buduje obraz według `Dockerfile` i uruchamia usługę. Sprawdź ponownie stronę, formularz i bezpośredni adres API.
+
+Ctrl+C zatrzymuje usługę uruchomioną na pierwszym planie. Aby usunąć jej kontener i utworzoną sieć, wykonaj:
+
+```bash
+docker compose down
+```
+
+### 4. Uruchom w tle i odczytaj logi
+
+```bash
+docker compose up --build -d
+docker compose ps
+docker compose logs web
+```
+
+`-d` pozwala wrócić do terminala, gdy kontener działa w tle. Aby obserwować logi na bieżąco:
+
+```bash
+docker compose logs -f web
+```
+
+Ctrl+C kończy obserwację logów, ale nie zatrzymuje usługi działającej w tle. Zatrzymasz ją przez `docker compose down`.
+
+Sprawdź interpreter w usłudze:
+
+```bash
+docker compose exec web python --version
+```
+
+### 5. Zmień kod lub port
+
+Po zmianie HTML, CSS, JavaScriptu lub Pythona wykonaj:
+
+```bash
+docker compose up --build -d
+```
+
+Compose przebuduje obraz i w razie potrzeby odtworzy kontener. Sam `docker compose restart` nie kopiuje zmienionych plików do obrazu. Na tym etapie nie dodajemy montowania katalogów ani automatycznej synchronizacji.
+
+Aby użyć portu `5001` na komputerze, zmień tylko wpis `ports`:
+
+```yaml
+ports:
+  - "127.0.0.1:5001:5000"
+```
+
+Zachowaj jego położenie wewnątrz usługi `web` i uruchom ponownie `docker compose up --build -d`. Korzystaj z `http://localhost:5001`.
+
+### 6. Rozwiąż typowe problemy
+
+| Problem | Co sprawdzić? |
+|---|---|
+| Nie można połączyć się z silnikiem Docker | Czy Docker Desktop lub silnik jest uruchomiony i gotowy? |
+| Budowanie nie znajduje `requirements.txt` | Czy terminal jest w katalogu projektu i czy nazwa pliku jest poprawna? |
+| Pobieranie obrazu lub pakietów nie działa | Dostęp do internetu i komunikat błędu w logach budowania. |
+| Port jest zajęty | Zatrzymaj poprzedni serwer lub użyj innego portu komputera. |
+| Kontener startuje, ale strona nie odpowiada | `--host=0.0.0.0`, mapowanie portów i logi procesu. |
+| Nadal widać stary kod | Przebuduj obraz i uruchom nowy kontener, potem odśwież przeglądarkę. |
+| Compose zgłasza błąd YAML | Wcięcia, spacje i położenie `ports` w usłudze `web`. |
+| Nazwa kontenera jest zajęta przy `docker run` | Sprawdź `docker ps -a` i zatrzymaj poprzedni kontener tego ćwiczenia. |
+
+### 7. Punkt kontrolny konteneryzacji
+
+- [ ] Potrafisz wskazać, gdzie instalowane są Python i Flask.
+- [ ] `docker build` tworzy obraz, a `docker run` uruchamia aplikację.
+- [ ] Strona i endpoint GET działają przez opublikowany port.
+- [ ] Rozróżniasz port komputera i port kontenera.
+- [ ] Compose uruchamia tę samą aplikację z tego samego `Dockerfile`.
+- [ ] Potrafisz sprawdzić stan, odczytać logi i zatrzymać usługę.
+- [ ] Po zmianie kodu przebudowujesz obraz.
+
+Na końcu zatrzymaj zasoby tego ćwiczenia:
+
+```bash
+docker compose down
+```
+
+**Rezultat:** aplikacja HTML + JSON API + fetch działa w kontenerze bez lokalnej instalacji Pythona. Potrafisz uruchomić ją zarówno ręcznie, jak i przez konfigurację Compose.
+
+Dokumentacja: [Dockerfile](https://docs.docker.com/reference/dockerfile/), [publikowanie portów](https://docs.docker.com/get-started/docker-concepts/running-containers/publishing-ports/) i [Docker Compose](https://docs.docker.com/compose/gettingstarted/).
