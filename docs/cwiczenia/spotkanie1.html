@@ -226,6 +226,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#sekcja-2.-dwie-podstrony-i-nawigacja" id="toc-sekcja-2.-dwie-podstrony-i-nawigacja" class="nav-link" data-scroll-target="#sekcja-2.-dwie-podstrony-i-nawigacja">Sekcja 2. Dwie podstrony i nawigacja</a></li>
   <li><a href="#sekcja-3.-podstawy-css-i-wspólny-arkusz-stylów" id="toc-sekcja-3.-podstawy-css-i-wspólny-arkusz-stylów" class="nav-link" data-scroll-target="#sekcja-3.-podstawy-css-i-wspólny-arkusz-stylów">Sekcja 3. Podstawy CSS i wspólny arkusz stylów</a></li>
   <li><a href="#sekcja-4.-flask-jedna-strona-i-dwie-podstrony" id="toc-sekcja-4.-flask-jedna-strona-i-dwie-podstrony" class="nav-link" data-scroll-target="#sekcja-4.-flask-jedna-strona-i-dwie-podstrony">Sekcja 4. Flask: jedna strona i dwie podstrony</a></li>
+  <li><a href="#sekcja-5.-wspólny-szablon-base.html" id="toc-sekcja-5.-wspólny-szablon-base.html" class="nav-link" data-scroll-target="#sekcja-5.-wspólny-szablon-base.html">Sekcja 5. Wspólny szablon base.html</a></li>
   </ul>
 </nav>
     </div>
@@ -235,7 +236,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../cwiczenia/spotkanie1.html">Laboratoria</a></li><li class="breadcrumb-item"><a href="../cwiczenia/spotkanie1.html">Laboratorium 1: HTML5, CSS i Flask</a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title">Laboratorium 1: HTML5, CSS i Flask</h1>
-<p class="subtitle lead">Sekcje 1–4 · HTML5, CSS i aplikacja Flask</p>
+<p class="subtitle lead">Sekcje 1–5 · HTML5, CSS, Flask i wspólny szablon</p>
 </div>
 
 
@@ -1624,6 +1625,286 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p><strong>Rezultat:</strong> Twoja witryna działa jako aplikacja Flask z trzema stronami. Wspólne elementy HTML nadal się powtarzają; w kolejnym etapie wydzielimy je do szablonu bazowego, zanim przygotujemy kontener.</p>
 <p>Dalsza lektura: oficjalne instrukcje <a href="https://flask.palletsprojects.com/en/stable/installation/">instalacji Flask</a> oraz <a href="https://flask.palletsprojects.com/en/stable/quickstart/">Quickstart</a> opisują środowisko, routing, szablony i pliki statyczne.</p>
+</section>
+</section>
+<section id="sekcja-5.-wspólny-szablon-base.html" class="level2">
+<h2 class="anchored" data-anchor-id="sekcja-5.-wspólny-szablon-base.html">Sekcja 5. Wspólny szablon base.html</h2>
+<p>Nagłówek, menu i stopka są teraz zapisane w trzech dokumentach. Gdy dodasz pozycję menu, musisz poprawić trzy pliki. Wydzielisz te elementy do <code>base.html</code>, a w pozostałych szablonach zostawisz treść właściwą dla każdej strony.</p>
+<section id="przygotuj-strukturę-szablonów" class="level3">
+<h3 class="anchored" data-anchor-id="przygotuj-strukturę-szablonów">1. Przygotuj strukturę szablonów</h3>
+<p>W katalogu <code>templates</code> utwórz <code>base.html</code>. Nie zmieniaj położenia <code>app.py</code> ani arkusza:</p>
+<pre class="text"><code>personal-website/
+├── .venv/
+├── app.py
+├── templates/
+│   ├── base.html
+│   ├── index.html
+│   ├── about.html
+│   └── interests.html
+└── static/
+    └── style.css</code></pre>
+<p>Zachowaj własne teksty z dotychczasowych stron: w następnych krokach przeniesiesz je do bloków treści. Poniższe przykłady podają kompletną zawartość każdego szablonu; przykładowe dane zastąp swoimi.</p>
+</section>
+<section id="napisz-kompletny-base.html" class="level3">
+<h3 class="anchored" data-anchor-id="napisz-kompletny-base.html">2. Napisz kompletny base.html</h3>
+<p>W <code>templates/base.html</code> umieść:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;!DOCTYPE</span> html<span class="dt">&gt;</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">html</span><span class="ot"> lang</span><span class="op">=</span><span class="st">"pl"</span><span class="dt">&gt;</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">head</span><span class="dt">&gt;</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">meta</span><span class="ot"> charset</span><span class="op">=</span><span class="st">"UTF-8"</span><span class="dt">&gt;</span></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">meta</span><span class="ot"> name</span><span class="op">=</span><span class="st">"viewport"</span><span class="ot"> content</span><span class="op">=</span><span class="st">"width=device-width, initial-scale=1.0"</span><span class="dt">&gt;</span></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">title</span><span class="dt">&gt;</span>{% block title %}Strona osobista{% endblock %} — Jan Kowalski<span class="dt">&lt;/</span><span class="kw">title</span><span class="dt">&gt;</span></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">link</span><span class="ot"> rel</span><span class="op">=</span><span class="st">"stylesheet"</span><span class="ot"> href</span><span class="op">=</span><span class="st">"{{ url_for('static', filename='style.css') }}"</span><span class="dt">&gt;</span></span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">head</span><span class="dt">&gt;</span></span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">body</span><span class="dt">&gt;</span></span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">header</span><span class="ot"> id</span><span class="op">=</span><span class="st">"top"</span><span class="dt">&gt;</span></span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">h1</span><span class="dt">&gt;</span>Jan Kowalski<span class="dt">&lt;/</span><span class="kw">h1</span><span class="dt">&gt;</span></span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span>Moja osobista witryna internetowa<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">header</span><span class="dt">&gt;</span></span>
+<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">nav</span><span class="ot"> aria-label</span><span class="op">=</span><span class="st">"Nawigacja główna"</span><span class="dt">&gt;</span></span>
+<span id="cb41-16"><a href="#cb41-16" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">ul</span><span class="dt">&gt;</span></span>
+<span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a>            <span class="dt">&lt;</span><span class="kw">li</span><span class="dt">&gt;</span></span>
+<span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a>                <span class="dt">&lt;</span><span class="kw">a</span><span class="ot"> href</span><span class="op">=</span><span class="st">"{{ url_for('home') }}"</span><span class="er">{%</span><span class="ot"> if request.endpoint </span><span class="op">=</span><span class="er">=</span><span class="ot"> </span><span class="er">'</span><span class="ot">home</span><span class="er">'</span><span class="ot"> </span><span class="er">%}</span><span class="ot"> aria-current</span><span class="op">=</span><span class="st">"page"</span><span class="er">{%</span><span class="ot"> endif </span><span class="er">%}</span><span class="dt">&gt;</span>Strona główna<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;</span></span>
+<span id="cb41-19"><a href="#cb41-19" aria-hidden="true" tabindex="-1"></a>            <span class="dt">&lt;/</span><span class="kw">li</span><span class="dt">&gt;</span></span>
+<span id="cb41-20"><a href="#cb41-20" aria-hidden="true" tabindex="-1"></a>            <span class="dt">&lt;</span><span class="kw">li</span><span class="dt">&gt;</span></span>
+<span id="cb41-21"><a href="#cb41-21" aria-hidden="true" tabindex="-1"></a>                <span class="dt">&lt;</span><span class="kw">a</span><span class="ot"> href</span><span class="op">=</span><span class="st">"{{ url_for('about') }}"</span><span class="er">{%</span><span class="ot"> if request.endpoint </span><span class="op">=</span><span class="er">=</span><span class="ot"> </span><span class="er">'</span><span class="ot">about</span><span class="er">'</span><span class="ot"> </span><span class="er">%}</span><span class="ot"> aria-current</span><span class="op">=</span><span class="st">"page"</span><span class="er">{%</span><span class="ot"> endif </span><span class="er">%}</span><span class="dt">&gt;</span>O mnie<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;</span></span>
+<span id="cb41-22"><a href="#cb41-22" aria-hidden="true" tabindex="-1"></a>            <span class="dt">&lt;/</span><span class="kw">li</span><span class="dt">&gt;</span></span>
+<span id="cb41-23"><a href="#cb41-23" aria-hidden="true" tabindex="-1"></a>            <span class="dt">&lt;</span><span class="kw">li</span><span class="dt">&gt;</span></span>
+<span id="cb41-24"><a href="#cb41-24" aria-hidden="true" tabindex="-1"></a>                <span class="dt">&lt;</span><span class="kw">a</span><span class="ot"> href</span><span class="op">=</span><span class="st">"{{ url_for('interests') }}"</span><span class="er">{%</span><span class="ot"> if request.endpoint </span><span class="op">=</span><span class="er">=</span><span class="ot"> </span><span class="er">'</span><span class="ot">interests</span><span class="er">'</span><span class="ot"> </span><span class="er">%}</span><span class="ot"> aria-current</span><span class="op">=</span><span class="st">"page"</span><span class="er">{%</span><span class="ot"> endif </span><span class="er">%}</span><span class="dt">&gt;</span>Zainteresowania<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;</span></span>
+<span id="cb41-25"><a href="#cb41-25" aria-hidden="true" tabindex="-1"></a>            <span class="dt">&lt;/</span><span class="kw">li</span><span class="dt">&gt;</span></span>
+<span id="cb41-26"><a href="#cb41-26" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;/</span><span class="kw">ul</span><span class="dt">&gt;</span></span>
+<span id="cb41-27"><a href="#cb41-27" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">nav</span><span class="dt">&gt;</span></span>
+<span id="cb41-28"><a href="#cb41-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-29"><a href="#cb41-29" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">main</span><span class="dt">&gt;</span></span>
+<span id="cb41-30"><a href="#cb41-30" aria-hidden="true" tabindex="-1"></a>        {% block content %}{% endblock %}</span>
+<span id="cb41-31"><a href="#cb41-31" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">main</span><span class="dt">&gt;</span></span>
+<span id="cb41-32"><a href="#cb41-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-33"><a href="#cb41-33" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">footer</span><span class="dt">&gt;</span></span>
+<span id="cb41-34"><a href="#cb41-34" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span>Autor: Jan Kowalski<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb41-35"><a href="#cb41-35" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;&lt;</span><span class="kw">a</span><span class="ot"> href</span><span class="op">=</span><span class="st">"#top"</span><span class="dt">&gt;</span>Początek strony<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb41-36"><a href="#cb41-36" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">footer</span><span class="dt">&gt;</span></span>
+<span id="cb41-37"><a href="#cb41-37" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">body</span><span class="dt">&gt;</span></span>
+<span id="cb41-38"><a href="#cb41-38" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">html</span><span class="dt">&gt;</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p>W tym pliku pozostaje cały szkielet dokumentu: od deklaracji HTML po zamknięcie <code>body</code> i <code>html</code>. Arkusz jest podłączony tylko tutaj. Menu i stopka również mają jedno wspólne źródło.</p>
+</section>
+<section id="rozróżnij-wyrażenia-i-instrukcje-jinja" class="level3">
+<h3 class="anchored" data-anchor-id="rozróżnij-wyrażenia-i-instrukcje-jinja">3. Rozróżnij wyrażenia i instrukcje Jinja</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Zapis</th>
+<th>Przeznaczenie</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>{ url_for('home') }</code></td>
+<td>Oblicza wartość i wstawia ją do wynikowego HTML.</td>
+</tr>
+<tr class="even">
+<td><code>{% block content %}...{% endblock %}</code></td>
+<td>Definiuje miejsce, którego zawartość może określić szablon potomny.</td>
+</tr>
+<tr class="odd">
+<td><code>{% extends "base.html" %}</code></td>
+<td>Wskazuje szablon, z którego dziedziczymy strukturę.</td>
+</tr>
+<tr class="even">
+<td><code>{% if ... %}...{% endif %}</code></td>
+<td>Warunkowo dodaje fragment dokumentu.</td>
+</tr>
+</tbody>
+</table>
+<p>W bazie zdefiniowaliśmy dwa bloki: <code>title</code> i <code>content</code>. Pierwszy znajduje się wewnątrz elementu <code>title</code>, drugi wewnątrz <code>main</code>. Szablony stron wypełnią je własną treścią. Sufiks z nazwiskiem pozostaje poza blokiem <code>title</code>, więc jest wspólny.</p>
+</section>
+<section id="skróć-stronę-główną" class="level3">
+<h3 class="anchored" data-anchor-id="skróć-stronę-główną">4. Skróć stronę główną</h3>
+<p>Zastąp zawartość <code>templates/index.html</code> poniższym kompletnym szablonem:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb42"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>{% extends "base.html" %}</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>{% block title %}Strona główna{% endblock %}</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>{% block content %}</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">section</span><span class="dt">&gt;</span></span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">h2</span><span class="dt">&gt;</span>Moja pierwsza strona<span class="dt">&lt;/</span><span class="kw">h2</span><span class="dt">&gt;</span></span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>        Uczę się projektowania aplikacji sieciowych.</span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>        Na tej stronie przedstawiam siebie i swoje zainteresowania.</span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a>        Moja witryna ma trzy strony, wspólny arkusz CSS</span>
+<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a>        oraz wspólny szablon nagłówka, menu i stopki.</span>
+<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">section</span><span class="dt">&gt;</span></span>
+<span id="cb42-17"><a href="#cb42-17" aria-hidden="true" tabindex="-1"></a>{% endblock %}</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Zapisz własne akapity zamiast przykładowych. Nie dodawaj tu kolejnych elementów <code>html</code>, <code>head</code>, <code>body</code>, <code>main</code> ani menu. Otrzymasz je z szablonu bazowego.</p>
+<p><code>extends</code> umieszczamy na początku pliku. Treść strony umieszczamy wewnątrz bloku <code>content</code>, a tekst tytułu w bloku <code>title</code>.</p>
+</section>
+<section id="skróć-stronę-o-mnie" class="level3">
+<h3 class="anchored" data-anchor-id="skróć-stronę-o-mnie">5. Skróć stronę „O mnie”</h3>
+<p>Kompletny <code>templates/about.html</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>{% extends "base.html" %}</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>{% block title %}O mnie{% endblock %}</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>{% block content %}</span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">section</span><span class="dt">&gt;</span></span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">h2</span><span class="dt">&gt;</span>O mnie<span class="dt">&lt;/</span><span class="kw">h2</span><span class="dt">&gt;</span></span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a>        Jestem studentem i uczę się tworzyć aplikacje internetowe.</span>
+<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a>        Lubię poznawać nowe narzędzia i sprawdzać je w praktyce.</span>
+<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb43-13"><a href="#cb43-13" aria-hidden="true" tabindex="-1"></a>        Chcę samodzielnie zbudować aplikację i uruchomić ją w kontenerze.</span>
+<span id="cb43-14"><a href="#cb43-14" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb43-15"><a href="#cb43-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-16"><a href="#cb43-16" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">h3</span><span class="dt">&gt;</span>Czego chcę się nauczyć?<span class="dt">&lt;/</span><span class="kw">h3</span><span class="dt">&gt;</span></span>
+<span id="cb43-17"><a href="#cb43-17" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">ul</span><span class="dt">&gt;</span></span>
+<span id="cb43-18"><a href="#cb43-18" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">li</span><span class="dt">&gt;</span>Budowania stron w HTML5.<span class="dt">&lt;/</span><span class="kw">li</span><span class="dt">&gt;</span></span>
+<span id="cb43-19"><a href="#cb43-19" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">li</span><span class="dt">&gt;</span>Opisywania wyglądu za pomocą CSS.<span class="dt">&lt;/</span><span class="kw">li</span><span class="dt">&gt;</span></span>
+<span id="cb43-20"><a href="#cb43-20" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">li</span><span class="dt">&gt;</span>Tworzenia aplikacji we Flasku.<span class="dt">&lt;/</span><span class="kw">li</span><span class="dt">&gt;</span></span>
+<span id="cb43-21"><a href="#cb43-21" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">ul</span><span class="dt">&gt;</span></span>
+<span id="cb43-22"><a href="#cb43-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-23"><a href="#cb43-23" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb43-24"><a href="#cb43-24" aria-hidden="true" tabindex="-1"></a>        Korzystam z</span>
+<span id="cb43-25"><a href="#cb43-25" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">a</span><span class="ot"> href</span><span class="op">=</span><span class="st">"https://developer.mozilla.org/pl/docs/Web/HTML"</span><span class="dt">&gt;</span>dokumentacji HTML w MDN<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;</span>.</span>
+<span id="cb43-26"><a href="#cb43-26" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb43-27"><a href="#cb43-27" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">section</span><span class="dt">&gt;</span></span>
+<span id="cb43-28"><a href="#cb43-28" aria-hidden="true" tabindex="-1"></a>{% endblock %}</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Przenieś tu własną treść poprzedniej strony „O mnie”, zachowując bloki. Nagłówek strony, menu i stopkę edytujesz od teraz w <code>base.html</code>.</p>
+</section>
+<section id="skróć-stronę-zainteresowania" class="level3">
+<h3 class="anchored" data-anchor-id="skróć-stronę-zainteresowania">6. Skróć stronę „Zainteresowania”</h3>
+<p>Kompletny <code>templates/interests.html</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb44"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>{% extends "base.html" %}</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>{% block title %}Zainteresowania{% endblock %}</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>{% block content %}</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">section</span><span class="dt">&gt;</span></span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">h2</span><span class="dt">&gt;</span>Moje zainteresowania<span class="dt">&lt;/</span><span class="kw">h2</span><span class="dt">&gt;</span></span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>        Interesuję się fotografią i turystyką.</span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a>        Podczas wyjazdów fotografuję krajobrazy i architekturę.</span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a>        Chcę przygotować galerię internetową z wybranymi zdjęciami.</span>
+<span id="cb44-14"><a href="#cb44-14" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb44-15"><a href="#cb44-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-16"><a href="#cb44-16" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">h3</span><span class="dt">&gt;</span>Jak przygotowuję zdjęcia do galerii?<span class="dt">&lt;/</span><span class="kw">h3</span><span class="dt">&gt;</span></span>
+<span id="cb44-17"><a href="#cb44-17" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">ol</span><span class="dt">&gt;</span></span>
+<span id="cb44-18"><a href="#cb44-18" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">li</span><span class="dt">&gt;</span>Wybieram zdjęcia z wyjazdu.<span class="dt">&lt;/</span><span class="kw">li</span><span class="dt">&gt;</span></span>
+<span id="cb44-19"><a href="#cb44-19" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">li</span><span class="dt">&gt;</span>Przygotowuję opisy.<span class="dt">&lt;/</span><span class="kw">li</span><span class="dt">&gt;</span></span>
+<span id="cb44-20"><a href="#cb44-20" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">li</span><span class="dt">&gt;</span>Układam fotografie w kolejności prezentacji.<span class="dt">&lt;/</span><span class="kw">li</span><span class="dt">&gt;</span></span>
+<span id="cb44-21"><a href="#cb44-21" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">ol</span><span class="dt">&gt;</span></span>
+<span id="cb44-22"><a href="#cb44-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-23"><a href="#cb44-23" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb44-24"><a href="#cb44-24" aria-hidden="true" tabindex="-1"></a>        Przykłady fotografii znajdziesz w</span>
+<span id="cb44-25"><a href="#cb44-25" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">a</span><span class="ot"> href</span><span class="op">=</span><span class="st">"https://commons.wikimedia.org/"</span><span class="dt">&gt;</span>Wikimedia Commons<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;</span>.</span>
+<span id="cb44-26"><a href="#cb44-26" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb44-27"><a href="#cb44-27" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">section</span><span class="dt">&gt;</span></span>
+<span id="cb44-28"><a href="#cb44-28" aria-hidden="true" tabindex="-1"></a>{% endblock %}</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="zachowaj-trzy-trasy-aplikacji" class="level3">
+<h3 class="anchored" data-anchor-id="zachowaj-trzy-trasy-aplikacji">7. Zachowaj trzy trasy aplikacji</h3>
+<p><code>app.py</code> pozostaje taki jak po poprzedniej sekcji. Dla porównania pełna wersja:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> flask <span class="im">import</span> Flask, render_template</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> Flask(<span class="va">__name__</span>)</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a><span class="at">@app.route</span>(<span class="st">"/"</span>)</span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> home() <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Render the home page."""</span></span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> render_template(<span class="st">"index.html"</span>)</span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a><span class="at">@app.route</span>(<span class="st">"/about"</span>)</span>
+<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> about() <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb45-14"><a href="#cb45-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Render the about page."""</span></span>
+<span id="cb45-15"><a href="#cb45-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> render_template(<span class="st">"about.html"</span>)</span>
+<span id="cb45-16"><a href="#cb45-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-17"><a href="#cb45-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-18"><a href="#cb45-18" aria-hidden="true" tabindex="-1"></a><span class="at">@app.route</span>(<span class="st">"/interests"</span>)</span>
+<span id="cb45-19"><a href="#cb45-19" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> interests() <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb45-20"><a href="#cb45-20" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Render the interests page."""</span></span>
+<span id="cb45-21"><a href="#cb45-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> render_template(<span class="st">"interests.html"</span>)</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Nadal renderujesz szablon konkretnej strony, np. <code>about.html</code>. Jinja odczytuje jego <code>extends</code>, łączy bloki ze strukturą <code>base.html</code> i tworzy kompletny wynikowy dokument. Nie zmieniaj wszystkich wywołań na <code>render_template("base.html")</code>, bo stracisz treść właściwą dla podstron.</p>
+</section>
+<section id="zrozum-automatyczne-oznaczenie-menu" class="level3">
+<h3 class="anchored" data-anchor-id="zrozum-automatyczne-oznaczenie-menu">8. Zrozum automatyczne oznaczenie menu</h3>
+<p>W szablonie bazowym sprawdzamy bieżący endpoint:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb46"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">a</span><span class="ot"> href</span><span class="op">=</span><span class="st">"{{ url_for('about') }}"</span><span class="er">{%</span><span class="ot"> if request.endpoint </span><span class="op">=</span><span class="er">=</span><span class="ot"> </span><span class="er">'</span><span class="ot">about</span><span class="er">'</span><span class="ot"> </span><span class="er">%}</span><span class="ot"> aria-current</span><span class="op">=</span><span class="st">"page"</span><span class="er">{%</span><span class="ot"> endif </span><span class="er">%}</span><span class="dt">&gt;</span>O mnie<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Podczas obsługi <code>/about</code> wartością <code>request.endpoint</code> jest <code>about</code>. Flask udostępnia obiekt <code>request</code> w szablonie podczas żądania. Warunek dodaje wtedy atrybut <code>aria-current="page"</code>. Dla innych stron ten atrybut nie jest dodawany do tego odnośnika.</p>
+<p>Spacja przed <code>aria-current</code> wewnątrz warunku oddziela atrybuty w wynikowym HTML. Nasz wcześniejszy CSS nadal odczytuje ten sam atrybut, dlatego nie trzeba zmieniać reguły wyróżnienia menu.</p>
+</section>
+<section id="sprawdź-współdzielenie-i-wynikowy-html" class="level3">
+<h3 class="anchored" data-anchor-id="sprawdź-współdzielenie-i-wynikowy-html">9. Sprawdź współdzielenie i wynikowy HTML</h3>
+<p>Uruchom serwer, jeśli nie działa:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb47"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> flask <span class="at">--app</span> app run <span class="at">--debug</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Otwórz kolejno <code>/</code>, <code>/about</code> i <code>/interests</code>. Sprawdź własną treść, tytuł karty, CSS i właściwą pozycję menu.</p>
+<p>Następnie zmień tekst stopki <strong>tylko w <code>base.html</code></strong>. Odśwież wszystkie strony. Nowy tekst powinien pojawić się na każdej z nich.</p>
+<p>W źródle strony w przeglądarce sprawdź, czy:</p>
+<ul>
+<li>występuje jeden szkielet <code>html</code>, <code>head</code> i <code>body</code>;</li>
+<li>menu i stopka występują po jednym razie;</li>
+<li>nie ma instrukcji <code>{% extends ... %}</code> ani <code>{% block ... %}</code>;</li>
+<li>właściwy odnośnik ma <code>aria-current="page"</code>.</li>
+</ul>
+<p>Jeśli treść jest pusta, porównaj nazwy bloków: <code>content</code> i <code>contents</code> to różne nazwy. Jeżeli otrzymasz <code>TemplateNotFound: base.html</code>, sprawdź jego położenie w <code>templates</code>. Przy błędzie <code>TemplateSyntaxError</code> sprawdź domknięcia <code>endblock</code>, <code>endif</code> i nawiasów Jinja.</p>
+</section>
+<section id="opcjonalnie-prosty-panel-bootstrap" class="level3">
+<h3 class="anchored" data-anchor-id="opcjonalnie-prosty-panel-bootstrap">10. Opcjonalnie: prosty panel Bootstrap</h3>
+<p>Najpierw uruchom i sprawdź wersję ze swoim CSS. Bootstrap dodamy jako krótki eksperyment: użyjemy gotowego komponentu, zachowując istniejące menu i układ.</p>
+<p>W <code>base.html</code>, <strong>przed odwołaniem do <code>style.css</code></strong>, dodaj arkusz Bootstrap. Docelowe dwa elementy <code>link</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb48"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">link</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="ot">    href</span><span class="op">=</span><span class="st">"https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"</span></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="ot">    rel</span><span class="op">=</span><span class="st">"stylesheet"</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="ot">    integrity</span><span class="op">=</span><span class="st">"sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"</span></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a><span class="ot">    crossorigin</span><span class="op">=</span><span class="st">"anonymous"</span><span class="dt">&gt;</span></span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">link</span><span class="ot"> rel</span><span class="op">=</span><span class="st">"stylesheet"</span><span class="ot"> href</span><span class="op">=</span><span class="st">"{{ url_for('static', filename='style.css') }}"</span><span class="dt">&gt;</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p>To arkusz pobierany z internetu. Jego użycie nie wymaga instalacji pakietu Pythona. Przy pracy bez dostępu do sieci pozostań przy wcześniejszej wersji z własnym CSS. Atrybut <code>integrity</code> pozwala przeglądarce zweryfikować pobrany plik; przy zmianie wersji adres i suma muszą pochodzić z tej samej oficjalnej konfiguracji.</p>
+<p>W <code>templates/index.html</code>, wewnątrz istniejącej sekcji i bloku <code>content</code>, dodaj:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb49"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> class</span><span class="op">=</span><span class="st">"alert alert-info"</span><span class="ot"> role</span><span class="op">=</span><span class="st">"note"</span><span class="dt">&gt;</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>    Ta strona korzysta ze wspólnego szablonu Flask.</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> class</span><span class="op">=</span><span class="st">"card mt-3"</span><span class="dt">&gt;</span></span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> class</span><span class="op">=</span><span class="st">"card-body"</span><span class="dt">&gt;</span></span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">h3</span><span class="ot"> class</span><span class="op">=</span><span class="st">"card-title"</span><span class="dt">&gt;</span>Poznaj autora<span class="dt">&lt;/</span><span class="kw">h3</span><span class="dt">&gt;</span></span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">p</span><span class="ot"> class</span><span class="op">=</span><span class="st">"card-text"</span><span class="dt">&gt;</span>Przejdź do krótkiego opisu moich zainteresowań.<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">a</span><span class="ot"> class</span><span class="op">=</span><span class="st">"btn btn-primary"</span><span class="ot"> href</span><span class="op">=</span><span class="st">"{{ url_for('interests') }}"</span><span class="dt">&gt;</span></span>
+<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a>            Zobacz zainteresowania</span>
+<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;</span></span>
+<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb49-13"><a href="#cb49-13" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Atrybut <code>class</code> może zawierać kilka klas oddzielonych spacjami. Bootstrap definiuje ich wygląd: <code>card</code> tworzy kartę, <code>card-body</code> jej wnętrze, <code>btn btn-primary</code> wygląd przycisku, a <code>mt-3</code> górny margines. Odnośnik nadal jest elementem <code>a</code> i nadal prowadzi do trasy Flaska.</p>
+<p>Te komponenty nie wymagają JavaScriptu. Nie dodajemy rozwijanego menu ani innych interaktywnych komponentów.</p>
+<p>Własny arkusz ładowany jest po Bootstrapie. Przy takiej samej ważności i szczegółowości późniejsza deklaracja może nadpisać wcześniejszą, ale sama kolejność nie gwarantuje nadpisania każdej reguły. Bootstrap zawiera też style ogólne: po podłączeniu sprawdź ponownie wszystkie strony, listy i fokus klawiatury.</p>
+</section>
+<section id="samodzielna-zmiana-wspólnego-układu" class="level3">
+<h3 class="anchored" data-anchor-id="samodzielna-zmiana-wspólnego-układu">11. Samodzielna zmiana wspólnego układu</h3>
+<p>Wymyśl krótkie hasło witryny i zmień opis pod <code>h1</code> w <code>base.html</code>. Następnie dostosuj tytuły trzech stron w ich własnych blokach <code>title</code>.</p>
+<p>Sprawdź różnicę: wspólne hasło zmienia się wszędzie, natomiast tytuł konkretnej podstrony pozostaje lokalny. Treść biografii i zainteresowań zachowaj w odpowiednich szablonach potomnych.</p>
+</section>
+<section id="punkt-kontrolny-sekcji-5" class="level3">
+<h3 class="anchored" data-anchor-id="punkt-kontrolny-sekcji-5">12. Punkt kontrolny sekcji 5</h3>
+<ul class="task-list">
+<li><label><input type="checkbox"><code>base.html</code> zawiera jedyny wspólny szkielet dokumentu, menu i stopkę.</label></li>
+<li><label><input type="checkbox">Trzy szablony stron zaczynają się od <code>extends</code> i wypełniają bloki.</label></li>
+<li><label><input type="checkbox">Trasy nadal renderują <code>index.html</code>, <code>about.html</code> i <code>interests.html</code>.</label></li>
+<li><label><input type="checkbox">Bieżąca pozycja menu wynika z <code>request.endpoint</code>.</label></li>
+<li><label><input type="checkbox">Zmiana stopki w jednym pliku jest widoczna na wszystkich stronach.</label></li>
+<li><label><input type="checkbox">W wynikowym HTML nie ma instrukcji Jinja ani podwójnego menu.</label></li>
+<li><label><input type="checkbox">Jeśli wykonano wariant Bootstrap, karta działa, a własny CSS i fokus pozostały czytelne.</label></li>
+</ul>
+<p><strong>Rezultat:</strong> wspólny układ edytujesz w jednym miejscu, a treść stron w osobnych szablonach. Aplikacja jest gotowa do kolejnego etapu: przygotowania <code>Dockerfile</code>.</p>
+<p>Materiały referencyjne: <a href="https://flask.palletsprojects.com/en/stable/patterns/templateinheritance/">dziedziczenie szablonów we Flasku</a>, <a href="https://flask.palletsprojects.com/en/stable/tutorial/templates/">szablony w tutorialu Flask</a> i <a href="https://getbootstrap.com/docs/5.3/getting-started/introduction/">oficjalna konfiguracja Bootstrap</a>.</p>
 
 
 </section>

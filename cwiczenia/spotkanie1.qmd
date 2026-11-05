@@ -1,6 +1,6 @@
 ---
 title: "Laboratorium 1: HTML5, CSS i Flask"
-subtitle: "Sekcje 1–4 · HTML5, CSS i aplikacja Flask"
+subtitle: "Sekcje 1–5 · HTML5, CSS, Flask i wspólny szablon"
 lang: pl
 toc-title: "Na tej stronie"
 code-copy: true
@@ -1144,3 +1144,309 @@ To pokazuje, po co generujemy adresy na podstawie nazw endpointów. **Po ekspery
 **Rezultat:** Twoja witryna działa jako aplikacja Flask z trzema stronami. Wspólne elementy HTML nadal się powtarzają; w kolejnym etapie wydzielimy je do szablonu bazowego, zanim przygotujemy kontener.
 
 Dalsza lektura: oficjalne instrukcje [instalacji Flask](https://flask.palletsprojects.com/en/stable/installation/) oraz [Quickstart](https://flask.palletsprojects.com/en/stable/quickstart/) opisują środowisko, routing, szablony i pliki statyczne.
+
+
+## Sekcja 5. Wspólny szablon base.html
+
+Nagłówek, menu i stopka są teraz zapisane w trzech dokumentach. Gdy dodasz pozycję menu, musisz poprawić trzy pliki. Wydzielisz te elementy do `base.html`, a w pozostałych szablonach zostawisz treść właściwą dla każdej strony.
+
+### 1. Przygotuj strukturę szablonów
+
+W katalogu `templates` utwórz `base.html`. Nie zmieniaj położenia `app.py` ani arkusza:
+
+```text
+personal-website/
+├── .venv/
+├── app.py
+├── templates/
+│   ├── base.html
+│   ├── index.html
+│   ├── about.html
+│   └── interests.html
+└── static/
+    └── style.css
+```
+
+Zachowaj własne teksty z dotychczasowych stron: w następnych krokach przeniesiesz je do bloków treści. Poniższe przykłady podają kompletną zawartość każdego szablonu; przykładowe dane zastąp swoimi.
+
+### 2. Napisz kompletny base.html
+
+W `templates/base.html` umieść:
+
+```html
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Strona osobista{% endblock %} — Jan Kowalski</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header id="top">
+        <h1>Jan Kowalski</h1>
+        <p>Moja osobista witryna internetowa</p>
+    </header>
+
+    <nav aria-label="Nawigacja główna">
+        <ul>
+            <li>
+                <a href="{{ url_for('home') }}"{% if request.endpoint == 'home' %} aria-current="page"{% endif %}>Strona główna</a>
+            </li>
+            <li>
+                <a href="{{ url_for('about') }}"{% if request.endpoint == 'about' %} aria-current="page"{% endif %}>O mnie</a>
+            </li>
+            <li>
+                <a href="{{ url_for('interests') }}"{% if request.endpoint == 'interests' %} aria-current="page"{% endif %}>Zainteresowania</a>
+            </li>
+        </ul>
+    </nav>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>Autor: Jan Kowalski</p>
+        <p><a href="#top">Początek strony</a></p>
+    </footer>
+</body>
+</html>
+```
+
+W tym pliku pozostaje cały szkielet dokumentu: od deklaracji HTML po zamknięcie `body` i `html`. Arkusz jest podłączony tylko tutaj. Menu i stopka również mają jedno wspólne źródło.
+
+### 3. Rozróżnij wyrażenia i instrukcje Jinja
+
+| Zapis | Przeznaczenie |
+|---|---|
+| `{{ url_for('home') }}` | Oblicza wartość i wstawia ją do wynikowego HTML. |
+| `{% block content %}...{% endblock %}` | Definiuje miejsce, którego zawartość może określić szablon potomny. |
+| `{% extends "base.html" %}` | Wskazuje szablon, z którego dziedziczymy strukturę. |
+| `{% if ... %}...{% endif %}` | Warunkowo dodaje fragment dokumentu. |
+
+W bazie zdefiniowaliśmy dwa bloki: `title` i `content`. Pierwszy znajduje się wewnątrz elementu `title`, drugi wewnątrz `main`. Szablony stron wypełnią je własną treścią. Sufiks z nazwiskiem pozostaje poza blokiem `title`, więc jest wspólny.
+
+### 4. Skróć stronę główną
+
+Zastąp zawartość `templates/index.html` poniższym kompletnym szablonem:
+
+```html
+{% extends "base.html" %}
+
+{% block title %}Strona główna{% endblock %}
+
+{% block content %}
+<section>
+    <h2>Moja pierwsza strona</h2>
+    <p>
+        Uczę się projektowania aplikacji sieciowych.
+        Na tej stronie przedstawiam siebie i swoje zainteresowania.
+    </p>
+    <p>
+        Moja witryna ma trzy strony, wspólny arkusz CSS
+        oraz wspólny szablon nagłówka, menu i stopki.
+    </p>
+</section>
+{% endblock %}
+```
+
+Zapisz własne akapity zamiast przykładowych. Nie dodawaj tu kolejnych elementów `html`, `head`, `body`, `main` ani menu. Otrzymasz je z szablonu bazowego.
+
+`extends` umieszczamy na początku pliku. Treść strony umieszczamy wewnątrz bloku `content`, a tekst tytułu w bloku `title`.
+
+### 5. Skróć stronę „O mnie”
+
+Kompletny `templates/about.html`:
+
+```html
+{% extends "base.html" %}
+
+{% block title %}O mnie{% endblock %}
+
+{% block content %}
+<section>
+    <h2>O mnie</h2>
+    <p>
+        Jestem studentem i uczę się tworzyć aplikacje internetowe.
+        Lubię poznawać nowe narzędzia i sprawdzać je w praktyce.
+    </p>
+    <p>
+        Chcę samodzielnie zbudować aplikację i uruchomić ją w kontenerze.
+    </p>
+
+    <h3>Czego chcę się nauczyć?</h3>
+    <ul>
+        <li>Budowania stron w HTML5.</li>
+        <li>Opisywania wyglądu za pomocą CSS.</li>
+        <li>Tworzenia aplikacji we Flasku.</li>
+    </ul>
+
+    <p>
+        Korzystam z
+        <a href="https://developer.mozilla.org/pl/docs/Web/HTML">dokumentacji HTML w MDN</a>.
+    </p>
+</section>
+{% endblock %}
+```
+
+Przenieś tu własną treść poprzedniej strony „O mnie”, zachowując bloki. Nagłówek strony, menu i stopkę edytujesz od teraz w `base.html`.
+
+### 6. Skróć stronę „Zainteresowania”
+
+Kompletny `templates/interests.html`:
+
+```html
+{% extends "base.html" %}
+
+{% block title %}Zainteresowania{% endblock %}
+
+{% block content %}
+<section>
+    <h2>Moje zainteresowania</h2>
+    <p>
+        Interesuję się fotografią i turystyką.
+        Podczas wyjazdów fotografuję krajobrazy i architekturę.
+    </p>
+    <p>
+        Chcę przygotować galerię internetową z wybranymi zdjęciami.
+    </p>
+
+    <h3>Jak przygotowuję zdjęcia do galerii?</h3>
+    <ol>
+        <li>Wybieram zdjęcia z wyjazdu.</li>
+        <li>Przygotowuję opisy.</li>
+        <li>Układam fotografie w kolejności prezentacji.</li>
+    </ol>
+
+    <p>
+        Przykłady fotografii znajdziesz w
+        <a href="https://commons.wikimedia.org/">Wikimedia Commons</a>.
+    </p>
+</section>
+{% endblock %}
+```
+
+### 7. Zachowaj trzy trasy aplikacji
+
+`app.py` pozostaje taki jak po poprzedniej sekcji. Dla porównania pełna wersja:
+
+```python
+from flask import Flask, render_template
+
+app = Flask(__name__)
+
+
+@app.route("/")
+def home() -> str:
+    """Render the home page."""
+    return render_template("index.html")
+
+
+@app.route("/about")
+def about() -> str:
+    """Render the about page."""
+    return render_template("about.html")
+
+
+@app.route("/interests")
+def interests() -> str:
+    """Render the interests page."""
+    return render_template("interests.html")
+```
+
+Nadal renderujesz szablon konkretnej strony, np. `about.html`. Jinja odczytuje jego `extends`, łączy bloki ze strukturą `base.html` i tworzy kompletny wynikowy dokument. Nie zmieniaj wszystkich wywołań na `render_template("base.html")`, bo stracisz treść właściwą dla podstron.
+
+### 8. Zrozum automatyczne oznaczenie menu
+
+W szablonie bazowym sprawdzamy bieżący endpoint:
+
+```html
+<a href="{{ url_for('about') }}"{% if request.endpoint == 'about' %} aria-current="page"{% endif %}>O mnie</a>
+```
+
+Podczas obsługi `/about` wartością `request.endpoint` jest `about`. Flask udostępnia obiekt `request` w szablonie podczas żądania. Warunek dodaje wtedy atrybut `aria-current="page"`. Dla innych stron ten atrybut nie jest dodawany do tego odnośnika.
+
+Spacja przed `aria-current` wewnątrz warunku oddziela atrybuty w wynikowym HTML. Nasz wcześniejszy CSS nadal odczytuje ten sam atrybut, dlatego nie trzeba zmieniać reguły wyróżnienia menu.
+
+### 9. Sprawdź współdzielenie i wynikowy HTML
+
+Uruchom serwer, jeśli nie działa:
+
+```bash
+python -m flask --app app run --debug
+```
+
+Otwórz kolejno `/`, `/about` i `/interests`. Sprawdź własną treść, tytuł karty, CSS i właściwą pozycję menu.
+
+Następnie zmień tekst stopki **tylko w `base.html`**. Odśwież wszystkie strony. Nowy tekst powinien pojawić się na każdej z nich.
+
+W źródle strony w przeglądarce sprawdź, czy:
+
+- występuje jeden szkielet `html`, `head` i `body`;
+- menu i stopka występują po jednym razie;
+- nie ma instrukcji `{% extends ... %}` ani `{% block ... %}`;
+- właściwy odnośnik ma `aria-current="page"`.
+
+Jeśli treść jest pusta, porównaj nazwy bloków: `content` i `contents` to różne nazwy. Jeżeli otrzymasz `TemplateNotFound: base.html`, sprawdź jego położenie w `templates`. Przy błędzie `TemplateSyntaxError` sprawdź domknięcia `endblock`, `endif` i nawiasów Jinja.
+
+### 10. Opcjonalnie: prosty panel Bootstrap
+
+Najpierw uruchom i sprawdź wersję ze swoim CSS. Bootstrap dodamy jako krótki eksperyment: użyjemy gotowego komponentu, zachowując istniejące menu i układ.
+
+W `base.html`, **przed odwołaniem do `style.css`**, dodaj arkusz Bootstrap. Docelowe dwa elementy `link`:
+
+```html
+<link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+    crossorigin="anonymous">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+```
+
+To arkusz pobierany z internetu. Jego użycie nie wymaga instalacji pakietu Pythona. Przy pracy bez dostępu do sieci pozostań przy wcześniejszej wersji z własnym CSS. Atrybut `integrity` pozwala przeglądarce zweryfikować pobrany plik; przy zmianie wersji adres i suma muszą pochodzić z tej samej oficjalnej konfiguracji.
+
+W `templates/index.html`, wewnątrz istniejącej sekcji i bloku `content`, dodaj:
+
+```html
+<div class="alert alert-info" role="note">
+    Ta strona korzysta ze wspólnego szablonu Flask.
+</div>
+
+<div class="card mt-3">
+    <div class="card-body">
+        <h3 class="card-title">Poznaj autora</h3>
+        <p class="card-text">Przejdź do krótkiego opisu moich zainteresowań.</p>
+        <a class="btn btn-primary" href="{{ url_for('interests') }}">
+            Zobacz zainteresowania
+        </a>
+    </div>
+</div>
+```
+
+Atrybut `class` może zawierać kilka klas oddzielonych spacjami. Bootstrap definiuje ich wygląd: `card` tworzy kartę, `card-body` jej wnętrze, `btn btn-primary` wygląd przycisku, a `mt-3` górny margines. Odnośnik nadal jest elementem `a` i nadal prowadzi do trasy Flaska.
+
+Te komponenty nie wymagają JavaScriptu. Nie dodajemy rozwijanego menu ani innych interaktywnych komponentów.
+
+Własny arkusz ładowany jest po Bootstrapie. Przy takiej samej ważności i szczegółowości późniejsza deklaracja może nadpisać wcześniejszą, ale sama kolejność nie gwarantuje nadpisania każdej reguły. Bootstrap zawiera też style ogólne: po podłączeniu sprawdź ponownie wszystkie strony, listy i fokus klawiatury.
+
+### 11. Samodzielna zmiana wspólnego układu
+
+Wymyśl krótkie hasło witryny i zmień opis pod `h1` w `base.html`. Następnie dostosuj tytuły trzech stron w ich własnych blokach `title`.
+
+Sprawdź różnicę: wspólne hasło zmienia się wszędzie, natomiast tytuł konkretnej podstrony pozostaje lokalny. Treść biografii i zainteresowań zachowaj w odpowiednich szablonach potomnych.
+
+### 12. Punkt kontrolny sekcji 5
+
+- [ ] `base.html` zawiera jedyny wspólny szkielet dokumentu, menu i stopkę.
+- [ ] Trzy szablony stron zaczynają się od `extends` i wypełniają bloki.
+- [ ] Trasy nadal renderują `index.html`, `about.html` i `interests.html`.
+- [ ] Bieżąca pozycja menu wynika z `request.endpoint`.
+- [ ] Zmiana stopki w jednym pliku jest widoczna na wszystkich stronach.
+- [ ] W wynikowym HTML nie ma instrukcji Jinja ani podwójnego menu.
+- [ ] Jeśli wykonano wariant Bootstrap, karta działa, a własny CSS i fokus pozostały czytelne.
+
+**Rezultat:** wspólny układ edytujesz w jednym miejscu, a treść stron w osobnych szablonach. Aplikacja jest gotowa do kolejnego etapu: przygotowania `Dockerfile`.
+
+Materiały referencyjne: [dziedziczenie szablonów we Flasku](https://flask.palletsprojects.com/en/stable/patterns/templateinheritance/), [szablony w tutorialu Flask](https://flask.palletsprojects.com/en/stable/tutorial/templates/) i [oficjalna konfiguracja Bootstrap](https://getbootstrap.com/docs/5.3/getting-started/introduction/).
