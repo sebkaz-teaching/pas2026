@@ -1,6 +1,6 @@
 ---
 title: "Laboratorium 1: HTML5, CSS i Flask"
-subtitle: "Sekcje 1–5 · HTML5, CSS, Flask i wspólny szablon"
+subtitle: "HTML5, CSS i Flask: strona HTML, API JSON i fetch"
 lang: pl
 toc-title: "Na tej stronie"
 code-copy: true
@@ -828,36 +828,30 @@ Nie wpisuj znaczników `<style>` do pliku `.css`. Zewnętrzny arkusz zawiera sam
 - [ ] Zmiana reguły w jednym arkuszu jest widoczna na trzech stronach po odświeżeniu.
 - [ ] Potrafisz odnaleźć regułę elementu w narzędziach przeglądarki.
 
-**Rezultat:** masz statyczną witrynę z trzema podstronami i jednym wspólnym arkuszem CSS. Kolejny etap to uruchomienie strony głównej przez Flask, a następnie dodanie obsługi dwóch pozostałych adresów.
+**Rezultat:** masz statyczną witrynę z trzema podstronami i jednym wspólnym arkuszem CSS. Kolejny etap to jedna strona obsługiwana przez Flask, endpoint obliczeniowy JSON i komunikacja przez `fetch()`.
 
 
-## Sekcja 4. Flask: jedna strona i dwie podstrony
+## Sekcja 4. Flask: jedna strona HTML i endpoint JSON
 
-Dotychczas przeglądarka odczytywała pliki z dysku. Teraz uruchomisz aplikację HTTP w Pythonie. Najpierw obsłużysz stronę główną, a następnie dodasz dwie podstrony. Zachowasz własną treść i wspólny arkusz CSS.
+W części statycznej przygotowałeś trzy strony i wspólny CSS. Teraz wykorzystasz te umiejętności do nowej, małej aplikacji: **kalkulatora sumy dwóch liczb**. Zachowaj poprzedni katalog `personal-website` jako ukończone ćwiczenie. Dla aplikacji utwórz obok niego katalog `flask-calculator`.
 
-### 1. Przygotuj Pythona i terminal
+Aplikacja będzie miała dwa adresy:
 
-Otwórz terminal w katalogu `personal-website`. To katalog Twojej aplikacji, nie repozytorium strony kursu. Korzystamy z **Pythona 3.11 lub nowszego**. Sprawdź wersję:
+| Adres | Odpowiedź | Przeznaczenie |
+|---|---|---|
+| `/` | HTML | Wyświetla formularz i miejsce na wynik. |
+| `/api/add?a=2&b=3` | JSON | Przyjmuje liczby i zwraca ich sumę. |
+
+Nie tworzymy trzech tras HTML ani wspólnego szablonu bazowego. Jedyny szablon to strona kalkulatora. Najpierw uruchomisz stronę i API, potem połączysz je JavaScriptem.
+
+### 1. Przygotuj środowisko
+
+Otwórz `flask-calculator` w edytorze i terminalu. Korzystamy z Pythona 3.11 lub nowszego.
 
 **macOS / Linux:**
 
 ```bash
 python3 --version
-```
-
-**Windows (PowerShell):**
-
-```powershell
-py -3 --version
-```
-
-Jeżeli interpreter nie jest dostępny, zgłoś to prowadzącemu. Nie instaluj pakietów globalnie i nie używaj `sudo`.
-
-### 2. Utwórz izolowane środowisko
-
-**macOS / Linux:**
-
-```bash
 python3 -m venv .venv
 source .venv/bin/activate
 ```
@@ -865,313 +859,126 @@ source .venv/bin/activate
 **Windows (PowerShell):**
 
 ```powershell
+py -3 --version
 py -3 -m venv .venv
 .\.venv\Scripts\Activate.ps1
 ```
 
-Jeśli PowerShell blokuje aktywację, możesz korzystać bezpośrednio z interpretera środowiska, bez zmiany polityki wykonywania skryptów:
+Po aktywacji:
+
+```bash
+python -c "import sys; print(sys.executable)"
+python -m pip install Flask
+```
+
+Ścieżka interpretera powinna wskazywać `.venv` w tym projekcie. Nie instaluj biblioteki globalnie. Jeżeli PowerShell blokuje aktywację, zamiast zmieniać jego politykę możesz użyć interpretera bezpośrednio:
 
 ```powershell
 .\.venv\Scripts\python.exe -m pip install Flask
 ```
 
-W takim wariancie w następnych poleceniach zastępuj `python` przez `.\.venv\Scripts\python.exe`.
+Wtedy również w kolejnych poleceniach zastępuj `python` przez `.\.venv\Scripts\python.exe`.
 
-Po aktywacji środowiska sprawdź interpreter i zainstaluj Flask:
+### 2. Utwórz pliki aplikacji
 
-```bash
-python -c "import sys; print(sys.executable)"
-python -m pip install Flask
-python -m pip show Flask
-```
-
-Ścieżka interpretera powinna prowadzić do `.venv` w Twoim projekcie. Zapis `python -m pip` wiąże instalację z tym właśnie interpreterem. W edytorze również wybierz interpreter z `.venv`, jeśli zgłasza brak biblioteki Flask.
-
-Środowisko `.venv` zawiera lokalną instalację zależności. Nie jest kodem aplikacji i nie należy umieszczać go w repozytorium Git ani kopiować do obrazu Dockera.
-
-### 3. Uporządkuj pliki aplikacji
-
-Utwórz katalogi `templates` i `static`. Przenieś trzy pliki HTML do `templates`, a `style.css` do `static`. W głównym katalogu utwórz `app.py`:
+Przygotuj strukturę:
 
 ```text
-personal-website/
+flask-calculator/
 ├── .venv/
 ├── app.py
 ├── templates/
-│   ├── index.html
-│   ├── about.html
-│   └── interests.html
+│   └── index.html
 └── static/
-    └── style.css
+    ├── style.css
+    └── app.js
 ```
 
-Przenoś pliki zamiast zostawiać dodatkowe kopie. `app.py` musi znajdować się obok katalogów `templates` i `static`. Nie nazywaj go `flask.py`, ponieważ taka nazwa może przesłonić import biblioteki.
+Do `static/style.css` skopiuj wspólny arkusz z poprzedniego ćwiczenia. Uzupełnisz go poniżej o wygląd formularza. Pozostałe pliki utwórz puste. Nie nazywaj modułu `flask.py`, ponieważ taka nazwa koliduje z importem biblioteki.
 
-Pliki HTML pozostają Twoimi dotychczasowymi dokumentami. Flask będzie je przetwarzać jako szablony. Arkusz CSS pozostaje bez zmian.
+### 3. Napisz kompletny backend
 
-### 4. Napisz aplikację z jedną trasą
-
-Wpisz kompletną zawartość `app.py`:
+W `app.py` wpisz:
 
 ```python
-from flask import Flask, render_template
+from math import isfinite
+
+from flask import Flask, jsonify, render_template, request
 
 app = Flask(__name__)
 
 
-@app.route("/")
+@app.get("/")
 def home() -> str:
-    """Render the home page."""
-    return render_template("index.html")
-```
-
-| Fragment | Rola |
-|---|---|
-| `Flask` | Klasa, z której tworzymy obiekt aplikacji. |
-| `app = Flask(__name__)` | Tworzy aplikację z informacją o module potrzebną do lokalizowania zasobów. |
-| `@app.route("/")` | Przypisuje adres strony głównej do funkcji poniżej. |
-| `home()` | Funkcja wykonywana przy żądaniu tej strony. |
-| `render_template("index.html")` | Renderuje dokument z katalogu `templates`. |
-
-Adnotacja `-> str` opisuje typ wartości zwracanej przez naszą funkcję. Nie jest konfiguracją protokołu HTTP.
-
-### 5. Przygotuj stronę główną do obsługi przez Flask
-
-W `templates/index.html` zmień odwołanie do CSS na:
-
-```html
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-```
-
-Na razie zastąp całe menu wersją z jednym odnośnikiem:
-
-```html
-<nav aria-label="Nawigacja główna">
-    <ul>
-        <li><a href="{{ url_for('home') }}" aria-current="page">Strona główna</a></li>
-    </ul>
-</nav>
-```
-
-**Nie dodawaj jeszcze `url_for('about')` ani `url_for('interests')`.** Takie funkcje nie istnieją w aplikacji z jedną trasą. Dodamy je w kolejnym kroku.
-
-Zapis `{{ ... }}` jest wyrażeniem szablonu Jinja. Serwer oblicza jego wartość przed wysłaniem HTML do przeglądarki. `url_for('home')` generuje adres na podstawie nazwy funkcji, a `url_for('static', filename='style.css')` wskazuje zasób statyczny.
-
-W `head` zachowaj metadane i własny tytuł. Poza CSS i menu nie zmieniaj przygotowanej wcześniej treści.
-
-### 6. Uruchom pierwszą stronę
-
-W terminalu z aktywnym środowiskiem, pozostając w katalogu z `app.py`, wykonaj:
-
-```bash
-python -m flask --app app run --debug
-```
-
-`--app app` wskazuje moduł `app.py`. Polecenie `run` uruchamia serwer deweloperski. Opcja `--debug` pomaga podczas lokalnych ćwiczeń i automatycznie przeładowuje aplikację po zmianach kodu Pythona.
-
-Otwórz **[http://127.0.0.1:5000/](http://127.0.0.1:5000/)**. Terminal pozostaw uruchomiony. Zatrzymanie procesu przez **Ctrl+C** wyłącza serwer.
-
-::: {.callout-important}
-## Otwieraj adres HTTP, nie plik szablonu
-
-Od tego etapu korzystaj z adresu serwera. Podwójne kliknięcie `templates/index.html` nie uruchamia Flaska ani Jinja. Przy adresie `file:///` wyrażenia `{{ ... }}` nie zostaną obliczone.
-
-Tryb debugowania służy do lokalnej pracy laboratoryjnej. Nie udostępniaj go jako publicznego serwera.
-:::
-
-Sprawdź stronę główną i otwórz również [http://127.0.0.1:5000/static/style.css](http://127.0.0.1:5000/static/style.css). Powinien pojawić się kod Twojego arkusza. Adres `/about` na tym etapie zwróci `404`, ponieważ nie dodaliśmy jeszcze takiej trasy.
-
-Jeżeli port jest zajęty, uruchom serwer na innym porcie:
-
-```bash
-python -m flask --app app run --debug --port 5001
-```
-
-Wtedy we wszystkich adresach używaj portu `5001`.
-
-### 7. Dodaj dwie podstrony
-
-Zastąp `app.py` poniższą kompletną wersją:
-
-```python
-from flask import Flask, render_template
-
-app = Flask(__name__)
-
-
-@app.route("/")
-def home() -> str:
-    """Render the home page."""
+    """Render the calculator page."""
     return render_template("index.html")
 
 
-@app.route("/about")
-def about() -> str:
-    """Render the about page."""
-    return render_template("about.html")
+@app.get("/api/add")
+def add():
+    """Return the sum of two finite query parameters as JSON."""
+    try:
+        a = float(request.args["a"])
+        b = float(request.args["b"])
+    except (KeyError, ValueError):
+        return jsonify(error="Provide two numbers: a and b."), 400
 
+    if not isfinite(a) or not isfinite(b):
+        return jsonify(error="Numbers must be finite."), 400
 
-@app.route("/interests")
-def interests() -> str:
-    """Render the interests page."""
-    return render_template("interests.html")
+    result = a + b
+    if not isfinite(result):
+        return jsonify(error="The result is outside the supported range."), 400
+
+    return jsonify(a=a, b=b, operation="add", result=result)
 ```
 
-Zapisz plik. Przy uruchomionym trybie debugowania serwer powinien przeładować kod. Jeśli został zatrzymany, uruchom go ponownie tym samym poleceniem.
+`home()` zwraca HTML, a `add()` odpowiedź JSON. Obie funkcje działają w tym samym procesie aplikacji, ale obsługują różne adresy.
 
-| Adres w przeglądarce | Funkcja / endpoint | Plik szablonu |
-|---|---|---|
-| `/` | `home` | `templates/index.html` |
-| `/about` | `about` | `templates/about.html` |
-| `/interests` | `interests` | `templates/interests.html` |
+`@app.get(...)` rejestruje trasę dla metody GET. Nie dodajemy danych do bazy ani nie zmieniamy stanu serwera: wykonujemy obliczenie na podstawie parametrów żądania.
 
-Nazwa funkcji jest tutaj domyślną nazwą endpointu. Rozróżniaj trzy rzeczy: adres URL, nazwę funkcji oraz nazwę pliku. W przykładzie `/about` prowadzi do `about()`, a funkcja renderuje `about.html`.
+### 4. Zrozum parametry GET
 
-### 8. Podłącz CSS na obu podstronach
-
-W `templates/about.html` i `templates/interests.html` zastąp dotychczasowy element `link` tym samym zapisem co na stronie głównej:
-
-```html
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-```
-
-Nie wpisuj `../static/style.css`. Przeglądarka rozwiązuje względne adresy względem adresu dokumentu, a nie położenia szablonu na dysku serwera. `url_for()` pozwala uniknąć tego pomieszania.
-
-### 9. Zaktualizuj całe menu na trzech stronach
-
-Teraz wszystkie trzy endpointy istnieją. Wstaw właściwe menu do każdego szablonu, zastępując dotychczasowy element `nav`.
-
-**`templates/index.html`:**
-
-```html
-<nav aria-label="Nawigacja główna">
-    <ul>
-        <li><a href="{{ url_for('home') }}" aria-current="page">Strona główna</a></li>
-        <li><a href="{{ url_for('about') }}">O mnie</a></li>
-        <li><a href="{{ url_for('interests') }}">Zainteresowania</a></li>
-    </ul>
-</nav>
-```
-
-**`templates/about.html`:**
-
-```html
-<nav aria-label="Nawigacja główna">
-    <ul>
-        <li><a href="{{ url_for('home') }}">Strona główna</a></li>
-        <li><a href="{{ url_for('about') }}" aria-current="page">O mnie</a></li>
-        <li><a href="{{ url_for('interests') }}">Zainteresowania</a></li>
-    </ul>
-</nav>
-```
-
-**`templates/interests.html`:**
-
-```html
-<nav aria-label="Nawigacja główna">
-    <ul>
-        <li><a href="{{ url_for('home') }}">Strona główna</a></li>
-        <li><a href="{{ url_for('about') }}">O mnie</a></li>
-        <li><a href="{{ url_for('interests') }}" aria-current="page">Zainteresowania</a></li>
-    </ul>
-</nav>
-```
-
-Zachowaj własną treść `main`, metadane, nagłówek i stopkę. Odnośniki zewnętrzne oraz odnośnik `#top`, jeśli go dodałeś, nie wymagają zmiany.
-
-### 10. Prześledź żądanie i odpowiedź
-
-Kliknij „O mnie” i prześledź kolejne etapy:
-
-1. Przeglądarka wysyła żądanie `GET /about` do lokalnego serwera.
-2. Flask dopasowuje trasę i wykonuje `about()`.
-3. Funkcja renderuje `about.html`, obliczając wyrażenia Jinja.
-4. Serwer zwraca wynikowy HTML.
-5. Przeglądarka odczytuje odwołanie do CSS i wysyła osobne żądanie `GET /static/style.css`.
-
-Otwórz źródło strony w przeglądarce i znajdź menu. Powinny być w nim zwykłe adresy `/`, `/about` i `/interests`, bez wyrażeń `{{ url_for(...) }}`. Kod Pythona i źródło szablonu nie są wysyłane jako kod do wykonania w przeglądarce.
-
-### 11. Sprawdź aplikację i obsługę błędów
-
-| Próba | Oczekiwany efekt |
-|---|---|
-| Otwórz `/` | Strona główna, właściwy tytuł i wspólny CSS. |
-| Otwórz `/about` | Własna treść strony „O mnie”. |
-| Otwórz `/interests` | Własna treść zainteresowań. |
-| Przejdź między stronami przez menu | Każdy odnośnik otwiera właściwą trasę. |
-| Otwórz `/static/style.css` | Kod wspólnego arkusza. |
-| Otwórz `/missing` | Odpowiedź `404`, bo takiej trasy nie zdefiniowano. |
-
-Obserwuj terminal: zobaczysz żądania oraz ich statusy. `200` oznacza powodzenie, `404` brak wskazanego zasobu, a `500` błąd po stronie aplikacji.
-
-| Problem | Co sprawdzić? |
-|---|---|
-| `No module named flask` | Interpreter i instalację Flask w aktywnym `.venv`. |
-| `TemplateNotFound` | Pisownię nazwy i obecność pliku w `templates` obok `app.py`. |
-| `BuildError` | Czy argument `url_for()` jest nazwą istniejącego endpointu, np. `about`, a nie `about.html`? |
-| Brak stylów | Obecność `static/style.css` i poprawny element `link` w każdym szablonie. |
-| `404` dla `/about.html` | Użyj `/about`: to adres zdefiniowany w aplikacji. |
-| Brak połączenia | Czy serwer działa i czy używasz portu wskazanego w terminalu? |
-
-W tych przykładach trasy podstron nie kończą się ukośnikiem. Korzystaj z adresów generowanych przez menu, np. `/about`, zamiast samodzielnie dopisywać `/about/`.
-
-### 12. Samodzielny eksperyment z adresem
-
-Zmień tylko dekorator trasy strony „O mnie”:
-
-```python
-@app.route("/about-me")
-def about() -> str:
-    """Render the about page."""
-    return render_template("about.html")
-```
-
-Nie zmieniaj nazwy funkcji ani `url_for('about')` w menu. Po zapisaniu pliku odśwież stronę główną i kliknij „O mnie”. Adres powinien teraz kończyć się na `/about-me`. Stary adres `/about` zwróci `404`.
-
-To pokazuje, po co generujemy adresy na podstawie nazw endpointów. **Po eksperymencie przywróć trasę `/about`**, aby projekt był zgodny z dalszą instrukcją.
-
-### 13. Punkt kontrolny sekcji 4
-
-- [ ] Flask jest zainstalowany w lokalnym środowisku `.venv`.
-- [ ] Potrafisz uruchomić i zatrzymać serwer.
-- [ ] Otwierasz aplikację przez `http://`, a nie `file:///`.
-- [ ] Trasy `/`, `/about` i `/interests` renderują właściwe dokumenty.
-- [ ] Wszystkie trzy strony pobierają wspólny arkusz z `/static/style.css`.
-- [ ] Menu używa nazw endpointów w `url_for()`.
-- [ ] Potrafisz odróżnić trasę, funkcję Pythona i plik szablonu.
-- [ ] Po eksperymencie przywróciłeś adres `/about`.
-
-**Rezultat:** Twoja witryna działa jako aplikacja Flask z trzema stronami. Wspólne elementy HTML nadal się powtarzają; w kolejnym etapie wydzielimy je do szablonu bazowego, zanim przygotujemy kontener.
-
-Dalsza lektura: oficjalne instrukcje [instalacji Flask](https://flask.palletsprojects.com/en/stable/installation/) oraz [Quickstart](https://flask.palletsprojects.com/en/stable/quickstart/) opisują środowisko, routing, szablony i pliki statyczne.
-
-
-## Sekcja 5. Wspólny szablon base.html
-
-Nagłówek, menu i stopka są teraz zapisane w trzech dokumentach. Gdy dodasz pozycję menu, musisz poprawić trzy pliki. Wydzielisz te elementy do `base.html`, a w pozostałych szablonach zostawisz treść właściwą dla każdej strony.
-
-### 1. Przygotuj strukturę szablonów
-
-W katalogu `templates` utwórz `base.html`. Nie zmieniaj położenia `app.py` ani arkusza:
+Dla adresu:
 
 ```text
-personal-website/
-├── .venv/
-├── app.py
-├── templates/
-│   ├── base.html
-│   ├── index.html
-│   ├── about.html
-│   └── interests.html
-└── static/
-    └── style.css
+/api/add?a=2&b=3
 ```
 
-Zachowaj własne teksty z dotychczasowych stron: w następnych krokach przeniesiesz je do bloków treści. Poniższe przykłady podają kompletną zawartość każdego szablonu; przykładowe dane zastąp swoimi.
+- `/api/add` jest ścieżką endpointu;
+- `?` rozpoczyna parametry zapytania;
+- `a=2` przypisuje parametr `a`;
+- `&` oddziela parametry;
+- `b=3` przypisuje parametr `b`.
 
-### 2. Napisz kompletny base.html
+Flask udostępnia je w `request.args`. Wartości są tekstem: `request.args["a"]` odczytuje `"2"`, a `float(...)` zamienia tę wartość na liczbę. Bez konwersji dodawanie dwóch tekstów połączyłoby je: `"2" + "3"` daje `"23"`.
 
-W `templates/base.html` umieść:
+Parametry zapytania są widoczne w adresie i mogą trafić do historii przeglądarki oraz logów serwera. W tym ćwiczeniu przesyłamy zwykłe liczby; nie jest to miejsce na hasła.
+
+### 5. Przeanalizuj walidację i JSON
+
+`try` obejmuje odczyt i konwersję parametrów. Brak `a` lub `b` powoduje błąd odczytu, a tekst taki jak `hello` błąd konwersji. Przechwytujemy te przypadki i zwracamy komunikat ze statusem `400 Bad Request`.
+
+`isfinite()` odrzuca wartości takie jak `NaN` i nieskończoność. Sprawdzamy też wynik: suma dwóch bardzo dużych, skończonych liczb może przekroczyć zakres `float`.
+
+Poprawne żądanie daje status `200` i obiekt JSON:
+
+```json
+{
+  "a": 2.0,
+  "b": 3.0,
+  "operation": "add",
+  "result": 5.0
+}
+```
+
+`jsonify()` tworzy odpowiedź z typem treści `application/json`. Nazwy pól są częścią naszego kontraktu API: frontend będzie odczytywał `result` przy sukcesie i `error` przy błędzie. Kolejność pól w obiekcie JSON nie ma znaczenia.
+
+Korzystamy z liczb zmiennoprzecinkowych. Przykład `0.1 + 0.2` może dać `0.30000000000000004`. To własność reprezentacji binarnej `float`, a nie błąd przesyłania JSON.
+
+### 6. Przygotuj kompletną stronę HTML
+
+Do `templates/index.html` wpisz:
 
 ```html
 <!DOCTYPE html>
@@ -1179,274 +986,269 @@ W `templates/base.html` umieść:
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Strona osobista{% endblock %} — Jan Kowalski</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Kalkulator sumy — Flask i JSON</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="/static/app.js" defer></script>
 </head>
 <body>
-    <header id="top">
-        <h1>Jan Kowalski</h1>
-        <p>Moja osobista witryna internetowa</p>
+    <header>
+        <h1>Kalkulator sumy</h1>
+        <p>Jan Kowalski — moja pierwsza strona korzystająca z API</p>
     </header>
 
-    <nav aria-label="Nawigacja główna">
-        <ul>
-            <li>
-                <a href="{{ url_for('home') }}"{% if request.endpoint == 'home' %} aria-current="page"{% endif %}>Strona główna</a>
-            </li>
-            <li>
-                <a href="{{ url_for('about') }}"{% if request.endpoint == 'about' %} aria-current="page"{% endif %}>O mnie</a>
-            </li>
-            <li>
-                <a href="{{ url_for('interests') }}"{% if request.endpoint == 'interests' %} aria-current="page"{% endif %}>Zainteresowania</a>
-            </li>
-        </ul>
-    </nav>
-
     <main>
-        {% block content %}{% endblock %}
+        <section>
+            <h2>Dodaj dwie liczby</h2>
+            <p>Wpisz liczby i wyślij żądanie do serwera.</p>
+
+            <form id="calculator-form" action="/api/add" method="get">
+                <div>
+                    <label for="number-a">Pierwsza liczba</label>
+                    <input id="number-a" name="a" type="number"
+                           step="any" value="2" required>
+                </div>
+                <div>
+                    <label for="number-b">Druga liczba</label>
+                    <input id="number-b" name="b" type="number"
+                           step="any" value="3" required>
+                </div>
+                <button type="submit">Oblicz sumę</button>
+            </form>
+
+            <p id="result" role="status" aria-live="polite">
+                Wynik pojawi się tutaj.
+            </p>
+        </section>
     </main>
 
     <footer>
         <p>Autor: Jan Kowalski</p>
-        <p><a href="#top">Początek strony</a></p>
     </footer>
 </body>
 </html>
 ```
 
-W tym pliku pozostaje cały szkielet dokumentu: od deklaracji HTML po zamknięcie `body` i `html`. Arkusz jest podłączony tylko tutaj. Menu i stopka również mają jedno wspólne źródło.
+Wstaw własne dane autora. W tym dokumencie **nie ma `url_for()` ani wyrażeń Jinja**. Wpisz dosłownie `href="/static/style.css"` i `src="/static/app.js"`. Początkowy ukośnik wskazuje adres od korzenia aplikacji na bieżącym serwerze.
 
-### 3. Rozróżnij wyrażenia i instrukcje Jinja
+Flask zwraca ten dokument przez `render_template()`, ale nie potrzebujemy dynamicznych bloków ani dziedziczenia. Python nie wykonuje kodu JavaScript: skrypt otrzyma i wykona przeglądarka.
 
-| Zapis | Przeznaczenie |
-|---|---|
-| `{{ url_for('home') }}` | Oblicza wartość i wstawia ją do wynikowego HTML. |
-| `{% block content %}...{% endblock %}` | Definiuje miejsce, którego zawartość może określić szablon potomny. |
-| `{% extends "base.html" %}` | Wskazuje szablon, z którego dziedziczymy strukturę. |
-| `{% if ... %}...{% endif %}` | Warunkowo dodaje fragment dokumentu. |
+Formularz ma `action="/api/add"`, metodę `get` i pola o nazwach `a`, `b`. Na razie `app.js` jest pusty. Po wysłaniu formularza przeglądarka sama przejdzie do adresu API z parametrami i pokaże surowy JSON. Dopiero później przechwycimy wysłanie przez JavaScript.
 
-W bazie zdefiniowaliśmy dwa bloki: `title` i `content`. Pierwszy znajduje się wewnątrz elementu `title`, drugi wewnątrz `main`. Szablony stron wypełnią je własną treścią. Sufiks z nazwiskiem pozostaje poza blokiem `title`, więc jest wspólny.
+`required` wymaga wartości, a `step="any"` dopuszcza część ułamkową. Walidacja przeglądarki ułatwia korzystanie z formularza, ale nie zastępuje walidacji serwera: API można wywołać bez formularza.
 
-### 4. Skróć stronę główną
+### 7. Dodaj wygląd formularza
 
-Zastąp zawartość `templates/index.html` poniższym kompletnym szablonem:
+Na końcu skopiowanego `static/style.css` dopisz:
 
-```html
-{% extends "base.html" %}
+```css
+/* Arrange calculator controls and keep labels visible. */
+#calculator-form {
+    display: grid;
+    gap: 1rem;
+    max-width: 28rem;
+}
 
-{% block title %}Strona główna{% endblock %}
+#calculator-form label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-weight: bold;
+}
 
-{% block content %}
-<section>
-    <h2>Moja pierwsza strona</h2>
-    <p>
-        Uczę się projektowania aplikacji sieciowych.
-        Na tej stronie przedstawiam siebie i swoje zainteresowania.
-    </p>
-    <p>
-        Moja witryna ma trzy strony, wspólny arkusz CSS
-        oraz wspólny szablon nagłówka, menu i stopki.
-    </p>
-</section>
-{% endblock %}
+#calculator-form input {
+    width: 100%;
+    padding: 0.6rem;
+    border: 1px solid #64748b;
+    border-radius: 0.4rem;
+    font: inherit;
+}
+
+#calculator-form button {
+    padding: 0.7rem 1rem;
+    border: 0;
+    border-radius: 0.4rem;
+    background-color: #17365d;
+    color: #ffffff;
+    font: inherit;
+    cursor: pointer;
+}
+
+#calculator-form input:focus-visible,
+#calculator-form button:focus-visible {
+    outline: 3px solid #9a3412;
+    outline-offset: 3px;
+}
+
+#calculator-form button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+#result {
+    font-weight: bold;
+}
 ```
 
-Zapisz własne akapity zamiast przykładowych. Nie dodawaj tu kolejnych elementów `html`, `head`, `body`, `main` ani menu. Otrzymasz je z szablonu bazowego.
+Selektor zaczynający się od `#` wybiera element o podanym `id`. Używamy go, aby reguły dotyczyły formularza kalkulatora. Zachowujemy widoczny fokus pól i przycisku.
 
-`extends` umieszczamy na początku pliku. Treść strony umieszczamy wewnątrz bloku `content`, a tekst tytułu w bloku `title`.
+### 8. Uruchom aplikację i sprawdź API bez JavaScriptu
 
-### 5. Skróć stronę „O mnie”
-
-Kompletny `templates/about.html`:
-
-```html
-{% extends "base.html" %}
-
-{% block title %}O mnie{% endblock %}
-
-{% block content %}
-<section>
-    <h2>O mnie</h2>
-    <p>
-        Jestem studentem i uczę się tworzyć aplikacje internetowe.
-        Lubię poznawać nowe narzędzia i sprawdzać je w praktyce.
-    </p>
-    <p>
-        Chcę samodzielnie zbudować aplikację i uruchomić ją w kontenerze.
-    </p>
-
-    <h3>Czego chcę się nauczyć?</h3>
-    <ul>
-        <li>Budowania stron w HTML5.</li>
-        <li>Opisywania wyglądu za pomocą CSS.</li>
-        <li>Tworzenia aplikacji we Flasku.</li>
-    </ul>
-
-    <p>
-        Korzystam z
-        <a href="https://developer.mozilla.org/pl/docs/Web/HTML">dokumentacji HTML w MDN</a>.
-    </p>
-</section>
-{% endblock %}
-```
-
-Przenieś tu własną treść poprzedniej strony „O mnie”, zachowując bloki. Nagłówek strony, menu i stopkę edytujesz od teraz w `base.html`.
-
-### 6. Skróć stronę „Zainteresowania”
-
-Kompletny `templates/interests.html`:
-
-```html
-{% extends "base.html" %}
-
-{% block title %}Zainteresowania{% endblock %}
-
-{% block content %}
-<section>
-    <h2>Moje zainteresowania</h2>
-    <p>
-        Interesuję się fotografią i turystyką.
-        Podczas wyjazdów fotografuję krajobrazy i architekturę.
-    </p>
-    <p>
-        Chcę przygotować galerię internetową z wybranymi zdjęciami.
-    </p>
-
-    <h3>Jak przygotowuję zdjęcia do galerii?</h3>
-    <ol>
-        <li>Wybieram zdjęcia z wyjazdu.</li>
-        <li>Przygotowuję opisy.</li>
-        <li>Układam fotografie w kolejności prezentacji.</li>
-    </ol>
-
-    <p>
-        Przykłady fotografii znajdziesz w
-        <a href="https://commons.wikimedia.org/">Wikimedia Commons</a>.
-    </p>
-</section>
-{% endblock %}
-```
-
-### 7. Zachowaj trzy trasy aplikacji
-
-`app.py` pozostaje taki jak po poprzedniej sekcji. Dla porównania pełna wersja:
-
-```python
-from flask import Flask, render_template
-
-app = Flask(__name__)
-
-
-@app.route("/")
-def home() -> str:
-    """Render the home page."""
-    return render_template("index.html")
-
-
-@app.route("/about")
-def about() -> str:
-    """Render the about page."""
-    return render_template("about.html")
-
-
-@app.route("/interests")
-def interests() -> str:
-    """Render the interests page."""
-    return render_template("interests.html")
-```
-
-Nadal renderujesz szablon konkretnej strony, np. `about.html`. Jinja odczytuje jego `extends`, łączy bloki ze strukturą `base.html` i tworzy kompletny wynikowy dokument. Nie zmieniaj wszystkich wywołań na `render_template("base.html")`, bo stracisz treść właściwą dla podstron.
-
-### 8. Zrozum automatyczne oznaczenie menu
-
-W szablonie bazowym sprawdzamy bieżący endpoint:
-
-```html
-<a href="{{ url_for('about') }}"{% if request.endpoint == 'about' %} aria-current="page"{% endif %}>O mnie</a>
-```
-
-Podczas obsługi `/about` wartością `request.endpoint` jest `about`. Flask udostępnia obiekt `request` w szablonie podczas żądania. Warunek dodaje wtedy atrybut `aria-current="page"`. Dla innych stron ten atrybut nie jest dodawany do tego odnośnika.
-
-Spacja przed `aria-current` wewnątrz warunku oddziela atrybuty w wynikowym HTML. Nasz wcześniejszy CSS nadal odczytuje ten sam atrybut, dlatego nie trzeba zmieniać reguły wyróżnienia menu.
-
-### 9. Sprawdź współdzielenie i wynikowy HTML
-
-Uruchom serwer, jeśli nie działa:
+W terminalu z aktywnym `.venv`, w katalogu z `app.py`, wykonaj:
 
 ```bash
 python -m flask --app app run --debug
 ```
 
-Otwórz kolejno `/`, `/about` i `/interests`. Sprawdź własną treść, tytuł karty, CSS i właściwą pozycję menu.
+Otwórz [http://127.0.0.1:5000/](http://127.0.0.1:5000/). Terminal pozostaw uruchomiony. **Ctrl+C** zatrzymuje serwer. Tryb debugowania służy do lokalnych ćwiczeń.
 
-Następnie zmień tekst stopki **tylko w `base.html`**. Odśwież wszystkie strony. Nowy tekst powinien pojawić się na każdej z nich.
+Najpierw wyślij formularz z pustym jeszcze `app.js`: powinien otworzyć JSON. Wróć na stronę przyciskiem Wstecz. Następnie wpisuj adresy ręcznie:
 
-W źródle strony w przeglądarce sprawdź, czy:
+| Parametry po `/api/add` | Oczekiwany rezultat |
+|---|---|
+| `?a=2&b=3` | `200`, wynik `5.0` |
+| `?a=-4&b=1.5` | `200`, wynik `-2.5` |
+| `?a=0&b=0` | `200`, wynik `0.0` |
+| `?a=hello&b=3` | `400`, pole `error` |
+| `?a=2` | `400`, brak parametru `b` |
+| `?a=NaN&b=3` | `400`, wartość nieskończona lub nieokreślona |
+| `?a=1e308&b=1e308` | `400`, wynik poza obsługiwanym zakresem |
 
-- występuje jeden szkielet `html`, `head` i `body`;
-- menu i stopka występują po jednym razie;
-- nie ma instrukcji `{% extends ... %}` ani `{% block ... %}`;
-- właściwy odnośnik ma `aria-current="page"`.
+Możesz także wywołać endpoint z terminala:
 
-Jeśli treść jest pusta, porównaj nazwy bloków: `content` i `contents` to różne nazwy. Jeżeli otrzymasz `TemplateNotFound: base.html`, sprawdź jego położenie w `templates`. Przy błędzie `TemplateSyntaxError` sprawdź domknięcia `endblock`, `endif` i nawiasów Jinja.
-
-### 10. Opcjonalnie: prosty panel Bootstrap
-
-Najpierw uruchom i sprawdź wersję ze swoim CSS. Bootstrap dodamy jako krótki eksperyment: użyjemy gotowego komponentu, zachowując istniejące menu i układ.
-
-W `base.html`, **przed odwołaniem do `style.css`**, dodaj arkusz Bootstrap. Docelowe dwa elementy `link`:
-
-```html
-<link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
-    crossorigin="anonymous">
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+```bash
+curl -i "http://127.0.0.1:5000/api/add?a=2&b=3"
 ```
 
-To arkusz pobierany z internetu. Jego użycie nie wymaga instalacji pakietu Pythona. Przy pracy bez dostępu do sieci pozostań przy wcześniejszej wersji z własnym CSS. Atrybut `integrity` pozwala przeglądarce zweryfikować pobrany plik; przy zmianie wersji adres i suma muszą pochodzić z tej samej oficjalnej konfiguracji.
+Adres ujmujemy w cudzysłowy, aby powłoka nie interpretowała `&` jako własnego operatora. W Windows PowerShell użyj `curl.exe`, jeśli polecenie `curl` oznacza inne narzędzie. Opcja `-i` pokazuje również status i nagłówki odpowiedzi.
 
-W `templates/index.html`, wewnątrz istniejącej sekcji i bloku `content`, dodaj:
+Jeśli port `5000` jest zajęty, dodaj `--port 5001` do polecenia uruchomienia i używaj nowego portu w przeglądarce. Adresy `/api/add` i `/static/...` w HTML pozostają bez zmian.
 
-```html
-<div class="alert alert-info" role="note">
-    Ta strona korzysta ze wspólnego szablonu Flask.
-</div>
+## Sekcja 5. Fetch: wynik JSON na stronie HTML
 
-<div class="card mt-3">
-    <div class="card-body">
-        <h3 class="card-title">Poznaj autora</h3>
-        <p class="card-text">Przejdź do krótkiego opisu moich zainteresowań.</p>
-        <a class="btn btn-primary" href="{{ url_for('interests') }}">
-            Zobacz zainteresowania
-        </a>
-    </div>
-</div>
+API już działa niezależnie od interfejsu. Teraz dodasz JavaScript, który pobierze odpowiedź i pokaże wynik bez przechodzenia do nowego dokumentu.
+
+### 1. Wpisz kompletny app.js
+
+W `static/app.js` umieść:
+
+```javascript
+const form = document.querySelector("#calculator-form");
+const result = document.querySelector("#result");
+const button = form.querySelector("button");
+
+form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(form);
+    const params = new URLSearchParams();
+    params.set("a", formData.get("a"));
+    params.set("b", formData.get("b"));
+
+    button.disabled = true;
+    result.textContent = "Obliczam…";
+
+    try {
+        const response = await fetch(`/api/add?${params.toString()}`);
+        const data = await response.json();
+
+        if (!response.ok) {
+            result.textContent = `Błąd API: ${data.error}`;
+            return;
+        }
+
+        result.textContent = `${data.a} + ${data.b} = ${data.result}`;
+    } catch (error) {
+        result.textContent = "Nie udało się pobrać odpowiedzi. Sprawdź serwer i połączenie.";
+        console.error(error);
+    } finally {
+        button.disabled = false;
+    }
+});
 ```
 
-Atrybut `class` może zawierać kilka klas oddzielonych spacjami. Bootstrap definiuje ich wygląd: `card` tworzy kartę, `card-body` jej wnętrze, `btn btn-primary` wygląd przycisku, a `mt-3` górny margines. Odnośnik nadal jest elementem `a` i nadal prowadzi do trasy Flaska.
+Zapisz plik, odśwież stronę główną i wyślij formularz. Adres karty powinien pozostać `/`, a wynik pojawić się pod formularzem.
 
-Te komponenty nie wymagają JavaScriptu. Nie dodajemy rozwijanego menu ani innych interaktywnych komponentów.
+### 2. Znajdź elementy i przechwyć formularz
 
-Własny arkusz ładowany jest po Bootstrapie. Przy takiej samej ważności i szczegółowości późniejsza deklaracja może nadpisać wcześniejszą, ale sama kolejność nie gwarantuje nadpisania każdej reguły. Bootstrap zawiera też style ogólne: po podłączeniu sprawdź ponownie wszystkie strony, listy i fokus klawiatury.
+`document.querySelector()` wyszukuje element w dokumencie. Używamy tych samych identyfikatorów co w HTML: `calculator-form` i `result`. `form.querySelector()` ogranicza wyszukiwanie przycisku do formularza.
 
-### 11. Samodzielna zmiana wspólnego układu
+Skrypt w HTML ma atrybut `defer`: zostanie wykonany po przetworzeniu dokumentu, kiedy elementy formularza już istnieją.
 
-Wymyśl krótkie hasło witryny i zmień opis pod `h1` w `base.html`. Następnie dostosuj tytuły trzech stron w ich własnych blokach `title`.
+Zdarzenie `submit` występuje po wysłaniu formularza, również klawiszem Enter. `event.preventDefault()` zatrzymuje domyślną nawigację do odpowiedzi JSON. Zamiast niej wykonamy żądanie przez `fetch()`.
 
-Sprawdź różnicę: wspólne hasło zmienia się wszędzie, natomiast tytuł konkretnej podstrony pozostaje lokalny. Treść biografii i zainteresowań zachowaj w odpowiednich szablonach potomnych.
+### 3. Zbuduj parametry zapytania
 
-### 12. Punkt kontrolny sekcji 5
+`new FormData(form)` odczytuje wartości pól według ich atrybutów `name`. `URLSearchParams` buduje i koduje część adresu po `?`. Nie sklejamy ręcznie wartości użytkownika z `&` i `=`.
 
-- [ ] `base.html` zawiera jedyny wspólny szkielet dokumentu, menu i stopkę.
-- [ ] Trzy szablony stron zaczynają się od `extends` i wypełniają bloki.
-- [ ] Trasy nadal renderują `index.html`, `about.html` i `interests.html`.
-- [ ] Bieżąca pozycja menu wynika z `request.endpoint`.
-- [ ] Zmiana stopki w jednym pliku jest widoczna na wszystkich stronach.
-- [ ] W wynikowym HTML nie ma instrukcji Jinja ani podwójnego menu.
-- [ ] Jeśli wykonano wariant Bootstrap, karta działa, a własny CSS i fokus pozostały czytelne.
+Dla `a=2` i `b=3` powstaje adres:
 
-**Rezultat:** wspólny układ edytujesz w jednym miejscu, a treść stron w osobnych szablonach. Aplikacja jest gotowa do kolejnego etapu: przygotowania `Dockerfile`.
+```text
+/api/add?a=2&b=3
+```
 
-Materiały referencyjne: [dziedziczenie szablonów we Flasku](https://flask.palletsprojects.com/en/stable/patterns/templateinheritance/), [szablony w tutorialu Flask](https://flask.palletsprojects.com/en/stable/tutorial/templates/) i [oficjalna konfiguracja Bootstrap](https://getbootstrap.com/docs/5.3/getting-started/introduction/).
+W JavaScripcie zapis między znakami backtick, z `${...}`, jest literałem szablonowym. Wstawia wartość do tekstu **w przeglądarce**. To mechanizm JavaScriptu, niezależny od serwerowych szablonów Jinja.
+
+### 4. Wyślij żądanie i odczytaj odpowiedź
+
+`fetch()` bez dodatkowych opcji wysyła GET. Ponieważ adres zaczyna się od `/`, używa tego samego serwera i portu co strona. W tym ćwiczeniu nie potrzebujemy konfiguracji CORS.
+
+`await fetch(...)` czeka na odpowiedź, a `await response.json()` odczytuje jej treść i zamienia JSON na obiekt JavaScript. Funkcja obsługująca formularz ma dlatego słowo `async`.
+
+**Status `400` nie powoduje automatycznie wyjątku w `fetch()`.** Sprawdzamy `response.ok`, które jest prawdziwe dla statusów od 200 do 299. Nasze API przy błędzie zwraca JSON z polem `error`, więc możemy wyświetlić komunikat.
+
+`catch` obsługuje między innymi brak połączenia i błąd odczytania JSON. `finally` ponownie włącza przycisk niezależnie od wyniku, także po wcześniejszym `return`.
+
+### 5. Wyświetl wynik jako tekst
+
+Wstawiamy odpowiedź przez `textContent`. Przeglądarka traktuje ją jako tekst, a nie kod HTML. Nie używaj tutaj `innerHTML`: do prezentacji sumy i komunikatów nie potrzebujemy interpretowania znaczników.
+
+Przycisk jest wyłączony podczas oczekiwania, a obszar `role="status"` pozwala technologiom wspomagającym poinformować o aktualizacji wyniku.
+
+### 6. Zobacz żądanie w narzędziach przeglądarki
+
+Otwórz narzędzia deweloperskie i zakładkę **Network / Sieć**. Wyślij formularz i wybierz żądanie `add`.
+
+Sprawdź:
+
+1. Metodę `GET` i pełny adres żądania.
+2. Parametry `a` i `b`.
+3. Status odpowiedzi.
+4. Typ treści `application/json`.
+5. Pola odpowiedzi w zakładce Response / Odpowiedź.
+
+Przy odświeżeniu strony zobaczysz też osobne żądania dokumentu HTML, CSS i JavaScriptu. Serwer nie wysyła całej aplikacji jednym plikiem.
+
+### 7. Przetestuj błędy świadomie
+
+Błędne dane sprawdzaj przez bezpośredni adres API: przeglądarka może nie dopuścić tekstu `hello` w polu liczbowym. To pokazuje, dlaczego serwer musi sam walidować dane.
+
+Aby sprawdzić brak połączenia, pozostaw stronę otwartą, zatrzymaj Flask przez Ctrl+C i ponownie wyślij formularz. Powinien pojawić się komunikat o nieudanym pobraniu odpowiedzi. Uruchom serwer ponownie przed dalszą pracą.
+
+| Problem | Co sprawdzić? |
+|---|---|
+| `No module named flask` | Aktywny interpreter i instalację w `.venv`. |
+| `TemplateNotFound` | `templates/index.html` obok katalogu z `app.py`. |
+| Formularz przechodzi do surowego JSON mimo dodania skryptu | Pobranie `/static/app.js`, zapis pliku i błędy w Console / Konsola. |
+| `Cannot read properties of null` w konsoli | Zgodność `id` w HTML i selektorów oraz obecność `defer`. |
+| `404` dla skryptu lub CSS | Nazwę pliku i jego obecność w `static`. |
+| Błąd odczytu JSON | Czy żądanie trafiło do `/api/add`, a odpowiedź jest JSON, nie stroną błędu HTML? |
+| Nie działa po otwarciu pliku z dysku | Otwórz adres HTTP serwera zamiast `file:///`. |
+
+### 8. Samodzielny eksperyment
+
+Dobierz własne liczby: dodatnie, ujemne, zero i ułamki. Dla każdej pary porównaj wynik formularza z odpowiedzią po otwarciu adresu API. Następnie zmień opis i nagłówek kalkulatora na własne, zachowując identyfikatory i nazwy pól używane przez kod.
+
+Odpowiedz: które obliczenie wykonuje Python, co robi JavaScript i dlaczego po dodaniu `fetch()` pasek adresu nie przechodzi do `/api/add`?
+
+### 9. Punkt kontrolny sekcji API i fetch
+
+- [ ] Jedna trasa zwraca HTML, a druga JSON.
+- [ ] Potrafisz wysłać dwie liczby parametrami GET i odczytać sumę.
+- [ ] Brak lub niepoprawne parametry dają status `400` i komunikat JSON.
+- [ ] Formularz pokazuje wynik bez przeładowania dokumentu.
+- [ ] Rozróżniasz walidację przeglądarki i serwera.
+- [ ] Potrafisz wskazać żądanie w zakładce Network i odczytać status.
+- [ ] Potrafisz wyjaśnić, gdzie wykonywane są Python i JavaScript.
+
+**Rezultat:** masz aplikację Flask z jednym dokumentem HTML i niezależnym endpointem obliczeniowym JSON. Ten sam wzorzec komunikacji wykorzystamy później do wyświetlania danych z API. Następny etap to konteneryzacja przez `Dockerfile`.
+
+Dokumentacja: [Flask — Quickstart](https://flask.palletsprojects.com/en/stable/quickstart/), [Flask — request.args](https://flask.palletsprojects.com/en/stable/api/#flask.Request.args), [MDN — Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch).

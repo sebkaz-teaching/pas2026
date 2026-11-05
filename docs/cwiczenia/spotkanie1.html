@@ -225,8 +225,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#sprawdź-rezultat" id="toc-sprawdź-rezultat" class="nav-link" data-scroll-target="#sprawdź-rezultat">8. Sprawdź rezultat</a></li>
   <li><a href="#sekcja-2.-dwie-podstrony-i-nawigacja" id="toc-sekcja-2.-dwie-podstrony-i-nawigacja" class="nav-link" data-scroll-target="#sekcja-2.-dwie-podstrony-i-nawigacja">Sekcja 2. Dwie podstrony i nawigacja</a></li>
   <li><a href="#sekcja-3.-podstawy-css-i-wspólny-arkusz-stylów" id="toc-sekcja-3.-podstawy-css-i-wspólny-arkusz-stylów" class="nav-link" data-scroll-target="#sekcja-3.-podstawy-css-i-wspólny-arkusz-stylów">Sekcja 3. Podstawy CSS i wspólny arkusz stylów</a></li>
-  <li><a href="#sekcja-4.-flask-jedna-strona-i-dwie-podstrony" id="toc-sekcja-4.-flask-jedna-strona-i-dwie-podstrony" class="nav-link" data-scroll-target="#sekcja-4.-flask-jedna-strona-i-dwie-podstrony">Sekcja 4. Flask: jedna strona i dwie podstrony</a></li>
-  <li><a href="#sekcja-5.-wspólny-szablon-base.html" id="toc-sekcja-5.-wspólny-szablon-base.html" class="nav-link" data-scroll-target="#sekcja-5.-wspólny-szablon-base.html">Sekcja 5. Wspólny szablon base.html</a></li>
+  <li><a href="#sekcja-4.-flask-jedna-strona-html-i-endpoint-json" id="toc-sekcja-4.-flask-jedna-strona-html-i-endpoint-json" class="nav-link" data-scroll-target="#sekcja-4.-flask-jedna-strona-html-i-endpoint-json">Sekcja 4. Flask: jedna strona HTML i endpoint JSON</a></li>
+  <li><a href="#sekcja-5.-fetch-wynik-json-na-stronie-html" id="toc-sekcja-5.-fetch-wynik-json-na-stronie-html" class="nav-link" data-scroll-target="#sekcja-5.-fetch-wynik-json-na-stronie-html">Sekcja 5. Fetch: wynik JSON na stronie HTML</a></li>
   </ul>
 </nav>
     </div>
@@ -236,7 +236,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../cwiczenia/spotkanie1.html">Laboratoria</a></li><li class="breadcrumb-item"><a href="../cwiczenia/spotkanie1.html">Laboratorium 1: HTML5, CSS i Flask</a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title">Laboratorium 1: HTML5, CSS i Flask</h1>
-<p class="subtitle lead">Sekcje 1–5 · HTML5, CSS, Flask i wspólny szablon</p>
+<p class="subtitle lead">HTML5, CSS i Flask: strona HTML, API JSON i fetch</p>
 </div>
 
 
@@ -1285,282 +1285,365 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><label><input type="checkbox">Zmiana reguły w jednym arkuszu jest widoczna na trzech stronach po odświeżeniu.</label></li>
 <li><label><input type="checkbox">Potrafisz odnaleźć regułę elementu w narzędziach przeglądarki.</label></li>
 </ul>
-<p><strong>Rezultat:</strong> masz statyczną witrynę z trzema podstronami i jednym wspólnym arkuszem CSS. Kolejny etap to uruchomienie strony głównej przez Flask, a następnie dodanie obsługi dwóch pozostałych adresów.</p>
+<p><strong>Rezultat:</strong> masz statyczną witrynę z trzema podstronami i jednym wspólnym arkuszem CSS. Kolejny etap to jedna strona obsługiwana przez Flask, endpoint obliczeniowy JSON i komunikacja przez <code>fetch()</code>.</p>
 </section>
 </section>
-<section id="sekcja-4.-flask-jedna-strona-i-dwie-podstrony" class="level2">
-<h2 class="anchored" data-anchor-id="sekcja-4.-flask-jedna-strona-i-dwie-podstrony">Sekcja 4. Flask: jedna strona i dwie podstrony</h2>
-<p>Dotychczas przeglądarka odczytywała pliki z dysku. Teraz uruchomisz aplikację HTTP w Pythonie. Najpierw obsłużysz stronę główną, a następnie dodasz dwie podstrony. Zachowasz własną treść i wspólny arkusz CSS.</p>
-<section id="przygotuj-pythona-i-terminal" class="level3">
-<h3 class="anchored" data-anchor-id="przygotuj-pythona-i-terminal">1. Przygotuj Pythona i terminal</h3>
-<p>Otwórz terminal w katalogu <code>personal-website</code>. To katalog Twojej aplikacji, nie repozytorium strony kursu. Korzystamy z <strong>Pythona 3.11 lub nowszego</strong>. Sprawdź wersję:</p>
-<p><strong>macOS / Linux:</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">--version</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
-<p><strong>Windows (PowerShell):</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>py <span class="op">-</span><span class="dv">3</span> <span class="op">--</span>version</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Jeżeli interpreter nie jest dostępny, zgłoś to prowadzącemu. Nie instaluj pakietów globalnie i nie używaj <code>sudo</code>.</p>
-</section>
-<section id="utwórz-izolowane-środowisko" class="level3">
-<h3 class="anchored" data-anchor-id="utwórz-izolowane-środowisko">2. Utwórz izolowane środowisko</h3>
-<p><strong>macOS / Linux:</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> venv .venv</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .venv/bin/activate</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
-<p><strong>Windows (PowerShell):</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>py <span class="op">-</span><span class="dv">3</span> <span class="op">-</span>m venv <span class="op">.</span><span class="fu">venv</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="op">.</span>\<span class="op">.</span><span class="fu">venv</span>\Scripts\Activate<span class="op">.</span><span class="fu">ps1</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Jeśli PowerShell blokuje aktywację, możesz korzystać bezpośrednio z interpretera środowiska, bez zmiany polityki wykonywania skryptów:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="op">.</span>\<span class="op">.</span><span class="fu">venv</span>\Scripts\python<span class="op">.</span><span class="fu">exe</span> <span class="op">-</span>m pip install Flask</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
-<p>W takim wariancie w następnych poleceniach zastępuj <code>python</code> przez <code>.\.venv\Scripts\python.exe</code>.</p>
-<p>Po aktywacji środowiska sprawdź interpreter i zainstaluj Flask:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-c</span> <span class="st">"import sys; print(sys.executable)"</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install Flask</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip show Flask</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Ścieżka interpretera powinna prowadzić do <code>.venv</code> w Twoim projekcie. Zapis <code>python -m pip</code> wiąże instalację z tym właśnie interpreterem. W edytorze również wybierz interpreter z <code>.venv</code>, jeśli zgłasza brak biblioteki Flask.</p>
-<p>Środowisko <code>.venv</code> zawiera lokalną instalację zależności. Nie jest kodem aplikacji i nie należy umieszczać go w repozytorium Git ani kopiować do obrazu Dockera.</p>
-</section>
-<section id="uporządkuj-pliki-aplikacji" class="level3">
-<h3 class="anchored" data-anchor-id="uporządkuj-pliki-aplikacji">3. Uporządkuj pliki aplikacji</h3>
-<p>Utwórz katalogi <code>templates</code> i <code>static</code>. Przenieś trzy pliki HTML do <code>templates</code>, a <code>style.css</code> do <code>static</code>. W głównym katalogu utwórz <code>app.py</code>:</p>
-<pre class="text"><code>personal-website/
-├── .venv/
-├── app.py
-├── templates/
-│   ├── index.html
-│   ├── about.html
-│   └── interests.html
-└── static/
-    └── style.css</code></pre>
-<p>Przenoś pliki zamiast zostawiać dodatkowe kopie. <code>app.py</code> musi znajdować się obok katalogów <code>templates</code> i <code>static</code>. Nie nazywaj go <code>flask.py</code>, ponieważ taka nazwa może przesłonić import biblioteki.</p>
-<p>Pliki HTML pozostają Twoimi dotychczasowymi dokumentami. Flask będzie je przetwarzać jako szablony. Arkusz CSS pozostaje bez zmian.</p>
-</section>
-<section id="napisz-aplikację-z-jedną-trasą" class="level3">
-<h3 class="anchored" data-anchor-id="napisz-aplikację-z-jedną-trasą">4. Napisz aplikację z jedną trasą</h3>
-<p>Wpisz kompletną zawartość <code>app.py</code>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> flask <span class="im">import</span> Flask, render_template</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> Flask(<span class="va">__name__</span>)</span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="at">@app.route</span>(<span class="st">"/"</span>)</span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> home() <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Render the home page."""</span></span>
-<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> render_template(<span class="st">"index.html"</span>)</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Fragment</th>
-<th>Rola</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>Flask</code></td>
-<td>Klasa, z której tworzymy obiekt aplikacji.</td>
-</tr>
-<tr class="even">
-<td><code>app = Flask(__name__)</code></td>
-<td>Tworzy aplikację z informacją o module potrzebną do lokalizowania zasobów.</td>
-</tr>
-<tr class="odd">
-<td><code>@app.route("/")</code></td>
-<td>Przypisuje adres strony głównej do funkcji poniżej.</td>
-</tr>
-<tr class="even">
-<td><code>home()</code></td>
-<td>Funkcja wykonywana przy żądaniu tej strony.</td>
-</tr>
-<tr class="odd">
-<td><code>render_template("index.html")</code></td>
-<td>Renderuje dokument z katalogu <code>templates</code>.</td>
-</tr>
-</tbody>
-</table>
-<p>Adnotacja <code>-&gt; str</code> opisuje typ wartości zwracanej przez naszą funkcję. Nie jest konfiguracją protokołu HTTP.</p>
-</section>
-<section id="przygotuj-stronę-główną-do-obsługi-przez-flask" class="level3">
-<h3 class="anchored" data-anchor-id="przygotuj-stronę-główną-do-obsługi-przez-flask">5. Przygotuj stronę główną do obsługi przez Flask</h3>
-<p>W <code>templates/index.html</code> zmień odwołanie do CSS na:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">link</span><span class="ot"> rel</span><span class="op">=</span><span class="st">"stylesheet"</span><span class="ot"> href</span><span class="op">=</span><span class="st">"{{ url_for('static', filename='style.css') }}"</span><span class="dt">&gt;</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Na razie zastąp całe menu wersją z jednym odnośnikiem:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">nav</span><span class="ot"> aria-label</span><span class="op">=</span><span class="st">"Nawigacja główna"</span><span class="dt">&gt;</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">ul</span><span class="dt">&gt;</span></span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">li</span><span class="dt">&gt;&lt;</span><span class="kw">a</span><span class="ot"> href</span><span class="op">=</span><span class="st">"{{ url_for('home') }}"</span><span class="ot"> aria-current</span><span class="op">=</span><span class="st">"page"</span><span class="dt">&gt;</span>Strona główna<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;&lt;/</span><span class="kw">li</span><span class="dt">&gt;</span></span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">ul</span><span class="dt">&gt;</span></span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">nav</span><span class="dt">&gt;</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
-<p><strong>Nie dodawaj jeszcze <code>url_for('about')</code> ani <code>url_for('interests')</code>.</strong> Takie funkcje nie istnieją w aplikacji z jedną trasą. Dodamy je w kolejnym kroku.</p>
-<p>Zapis <code>{ ... }</code> jest wyrażeniem szablonu Jinja. Serwer oblicza jego wartość przed wysłaniem HTML do przeglądarki. <code>url_for('home')</code> generuje adres na podstawie nazwy funkcji, a <code>url_for('static', filename='style.css')</code> wskazuje zasób statyczny.</p>
-<p>W <code>head</code> zachowaj metadane i własny tytuł. Poza CSS i menu nie zmieniaj przygotowanej wcześniej treści.</p>
-</section>
-<section id="uruchom-pierwszą-stronę" class="level3">
-<h3 class="anchored" data-anchor-id="uruchom-pierwszą-stronę">6. Uruchom pierwszą stronę</h3>
-<p>W terminalu z aktywnym środowiskiem, pozostając w katalogu z <code>app.py</code>, wykonaj:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> flask <span class="at">--app</span> app run <span class="at">--debug</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
-<p><code>--app app</code> wskazuje moduł <code>app.py</code>. Polecenie <code>run</code> uruchamia serwer deweloperski. Opcja <code>--debug</code> pomaga podczas lokalnych ćwiczeń i automatycznie przeładowuje aplikację po zmianach kodu Pythona.</p>
-<p>Otwórz <strong><a href="http://127.0.0.1:5000/">http://127.0.0.1:5000/</a></strong>. Terminal pozostaw uruchomiony. Zatrzymanie procesu przez <strong>Ctrl+C</strong> wyłącza serwer.</p>
-<div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Ważne</span>Otwieraj adres HTTP, nie plik szablonu
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Od tego etapu korzystaj z adresu serwera. Podwójne kliknięcie <code>templates/index.html</code> nie uruchamia Flaska ani Jinja. Przy adresie <code>file:///</code> wyrażenia <code>{ ... }</code> nie zostaną obliczone.</p>
-<p>Tryb debugowania służy do lokalnej pracy laboratoryjnej. Nie udostępniaj go jako publicznego serwera.</p>
-</div>
-</div>
-<p>Sprawdź stronę główną i otwórz również <a href="http://127.0.0.1:5000/static/style.css">http://127.0.0.1:5000/static/style.css</a>. Powinien pojawić się kod Twojego arkusza. Adres <code>/about</code> na tym etapie zwróci <code>404</code>, ponieważ nie dodaliśmy jeszcze takiej trasy.</p>
-<p>Jeżeli port jest zajęty, uruchom serwer na innym porcie:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> flask <span class="at">--app</span> app run <span class="at">--debug</span> <span class="at">--port</span> 5001</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Wtedy we wszystkich adresach używaj portu <code>5001</code>.</p>
-</section>
-<section id="dodaj-dwie-podstrony" class="level3">
-<h3 class="anchored" data-anchor-id="dodaj-dwie-podstrony">7. Dodaj dwie podstrony</h3>
-<p>Zastąp <code>app.py</code> poniższą kompletną wersją:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> flask <span class="im">import</span> Flask, render_template</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> Flask(<span class="va">__name__</span>)</span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="at">@app.route</span>(<span class="st">"/"</span>)</span>
-<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> home() <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
-<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Render the home page."""</span></span>
-<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> render_template(<span class="st">"index.html"</span>)</span>
-<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a><span class="at">@app.route</span>(<span class="st">"/about"</span>)</span>
-<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> about() <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
-<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Render the about page."""</span></span>
-<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> render_template(<span class="st">"about.html"</span>)</span>
-<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a><span class="at">@app.route</span>(<span class="st">"/interests"</span>)</span>
-<span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> interests() <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
-<span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Render the interests page."""</span></span>
-<span id="cb34-21"><a href="#cb34-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> render_template(<span class="st">"interests.html"</span>)</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Zapisz plik. Przy uruchomionym trybie debugowania serwer powinien przeładować kod. Jeśli został zatrzymany, uruchom go ponownie tym samym poleceniem.</p>
+<section id="sekcja-4.-flask-jedna-strona-html-i-endpoint-json" class="level2">
+<h2 class="anchored" data-anchor-id="sekcja-4.-flask-jedna-strona-html-i-endpoint-json">Sekcja 4. Flask: jedna strona HTML i endpoint JSON</h2>
+<p>W części statycznej przygotowałeś trzy strony i wspólny CSS. Teraz wykorzystasz te umiejętności do nowej, małej aplikacji: <strong>kalkulatora sumy dwóch liczb</strong>. Zachowaj poprzedni katalog <code>personal-website</code> jako ukończone ćwiczenie. Dla aplikacji utwórz obok niego katalog <code>flask-calculator</code>.</p>
+<p>Aplikacja będzie miała dwa adresy:</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
-<th>Adres w przeglądarce</th>
-<th>Funkcja / endpoint</th>
-<th>Plik szablonu</th>
+<th>Adres</th>
+<th>Odpowiedź</th>
+<th>Przeznaczenie</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><code>/</code></td>
-<td><code>home</code></td>
-<td><code>templates/index.html</code></td>
+<td>HTML</td>
+<td>Wyświetla formularz i miejsce na wynik.</td>
 </tr>
 <tr class="even">
-<td><code>/about</code></td>
-<td><code>about</code></td>
-<td><code>templates/about.html</code></td>
-</tr>
-<tr class="odd">
-<td><code>/interests</code></td>
-<td><code>interests</code></td>
-<td><code>templates/interests.html</code></td>
+<td><code>/api/add?a=2&amp;b=3</code></td>
+<td>JSON</td>
+<td>Przyjmuje liczby i zwraca ich sumę.</td>
 </tr>
 </tbody>
 </table>
-<p>Nazwa funkcji jest tutaj domyślną nazwą endpointu. Rozróżniaj trzy rzeczy: adres URL, nazwę funkcji oraz nazwę pliku. W przykładzie <code>/about</code> prowadzi do <code>about()</code>, a funkcja renderuje <code>about.html</code>.</p>
+<p>Nie tworzymy trzech tras HTML ani wspólnego szablonu bazowego. Jedyny szablon to strona kalkulatora. Najpierw uruchomisz stronę i API, potem połączysz je JavaScriptem.</p>
+<section id="przygotuj-środowisko" class="level3">
+<h3 class="anchored" data-anchor-id="przygotuj-środowisko">1. Przygotuj środowisko</h3>
+<p>Otwórz <code>flask-calculator</code> w edytorze i terminalu. Korzystamy z Pythona 3.11 lub nowszego.</p>
+<p><strong>macOS / Linux:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">--version</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> venv .venv</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .venv/bin/activate</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Windows (PowerShell):</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>py <span class="op">-</span><span class="dv">3</span> <span class="op">--</span>version</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>py <span class="op">-</span><span class="dv">3</span> <span class="op">-</span>m venv <span class="op">.</span><span class="fu">venv</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="op">.</span>\<span class="op">.</span><span class="fu">venv</span>\Scripts\Activate<span class="op">.</span><span class="fu">ps1</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Po aktywacji:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-c</span> <span class="st">"import sys; print(sys.executable)"</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install Flask</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Ścieżka interpretera powinna wskazywać <code>.venv</code> w tym projekcie. Nie instaluj biblioteki globalnie. Jeżeli PowerShell blokuje aktywację, zamiast zmieniać jego politykę możesz użyć interpretera bezpośrednio:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="op">.</span>\<span class="op">.</span><span class="fu">venv</span>\Scripts\python<span class="op">.</span><span class="fu">exe</span> <span class="op">-</span>m pip install Flask</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Wtedy również w kolejnych poleceniach zastępuj <code>python</code> przez <code>.\.venv\Scripts\python.exe</code>.</p>
 </section>
-<section id="podłącz-css-na-obu-podstronach" class="level3">
-<h3 class="anchored" data-anchor-id="podłącz-css-na-obu-podstronach">8. Podłącz CSS na obu podstronach</h3>
-<p>W <code>templates/about.html</code> i <code>templates/interests.html</code> zastąp dotychczasowy element <code>link</code> tym samym zapisem co na stronie głównej:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">link</span><span class="ot"> rel</span><span class="op">=</span><span class="st">"stylesheet"</span><span class="ot"> href</span><span class="op">=</span><span class="st">"{{ url_for('static', filename='style.css') }}"</span><span class="dt">&gt;</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Nie wpisuj <code>../static/style.css</code>. Przeglądarka rozwiązuje względne adresy względem adresu dokumentu, a nie położenia szablonu na dysku serwera. <code>url_for()</code> pozwala uniknąć tego pomieszania.</p>
+<section id="utwórz-pliki-aplikacji" class="level3">
+<h3 class="anchored" data-anchor-id="utwórz-pliki-aplikacji">2. Utwórz pliki aplikacji</h3>
+<p>Przygotuj strukturę:</p>
+<pre class="text"><code>flask-calculator/
+├── .venv/
+├── app.py
+├── templates/
+│   └── index.html
+└── static/
+    ├── style.css
+    └── app.js</code></pre>
+<p>Do <code>static/style.css</code> skopiuj wspólny arkusz z poprzedniego ćwiczenia. Uzupełnisz go poniżej o wygląd formularza. Pozostałe pliki utwórz puste. Nie nazywaj modułu <code>flask.py</code>, ponieważ taka nazwa koliduje z importem biblioteki.</p>
 </section>
-<section id="zaktualizuj-całe-menu-na-trzech-stronach" class="level3">
-<h3 class="anchored" data-anchor-id="zaktualizuj-całe-menu-na-trzech-stronach">9. Zaktualizuj całe menu na trzech stronach</h3>
-<p>Teraz wszystkie trzy endpointy istnieją. Wstaw właściwe menu do każdego szablonu, zastępując dotychczasowy element <code>nav</code>.</p>
-<p><strong><code>templates/index.html</code>:</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">nav</span><span class="ot"> aria-label</span><span class="op">=</span><span class="st">"Nawigacja główna"</span><span class="dt">&gt;</span></span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">ul</span><span class="dt">&gt;</span></span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">li</span><span class="dt">&gt;&lt;</span><span class="kw">a</span><span class="ot"> href</span><span class="op">=</span><span class="st">"{{ url_for('home') }}"</span><span class="ot"> aria-current</span><span class="op">=</span><span class="st">"page"</span><span class="dt">&gt;</span>Strona główna<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;&lt;/</span><span class="kw">li</span><span class="dt">&gt;</span></span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">li</span><span class="dt">&gt;&lt;</span><span class="kw">a</span><span class="ot"> href</span><span class="op">=</span><span class="st">"{{ url_for('about') }}"</span><span class="dt">&gt;</span>O mnie<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;&lt;/</span><span class="kw">li</span><span class="dt">&gt;</span></span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">li</span><span class="dt">&gt;&lt;</span><span class="kw">a</span><span class="ot"> href</span><span class="op">=</span><span class="st">"{{ url_for('interests') }}"</span><span class="dt">&gt;</span>Zainteresowania<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;&lt;/</span><span class="kw">li</span><span class="dt">&gt;</span></span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">ul</span><span class="dt">&gt;</span></span>
-<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">nav</span><span class="dt">&gt;</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
-<p><strong><code>templates/about.html</code>:</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">nav</span><span class="ot"> aria-label</span><span class="op">=</span><span class="st">"Nawigacja główna"</span><span class="dt">&gt;</span></span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">ul</span><span class="dt">&gt;</span></span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">li</span><span class="dt">&gt;&lt;</span><span class="kw">a</span><span class="ot"> href</span><span class="op">=</span><span class="st">"{{ url_for('home') }}"</span><span class="dt">&gt;</span>Strona główna<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;&lt;/</span><span class="kw">li</span><span class="dt">&gt;</span></span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">li</span><span class="dt">&gt;&lt;</span><span class="kw">a</span><span class="ot"> href</span><span class="op">=</span><span class="st">"{{ url_for('about') }}"</span><span class="ot"> aria-current</span><span class="op">=</span><span class="st">"page"</span><span class="dt">&gt;</span>O mnie<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;&lt;/</span><span class="kw">li</span><span class="dt">&gt;</span></span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">li</span><span class="dt">&gt;&lt;</span><span class="kw">a</span><span class="ot"> href</span><span class="op">=</span><span class="st">"{{ url_for('interests') }}"</span><span class="dt">&gt;</span>Zainteresowania<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;&lt;/</span><span class="kw">li</span><span class="dt">&gt;</span></span>
-<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">ul</span><span class="dt">&gt;</span></span>
-<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">nav</span><span class="dt">&gt;</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
-<p><strong><code>templates/interests.html</code>:</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">nav</span><span class="ot"> aria-label</span><span class="op">=</span><span class="st">"Nawigacja główna"</span><span class="dt">&gt;</span></span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">ul</span><span class="dt">&gt;</span></span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">li</span><span class="dt">&gt;&lt;</span><span class="kw">a</span><span class="ot"> href</span><span class="op">=</span><span class="st">"{{ url_for('home') }}"</span><span class="dt">&gt;</span>Strona główna<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;&lt;/</span><span class="kw">li</span><span class="dt">&gt;</span></span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">li</span><span class="dt">&gt;&lt;</span><span class="kw">a</span><span class="ot"> href</span><span class="op">=</span><span class="st">"{{ url_for('about') }}"</span><span class="dt">&gt;</span>O mnie<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;&lt;/</span><span class="kw">li</span><span class="dt">&gt;</span></span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">li</span><span class="dt">&gt;&lt;</span><span class="kw">a</span><span class="ot"> href</span><span class="op">=</span><span class="st">"{{ url_for('interests') }}"</span><span class="ot"> aria-current</span><span class="op">=</span><span class="st">"page"</span><span class="dt">&gt;</span>Zainteresowania<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;&lt;/</span><span class="kw">li</span><span class="dt">&gt;</span></span>
-<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">ul</span><span class="dt">&gt;</span></span>
-<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">nav</span><span class="dt">&gt;</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Zachowaj własną treść <code>main</code>, metadane, nagłówek i stopkę. Odnośniki zewnętrzne oraz odnośnik <code>#top</code>, jeśli go dodałeś, nie wymagają zmiany.</p>
+<section id="napisz-kompletny-backend" class="level3">
+<h3 class="anchored" data-anchor-id="napisz-kompletny-backend">3. Napisz kompletny backend</h3>
+<p>W <code>app.py</code> wpisz:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> math <span class="im">import</span> isfinite</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> flask <span class="im">import</span> Flask, jsonify, render_template, request</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> Flask(<span class="va">__name__</span>)</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="at">@app.get</span>(<span class="st">"/"</span>)</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> home() <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Render the calculator page."""</span></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> render_template(<span class="st">"index.html"</span>)</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a><span class="at">@app.get</span>(<span class="st">"/api/add"</span>)</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> add():</span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Return the sum of two finite query parameters as JSON."""</span></span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>        a <span class="op">=</span> <span class="bu">float</span>(request.args[<span class="st">"a"</span>])</span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>        b <span class="op">=</span> <span class="bu">float</span>(request.args[<span class="st">"b"</span>])</span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> (<span class="pp">KeyError</span>, <span class="pp">ValueError</span>):</span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> jsonify(error<span class="op">=</span><span class="st">"Provide two numbers: a and b."</span>), <span class="dv">400</span></span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> isfinite(a) <span class="kw">or</span> <span class="kw">not</span> isfinite(b):</span>
+<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> jsonify(error<span class="op">=</span><span class="st">"Numbers must be finite."</span>), <span class="dv">400</span></span>
+<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-26"><a href="#cb27-26" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> a <span class="op">+</span> b</span>
+<span id="cb27-27"><a href="#cb27-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> isfinite(result):</span>
+<span id="cb27-28"><a href="#cb27-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> jsonify(error<span class="op">=</span><span class="st">"The result is outside the supported range."</span>), <span class="dv">400</span></span>
+<span id="cb27-29"><a href="#cb27-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-30"><a href="#cb27-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> jsonify(a<span class="op">=</span>a, b<span class="op">=</span>b, operation<span class="op">=</span><span class="st">"add"</span>, result<span class="op">=</span>result)</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>home()</code> zwraca HTML, a <code>add()</code> odpowiedź JSON. Obie funkcje działają w tym samym procesie aplikacji, ale obsługują różne adresy.</p>
+<p><code>@app.get(...)</code> rejestruje trasę dla metody GET. Nie dodajemy danych do bazy ani nie zmieniamy stanu serwera: wykonujemy obliczenie na podstawie parametrów żądania.</p>
 </section>
-<section id="prześledź-żądanie-i-odpowiedź" class="level3">
-<h3 class="anchored" data-anchor-id="prześledź-żądanie-i-odpowiedź">10. Prześledź żądanie i odpowiedź</h3>
-<p>Kliknij „O mnie” i prześledź kolejne etapy:</p>
-<ol type="1">
-<li>Przeglądarka wysyła żądanie <code>GET /about</code> do lokalnego serwera.</li>
-<li>Flask dopasowuje trasę i wykonuje <code>about()</code>.</li>
-<li>Funkcja renderuje <code>about.html</code>, obliczając wyrażenia Jinja.</li>
-<li>Serwer zwraca wynikowy HTML.</li>
-<li>Przeglądarka odczytuje odwołanie do CSS i wysyła osobne żądanie <code>GET /static/style.css</code>.</li>
-</ol>
-<p>Otwórz źródło strony w przeglądarce i znajdź menu. Powinny być w nim zwykłe adresy <code>/</code>, <code>/about</code> i <code>/interests</code>, bez wyrażeń <code>{ url_for(...) }</code>. Kod Pythona i źródło szablonu nie są wysyłane jako kod do wykonania w przeglądarce.</p>
+<section id="zrozum-parametry-get" class="level3">
+<h3 class="anchored" data-anchor-id="zrozum-parametry-get">4. Zrozum parametry GET</h3>
+<p>Dla adresu:</p>
+<pre class="text"><code>/api/add?a=2&amp;b=3</code></pre>
+<ul>
+<li><code>/api/add</code> jest ścieżką endpointu;</li>
+<li><code>?</code> rozpoczyna parametry zapytania;</li>
+<li><code>a=2</code> przypisuje parametr <code>a</code>;</li>
+<li><code>&amp;</code> oddziela parametry;</li>
+<li><code>b=3</code> przypisuje parametr <code>b</code>.</li>
+</ul>
+<p>Flask udostępnia je w <code>request.args</code>. Wartości są tekstem: <code>request.args["a"]</code> odczytuje <code>"2"</code>, a <code>float(...)</code> zamienia tę wartość na liczbę. Bez konwersji dodawanie dwóch tekstów połączyłoby je: <code>"2" + "3"</code> daje <code>"23"</code>.</p>
+<p>Parametry zapytania są widoczne w adresie i mogą trafić do historii przeglądarki oraz logów serwera. W tym ćwiczeniu przesyłamy zwykłe liczby; nie jest to miejsce na hasła.</p>
 </section>
-<section id="sprawdź-aplikację-i-obsługę-błędów" class="level3">
-<h3 class="anchored" data-anchor-id="sprawdź-aplikację-i-obsługę-błędów">11. Sprawdź aplikację i obsługę błędów</h3>
+<section id="przeanalizuj-walidację-i-json" class="level3">
+<h3 class="anchored" data-anchor-id="przeanalizuj-walidację-i-json">5. Przeanalizuj walidację i JSON</h3>
+<p><code>try</code> obejmuje odczyt i konwersję parametrów. Brak <code>a</code> lub <code>b</code> powoduje błąd odczytu, a tekst taki jak <code>hello</code> błąd konwersji. Przechwytujemy te przypadki i zwracamy komunikat ze statusem <code>400 Bad Request</code>.</p>
+<p><code>isfinite()</code> odrzuca wartości takie jak <code>NaN</code> i nieskończoność. Sprawdzamy też wynik: suma dwóch bardzo dużych, skończonych liczb może przekroczyć zakres <code>float</code>.</p>
+<p>Poprawne żądanie daje status <code>200</code> i obiekt JSON:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"a"</span><span class="fu">:</span> <span class="fl">2.0</span><span class="fu">,</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"b"</span><span class="fu">:</span> <span class="fl">3.0</span><span class="fu">,</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"operation"</span><span class="fu">:</span> <span class="st">"add"</span><span class="fu">,</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"result"</span><span class="fu">:</span> <span class="fl">5.0</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>jsonify()</code> tworzy odpowiedź z typem treści <code>application/json</code>. Nazwy pól są częścią naszego kontraktu API: frontend będzie odczytywał <code>result</code> przy sukcesie i <code>error</code> przy błędzie. Kolejność pól w obiekcie JSON nie ma znaczenia.</p>
+<p>Korzystamy z liczb zmiennoprzecinkowych. Przykład <code>0.1 + 0.2</code> może dać <code>0.30000000000000004</code>. To własność reprezentacji binarnej <code>float</code>, a nie błąd przesyłania JSON.</p>
+</section>
+<section id="przygotuj-kompletną-stronę-html" class="level3">
+<h3 class="anchored" data-anchor-id="przygotuj-kompletną-stronę-html">6. Przygotuj kompletną stronę HTML</h3>
+<p>Do <code>templates/index.html</code> wpisz:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;!DOCTYPE</span> html<span class="dt">&gt;</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">html</span><span class="ot"> lang</span><span class="op">=</span><span class="st">"pl"</span><span class="dt">&gt;</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">head</span><span class="dt">&gt;</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">meta</span><span class="ot"> charset</span><span class="op">=</span><span class="st">"UTF-8"</span><span class="dt">&gt;</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">meta</span><span class="ot"> name</span><span class="op">=</span><span class="st">"viewport"</span><span class="ot"> content</span><span class="op">=</span><span class="st">"width=device-width, initial-scale=1.0"</span><span class="dt">&gt;</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">title</span><span class="dt">&gt;</span>Kalkulator sumy — Flask i JSON<span class="dt">&lt;/</span><span class="kw">title</span><span class="dt">&gt;</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">link</span><span class="ot"> rel</span><span class="op">=</span><span class="st">"stylesheet"</span><span class="ot"> href</span><span class="op">=</span><span class="st">"/static/style.css"</span><span class="dt">&gt;</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">script</span><span class="ot"> src</span><span class="op">=</span><span class="st">"/static/app.js"</span><span class="ot"> defer</span><span class="dt">&gt;&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">head</span><span class="dt">&gt;</span></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">body</span><span class="dt">&gt;</span></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">header</span><span class="dt">&gt;</span></span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">h1</span><span class="dt">&gt;</span>Kalkulator sumy<span class="dt">&lt;/</span><span class="kw">h1</span><span class="dt">&gt;</span></span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span>Jan Kowalski — moja pierwsza strona korzystająca z API<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">header</span><span class="dt">&gt;</span></span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">main</span><span class="dt">&gt;</span></span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">section</span><span class="dt">&gt;</span></span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>            <span class="dt">&lt;</span><span class="kw">h2</span><span class="dt">&gt;</span>Dodaj dwie liczby<span class="dt">&lt;/</span><span class="kw">h2</span><span class="dt">&gt;</span></span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>            <span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span>Wpisz liczby i wyślij żądanie do serwera.<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a>            <span class="dt">&lt;</span><span class="kw">form</span><span class="ot"> id</span><span class="op">=</span><span class="st">"calculator-form"</span><span class="ot"> action</span><span class="op">=</span><span class="st">"/api/add"</span><span class="ot"> method</span><span class="op">=</span><span class="st">"get"</span><span class="dt">&gt;</span></span>
+<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a>                <span class="dt">&lt;</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a>                    <span class="dt">&lt;</span><span class="kw">label</span><span class="ot"> for</span><span class="op">=</span><span class="st">"number-a"</span><span class="dt">&gt;</span>Pierwsza liczba<span class="dt">&lt;/</span><span class="kw">label</span><span class="dt">&gt;</span></span>
+<span id="cb30-24"><a href="#cb30-24" aria-hidden="true" tabindex="-1"></a>                    <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> id</span><span class="op">=</span><span class="st">"number-a"</span><span class="ot"> name</span><span class="op">=</span><span class="st">"a"</span><span class="ot"> type</span><span class="op">=</span><span class="st">"number"</span></span>
+<span id="cb30-25"><a href="#cb30-25" aria-hidden="true" tabindex="-1"></a><span class="ot">                           step</span><span class="op">=</span><span class="st">"any"</span><span class="ot"> value</span><span class="op">=</span><span class="st">"2"</span><span class="ot"> required</span><span class="dt">&gt;</span></span>
+<span id="cb30-26"><a href="#cb30-26" aria-hidden="true" tabindex="-1"></a>                <span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb30-27"><a href="#cb30-27" aria-hidden="true" tabindex="-1"></a>                <span class="dt">&lt;</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb30-28"><a href="#cb30-28" aria-hidden="true" tabindex="-1"></a>                    <span class="dt">&lt;</span><span class="kw">label</span><span class="ot"> for</span><span class="op">=</span><span class="st">"number-b"</span><span class="dt">&gt;</span>Druga liczba<span class="dt">&lt;/</span><span class="kw">label</span><span class="dt">&gt;</span></span>
+<span id="cb30-29"><a href="#cb30-29" aria-hidden="true" tabindex="-1"></a>                    <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> id</span><span class="op">=</span><span class="st">"number-b"</span><span class="ot"> name</span><span class="op">=</span><span class="st">"b"</span><span class="ot"> type</span><span class="op">=</span><span class="st">"number"</span></span>
+<span id="cb30-30"><a href="#cb30-30" aria-hidden="true" tabindex="-1"></a><span class="ot">                           step</span><span class="op">=</span><span class="st">"any"</span><span class="ot"> value</span><span class="op">=</span><span class="st">"3"</span><span class="ot"> required</span><span class="dt">&gt;</span></span>
+<span id="cb30-31"><a href="#cb30-31" aria-hidden="true" tabindex="-1"></a>                <span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb30-32"><a href="#cb30-32" aria-hidden="true" tabindex="-1"></a>                <span class="dt">&lt;</span><span class="kw">button</span><span class="ot"> type</span><span class="op">=</span><span class="st">"submit"</span><span class="dt">&gt;</span>Oblicz sumę<span class="dt">&lt;/</span><span class="kw">button</span><span class="dt">&gt;</span></span>
+<span id="cb30-33"><a href="#cb30-33" aria-hidden="true" tabindex="-1"></a>            <span class="dt">&lt;/</span><span class="kw">form</span><span class="dt">&gt;</span></span>
+<span id="cb30-34"><a href="#cb30-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-35"><a href="#cb30-35" aria-hidden="true" tabindex="-1"></a>            <span class="dt">&lt;</span><span class="kw">p</span><span class="ot"> id</span><span class="op">=</span><span class="st">"result"</span><span class="ot"> role</span><span class="op">=</span><span class="st">"status"</span><span class="ot"> aria-live</span><span class="op">=</span><span class="st">"polite"</span><span class="dt">&gt;</span></span>
+<span id="cb30-36"><a href="#cb30-36" aria-hidden="true" tabindex="-1"></a>                Wynik pojawi się tutaj.</span>
+<span id="cb30-37"><a href="#cb30-37" aria-hidden="true" tabindex="-1"></a>            <span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb30-38"><a href="#cb30-38" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;/</span><span class="kw">section</span><span class="dt">&gt;</span></span>
+<span id="cb30-39"><a href="#cb30-39" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">main</span><span class="dt">&gt;</span></span>
+<span id="cb30-40"><a href="#cb30-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-41"><a href="#cb30-41" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">footer</span><span class="dt">&gt;</span></span>
+<span id="cb30-42"><a href="#cb30-42" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span>Autor: Jan Kowalski<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb30-43"><a href="#cb30-43" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">footer</span><span class="dt">&gt;</span></span>
+<span id="cb30-44"><a href="#cb30-44" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">body</span><span class="dt">&gt;</span></span>
+<span id="cb30-45"><a href="#cb30-45" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">html</span><span class="dt">&gt;</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Wstaw własne dane autora. W tym dokumencie <strong>nie ma <code>url_for()</code> ani wyrażeń Jinja</strong>. Wpisz dosłownie <code>href="/static/style.css"</code> i <code>src="/static/app.js"</code>. Początkowy ukośnik wskazuje adres od korzenia aplikacji na bieżącym serwerze.</p>
+<p>Flask zwraca ten dokument przez <code>render_template()</code>, ale nie potrzebujemy dynamicznych bloków ani dziedziczenia. Python nie wykonuje kodu JavaScript: skrypt otrzyma i wykona przeglądarka.</p>
+<p>Formularz ma <code>action="/api/add"</code>, metodę <code>get</code> i pola o nazwach <code>a</code>, <code>b</code>. Na razie <code>app.js</code> jest pusty. Po wysłaniu formularza przeglądarka sama przejdzie do adresu API z parametrami i pokaże surowy JSON. Dopiero później przechwycimy wysłanie przez JavaScript.</p>
+<p><code>required</code> wymaga wartości, a <code>step="any"</code> dopuszcza część ułamkową. Walidacja przeglądarki ułatwia korzystanie z formularza, ale nie zastępuje walidacji serwera: API można wywołać bez formularza.</p>
+</section>
+<section id="dodaj-wygląd-formularza" class="level3">
+<h3 class="anchored" data-anchor-id="dodaj-wygląd-formularza">7. Dodaj wygląd formularza</h3>
+<p>Na końcu skopiowanego <code>static/style.css</code> dopisz:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode css code-with-copy"><code class="sourceCode css"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co">/* Arrange calculator controls and keep labels visible. */</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#calculator-form</span> {</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">display</span><span class="ch">:</span> <span class="dv">grid</span><span class="op">;</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">gap</span><span class="ch">:</span> <span class="dv">1</span><span class="dt">rem</span><span class="op">;</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">max-width</span><span class="ch">:</span> <span class="dv">28</span><span class="dt">rem</span><span class="op">;</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="pp">#calculator-form</span> label {</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">display</span><span class="ch">:</span> <span class="dv">block</span><span class="op">;</span></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">margin-bottom</span><span class="ch">:</span> <span class="dv">0.25</span><span class="dt">rem</span><span class="op">;</span></span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">font-weight</span><span class="ch">:</span> <span class="dv">bold</span><span class="op">;</span></span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a><span class="pp">#calculator-form</span> input {</span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">width</span><span class="ch">:</span> <span class="dv">100</span><span class="dt">%</span><span class="op">;</span></span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">padding</span><span class="ch">:</span> <span class="dv">0.6</span><span class="dt">rem</span><span class="op">;</span></span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">border</span><span class="ch">:</span> <span class="dv">1</span><span class="dt">px</span> <span class="dv">solid</span> <span class="cn">#64748b</span><span class="op">;</span></span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">border-radius</span><span class="ch">:</span> <span class="dv">0.4</span><span class="dt">rem</span><span class="op">;</span></span>
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">font</span><span class="ch">:</span> <span class="bu">inherit</span><span class="op">;</span></span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a><span class="pp">#calculator-form</span> button {</span>
+<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">padding</span><span class="ch">:</span> <span class="dv">0.7</span><span class="dt">rem</span> <span class="dv">1</span><span class="dt">rem</span><span class="op">;</span></span>
+<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">border</span><span class="ch">:</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">border-radius</span><span class="ch">:</span> <span class="dv">0.4</span><span class="dt">rem</span><span class="op">;</span></span>
+<span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">background-color</span><span class="ch">:</span> <span class="cn">#17365d</span><span class="op">;</span></span>
+<span id="cb31-27"><a href="#cb31-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">color</span><span class="ch">:</span> <span class="cn">#ffffff</span><span class="op">;</span></span>
+<span id="cb31-28"><a href="#cb31-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">font</span><span class="ch">:</span> <span class="bu">inherit</span><span class="op">;</span></span>
+<span id="cb31-29"><a href="#cb31-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">cursor</span><span class="ch">:</span> <span class="dv">pointer</span><span class="op">;</span></span>
+<span id="cb31-30"><a href="#cb31-30" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb31-31"><a href="#cb31-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-32"><a href="#cb31-32" aria-hidden="true" tabindex="-1"></a><span class="pp">#calculator-form</span> input<span class="in">:focus-visible</span><span class="op">,</span></span>
+<span id="cb31-33"><a href="#cb31-33" aria-hidden="true" tabindex="-1"></a><span class="pp">#calculator-form</span> button<span class="in">:focus-visible</span> {</span>
+<span id="cb31-34"><a href="#cb31-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">outline</span><span class="ch">:</span> <span class="dv">3</span><span class="dt">px</span> <span class="dv">solid</span> <span class="cn">#9a3412</span><span class="op">;</span></span>
+<span id="cb31-35"><a href="#cb31-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">outline-offset</span><span class="ch">:</span> <span class="dv">3</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb31-36"><a href="#cb31-36" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb31-37"><a href="#cb31-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-38"><a href="#cb31-38" aria-hidden="true" tabindex="-1"></a><span class="pp">#calculator-form</span> button<span class="in">:disabled</span> {</span>
+<span id="cb31-39"><a href="#cb31-39" aria-hidden="true" tabindex="-1"></a>    <span class="kw">opacity</span><span class="ch">:</span> <span class="dv">0.6</span><span class="op">;</span></span>
+<span id="cb31-40"><a href="#cb31-40" aria-hidden="true" tabindex="-1"></a>    <span class="kw">cursor</span><span class="ch">:</span> <span class="dv">wait</span><span class="op">;</span></span>
+<span id="cb31-41"><a href="#cb31-41" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb31-42"><a href="#cb31-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-43"><a href="#cb31-43" aria-hidden="true" tabindex="-1"></a><span class="pp">#result</span> {</span>
+<span id="cb31-44"><a href="#cb31-44" aria-hidden="true" tabindex="-1"></a>    <span class="kw">font-weight</span><span class="ch">:</span> <span class="dv">bold</span><span class="op">;</span></span>
+<span id="cb31-45"><a href="#cb31-45" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Selektor zaczynający się od <code>#</code> wybiera element o podanym <code>id</code>. Używamy go, aby reguły dotyczyły formularza kalkulatora. Zachowujemy widoczny fokus pól i przycisku.</p>
+</section>
+<section id="uruchom-aplikację-i-sprawdź-api-bez-javascriptu" class="level3">
+<h3 class="anchored" data-anchor-id="uruchom-aplikację-i-sprawdź-api-bez-javascriptu">8. Uruchom aplikację i sprawdź API bez JavaScriptu</h3>
+<p>W terminalu z aktywnym <code>.venv</code>, w katalogu z <code>app.py</code>, wykonaj:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> flask <span class="at">--app</span> app run <span class="at">--debug</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Otwórz <a href="http://127.0.0.1:5000/">http://127.0.0.1:5000/</a>. Terminal pozostaw uruchomiony. <strong>Ctrl+C</strong> zatrzymuje serwer. Tryb debugowania służy do lokalnych ćwiczeń.</p>
+<p>Najpierw wyślij formularz z pustym jeszcze <code>app.js</code>: powinien otworzyć JSON. Wróć na stronę przyciskiem Wstecz. Następnie wpisuj adresy ręcznie:</p>
 <table class="caption-top table">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
 <thead>
 <tr class="header">
-<th>Próba</th>
-<th>Oczekiwany efekt</th>
+<th>Parametry po <code>/api/add</code></th>
+<th>Oczekiwany rezultat</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Otwórz <code>/</code></td>
-<td>Strona główna, właściwy tytuł i wspólny CSS.</td>
+<td><code>?a=2&amp;b=3</code></td>
+<td><code>200</code>, wynik <code>5.0</code></td>
 </tr>
 <tr class="even">
-<td>Otwórz <code>/about</code></td>
-<td>Własna treść strony „O mnie”.</td>
+<td><code>?a=-4&amp;b=1.5</code></td>
+<td><code>200</code>, wynik <code>-2.5</code></td>
 </tr>
 <tr class="odd">
-<td>Otwórz <code>/interests</code></td>
-<td>Własna treść zainteresowań.</td>
+<td><code>?a=0&amp;b=0</code></td>
+<td><code>200</code>, wynik <code>0.0</code></td>
 </tr>
 <tr class="even">
-<td>Przejdź między stronami przez menu</td>
-<td>Każdy odnośnik otwiera właściwą trasę.</td>
+<td><code>?a=hello&amp;b=3</code></td>
+<td><code>400</code>, pole <code>error</code></td>
 </tr>
 <tr class="odd">
-<td>Otwórz <code>/static/style.css</code></td>
-<td>Kod wspólnego arkusza.</td>
+<td><code>?a=2</code></td>
+<td><code>400</code>, brak parametru <code>b</code></td>
 </tr>
 <tr class="even">
-<td>Otwórz <code>/missing</code></td>
-<td>Odpowiedź <code>404</code>, bo takiej trasy nie zdefiniowano.</td>
+<td><code>?a=NaN&amp;b=3</code></td>
+<td><code>400</code>, wartość nieskończona lub nieokreślona</td>
+</tr>
+<tr class="odd">
+<td><code>?a=1e308&amp;b=1e308</code></td>
+<td><code>400</code>, wynik poza obsługiwanym zakresem</td>
 </tr>
 </tbody>
 </table>
-<p>Obserwuj terminal: zobaczysz żądania oraz ich statusy. <code>200</code> oznacza powodzenie, <code>404</code> brak wskazanego zasobu, a <code>500</code> błąd po stronie aplikacji.</p>
+<p>Możesz także wywołać endpoint z terminala:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-i</span> <span class="st">"http://127.0.0.1:5000/api/add?a=2&amp;b=3"</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Adres ujmujemy w cudzysłowy, aby powłoka nie interpretowała <code>&amp;</code> jako własnego operatora. W Windows PowerShell użyj <code>curl.exe</code>, jeśli polecenie <code>curl</code> oznacza inne narzędzie. Opcja <code>-i</code> pokazuje również status i nagłówki odpowiedzi.</p>
+<p>Jeśli port <code>5000</code> jest zajęty, dodaj <code>--port 5001</code> do polecenia uruchomienia i używaj nowego portu w przeglądarce. Adresy <code>/api/add</code> i <code>/static/...</code> w HTML pozostają bez zmian.</p>
+</section>
+</section>
+<section id="sekcja-5.-fetch-wynik-json-na-stronie-html" class="level2">
+<h2 class="anchored" data-anchor-id="sekcja-5.-fetch-wynik-json-na-stronie-html">Sekcja 5. Fetch: wynik JSON na stronie HTML</h2>
+<p>API już działa niezależnie od interfejsu. Teraz dodasz JavaScript, który pobierze odpowiedź i pokaże wynik bez przechodzenia do nowego dokumentu.</p>
+<section id="wpisz-kompletny-app.js" class="level3">
+<h3 class="anchored" data-anchor-id="wpisz-kompletny-app.js">1. Wpisz kompletny app.js</h3>
+<p>W <code>static/app.js</code> umieść:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode javascript code-with-copy"><code class="sourceCode javascript"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> form <span class="op">=</span> <span class="bu">document</span><span class="op">.</span><span class="fu">querySelector</span>(<span class="st">"#calculator-form"</span>)<span class="op">;</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> result <span class="op">=</span> <span class="bu">document</span><span class="op">.</span><span class="fu">querySelector</span>(<span class="st">"#result"</span>)<span class="op">;</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> button <span class="op">=</span> form<span class="op">.</span><span class="fu">querySelector</span>(<span class="st">"button"</span>)<span class="op">;</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>form<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"submit"</span><span class="op">,</span> <span class="kw">async</span> (<span class="bu">event</span>) <span class="kw">=&gt;</span> {</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">event</span><span class="op">.</span><span class="fu">preventDefault</span>()<span class="op">;</span></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> formData <span class="op">=</span> <span class="kw">new</span> <span class="bu">FormData</span>(form)<span class="op">;</span></span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> params <span class="op">=</span> <span class="kw">new</span> <span class="fu">URLSearchParams</span>()<span class="op">;</span></span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>    params<span class="op">.</span><span class="fu">set</span>(<span class="st">"a"</span><span class="op">,</span> formData<span class="op">.</span><span class="fu">get</span>(<span class="st">"a"</span>))<span class="op">;</span></span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>    params<span class="op">.</span><span class="fu">set</span>(<span class="st">"b"</span><span class="op">,</span> formData<span class="op">.</span><span class="fu">get</span>(<span class="st">"b"</span>))<span class="op">;</span></span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>    button<span class="op">.</span><span class="at">disabled</span> <span class="op">=</span> <span class="kw">true</span><span class="op">;</span></span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>    result<span class="op">.</span><span class="at">textContent</span> <span class="op">=</span> <span class="st">"Obliczam…"</span><span class="op">;</span></span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span> {</span>
+<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a>        <span class="kw">const</span> response <span class="op">=</span> <span class="cf">await</span> <span class="fu">fetch</span>(<span class="vs">`/api/add?</span><span class="sc">${</span>params<span class="op">.</span><span class="fu">toString</span>()<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></span>
+<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a>        <span class="kw">const</span> data <span class="op">=</span> <span class="cf">await</span> response<span class="op">.</span><span class="fu">json</span>()<span class="op">;</span></span>
+<span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (<span class="op">!</span>response<span class="op">.</span><span class="at">ok</span>) {</span>
+<span id="cb34-21"><a href="#cb34-21" aria-hidden="true" tabindex="-1"></a>            result<span class="op">.</span><span class="at">textContent</span> <span class="op">=</span> <span class="vs">`Błąd API: </span><span class="sc">${</span>data<span class="op">.</span><span class="at">error</span><span class="sc">}</span><span class="vs">`</span><span class="op">;</span></span>
+<span id="cb34-22"><a href="#cb34-22" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span><span class="op">;</span></span>
+<span id="cb34-23"><a href="#cb34-23" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb34-24"><a href="#cb34-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-25"><a href="#cb34-25" aria-hidden="true" tabindex="-1"></a>        result<span class="op">.</span><span class="at">textContent</span> <span class="op">=</span> <span class="vs">`</span><span class="sc">${</span>data<span class="op">.</span><span class="at">a</span><span class="sc">}</span><span class="vs"> + </span><span class="sc">${</span>data<span class="op">.</span><span class="at">b</span><span class="sc">}</span><span class="vs"> = </span><span class="sc">${</span>data<span class="op">.</span><span class="at">result</span><span class="sc">}</span><span class="vs">`</span><span class="op">;</span></span>
+<span id="cb34-26"><a href="#cb34-26" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">catch</span> (error) {</span>
+<span id="cb34-27"><a href="#cb34-27" aria-hidden="true" tabindex="-1"></a>        result<span class="op">.</span><span class="at">textContent</span> <span class="op">=</span> <span class="st">"Nie udało się pobrać odpowiedzi. Sprawdź serwer i połączenie."</span><span class="op">;</span></span>
+<span id="cb34-28"><a href="#cb34-28" aria-hidden="true" tabindex="-1"></a>        <span class="bu">console</span><span class="op">.</span><span class="fu">error</span>(error)<span class="op">;</span></span>
+<span id="cb34-29"><a href="#cb34-29" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">finally</span> {</span>
+<span id="cb34-30"><a href="#cb34-30" aria-hidden="true" tabindex="-1"></a>        button<span class="op">.</span><span class="at">disabled</span> <span class="op">=</span> <span class="kw">false</span><span class="op">;</span></span>
+<span id="cb34-31"><a href="#cb34-31" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb34-32"><a href="#cb34-32" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Zapisz plik, odśwież stronę główną i wyślij formularz. Adres karty powinien pozostać <code>/</code>, a wynik pojawić się pod formularzem.</p>
+</section>
+<section id="znajdź-elementy-i-przechwyć-formularz" class="level3">
+<h3 class="anchored" data-anchor-id="znajdź-elementy-i-przechwyć-formularz">2. Znajdź elementy i przechwyć formularz</h3>
+<p><code>document.querySelector()</code> wyszukuje element w dokumencie. Używamy tych samych identyfikatorów co w HTML: <code>calculator-form</code> i <code>result</code>. <code>form.querySelector()</code> ogranicza wyszukiwanie przycisku do formularza.</p>
+<p>Skrypt w HTML ma atrybut <code>defer</code>: zostanie wykonany po przetworzeniu dokumentu, kiedy elementy formularza już istnieją.</p>
+<p>Zdarzenie <code>submit</code> występuje po wysłaniu formularza, również klawiszem Enter. <code>event.preventDefault()</code> zatrzymuje domyślną nawigację do odpowiedzi JSON. Zamiast niej wykonamy żądanie przez <code>fetch()</code>.</p>
+</section>
+<section id="zbuduj-parametry-zapytania" class="level3">
+<h3 class="anchored" data-anchor-id="zbuduj-parametry-zapytania">3. Zbuduj parametry zapytania</h3>
+<p><code>new FormData(form)</code> odczytuje wartości pól według ich atrybutów <code>name</code>. <code>URLSearchParams</code> buduje i koduje część adresu po <code>?</code>. Nie sklejamy ręcznie wartości użytkownika z <code>&amp;</code> i <code>=</code>.</p>
+<p>Dla <code>a=2</code> i <code>b=3</code> powstaje adres:</p>
+<pre class="text"><code>/api/add?a=2&amp;b=3</code></pre>
+<p>W JavaScripcie zapis między znakami backtick, z <code>${...}</code>, jest literałem szablonowym. Wstawia wartość do tekstu <strong>w przeglądarce</strong>. To mechanizm JavaScriptu, niezależny od serwerowych szablonów Jinja.</p>
+</section>
+<section id="wyślij-żądanie-i-odczytaj-odpowiedź" class="level3">
+<h3 class="anchored" data-anchor-id="wyślij-żądanie-i-odczytaj-odpowiedź">4. Wyślij żądanie i odczytaj odpowiedź</h3>
+<p><code>fetch()</code> bez dodatkowych opcji wysyła GET. Ponieważ adres zaczyna się od <code>/</code>, używa tego samego serwera i portu co strona. W tym ćwiczeniu nie potrzebujemy konfiguracji CORS.</p>
+<p><code>await fetch(...)</code> czeka na odpowiedź, a <code>await response.json()</code> odczytuje jej treść i zamienia JSON na obiekt JavaScript. Funkcja obsługująca formularz ma dlatego słowo <code>async</code>.</p>
+<p><strong>Status <code>400</code> nie powoduje automatycznie wyjątku w <code>fetch()</code>.</strong> Sprawdzamy <code>response.ok</code>, które jest prawdziwe dla statusów od 200 do 299. Nasze API przy błędzie zwraca JSON z polem <code>error</code>, więc możemy wyświetlić komunikat.</p>
+<p><code>catch</code> obsługuje między innymi brak połączenia i błąd odczytania JSON. <code>finally</code> ponownie włącza przycisk niezależnie od wyniku, także po wcześniejszym <code>return</code>.</p>
+</section>
+<section id="wyświetl-wynik-jako-tekst" class="level3">
+<h3 class="anchored" data-anchor-id="wyświetl-wynik-jako-tekst">5. Wyświetl wynik jako tekst</h3>
+<p>Wstawiamy odpowiedź przez <code>textContent</code>. Przeglądarka traktuje ją jako tekst, a nie kod HTML. Nie używaj tutaj <code>innerHTML</code>: do prezentacji sumy i komunikatów nie potrzebujemy interpretowania znaczników.</p>
+<p>Przycisk jest wyłączony podczas oczekiwania, a obszar <code>role="status"</code> pozwala technologiom wspomagającym poinformować o aktualizacji wyniku.</p>
+</section>
+<section id="zobacz-żądanie-w-narzędziach-przeglądarki" class="level3">
+<h3 class="anchored" data-anchor-id="zobacz-żądanie-w-narzędziach-przeglądarki">6. Zobacz żądanie w narzędziach przeglądarki</h3>
+<p>Otwórz narzędzia deweloperskie i zakładkę <strong>Network / Sieć</strong>. Wyślij formularz i wybierz żądanie <code>add</code>.</p>
+<p>Sprawdź:</p>
+<ol type="1">
+<li>Metodę <code>GET</code> i pełny adres żądania.</li>
+<li>Parametry <code>a</code> i <code>b</code>.</li>
+<li>Status odpowiedzi.</li>
+<li>Typ treści <code>application/json</code>.</li>
+<li>Pola odpowiedzi w zakładce Response / Odpowiedź.</li>
+</ol>
+<p>Przy odświeżeniu strony zobaczysz też osobne żądania dokumentu HTML, CSS i JavaScriptu. Serwer nie wysyła całej aplikacji jednym plikiem.</p>
+</section>
+<section id="przetestuj-błędy-świadomie" class="level3">
+<h3 class="anchored" data-anchor-id="przetestuj-błędy-świadomie">7. Przetestuj błędy świadomie</h3>
+<p>Błędne dane sprawdzaj przez bezpośredni adres API: przeglądarka może nie dopuścić tekstu <code>hello</code> w polu liczbowym. To pokazuje, dlaczego serwer musi sam walidować dane.</p>
+<p>Aby sprawdzić brak połączenia, pozostaw stronę otwartą, zatrzymaj Flask przez Ctrl+C i ponownie wyślij formularz. Powinien pojawić się komunikat o nieudanym pobraniu odpowiedzi. Uruchom serwer ponownie przed dalszą pracą.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
@@ -1575,336 +1658,53 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tbody>
 <tr class="odd">
 <td><code>No module named flask</code></td>
-<td>Interpreter i instalację Flask w aktywnym <code>.venv</code>.</td>
+<td>Aktywny interpreter i instalację w <code>.venv</code>.</td>
 </tr>
 <tr class="even">
 <td><code>TemplateNotFound</code></td>
-<td>Pisownię nazwy i obecność pliku w <code>templates</code> obok <code>app.py</code>.</td>
+<td><code>templates/index.html</code> obok katalogu z <code>app.py</code>.</td>
 </tr>
 <tr class="odd">
-<td><code>BuildError</code></td>
-<td>Czy argument <code>url_for()</code> jest nazwą istniejącego endpointu, np. <code>about</code>, a nie <code>about.html</code>?</td>
+<td>Formularz przechodzi do surowego JSON mimo dodania skryptu</td>
+<td>Pobranie <code>/static/app.js</code>, zapis pliku i błędy w Console / Konsola.</td>
 </tr>
 <tr class="even">
-<td>Brak stylów</td>
-<td>Obecność <code>static/style.css</code> i poprawny element <code>link</code> w każdym szablonie.</td>
+<td><code>Cannot read properties of null</code> w konsoli</td>
+<td>Zgodność <code>id</code> w HTML i selektorów oraz obecność <code>defer</code>.</td>
 </tr>
 <tr class="odd">
-<td><code>404</code> dla <code>/about.html</code></td>
-<td>Użyj <code>/about</code>: to adres zdefiniowany w aplikacji.</td>
+<td><code>404</code> dla skryptu lub CSS</td>
+<td>Nazwę pliku i jego obecność w <code>static</code>.</td>
 </tr>
 <tr class="even">
-<td>Brak połączenia</td>
-<td>Czy serwer działa i czy używasz portu wskazanego w terminalu?</td>
+<td>Błąd odczytu JSON</td>
+<td>Czy żądanie trafiło do <code>/api/add</code>, a odpowiedź jest JSON, nie stroną błędu HTML?</td>
+</tr>
+<tr class="odd">
+<td>Nie działa po otwarciu pliku z dysku</td>
+<td>Otwórz adres HTTP serwera zamiast <code>file:///</code>.</td>
 </tr>
 </tbody>
 </table>
-<p>W tych przykładach trasy podstron nie kończą się ukośnikiem. Korzystaj z adresów generowanych przez menu, np. <code>/about</code>, zamiast samodzielnie dopisywać <code>/about/</code>.</p>
 </section>
-<section id="samodzielny-eksperyment-z-adresem" class="level3">
-<h3 class="anchored" data-anchor-id="samodzielny-eksperyment-z-adresem">12. Samodzielny eksperyment z adresem</h3>
-<p>Zmień tylko dekorator trasy strony „O mnie”:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="at">@app.route</span>(<span class="st">"/about-me"</span>)</span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> about() <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Render the about page."""</span></span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> render_template(<span class="st">"about.html"</span>)</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Nie zmieniaj nazwy funkcji ani <code>url_for('about')</code> w menu. Po zapisaniu pliku odśwież stronę główną i kliknij „O mnie”. Adres powinien teraz kończyć się na <code>/about-me</code>. Stary adres <code>/about</code> zwróci <code>404</code>.</p>
-<p>To pokazuje, po co generujemy adresy na podstawie nazw endpointów. <strong>Po eksperymencie przywróć trasę <code>/about</code></strong>, aby projekt był zgodny z dalszą instrukcją.</p>
+<section id="samodzielny-eksperyment" class="level3">
+<h3 class="anchored" data-anchor-id="samodzielny-eksperyment">8. Samodzielny eksperyment</h3>
+<p>Dobierz własne liczby: dodatnie, ujemne, zero i ułamki. Dla każdej pary porównaj wynik formularza z odpowiedzią po otwarciu adresu API. Następnie zmień opis i nagłówek kalkulatora na własne, zachowując identyfikatory i nazwy pól używane przez kod.</p>
+<p>Odpowiedz: które obliczenie wykonuje Python, co robi JavaScript i dlaczego po dodaniu <code>fetch()</code> pasek adresu nie przechodzi do <code>/api/add</code>?</p>
 </section>
-<section id="punkt-kontrolny-sekcji-4" class="level3">
-<h3 class="anchored" data-anchor-id="punkt-kontrolny-sekcji-4">13. Punkt kontrolny sekcji 4</h3>
+<section id="punkt-kontrolny-sekcji-api-i-fetch" class="level3">
+<h3 class="anchored" data-anchor-id="punkt-kontrolny-sekcji-api-i-fetch">9. Punkt kontrolny sekcji API i fetch</h3>
 <ul class="task-list">
-<li><label><input type="checkbox">Flask jest zainstalowany w lokalnym środowisku <code>.venv</code>.</label></li>
-<li><label><input type="checkbox">Potrafisz uruchomić i zatrzymać serwer.</label></li>
-<li><label><input type="checkbox">Otwierasz aplikację przez <code>http://</code>, a nie <code>file:///</code>.</label></li>
-<li><label><input type="checkbox">Trasy <code>/</code>, <code>/about</code> i <code>/interests</code> renderują właściwe dokumenty.</label></li>
-<li><label><input type="checkbox">Wszystkie trzy strony pobierają wspólny arkusz z <code>/static/style.css</code>.</label></li>
-<li><label><input type="checkbox">Menu używa nazw endpointów w <code>url_for()</code>.</label></li>
-<li><label><input type="checkbox">Potrafisz odróżnić trasę, funkcję Pythona i plik szablonu.</label></li>
-<li><label><input type="checkbox">Po eksperymencie przywróciłeś adres <code>/about</code>.</label></li>
+<li><label><input type="checkbox">Jedna trasa zwraca HTML, a druga JSON.</label></li>
+<li><label><input type="checkbox">Potrafisz wysłać dwie liczby parametrami GET i odczytać sumę.</label></li>
+<li><label><input type="checkbox">Brak lub niepoprawne parametry dają status <code>400</code> i komunikat JSON.</label></li>
+<li><label><input type="checkbox">Formularz pokazuje wynik bez przeładowania dokumentu.</label></li>
+<li><label><input type="checkbox">Rozróżniasz walidację przeglądarki i serwera.</label></li>
+<li><label><input type="checkbox">Potrafisz wskazać żądanie w zakładce Network i odczytać status.</label></li>
+<li><label><input type="checkbox">Potrafisz wyjaśnić, gdzie wykonywane są Python i JavaScript.</label></li>
 </ul>
-<p><strong>Rezultat:</strong> Twoja witryna działa jako aplikacja Flask z trzema stronami. Wspólne elementy HTML nadal się powtarzają; w kolejnym etapie wydzielimy je do szablonu bazowego, zanim przygotujemy kontener.</p>
-<p>Dalsza lektura: oficjalne instrukcje <a href="https://flask.palletsprojects.com/en/stable/installation/">instalacji Flask</a> oraz <a href="https://flask.palletsprojects.com/en/stable/quickstart/">Quickstart</a> opisują środowisko, routing, szablony i pliki statyczne.</p>
-</section>
-</section>
-<section id="sekcja-5.-wspólny-szablon-base.html" class="level2">
-<h2 class="anchored" data-anchor-id="sekcja-5.-wspólny-szablon-base.html">Sekcja 5. Wspólny szablon base.html</h2>
-<p>Nagłówek, menu i stopka są teraz zapisane w trzech dokumentach. Gdy dodasz pozycję menu, musisz poprawić trzy pliki. Wydzielisz te elementy do <code>base.html</code>, a w pozostałych szablonach zostawisz treść właściwą dla każdej strony.</p>
-<section id="przygotuj-strukturę-szablonów" class="level3">
-<h3 class="anchored" data-anchor-id="przygotuj-strukturę-szablonów">1. Przygotuj strukturę szablonów</h3>
-<p>W katalogu <code>templates</code> utwórz <code>base.html</code>. Nie zmieniaj położenia <code>app.py</code> ani arkusza:</p>
-<pre class="text"><code>personal-website/
-├── .venv/
-├── app.py
-├── templates/
-│   ├── base.html
-│   ├── index.html
-│   ├── about.html
-│   └── interests.html
-└── static/
-    └── style.css</code></pre>
-<p>Zachowaj własne teksty z dotychczasowych stron: w następnych krokach przeniesiesz je do bloków treści. Poniższe przykłady podają kompletną zawartość każdego szablonu; przykładowe dane zastąp swoimi.</p>
-</section>
-<section id="napisz-kompletny-base.html" class="level3">
-<h3 class="anchored" data-anchor-id="napisz-kompletny-base.html">2. Napisz kompletny base.html</h3>
-<p>W <code>templates/base.html</code> umieść:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;!DOCTYPE</span> html<span class="dt">&gt;</span></span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">html</span><span class="ot"> lang</span><span class="op">=</span><span class="st">"pl"</span><span class="dt">&gt;</span></span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">head</span><span class="dt">&gt;</span></span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">meta</span><span class="ot"> charset</span><span class="op">=</span><span class="st">"UTF-8"</span><span class="dt">&gt;</span></span>
-<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">meta</span><span class="ot"> name</span><span class="op">=</span><span class="st">"viewport"</span><span class="ot"> content</span><span class="op">=</span><span class="st">"width=device-width, initial-scale=1.0"</span><span class="dt">&gt;</span></span>
-<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">title</span><span class="dt">&gt;</span>{% block title %}Strona osobista{% endblock %} — Jan Kowalski<span class="dt">&lt;/</span><span class="kw">title</span><span class="dt">&gt;</span></span>
-<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">link</span><span class="ot"> rel</span><span class="op">=</span><span class="st">"stylesheet"</span><span class="ot"> href</span><span class="op">=</span><span class="st">"{{ url_for('static', filename='style.css') }}"</span><span class="dt">&gt;</span></span>
-<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">head</span><span class="dt">&gt;</span></span>
-<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">body</span><span class="dt">&gt;</span></span>
-<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">header</span><span class="ot"> id</span><span class="op">=</span><span class="st">"top"</span><span class="dt">&gt;</span></span>
-<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">h1</span><span class="dt">&gt;</span>Jan Kowalski<span class="dt">&lt;/</span><span class="kw">h1</span><span class="dt">&gt;</span></span>
-<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span>Moja osobista witryna internetowa<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
-<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">header</span><span class="dt">&gt;</span></span>
-<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">nav</span><span class="ot"> aria-label</span><span class="op">=</span><span class="st">"Nawigacja główna"</span><span class="dt">&gt;</span></span>
-<span id="cb41-16"><a href="#cb41-16" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">ul</span><span class="dt">&gt;</span></span>
-<span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a>            <span class="dt">&lt;</span><span class="kw">li</span><span class="dt">&gt;</span></span>
-<span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a>                <span class="dt">&lt;</span><span class="kw">a</span><span class="ot"> href</span><span class="op">=</span><span class="st">"{{ url_for('home') }}"</span><span class="er">{%</span><span class="ot"> if request.endpoint </span><span class="op">=</span><span class="er">=</span><span class="ot"> </span><span class="er">'</span><span class="ot">home</span><span class="er">'</span><span class="ot"> </span><span class="er">%}</span><span class="ot"> aria-current</span><span class="op">=</span><span class="st">"page"</span><span class="er">{%</span><span class="ot"> endif </span><span class="er">%}</span><span class="dt">&gt;</span>Strona główna<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;</span></span>
-<span id="cb41-19"><a href="#cb41-19" aria-hidden="true" tabindex="-1"></a>            <span class="dt">&lt;/</span><span class="kw">li</span><span class="dt">&gt;</span></span>
-<span id="cb41-20"><a href="#cb41-20" aria-hidden="true" tabindex="-1"></a>            <span class="dt">&lt;</span><span class="kw">li</span><span class="dt">&gt;</span></span>
-<span id="cb41-21"><a href="#cb41-21" aria-hidden="true" tabindex="-1"></a>                <span class="dt">&lt;</span><span class="kw">a</span><span class="ot"> href</span><span class="op">=</span><span class="st">"{{ url_for('about') }}"</span><span class="er">{%</span><span class="ot"> if request.endpoint </span><span class="op">=</span><span class="er">=</span><span class="ot"> </span><span class="er">'</span><span class="ot">about</span><span class="er">'</span><span class="ot"> </span><span class="er">%}</span><span class="ot"> aria-current</span><span class="op">=</span><span class="st">"page"</span><span class="er">{%</span><span class="ot"> endif </span><span class="er">%}</span><span class="dt">&gt;</span>O mnie<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;</span></span>
-<span id="cb41-22"><a href="#cb41-22" aria-hidden="true" tabindex="-1"></a>            <span class="dt">&lt;/</span><span class="kw">li</span><span class="dt">&gt;</span></span>
-<span id="cb41-23"><a href="#cb41-23" aria-hidden="true" tabindex="-1"></a>            <span class="dt">&lt;</span><span class="kw">li</span><span class="dt">&gt;</span></span>
-<span id="cb41-24"><a href="#cb41-24" aria-hidden="true" tabindex="-1"></a>                <span class="dt">&lt;</span><span class="kw">a</span><span class="ot"> href</span><span class="op">=</span><span class="st">"{{ url_for('interests') }}"</span><span class="er">{%</span><span class="ot"> if request.endpoint </span><span class="op">=</span><span class="er">=</span><span class="ot"> </span><span class="er">'</span><span class="ot">interests</span><span class="er">'</span><span class="ot"> </span><span class="er">%}</span><span class="ot"> aria-current</span><span class="op">=</span><span class="st">"page"</span><span class="er">{%</span><span class="ot"> endif </span><span class="er">%}</span><span class="dt">&gt;</span>Zainteresowania<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;</span></span>
-<span id="cb41-25"><a href="#cb41-25" aria-hidden="true" tabindex="-1"></a>            <span class="dt">&lt;/</span><span class="kw">li</span><span class="dt">&gt;</span></span>
-<span id="cb41-26"><a href="#cb41-26" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;/</span><span class="kw">ul</span><span class="dt">&gt;</span></span>
-<span id="cb41-27"><a href="#cb41-27" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">nav</span><span class="dt">&gt;</span></span>
-<span id="cb41-28"><a href="#cb41-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-29"><a href="#cb41-29" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">main</span><span class="dt">&gt;</span></span>
-<span id="cb41-30"><a href="#cb41-30" aria-hidden="true" tabindex="-1"></a>        {% block content %}{% endblock %}</span>
-<span id="cb41-31"><a href="#cb41-31" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">main</span><span class="dt">&gt;</span></span>
-<span id="cb41-32"><a href="#cb41-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-33"><a href="#cb41-33" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">footer</span><span class="dt">&gt;</span></span>
-<span id="cb41-34"><a href="#cb41-34" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span>Autor: Jan Kowalski<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
-<span id="cb41-35"><a href="#cb41-35" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;&lt;</span><span class="kw">a</span><span class="ot"> href</span><span class="op">=</span><span class="st">"#top"</span><span class="dt">&gt;</span>Początek strony<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
-<span id="cb41-36"><a href="#cb41-36" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">footer</span><span class="dt">&gt;</span></span>
-<span id="cb41-37"><a href="#cb41-37" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">body</span><span class="dt">&gt;</span></span>
-<span id="cb41-38"><a href="#cb41-38" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">html</span><span class="dt">&gt;</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
-<p>W tym pliku pozostaje cały szkielet dokumentu: od deklaracji HTML po zamknięcie <code>body</code> i <code>html</code>. Arkusz jest podłączony tylko tutaj. Menu i stopka również mają jedno wspólne źródło.</p>
-</section>
-<section id="rozróżnij-wyrażenia-i-instrukcje-jinja" class="level3">
-<h3 class="anchored" data-anchor-id="rozróżnij-wyrażenia-i-instrukcje-jinja">3. Rozróżnij wyrażenia i instrukcje Jinja</h3>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Zapis</th>
-<th>Przeznaczenie</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>{ url_for('home') }</code></td>
-<td>Oblicza wartość i wstawia ją do wynikowego HTML.</td>
-</tr>
-<tr class="even">
-<td><code>{% block content %}...{% endblock %}</code></td>
-<td>Definiuje miejsce, którego zawartość może określić szablon potomny.</td>
-</tr>
-<tr class="odd">
-<td><code>{% extends "base.html" %}</code></td>
-<td>Wskazuje szablon, z którego dziedziczymy strukturę.</td>
-</tr>
-<tr class="even">
-<td><code>{% if ... %}...{% endif %}</code></td>
-<td>Warunkowo dodaje fragment dokumentu.</td>
-</tr>
-</tbody>
-</table>
-<p>W bazie zdefiniowaliśmy dwa bloki: <code>title</code> i <code>content</code>. Pierwszy znajduje się wewnątrz elementu <code>title</code>, drugi wewnątrz <code>main</code>. Szablony stron wypełnią je własną treścią. Sufiks z nazwiskiem pozostaje poza blokiem <code>title</code>, więc jest wspólny.</p>
-</section>
-<section id="skróć-stronę-główną" class="level3">
-<h3 class="anchored" data-anchor-id="skróć-stronę-główną">4. Skróć stronę główną</h3>
-<p>Zastąp zawartość <code>templates/index.html</code> poniższym kompletnym szablonem:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb42"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>{% extends "base.html" %}</span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>{% block title %}Strona główna{% endblock %}</span>
-<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>{% block content %}</span>
-<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">section</span><span class="dt">&gt;</span></span>
-<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">h2</span><span class="dt">&gt;</span>Moja pierwsza strona<span class="dt">&lt;/</span><span class="kw">h2</span><span class="dt">&gt;</span></span>
-<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span></span>
-<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>        Uczę się projektowania aplikacji sieciowych.</span>
-<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>        Na tej stronie przedstawiam siebie i swoje zainteresowania.</span>
-<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
-<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span></span>
-<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a>        Moja witryna ma trzy strony, wspólny arkusz CSS</span>
-<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a>        oraz wspólny szablon nagłówka, menu i stopki.</span>
-<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
-<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">section</span><span class="dt">&gt;</span></span>
-<span id="cb42-17"><a href="#cb42-17" aria-hidden="true" tabindex="-1"></a>{% endblock %}</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Zapisz własne akapity zamiast przykładowych. Nie dodawaj tu kolejnych elementów <code>html</code>, <code>head</code>, <code>body</code>, <code>main</code> ani menu. Otrzymasz je z szablonu bazowego.</p>
-<p><code>extends</code> umieszczamy na początku pliku. Treść strony umieszczamy wewnątrz bloku <code>content</code>, a tekst tytułu w bloku <code>title</code>.</p>
-</section>
-<section id="skróć-stronę-o-mnie" class="level3">
-<h3 class="anchored" data-anchor-id="skróć-stronę-o-mnie">5. Skróć stronę „O mnie”</h3>
-<p>Kompletny <code>templates/about.html</code>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>{% extends "base.html" %}</span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>{% block title %}O mnie{% endblock %}</span>
-<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>{% block content %}</span>
-<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">section</span><span class="dt">&gt;</span></span>
-<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">h2</span><span class="dt">&gt;</span>O mnie<span class="dt">&lt;/</span><span class="kw">h2</span><span class="dt">&gt;</span></span>
-<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span></span>
-<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a>        Jestem studentem i uczę się tworzyć aplikacje internetowe.</span>
-<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a>        Lubię poznawać nowe narzędzia i sprawdzać je w praktyce.</span>
-<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
-<span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span></span>
-<span id="cb43-13"><a href="#cb43-13" aria-hidden="true" tabindex="-1"></a>        Chcę samodzielnie zbudować aplikację i uruchomić ją w kontenerze.</span>
-<span id="cb43-14"><a href="#cb43-14" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
-<span id="cb43-15"><a href="#cb43-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-16"><a href="#cb43-16" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">h3</span><span class="dt">&gt;</span>Czego chcę się nauczyć?<span class="dt">&lt;/</span><span class="kw">h3</span><span class="dt">&gt;</span></span>
-<span id="cb43-17"><a href="#cb43-17" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">ul</span><span class="dt">&gt;</span></span>
-<span id="cb43-18"><a href="#cb43-18" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">li</span><span class="dt">&gt;</span>Budowania stron w HTML5.<span class="dt">&lt;/</span><span class="kw">li</span><span class="dt">&gt;</span></span>
-<span id="cb43-19"><a href="#cb43-19" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">li</span><span class="dt">&gt;</span>Opisywania wyglądu za pomocą CSS.<span class="dt">&lt;/</span><span class="kw">li</span><span class="dt">&gt;</span></span>
-<span id="cb43-20"><a href="#cb43-20" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">li</span><span class="dt">&gt;</span>Tworzenia aplikacji we Flasku.<span class="dt">&lt;/</span><span class="kw">li</span><span class="dt">&gt;</span></span>
-<span id="cb43-21"><a href="#cb43-21" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">ul</span><span class="dt">&gt;</span></span>
-<span id="cb43-22"><a href="#cb43-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-23"><a href="#cb43-23" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span></span>
-<span id="cb43-24"><a href="#cb43-24" aria-hidden="true" tabindex="-1"></a>        Korzystam z</span>
-<span id="cb43-25"><a href="#cb43-25" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">a</span><span class="ot"> href</span><span class="op">=</span><span class="st">"https://developer.mozilla.org/pl/docs/Web/HTML"</span><span class="dt">&gt;</span>dokumentacji HTML w MDN<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;</span>.</span>
-<span id="cb43-26"><a href="#cb43-26" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
-<span id="cb43-27"><a href="#cb43-27" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">section</span><span class="dt">&gt;</span></span>
-<span id="cb43-28"><a href="#cb43-28" aria-hidden="true" tabindex="-1"></a>{% endblock %}</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Przenieś tu własną treść poprzedniej strony „O mnie”, zachowując bloki. Nagłówek strony, menu i stopkę edytujesz od teraz w <code>base.html</code>.</p>
-</section>
-<section id="skróć-stronę-zainteresowania" class="level3">
-<h3 class="anchored" data-anchor-id="skróć-stronę-zainteresowania">6. Skróć stronę „Zainteresowania”</h3>
-<p>Kompletny <code>templates/interests.html</code>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb44"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>{% extends "base.html" %}</span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>{% block title %}Zainteresowania{% endblock %}</span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>{% block content %}</span>
-<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">section</span><span class="dt">&gt;</span></span>
-<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">h2</span><span class="dt">&gt;</span>Moje zainteresowania<span class="dt">&lt;/</span><span class="kw">h2</span><span class="dt">&gt;</span></span>
-<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span></span>
-<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>        Interesuję się fotografią i turystyką.</span>
-<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a>        Podczas wyjazdów fotografuję krajobrazy i architekturę.</span>
-<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
-<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span></span>
-<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a>        Chcę przygotować galerię internetową z wybranymi zdjęciami.</span>
-<span id="cb44-14"><a href="#cb44-14" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
-<span id="cb44-15"><a href="#cb44-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-16"><a href="#cb44-16" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">h3</span><span class="dt">&gt;</span>Jak przygotowuję zdjęcia do galerii?<span class="dt">&lt;/</span><span class="kw">h3</span><span class="dt">&gt;</span></span>
-<span id="cb44-17"><a href="#cb44-17" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">ol</span><span class="dt">&gt;</span></span>
-<span id="cb44-18"><a href="#cb44-18" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">li</span><span class="dt">&gt;</span>Wybieram zdjęcia z wyjazdu.<span class="dt">&lt;/</span><span class="kw">li</span><span class="dt">&gt;</span></span>
-<span id="cb44-19"><a href="#cb44-19" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">li</span><span class="dt">&gt;</span>Przygotowuję opisy.<span class="dt">&lt;/</span><span class="kw">li</span><span class="dt">&gt;</span></span>
-<span id="cb44-20"><a href="#cb44-20" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">li</span><span class="dt">&gt;</span>Układam fotografie w kolejności prezentacji.<span class="dt">&lt;/</span><span class="kw">li</span><span class="dt">&gt;</span></span>
-<span id="cb44-21"><a href="#cb44-21" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">ol</span><span class="dt">&gt;</span></span>
-<span id="cb44-22"><a href="#cb44-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-23"><a href="#cb44-23" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span></span>
-<span id="cb44-24"><a href="#cb44-24" aria-hidden="true" tabindex="-1"></a>        Przykłady fotografii znajdziesz w</span>
-<span id="cb44-25"><a href="#cb44-25" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">a</span><span class="ot"> href</span><span class="op">=</span><span class="st">"https://commons.wikimedia.org/"</span><span class="dt">&gt;</span>Wikimedia Commons<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;</span>.</span>
-<span id="cb44-26"><a href="#cb44-26" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
-<span id="cb44-27"><a href="#cb44-27" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">section</span><span class="dt">&gt;</span></span>
-<span id="cb44-28"><a href="#cb44-28" aria-hidden="true" tabindex="-1"></a>{% endblock %}</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="zachowaj-trzy-trasy-aplikacji" class="level3">
-<h3 class="anchored" data-anchor-id="zachowaj-trzy-trasy-aplikacji">7. Zachowaj trzy trasy aplikacji</h3>
-<p><code>app.py</code> pozostaje taki jak po poprzedniej sekcji. Dla porównania pełna wersja:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> flask <span class="im">import</span> Flask, render_template</span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> Flask(<span class="va">__name__</span>)</span>
-<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a><span class="at">@app.route</span>(<span class="st">"/"</span>)</span>
-<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> home() <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
-<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Render the home page."""</span></span>
-<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> render_template(<span class="st">"index.html"</span>)</span>
-<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a><span class="at">@app.route</span>(<span class="st">"/about"</span>)</span>
-<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> about() <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
-<span id="cb45-14"><a href="#cb45-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Render the about page."""</span></span>
-<span id="cb45-15"><a href="#cb45-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> render_template(<span class="st">"about.html"</span>)</span>
-<span id="cb45-16"><a href="#cb45-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-17"><a href="#cb45-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-18"><a href="#cb45-18" aria-hidden="true" tabindex="-1"></a><span class="at">@app.route</span>(<span class="st">"/interests"</span>)</span>
-<span id="cb45-19"><a href="#cb45-19" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> interests() <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
-<span id="cb45-20"><a href="#cb45-20" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Render the interests page."""</span></span>
-<span id="cb45-21"><a href="#cb45-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> render_template(<span class="st">"interests.html"</span>)</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Nadal renderujesz szablon konkretnej strony, np. <code>about.html</code>. Jinja odczytuje jego <code>extends</code>, łączy bloki ze strukturą <code>base.html</code> i tworzy kompletny wynikowy dokument. Nie zmieniaj wszystkich wywołań na <code>render_template("base.html")</code>, bo stracisz treść właściwą dla podstron.</p>
-</section>
-<section id="zrozum-automatyczne-oznaczenie-menu" class="level3">
-<h3 class="anchored" data-anchor-id="zrozum-automatyczne-oznaczenie-menu">8. Zrozum automatyczne oznaczenie menu</h3>
-<p>W szablonie bazowym sprawdzamy bieżący endpoint:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb46"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">a</span><span class="ot"> href</span><span class="op">=</span><span class="st">"{{ url_for('about') }}"</span><span class="er">{%</span><span class="ot"> if request.endpoint </span><span class="op">=</span><span class="er">=</span><span class="ot"> </span><span class="er">'</span><span class="ot">about</span><span class="er">'</span><span class="ot"> </span><span class="er">%}</span><span class="ot"> aria-current</span><span class="op">=</span><span class="st">"page"</span><span class="er">{%</span><span class="ot"> endif </span><span class="er">%}</span><span class="dt">&gt;</span>O mnie<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Podczas obsługi <code>/about</code> wartością <code>request.endpoint</code> jest <code>about</code>. Flask udostępnia obiekt <code>request</code> w szablonie podczas żądania. Warunek dodaje wtedy atrybut <code>aria-current="page"</code>. Dla innych stron ten atrybut nie jest dodawany do tego odnośnika.</p>
-<p>Spacja przed <code>aria-current</code> wewnątrz warunku oddziela atrybuty w wynikowym HTML. Nasz wcześniejszy CSS nadal odczytuje ten sam atrybut, dlatego nie trzeba zmieniać reguły wyróżnienia menu.</p>
-</section>
-<section id="sprawdź-współdzielenie-i-wynikowy-html" class="level3">
-<h3 class="anchored" data-anchor-id="sprawdź-współdzielenie-i-wynikowy-html">9. Sprawdź współdzielenie i wynikowy HTML</h3>
-<p>Uruchom serwer, jeśli nie działa:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb47"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> flask <span class="at">--app</span> app run <span class="at">--debug</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Otwórz kolejno <code>/</code>, <code>/about</code> i <code>/interests</code>. Sprawdź własną treść, tytuł karty, CSS i właściwą pozycję menu.</p>
-<p>Następnie zmień tekst stopki <strong>tylko w <code>base.html</code></strong>. Odśwież wszystkie strony. Nowy tekst powinien pojawić się na każdej z nich.</p>
-<p>W źródle strony w przeglądarce sprawdź, czy:</p>
-<ul>
-<li>występuje jeden szkielet <code>html</code>, <code>head</code> i <code>body</code>;</li>
-<li>menu i stopka występują po jednym razie;</li>
-<li>nie ma instrukcji <code>{% extends ... %}</code> ani <code>{% block ... %}</code>;</li>
-<li>właściwy odnośnik ma <code>aria-current="page"</code>.</li>
-</ul>
-<p>Jeśli treść jest pusta, porównaj nazwy bloków: <code>content</code> i <code>contents</code> to różne nazwy. Jeżeli otrzymasz <code>TemplateNotFound: base.html</code>, sprawdź jego położenie w <code>templates</code>. Przy błędzie <code>TemplateSyntaxError</code> sprawdź domknięcia <code>endblock</code>, <code>endif</code> i nawiasów Jinja.</p>
-</section>
-<section id="opcjonalnie-prosty-panel-bootstrap" class="level3">
-<h3 class="anchored" data-anchor-id="opcjonalnie-prosty-panel-bootstrap">10. Opcjonalnie: prosty panel Bootstrap</h3>
-<p>Najpierw uruchom i sprawdź wersję ze swoim CSS. Bootstrap dodamy jako krótki eksperyment: użyjemy gotowego komponentu, zachowując istniejące menu i układ.</p>
-<p>W <code>base.html</code>, <strong>przed odwołaniem do <code>style.css</code></strong>, dodaj arkusz Bootstrap. Docelowe dwa elementy <code>link</code>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb48"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">link</span></span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="ot">    href</span><span class="op">=</span><span class="st">"https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"</span></span>
-<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="ot">    rel</span><span class="op">=</span><span class="st">"stylesheet"</span></span>
-<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="ot">    integrity</span><span class="op">=</span><span class="st">"sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"</span></span>
-<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a><span class="ot">    crossorigin</span><span class="op">=</span><span class="st">"anonymous"</span><span class="dt">&gt;</span></span>
-<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">link</span><span class="ot"> rel</span><span class="op">=</span><span class="st">"stylesheet"</span><span class="ot"> href</span><span class="op">=</span><span class="st">"{{ url_for('static', filename='style.css') }}"</span><span class="dt">&gt;</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
-<p>To arkusz pobierany z internetu. Jego użycie nie wymaga instalacji pakietu Pythona. Przy pracy bez dostępu do sieci pozostań przy wcześniejszej wersji z własnym CSS. Atrybut <code>integrity</code> pozwala przeglądarce zweryfikować pobrany plik; przy zmianie wersji adres i suma muszą pochodzić z tej samej oficjalnej konfiguracji.</p>
-<p>W <code>templates/index.html</code>, wewnątrz istniejącej sekcji i bloku <code>content</code>, dodaj:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb49"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> class</span><span class="op">=</span><span class="st">"alert alert-info"</span><span class="ot"> role</span><span class="op">=</span><span class="st">"note"</span><span class="dt">&gt;</span></span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>    Ta strona korzysta ze wspólnego szablonu Flask.</span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
-<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> class</span><span class="op">=</span><span class="st">"card mt-3"</span><span class="dt">&gt;</span></span>
-<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> class</span><span class="op">=</span><span class="st">"card-body"</span><span class="dt">&gt;</span></span>
-<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">h3</span><span class="ot"> class</span><span class="op">=</span><span class="st">"card-title"</span><span class="dt">&gt;</span>Poznaj autora<span class="dt">&lt;/</span><span class="kw">h3</span><span class="dt">&gt;</span></span>
-<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">p</span><span class="ot"> class</span><span class="op">=</span><span class="st">"card-text"</span><span class="dt">&gt;</span>Przejdź do krótkiego opisu moich zainteresowań.<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
-<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">a</span><span class="ot"> class</span><span class="op">=</span><span class="st">"btn btn-primary"</span><span class="ot"> href</span><span class="op">=</span><span class="st">"{{ url_for('interests') }}"</span><span class="dt">&gt;</span></span>
-<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a>            Zobacz zainteresowania</span>
-<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;</span></span>
-<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
-<span id="cb49-13"><a href="#cb49-13" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Atrybut <code>class</code> może zawierać kilka klas oddzielonych spacjami. Bootstrap definiuje ich wygląd: <code>card</code> tworzy kartę, <code>card-body</code> jej wnętrze, <code>btn btn-primary</code> wygląd przycisku, a <code>mt-3</code> górny margines. Odnośnik nadal jest elementem <code>a</code> i nadal prowadzi do trasy Flaska.</p>
-<p>Te komponenty nie wymagają JavaScriptu. Nie dodajemy rozwijanego menu ani innych interaktywnych komponentów.</p>
-<p>Własny arkusz ładowany jest po Bootstrapie. Przy takiej samej ważności i szczegółowości późniejsza deklaracja może nadpisać wcześniejszą, ale sama kolejność nie gwarantuje nadpisania każdej reguły. Bootstrap zawiera też style ogólne: po podłączeniu sprawdź ponownie wszystkie strony, listy i fokus klawiatury.</p>
-</section>
-<section id="samodzielna-zmiana-wspólnego-układu" class="level3">
-<h3 class="anchored" data-anchor-id="samodzielna-zmiana-wspólnego-układu">11. Samodzielna zmiana wspólnego układu</h3>
-<p>Wymyśl krótkie hasło witryny i zmień opis pod <code>h1</code> w <code>base.html</code>. Następnie dostosuj tytuły trzech stron w ich własnych blokach <code>title</code>.</p>
-<p>Sprawdź różnicę: wspólne hasło zmienia się wszędzie, natomiast tytuł konkretnej podstrony pozostaje lokalny. Treść biografii i zainteresowań zachowaj w odpowiednich szablonach potomnych.</p>
-</section>
-<section id="punkt-kontrolny-sekcji-5" class="level3">
-<h3 class="anchored" data-anchor-id="punkt-kontrolny-sekcji-5">12. Punkt kontrolny sekcji 5</h3>
-<ul class="task-list">
-<li><label><input type="checkbox"><code>base.html</code> zawiera jedyny wspólny szkielet dokumentu, menu i stopkę.</label></li>
-<li><label><input type="checkbox">Trzy szablony stron zaczynają się od <code>extends</code> i wypełniają bloki.</label></li>
-<li><label><input type="checkbox">Trasy nadal renderują <code>index.html</code>, <code>about.html</code> i <code>interests.html</code>.</label></li>
-<li><label><input type="checkbox">Bieżąca pozycja menu wynika z <code>request.endpoint</code>.</label></li>
-<li><label><input type="checkbox">Zmiana stopki w jednym pliku jest widoczna na wszystkich stronach.</label></li>
-<li><label><input type="checkbox">W wynikowym HTML nie ma instrukcji Jinja ani podwójnego menu.</label></li>
-<li><label><input type="checkbox">Jeśli wykonano wariant Bootstrap, karta działa, a własny CSS i fokus pozostały czytelne.</label></li>
-</ul>
-<p><strong>Rezultat:</strong> wspólny układ edytujesz w jednym miejscu, a treść stron w osobnych szablonach. Aplikacja jest gotowa do kolejnego etapu: przygotowania <code>Dockerfile</code>.</p>
-<p>Materiały referencyjne: <a href="https://flask.palletsprojects.com/en/stable/patterns/templateinheritance/">dziedziczenie szablonów we Flasku</a>, <a href="https://flask.palletsprojects.com/en/stable/tutorial/templates/">szablony w tutorialu Flask</a> i <a href="https://getbootstrap.com/docs/5.3/getting-started/introduction/">oficjalna konfiguracja Bootstrap</a>.</p>
+<p><strong>Rezultat:</strong> masz aplikację Flask z jednym dokumentem HTML i niezależnym endpointem obliczeniowym JSON. Ten sam wzorzec komunikacji wykorzystamy później do wyświetlania danych z API. Następny etap to konteneryzacja przez <code>Dockerfile</code>.</p>
+<p>Dokumentacja: <a href="https://flask.palletsprojects.com/en/stable/quickstart/">Flask — Quickstart</a>, <a href="https://flask.palletsprojects.com/en/stable/api/#flask.Request.args">Flask — request.args</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch">MDN — Fetch API</a>.</p>
 
 
 </section>
