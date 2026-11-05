@@ -44,7 +44,9 @@ Udostępnione są wszystkie trzy moduły wykładowe:
 [wykład 1](lectures/spotkanie1.qmd),
 [wykład 2](lectures/spotkanie2.qmd) oraz
 [wykład 3](lectures/spotkanie3.qmd).
-Materiały laboratoryjne zostaną opublikowane przed odpowiednimi terminami.
+[Laboratorium 1: HTML5, CSS i Flask](cwiczenia/spotkanie1.qmd) zawiera instrukcję
+przygotowania trzech stron, wspólnego arkusza CSS i aplikacji Flask.
+Pozostałe materiały laboratoryjne zostaną opublikowane przed odpowiednimi terminami.
 
 ## Wykład i samodzielna praca
 

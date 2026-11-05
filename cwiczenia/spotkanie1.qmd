@@ -1,532 +1,1146 @@
 ---
-title: "Lab, spotkanie 1: Od zera do pełnego CRUD"
+title: "Laboratorium 1: HTML5, CSS i Flask"
+subtitle: "Sekcje 1–4 · HTML5, CSS i aplikacja Flask"
+lang: pl
+toc-title: "Na tej stronie"
+code-copy: true
 ---
 
-# 🛠️ Laboratorium — Spotkanie 1 (3h)
+## Cel tej sekcji
 
-Cztery części, jedna sesja: stawiamy pierwszy serwer, dodajemy prawdziwy model
-danych, podłączamy bazę i kończymy pełnym CRUD-em plus pierwszą wersją rezerwacji.
-Każda część to ok. 45 minut praktycznej pracy.
+Przygotujesz stronę główną osobistej witryny. Wpiszesz własną treść, otworzysz dokument w przeglądarce i sprawdzisz, jak znaczniki HTML opisują strukturę strony. Możesz przedstawić siebie, fikcyjną postać albo wybrany temat. Nie musisz podawać prawdziwych danych osobowych.
 
----
+To pierwszy etap laboratorium: **HTML5 → CSS → Flask → Dockerfile → Docker Compose → GitHub**. W tej sekcji pracujemy wyłącznie z HTML. Podstrony uzupełnimy w następnym etapie.
 
-# Część I — Środowisko pracy i pierwszy serwer
+## 1. Przygotuj katalog projektu
 
-## 🎯 Cel
+Utwórz katalog `personal-website`. W Visual Studio Code wybierz **File → Open Folder** i otwórz ten katalog. Następnie utwórz cztery puste pliki:
 
-Postawić działający serwer HTTP w Pythonie i zobaczyć swój pierwszy endpoint w przeglądarce. To fundament, na którym przez całe laboratorium (i resztę semestru) zbudujemy system rezerwacji poligonu.
+```text
+personal-website/
+├── index.html
+├── about.html
+├── interests.html
+└── style.css
+```
 
-## 1️⃣ Środowisko
+| Plik | Przeznaczenie |
+|---|---|
+| `index.html` | Strona główna z powitaniem |
+| `about.html` | Podstrona „O mnie” |
+| `interests.html` | Podstrona „Zainteresowania” |
+| `style.css` | Wspólny arkusz stylów, używany w kolejnej sekcji |
 
-Będziemy używać **Python 3.11+**, **FastAPI** (framework webowy) i **uvicorn** (serwer, który faktycznie uruchamia aplikację).
+Nazwa `index.html` jest zwyczajową nazwą strony domyślnej w katalogu witryny. Sprawdź rozszerzenia plików: `index.html.txt` nie jest plikiem `index.html`.
 
-### 🔹 Wirtualne środowisko
+## 2. Wpisz kompletny dokument HTML5
 
-Zawsze pracuj w izolowanym środowisku — nigdy nie instaluj pakietów globalnie.
+Otwórz `index.html` i wprowadź poniższy kod. Przycisk kopiowania w prawym górnym rogu bloku pozwala skopiować cały przykład.
+
+```html
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jan Kowalski — strona osobista</title>
+</head>
+<body>
+    <header>
+        <h1>Jan Kowalski</h1>
+        <p>Witaj na mojej stronie internetowej!</p>
+    </header>
+
+    <nav aria-label="Nawigacja główna">
+        <ul>
+            <li><a href="index.html">Strona główna</a></li>
+            <li><a href="about.html">O mnie</a></li>
+            <li><a href="interests.html">Zainteresowania</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section>
+            <h2>Moja pierwsza strona</h2>
+            <p>
+                Uczę się projektowania aplikacji internetowych.
+                Na tej stronie przedstawiam siebie i swoje zainteresowania.
+            </p>
+            <p>
+                W kolejnych etapach dodam style CSS,
+                a następnie uruchomię stronę jako aplikację Flask.
+            </p>
+        </section>
+    </main>
+
+    <footer>
+        <p>Autor: Jan Kowalski</p>
+    </footer>
+</body>
+</html>
+```
+
+Zapisz plik: **Ctrl+S** w Windows/Linux lub **Cmd+S** w macOS.
+
+## 3. Zrozum szkielet dokumentu
+
+### Znaczniki i elementy
+
+HTML opisuje strukturę i znaczenie treści. Zwykle element składa się ze znacznika otwierającego, treści i znacznika zamykającego:
+
+```html
+<p>Witaj na mojej stronie!</p>
+```
+
+`<p>` rozpoczyna akapit, a `</p>` go zamyka. Ukośnik oznacza znacznik zamykający. Nie wszystkie elementy mają znacznik zamykający: przykładowo `meta` go nie ma.
+
+Elementy mogą zawierać inne elementy. Wcięcia pokazują to zagnieżdżenie i ułatwiają czytanie kodu. Zamykaj elementy w odwrotnej kolejności do ich otwierania.
+
+### Typ dokumentu i język
+
+```html
+<!DOCTYPE html>
+<html lang="pl">
+```
+
+Deklaracja `<!DOCTYPE html>` uruchamia standardowy tryb interpretacji HTML w przeglądarce. Element `html` obejmuje dokument. Atrybut `lang="pl"` określa język treści, co pomaga między innymi czytnikom ekranu.
+
+Atrybut to dodatkowa informacja zapisana w znaczniku otwierającym. W tym przykładzie nazwą atrybutu jest `lang`, a jego wartością `pl`.
+
+### Metadane w head
+
+| Fragment | Znaczenie |
+|---|---|
+| `<meta charset="UTF-8">` | Deklaruje kodowanie znaków. Sam plik również zapisz jako UTF-8. |
+| `<meta name="viewport" content="width=device-width, initial-scale=1.0">` | Ustawia obszar wyświetlania zgodnie z szerokością urządzenia. |
+| `<title>Jan Kowalski — strona osobista</title>` | Określa tytuł dokumentu widoczny na karcie przeglądarki. |
+
+`head` zawiera metadane. Widoczną treść umieszczamy w `body`. Ustawienie `viewport` przyda się przy tworzeniu układu na telefon; samo nie zapewnia jeszcze responsywności.
+
+### Semantyczny podział body
+
+| Element | Rola w naszej stronie |
+|---|---|
+| `header` | Imię i nazwisko oraz powitanie |
+| `nav` | Główna nawigacja |
+| `main` | Główna treść dokumentu |
+| `section` | Tematycznie spójny fragment z własnym nagłówkiem |
+| `footer` | Informacja o autorze |
+
+W naszym dokumencie używamy jednego widocznego elementu `main`. Elementy semantyczne opisują przeznaczenie treści. Wygląd nadamy im później przez CSS.
+
+### Nagłówki i akapity
+
+`h1` to główny nagłówek strony. `h2` oznacza nagłówek sekcji, a `p` akapit. Dobieraj poziom nagłówka według hierarchii treści, a nie rozmiaru liter.
+
+::: {.callout-note}
+## Tytuł karty a nagłówek strony
+
+Zmień sam `title`, zapisz plik i odśwież przeglądarkę. Zmieni się podpis karty. Zmiana `h1` zmieni nagłówek w treści dokumentu. To dwa różne elementy.
+:::
+
+## 4. Przeanalizuj nawigację
+
+```html
+<a href="about.html">O mnie</a>
+```
+
+Element `a` tworzy odnośnik. Atrybut `href` podaje jego cel, a tekst między znacznikami jest etykietą widoczną na stronie.
+
+Adres `about.html` jest ścieżką względną. Przeglądarka szuka pliku w tym samym katalogu co bieżący dokument. Dlatego wszystkie trzy pliki HTML umieszczamy obok siebie.
+
+Menu zapisaliśmy jako listę: `ul` to lista nieuporządkowana, a każdy `li` jest jej pozycją. Atrybut `aria-label` nadaje obszarowi nawigacji nazwę dla technologii wspomagających.
+
+::: {.callout-important}
+## Podstrony są jeszcze puste
+
+Kliknięcie „O mnie” lub „Zainteresowania” otworzy pusty dokument, jeżeli utworzyłeś odpowiedni pusty plik. To oczekiwany stan tego etapu. Wróć przyciskiem Wstecz; zawartość podstron dodamy w kolejnej sekcji.
+:::
+
+## 5. Otwórz stronę w przeglądarce
+
+1. Znajdź `index.html` w menedżerze plików.
+2. Otwórz go w przeglądarce lub przeciągnij do jej okna.
+3. Sprawdź tytuł karty, nagłówek, menu, akapity i stopkę.
+
+Adres rozpoczynający się od `file:///` oznacza odczyt lokalnego pliku. Nie działa tu jeszcze serwer HTTP ani aplikacja Flask.
+
+Strona będzie miała domyślny wygląd przeglądarki. Menu może być pionową listą z punktami. Plik `style.css` jest pusty i nie został jeszcze podłączony.
+
+## 6. Uzupełnij własną treść
+
+Zastąp przykładowe dane własnymi lub wymyślonymi. Zmień:
+
+- tytuł dokumentu w `title`;
+- imię i nazwisko w `h1` oraz stopce;
+- powitanie w nagłówku;
+- nagłówek sekcji i dwa akapity opisu.
+
+Zachowaj strukturę dokumentu. Samodzielnie zdecyduj, jaki temat rozwiniesz na podstronie „Zainteresowania”. Napisz kilka zdań, które go zapowiadają.
+
+Po każdej zmianie **zapisz plik i odśwież przeglądarkę**: Ctrl+R lub Cmd+R. Samo wpisanie tekstu w edytorze nie zmienia pliku na dysku.
+
+## 7. Wykonaj dwa eksperymenty
+
+### Nowa linia w kodzie a nowy akapit
+
+Zastąp jeden akapit poniższym fragmentem:
+
+```html
+<p>
+    Pierwsze zdanie.
+    Drugie zdanie.
+    Trzecie zdanie.
+</p>
+```
+
+Zapisz plik i sprawdź efekt. Przy domyślnym sposobie wyświetlania przeglądarka traktuje przejścia do nowego wiersza i serie spacji jak pojedynczy odstęp. Tekst zawija się zależnie od dostępnej szerokości.
+
+Następnie porównaj z trzema osobnymi akapitami:
+
+```html
+<p>Pierwszy akapit.</p>
+<p>Drugi akapit.</p>
+<p>Trzeci akapit.</p>
+```
+
+### Znaczenie wyróżnienia
+
+Wstaw do jednego akapitu element `strong`:
+
+```html
+<p>
+    Na tych zajęciach tworzę
+    <strong>własną stronę internetową</strong>.
+</p>
+```
+
+`strong` oznacza treść o dużej wadze i domyślnie jest wyświetlany pogrubieniem. Zwróć uwagę: zamykamy `strong` przed zamknięciem otaczającego go `p`.
+
+## 8. Sprawdź rezultat
+
+To lista kontrolna wykonania zadania, nie punktowany test.
+
+- [ ] Projekt zawiera trzy pliki HTML i jeden CSS.
+- [ ] `index.html` zawiera kompletny dokument HTML5.
+- [ ] Tytuł karty i nagłówek mają własną treść.
+- [ ] Polskie znaki wyświetlają się poprawnie.
+- [ ] W dokumencie są nagłówek, nawigacja, główna treść i stopka.
+- [ ] Potrafisz wskazać cel odnośnika oraz jego etykietę.
+- [ ] Po zapisaniu pliku i odświeżeniu przeglądarki widzisz zmiany.
+
+Jeżeli widzisz sam kod zamiast strony, sprawdź rozszerzenie pliku i upewnij się, że otwierasz go w przeglądarce. Jeżeli widzisz poprzednią treść, zapisz plik i sprawdź, czy edytujesz ten sam dokument, który jest otwarty w przeglądarce.
+
+**Rezultat:** masz stronę główną z własną treścią. Następny etap to uzupełnienie dwóch podstron i sprawdzenie nawigacji między nimi.
+
+
+## Sekcja 2. Dwie podstrony i nawigacja
+
+W pierwszym etapie powstała strona główna. Teraz uzupełnisz `about.html` i `interests.html`, a następnie sprawdzisz przechodzenie między trzema dokumentami. Nadal nie używamy CSS ani Flaska.
+
+Docelowo wszystkie trzy pliki mają znajdować się w jednym katalogu:
+
+```text
+personal-website/
+├── index.html
+├── about.html
+├── interests.html
+└── style.css
+```
+
+### 1. Przygotuj stronę „O mnie”
+
+Otwórz pusty plik `about.html` i wpisz cały poniższy dokument. Nie wklejaj go do `index.html`: każda podstrona jest osobnym plikiem z własnym `head` i `body`.
+
+```html
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O mnie — Jan Kowalski</title>
+</head>
+<body>
+    <header>
+        <h1>Jan Kowalski</h1>
+        <p>Moja osobista witryna internetowa</p>
+    </header>
+
+    <nav aria-label="Nawigacja główna">
+        <ul>
+            <li><a href="index.html">Strona główna</a></li>
+            <li><a href="about.html" aria-current="page">O mnie</a></li>
+            <li><a href="interests.html">Zainteresowania</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section>
+            <h2>O mnie</h2>
+            <p>
+                Jestem studentem i uczę się tworzyć aplikacje internetowe.
+                Lubię poznawać nowe narzędzia i sprawdzać je w praktyce.
+            </p>
+            <p>
+                Moim celem na te zajęcia jest przygotowanie własnej witryny
+                i uruchomienie jej w kontenerze.
+            </p>
+
+            <h3>Czego chcę się nauczyć?</h3>
+            <ul>
+                <li>Budowania stron w HTML5.</li>
+                <li>Opisywania wyglądu za pomocą CSS.</li>
+                <li>Tworzenia aplikacji we Flasku.</li>
+            </ul>
+
+            <p>
+                Materiały do samodzielnej nauki znajdziesz w
+                <a href="https://developer.mozilla.org/pl/docs/Web/HTML">dokumentacji HTML w MDN</a>.
+            </p>
+        </section>
+    </main>
+
+    <footer>
+        <p>Autor: Jan Kowalski</p>
+    </footer>
+</body>
+</html>
+```
+
+Zapisz plik i otwórz go w przeglądarce. Możesz również przejść do niego przez odnośnik „O mnie” na stronie głównej.
+
+### 2. Przeanalizuj różnice względem strony głównej
+
+Szkielet dokumentu pozostaje taki sam. Zmieniliśmy tytuł karty, treść `main` i oznaczenie bieżącej pozycji menu.
+
+| Fragment | Dlaczego go zmieniamy? |
+|---|---|
+| `title` | Pozwala rozpoznać podstronę na karcie przeglądarki. |
+| `h2` w `main` | Wskazuje temat bieżącej podstrony. |
+| Akapity i lista | Zawierają treść właściwą dla strony „O mnie”. |
+| `aria-current="page"` | Oznacza odnośnik prowadzący do aktualnie otwartej strony. |
+
+Nazwisko w `h1`, menu i stopka pozostają wspólne dla całej witryny. Pod nagłówkiem sekcji `h2` umieściliśmy nagłówek niższego poziomu `h3`, opisujący listę celów.
+
+Lista `ul` grupuje elementy, których kolejność nie jest istotna. Każda pozycja musi znajdować się we własnym elemencie `li`.
+
+::: {.callout-note}
+## Bieżąca strona w menu
+
+`aria-current="page"` przekazuje informację o bieżącej stronie technologiom wspomagającym. Sam atrybut nie zmienia domyślnie wyglądu odnośnika. Wyróżnienie wizualne dodamy w CSS.
+:::
+
+### 3. Przygotuj stronę „Zainteresowania”
+
+Otwórz `interests.html` i wpisz kompletny dokument:
+
+```html
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zainteresowania — Jan Kowalski</title>
+</head>
+<body>
+    <header>
+        <h1>Jan Kowalski</h1>
+        <p>Moja osobista witryna internetowa</p>
+    </header>
+
+    <nav aria-label="Nawigacja główna">
+        <ul>
+            <li><a href="index.html">Strona główna</a></li>
+            <li><a href="about.html">O mnie</a></li>
+            <li><a href="interests.html" aria-current="page">Zainteresowania</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section>
+            <h2>Moje zainteresowania</h2>
+            <p>
+                Interesuję się fotografią i turystyką.
+                Podczas wyjazdów fotografuję krajobrazy i architekturę.
+            </p>
+            <p>
+                Chcę przygotować prostą galerię internetową,
+                w której będę prezentować wybrane zdjęcia.
+            </p>
+
+            <h3>Jak przygotowuję zdjęcia do galerii?</h3>
+            <ol>
+                <li>Wybieram zdjęcia z wyjazdu.</li>
+                <li>Przygotowuję krótki opis każdego zdjęcia.</li>
+                <li>Układam fotografie w kolejności prezentacji.</li>
+            </ol>
+
+            <p>
+                Przykłady fotografii możesz obejrzeć w
+                <a href="https://commons.wikimedia.org/">Wikimedia Commons</a>.
+            </p>
+        </section>
+    </main>
+
+    <footer>
+        <p>Autor: Jan Kowalski</p>
+    </footer>
+</body>
+</html>
+```
+
+Zapisz plik. Tutaj użyliśmy `ol`, czyli listy uporządkowanej: kolejność kroków ma znaczenie. Jej pozycje również zapisujemy jako `li`.
+
+Zastąp fotografię dowolnym własnym tematem. Zachowaj dwa akapity, nagłówek listy, listę i odnośnik zewnętrzny. Jeśli opisujesz zbiór zainteresowań bez określonej kolejności, możesz zamienić `ol` na `ul`, zmieniając oba znaczniki: otwierający i zamykający.
+
+### 4. Ujednolić menu na stronie głównej
+
+W `index.html` znajdź cały element `nav` i zastąp go poniższym fragmentem:
+
+```html
+<nav aria-label="Nawigacja główna">
+    <ul>
+        <li><a href="index.html" aria-current="page">Strona główna</a></li>
+        <li><a href="about.html">O mnie</a></li>
+        <li><a href="interests.html">Zainteresowania</a></li>
+    </ul>
+</nav>
+```
+
+W każdym pliku menu zawiera te same etykiety, adresy i kolejność odnośników. Różni się położeniem `aria-current="page"`:
+
+| Dokument | Odnośnik oznaczony jako bieżący |
+|---|---|
+| `index.html` | Strona główna |
+| `about.html` | O mnie |
+| `interests.html` | Zainteresowania |
+
+W każdym z tych menu oznacz dokładnie jedną pozycję jako bieżącą. Nie przenoś menu z `about.html` do pozostałych plików bez poprawienia tego oznaczenia.
+
+### 5. Rozróżnij rodzaje adresów
+
+Porównaj trzy zapisy:
+
+```html
+<a href="about.html">O mnie</a>
+<a href="https://developer.mozilla.org/pl/docs/Web/HTML">Dokumentacja HTML</a>
+<a href="#top">Początek strony</a>
+```
+
+| Adres | Działanie |
+|---|---|
+| `about.html` | Otwiera dokument względem katalogu bieżącej strony. |
+| `https://developer.mozilla.org/pl/docs/Web/HTML` | Otwiera wskazany adres w internecie. |
+| `#top` | Przechodzi do elementu o `id="top"` w bieżącym dokumencie. |
+
+Aby wypróbować trzeci wariant, dodaj `id="top"` do istniejącego nagłówka strony:
+
+```html
+<header id="top">
+    <h1>Jan Kowalski</h1>
+    <p>Moja osobista witryna internetowa</p>
+</header>
+```
+
+Następnie dodaj odnośnik „Początek strony” do stopki. Na krótkim dokumencie przewinięcie może być niezauważalne, ale w adresie pojawi się fragment `#top`. Wartość `id` musi być unikalna w obrębie dokumentu.
+
+::: {.callout-important}
+## Dlaczego bez ukośnika na początku?
+
+W tym ćwiczeniu zapisuj `href="about.html"`, a nie `href="/about.html"`. Początkowy ukośnik oznacza ścieżkę od korzenia bieżącego adresu. Przy otwieraniu lokalnych plików nie wskazuje katalogu projektu; na serwerze wskazuje korzeń witryny. Może więc prowadzić do innego miejsca niż oczekujesz.
+
+Nie wpisuj też ścieżek do własnego dysku, takich jak `C:\Users\Jan\...`. Menu ma działać również po przeniesieniu całego katalogu na inny komputer.
+:::
+
+Odnośniki z przykładów otwierają dokumenty w tej samej karcie. Przycisk Wstecz w przeglądarce pozwala wrócić do poprzednio odwiedzonej strony.
+
+### 6. Samodzielnie uzupełnij treść
+
+Na obu podstronach ustaw tę samą nazwę autora co na stronie głównej. Napisz własne akapity i zmień pozycje list. Dobierz odnośnik zewnętrzny związany z tematem i nadaj mu etykietę opisującą cel, np. „Dokumentacja HTML w MDN”, zamiast samego „Kliknij tutaj”.
+
+Nie zmieniaj nazw plików, chyba że poprawisz również wszystkie prowadzące do nich odnośniki. Zachowaj wspólną strukturę nagłówka, menu i stopki.
+
+### 7. Sprawdź wszystkie przejścia
+
+Otwórz `index.html`. Sprawdź poniższe przejścia, za każdym razem używając menu:
+
+| Z dokumentu | Przejdź do | Oczekiwany plik |
+|---|---|---|
+| Strona główna | O mnie | `about.html` |
+| O mnie | Zainteresowania | `interests.html` |
+| Zainteresowania | Strona główna | `index.html` |
+| Strona główna | Zainteresowania | `interests.html` |
+| Zainteresowania | O mnie | `about.html` |
+| O mnie | Strona główna | `index.html` |
+
+Po każdym przejściu sprawdź adres, tytuł karty i nagłówek treści. Dzięki temu upewnisz się, że odnośnik otwiera właściwy dokument, a nie tylko stronę o podobnym wyglądzie.
+
+Przetestuj również menu klawiaturą: użyj **Tab**, aby przejść do odnośnika, i **Enter**, aby go otworzyć. Sprawdź, czy widzisz obramowanie wskazujące aktualnie wybrany odnośnik.
+
+### 8. Jeśli nawigacja nie działa
+
+| Objaw | Co sprawdzić? |
+|---|---|
+| Przeglądarka nie znajduje pliku | Czy plik istnieje w tym samym katalogu i ma nazwę podaną w `href`? |
+| Otwiera się pusta strona | Czy zapisano zawartość właściwego pliku? |
+| Menu prowadzi do innej podstrony | Czy etykieta i `href` opisują tę samą stronę? |
+| Lokalnie działa, po przeniesieniu przestaje | Czy nie użyto ścieżki do własnego dysku lub innej wielkości liter? |
+| Tytuł karty jest taki sam wszędzie | Czy zmieniono `title` w każdym dokumencie? |
+
+Zachowuj identyczną wielkość liter w nazwach plików i adresach. `About.html` i `about.html` mogą być różnymi plikami na serwerze, nawet jeśli lokalny system ich nie rozróżnia.
+
+### 9. Punkt kontrolny sekcji 2
+
+- [ ] Wszystkie trzy pliki HTML zawierają kompletne dokumenty.
+- [ ] Każda strona ma własny tytuł karty i treść główną.
+- [ ] Z każdej strony można przejść do obu pozostałych przez menu.
+- [ ] Bieżąca pozycja menu jest oznaczona przez `aria-current="page"`.
+- [ ] Podstrony zawierają własne akapity, listy i odnośniki zewnętrzne.
+- [ ] Rozróżniasz odnośnik do pliku, adres internetowy i fragment dokumentu.
+- [ ] Nawigacja działa również przy użyciu klawiatury.
+
+**Rezultat:** masz kompletną statyczną witrynę z trzema stronami. W kolejnym etapie podłączysz wspólny arkusz CSS. Powtarzający się kod menu pozostaje na razie w trzech plikach; później przeniesiemy go do wspólnego szablonu Flaska.
+
+
+## Sekcja 3. Podstawy CSS i wspólny arkusz stylów
+
+Masz już trzy dokumenty HTML połączone menu. Teraz nadasz im wspólny wygląd. Utworzysz jeden arkusz CSS, podłączysz go do każdej strony i sprawdzisz, czy zmiana jednej reguły wpływa na całą witrynę.
+
+HTML nadal opisuje strukturę i znaczenie treści. CSS określi między innymi kolory, krój pisma, odstępy i układ menu.
+
+### 1. Podłącz arkusz do trzech dokumentów
+
+W każdym pliku — `index.html`, `about.html` i `interests.html` — dodaj poniższy element wewnątrz `head`, po `title`:
+
+```html
+<link rel="stylesheet" href="style.css">
+```
+
+Dla strony głównej kompletny fragment `head` będzie wyglądał tak:
+
+```html
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jan Kowalski — strona osobista</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+```
+
+Na podstronach zachowaj ich własne tytuły. Dodaj wyłącznie odwołanie do arkusza.
+
+`rel="stylesheet"` określa, że podłączony zasób jest arkuszem stylów. `href="style.css"` wskazuje plik w tym samym katalogu co dokument. Element `link` nie ma znacznika zamykającego.
+
+::: {.callout-important}
+## Który plik edytujesz?
+
+Edytuj `style.css` we własnym projekcie `personal-website`. Nie edytuj arkusza strony kursu ani plików w katalogu `docs`. Kod z tej instrukcji jest przeznaczony dla Twojej witryny.
+:::
+
+### 2. Sprawdź połączenie z arkuszem
+
+W pustym `style.css` wpisz:
+
+```css
+body {
+    background-color: #eef2f6;
+    color: #1f2937;
+}
+```
+
+Zapisz arkusz i wszystkie trzy dokumenty HTML. Odśwież kolejno każdą stronę. Tło powinno zmienić kolor na jasny szaroniebieski, a tekst na ciemnoszary.
+
+Jeżeli zmiana występuje tylko na jednej stronie, sprawdź element `link` w dwóch pozostałych. Jeżeli nie występuje nigdzie, sprawdź nazwę i położenie arkusza.
+
+### 3. Poznaj zapis reguły CSS
+
+```css
+body {
+    color: #1f2937;
+}
+```
+
+Reguła składa się z selektora i bloku deklaracji:
+
+| Fragment | Znaczenie |
+|---|---|
+| `body` | Selektor: wybiera element, który chcemy stylować. |
+| `{ ... }` | Blok deklaracji przypisanych do selektora. |
+| `color` | Właściwość określająca kolor tekstu. |
+| `#1f2937` | Wartość koloru w zapisie szesnastkowym. |
+| `;` | Kończy deklarację. |
+
+Jeden blok może zawierać wiele deklaracji. Dwukropek oddziela nazwę właściwości od wartości. Nawiasy klamrowe obejmują cały blok.
+
+### 4. Wpisz kompletny wspólny arkusz
+
+Zastąp dotychczasową zawartość `style.css` poniższym kodem. Jest to kompletny arkusz dla wszystkich trzech stron — nie wklejaj go do plików HTML.
+
+```css
+/* Include padding and borders in declared element widths. */
+* {
+    box-sizing: border-box;
+}
+
+/* Set shared typography and page colors. */
+body {
+    margin: 0;
+    background-color: #eef2f6;
+    color: #1f2937;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+/* Center the main page regions and limit their width. */
+header,
+nav,
+main,
+footer {
+    width: 100%;
+    max-width: 60rem;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+header {
+    padding-top: 2rem;
+    padding-bottom: 1.5rem;
+}
+
+h1,
+h2,
+h3 {
+    line-height: 1.2;
+}
+
+h1 {
+    margin: 0 0 0.5rem;
+    color: #17365d;
+    font-size: 2rem;
+}
+
+header p {
+    margin: 0;
+    color: #475569;
+}
+
+/* Arrange navigation links in a row that can wrap. */
+nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+nav a {
+    display: block;
+    padding: 0.6rem 1rem;
+    border: 1px solid #17365d;
+    border-radius: 0.4rem;
+    text-decoration: none;
+}
+
+a {
+    color: #17365d;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+nav a:hover {
+    background-color: #dbeafe;
+}
+
+nav a[aria-current="page"] {
+    background-color: #17365d;
+    color: #ffffff;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+/* Keep keyboard focus visible on every link. */
+a:focus-visible {
+    outline: 3px solid #9a3412;
+    outline-offset: 3px;
+}
+
+/* Present each content section as a separate panel. */
+main section {
+    margin-bottom: 1rem;
+    padding: 1.5rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 0.5rem;
+    background-color: #ffffff;
+}
+
+main section > h2:first-child {
+    margin-top: 0;
+}
+
+footer {
+    border-top: 1px solid #cbd5e1;
+    color: #475569;
+    font-size: 0.9rem;
+}
+```
+
+Zapisz arkusz i odśwież stronę główną, a następnie obie podstrony.
+
+### 5. Przeanalizuj typografię i dziedziczenie
+
+W regule `body` ustawiliśmy wspólne właściwości tekstu:
+
+```css
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+```
+
+Przeglądarka próbuje użyć Arial, potem Helvetica, a następnie dostępnej czcionki bezszeryfowej. Lista pozwala wyświetlić tekst również na komputerze bez pierwszej z podanych czcionek.
+
+Jednostka `rem` odnosi się do rozmiaru czcionki elementu głównego `html`. Przy typowych ustawieniach `1rem` odpowiada 16 pikselom, ale użytkownik może zmienić te ustawienia. `line-height: 1.6` określa wysokość wiersza jako 1,6 rozmiaru czcionki danego elementu.
+
+Wiele właściwości tekstu, w tym krój pisma i kolor, jest dziedziczonych przez elementy potomne. Nie musimy więc osobno przypisywać czcionki każdemu akapitowi. Reguły dla nagłówków i odnośników mogą nadpisywać wybrane wartości.
+
+### 6. Zrozum odstępy i szerokość
+
+Każdy element jest opisywany przez model pudełkowy: treść, wewnętrzny odstęp `padding`, obramowanie `border` i zewnętrzny odstęp `margin`.
+
+| Właściwość | Zastosowanie w przykładzie |
+|---|---|
+| `padding: 1.5rem` | Odsuwa treść sekcji od jej obramowania. |
+| `border: 1px solid #cbd5e1` | Tworzy cienką, ciągłą ramkę sekcji. |
+| `margin-bottom: 1rem` | Dodaje odstęp pod sekcją. |
+| `max-width: 60rem` | Ogranicza szerokość głównych obszarów na dużym ekranie. |
+| `margin: 0 auto` | Ustawia zerowy margines pionowy i automatyczne marginesy poziome. |
+
+Przy szerokości ograniczonej przez `max-width` automatyczne marginesy poziome wyśrodkowują obszar. Na małym ekranie `width: 100%` pozwala wykorzystać dostępną szerokość.
+
+Na początku arkusza ustawiliśmy `box-sizing: border-box` dla wszystkich elementów za pomocą selektora `*`. Dzięki temu zadeklarowana szerokość obejmuje również `padding` i obramowanie. Ułatwia to utrzymanie elementów w granicach ekranu.
+
+**Eksperyment:** zmień `padding` w `main section` z `1.5rem` na `0`. Sprawdź, jak tekst zbliża się do ramki. Następnie przywróć poprzednią wartość. Porównaj z ustawieniem `margin-bottom: 0`, które zmienia odstęp na zewnątrz sekcji.
+
+### 7. Rozpoznaj selektory i kaskadę
+
+| Selektor | Co wybiera? |
+|---|---|
+| `body` | Element `body`. |
+| `header, nav, main, footer` | Cztery rodzaje elementów objęte wspólną regułą. |
+| `header p` | Akapity znajdujące się wewnątrz nagłówka strony. |
+| `nav a` | Odnośniki wewnątrz nawigacji. |
+| `nav a[aria-current="page"]` | Odnośnik menu z podaną wartością atrybutu. |
+| `a:hover` | Odnośnik wskazywany kursorem. |
+| `a:focus-visible` | Odnośnik, dla którego przeglądarka wskazuje potrzebę widocznego fokusu, zwykle podczas obsługi klawiaturą. |
+
+Spacja w `nav a` oznacza potomka: odnośnik nie musi być bezpośrednim dzieckiem `nav`. W naszym HTML między nimi znajdują się jeszcze `ul` i `li`.
+
+Reguła `main section > h2:first-child` wybiera nagłówek `h2`, który jest pierwszym dzieckiem sekcji wewnątrz `main`. Usuwa jego górny margines, pozostawiając odstęp kontrolowany przez `padding` sekcji.
+
+O wyniku decyduje kaskada. W naszym arkuszu, dla deklaracji o tym samym pochodzeniu i poziomie ważności, bardziej szczegółowy selektor wygrywa z mniej szczegółowym. Przy takiej samej szczegółowości wygrywa deklaracja zapisana później.
+
+Przykładowo `nav a` usuwa podkreślenie menu, choć przeglądarka domyślnie podkreśla odnośniki. Reguła `nav a[aria-current="page"]` przywraca je dla bieżącej strony i ustawia jej tło. Dzięki temu aktywna pozycja różni się nie tylko kolorem.
+
+### 8. Zobacz, jak Flexbox układa menu
+
+```css
+nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+```
+
+`display: flex` zmienia układ dzieci listy, czyli elementów `li`. Domyślnie są rozmieszczane w wierszu. `gap` określa odstępy między nimi, a `flex-wrap: wrap` pozwala przejść do kolejnego wiersza, gdy brakuje miejsca.
+
+`list-style: none` usuwa wizualne punkty listy; elementy `ul` i `li` nadal pozostają w HTML. Zerujemy także domyślne marginesy i wewnętrzny odstęp listy.
+
+W regule `nav a` używamy `display: block`, aby obszar odnośnika wraz z wewnętrznymi odstępami tworzył wyraźne pole do kliknięcia.
+
+Zwęż okno przeglądarki. Menu powinno zawijać się zamiast wymagać sztywnej szerokości strony. Ten prosty układ nie wymaga jeszcze reguł `@media`.
+
+### 9. Sprawdź hover, fokus i bieżącą stronę
+
+1. Najedź kursorem na odnośnik menu. Sprawdź zmianę tła i podkreślenie.
+2. Przejdź klawiszem **Tab** do menu. Powinno pojawić się widoczne obramowanie fokusu.
+3. Naciśnij **Enter**, aby otworzyć podstronę.
+4. Sprawdź, czy ciemne tło, pogrubienie i podkreślenie wskazują właściwą pozycję.
+
+Jeżeli na każdej stronie wyróżnione jest „O mnie”, sprawdź `aria-current` w HTML. Arkusz odczytuje ten atrybut; nie rozpoznaje samodzielnie nazwy otwartego pliku.
+
+Nie usuwaj obramowania fokusu bez zapewnienia innego wyraźnego oznaczenia. Użytkownik klawiatury musi wiedzieć, który odnośnik otworzy po naciśnięciu Enter.
+
+### 10. Zmień wygląd całej witryny w jednym miejscu
+
+Wybierz własną paletę i zmodyfikuj tylko arkusz:
+
+- kolor tła `body`;
+- kolor nagłówka `h1`;
+- odstęp `gap` w menu;
+- zaokrąglenie `border-radius` panelu z treścią.
+
+Zachowaj czytelny kontrast tekstu względem tła. Po każdej zmianie sprawdź wszystkie trzy strony oraz stan aktywnego odnośnika.
+
+**Eksperyment ze wspólnym arkuszem:** ustaw `border-radius: 0` w `main section`. Otwórz kolejno każdą stronę. We wszystkich panel powinien mieć prostokątne narożniki, mimo że zmieniłeś tylko jeden plik.
+
+### 11. Znajdź regułę w narzędziach przeglądarki
+
+Kliknij prawym przyciskiem myszy panel z treścią i wybierz **Zbadaj / Inspect**. W narzędziach deweloperskich odszukaj zakładkę ze stylami wybranego elementu.
+
+Sprawdź:
+
+1. Czy widzisz regułę `main section` pochodzącą z `style.css`?
+2. Jakie wartości mają `padding`, `border` i `margin`?
+3. Co się stanie po tymczasowym wyłączeniu deklaracji `background-color`?
+
+Zmiany wprowadzone w narzędziach przeglądarki są eksperymentem i zwykle znikają po odświeżeniu. Aby zachować zmianę, zapisz ją w `style.css` w edytorze.
+
+### 12. Gdy style nie działają
+
+| Objaw | Co sprawdzić? |
+|---|---|
+| Żadna strona nie ma stylów | Nazwę `style.css`, położenie pliku i element `link` w `head`. |
+| Jedna strona wygląda inaczej | Czy odwołuje się do tego samego arkusza i ma zgodną strukturę HTML? |
+| Pojedyncza właściwość nie działa | Pisownię nazwy, wartość, jednostkę i średnik w poprzedniej deklaracji. |
+| Większy fragment arkusza nie działa | Czy nawiasy klamrowe są poprawnie zamknięte? |
+| Widać poprzednie style | Czy zapisano plik? Spróbuj odświeżenia z pominięciem pamięci podręcznej. |
+| Bieżąca pozycja menu jest błędna | Położenie `aria-current="page"` w otwartym dokumencie. |
+
+Nie wpisuj znaczników `<style>` do pliku `.css`. Zewnętrzny arkusz zawiera same reguły CSS. Nie zastępuj nim istniejącego kodu HTML.
+
+### 13. Punkt kontrolny sekcji 3
+
+- [ ] Każda z trzech stron ma odwołanie do tego samego `style.css`.
+- [ ] Strony mają wspólną typografię, kolory i szerokość treści.
+- [ ] Rozróżniasz `margin`, `padding` i `border`.
+- [ ] Menu układa się w wierszu i zawija przy małej szerokości.
+- [ ] Bieżąca pozycja menu ma właściwe wyróżnienie.
+- [ ] Odnośniki reagują na kursor i mają widoczny fokus klawiatury.
+- [ ] Zmiana reguły w jednym arkuszu jest widoczna na trzech stronach po odświeżeniu.
+- [ ] Potrafisz odnaleźć regułę elementu w narzędziach przeglądarki.
+
+**Rezultat:** masz statyczną witrynę z trzema podstronami i jednym wspólnym arkuszem CSS. Kolejny etap to uruchomienie strony głównej przez Flask, a następnie dodanie obsługi dwóch pozostałych adresów.
+
+
+## Sekcja 4. Flask: jedna strona i dwie podstrony
+
+Dotychczas przeglądarka odczytywała pliki z dysku. Teraz uruchomisz aplikację HTTP w Pythonie. Najpierw obsłużysz stronę główną, a następnie dodasz dwie podstrony. Zachowasz własną treść i wspólny arkusz CSS.
+
+### 1. Przygotuj Pythona i terminal
+
+Otwórz terminal w katalogu `personal-website`. To katalog Twojej aplikacji, nie repozytorium strony kursu. Korzystamy z **Pythona 3.11 lub nowszego**. Sprawdź wersję:
+
+**macOS / Linux:**
+
+```bash
+python3 --version
+```
+
+**Windows (PowerShell):**
+
+```powershell
+py -3 --version
+```
+
+Jeżeli interpreter nie jest dostępny, zgłoś to prowadzącemu. Nie instaluj pakietów globalnie i nie używaj `sudo`.
+
+### 2. Utwórz izolowane środowisko
+
+**macOS / Linux:**
 
 ```bash
 python3 -m venv .venv
-source .venv/bin/activate      # macOS/Linux
-# .venv\Scripts\activate       # Windows
-
-pip install fastapi uvicorn[standard]
+source .venv/bin/activate
 ```
 
-> 💡 `.venv/` nigdy nie trafia do repozytorium git — dodaj go do `.gitignore`.
+**Windows (PowerShell):**
 
-## 2️⃣ Pierwszy serwer
-
-Utwórz plik `main.py`:
-
-```python
-from fastapi import FastAPI
-
-app = FastAPI(title="System rezerwacji poligonu")
-
-
-@app.get("/")
-def root():
-    return {"komunikat": "System rezerwacji poligonu dziala"}
+```powershell
+py -3 -m venv .venv
+.\.venv\Scripts\Activate.ps1
 ```
 
-Uruchom:
+Jeśli PowerShell blokuje aktywację, możesz korzystać bezpośrednio z interpretera środowiska, bez zmiany polityki wykonywania skryptów:
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install Flask
+```
+
+W takim wariancie w następnych poleceniach zastępuj `python` przez `.\.venv\Scripts\python.exe`.
+
+Po aktywacji środowiska sprawdź interpreter i zainstaluj Flask:
 
 ```bash
-uvicorn main:app --reload
+python -c "import sys; print(sys.executable)"
+python -m pip install Flask
+python -m pip show Flask
 ```
 
-- `main` — nazwa pliku (`main.py`),
-- `app` — nazwa obiektu `FastAPI()` w tym pliku,
-- `--reload` — serwer automatycznie restartuje się po zapisaniu zmian (tylko do pracy deweloperskiej, nigdy na produkcji).
+Ścieżka interpretera powinna prowadzić do `.venv` w Twoim projekcie. Zapis `python -m pip` wiąże instalację z tym właśnie interpreterem. W edytorze również wybierz interpreter z `.venv`, jeśli zgłasza brak biblioteki Flask.
 
-Otwórz w przeglądarce **http://127.0.0.1:8000/** — powinieneś zobaczyć:
+Środowisko `.venv` zawiera lokalną instalację zależności. Nie jest kodem aplikacji i nie należy umieszczać go w repozytorium Git ani kopiować do obrazu Dockera.
 
-```json
-{"komunikat": "System rezerwacji poligonu dziala"}
+### 3. Uporządkuj pliki aplikacji
+
+Utwórz katalogi `templates` i `static`. Przenieś trzy pliki HTML do `templates`, a `style.css` do `static`. W głównym katalogu utwórz `app.py`:
+
+```text
+personal-website/
+├── .venv/
+├── app.py
+├── templates/
+│   ├── index.html
+│   ├── about.html
+│   └── interests.html
+└── static/
+    └── style.css
 ```
 
-## 3️⃣ Automatyczna dokumentacja — korzyść od razu
+Przenoś pliki zamiast zostawiać dodatkowe kopie. `app.py` musi znajdować się obok katalogów `templates` i `static`. Nie nazywaj go `flask.py`, ponieważ taka nazwa może przesłonić import biblioteki.
 
-FastAPI, bez dodatkowej pracy z Twojej strony, generuje interaktywną dokumentację API. Otwórz:
+Pliki HTML pozostają Twoimi dotychczasowymi dokumentami. Flask będzie je przetwarzać jako szablony. Arkusz CSS pozostaje bez zmian.
 
-- **http://127.0.0.1:8000/docs** — interfejs Swagger UI, w którym możesz od razu klikać i testować endpointy.
-- **http://127.0.0.1:8000/redoc** — alternatywny, bardziej "dokumentacyjny" widok.
+### 4. Napisz aplikację z jedną trasą
 
-> 🧠 Do tego mechanizmu wrócimy dokładniej przy projektowaniu API (spotkanie 2) i przy dokumentowaniu API (spotkanie laboratoryjne 3) — dziś zapamiętaj tylko, że istnieje i że jest darmowy.
-
-## 4️⃣ Drugi endpoint — zapowiedź projektu
-
-Dodaj do `main.py` endpoint, który na razie zwraca dane na sztywno (żadnej bazy jeszcze nie mamy — to dopiero część III dzisiejszego spotkania):
+Wpisz kompletną zawartość `app.py`:
 
 ```python
-@app.get("/poligony")
-def lista_poligonow():
-    return [
-        {"id": 1, "nazwa": "Poligon Nowa Dęba", "typ": "strzelnica"},
-        {"id": 2, "nazwa": "Poligon Drawsko", "typ": "teren manewrowy"},
-    ]
+from flask import Flask, render_template
+
+app = Flask(__name__)
+
+
+@app.route("/")
+def home() -> str:
+    """Render the home page."""
+    return render_template("index.html")
 ```
 
-Sprawdź `http://127.0.0.1:8000/poligony` w przeglądarce oraz w `/docs` — zobacz, jak Swagger sam wykrył nowy endpoint.
+| Fragment | Rola |
+|---|---|
+| `Flask` | Klasa, z której tworzymy obiekt aplikacji. |
+| `app = Flask(__name__)` | Tworzy aplikację z informacją o module potrzebną do lokalizowania zasobów. |
+| `@app.route("/")` | Przypisuje adres strony głównej do funkcji poniżej. |
+| `home()` | Funkcja wykonywana przy żądaniu tej strony. |
+| `render_template("index.html")` | Renderuje dokument z katalogu `templates`. |
 
-## 5️⃣ Repozytorium
+Adnotacja `-> str` opisuje typ wartości zwracanej przez naszą funkcję. Nie jest konfiguracją protokołu HTTP.
 
-Załóż repozytorium git dla swojego projektu (osobne od materiałów kursu):
+### 5. Przygotuj stronę główną do obsługi przez Flask
+
+W `templates/index.html` zmień odwołanie do CSS na:
+
+```html
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+```
+
+Na razie zastąp całe menu wersją z jednym odnośnikiem:
+
+```html
+<nav aria-label="Nawigacja główna">
+    <ul>
+        <li><a href="{{ url_for('home') }}" aria-current="page">Strona główna</a></li>
+    </ul>
+</nav>
+```
+
+**Nie dodawaj jeszcze `url_for('about')` ani `url_for('interests')`.** Takie funkcje nie istnieją w aplikacji z jedną trasą. Dodamy je w kolejnym kroku.
+
+Zapis `{{ ... }}` jest wyrażeniem szablonu Jinja. Serwer oblicza jego wartość przed wysłaniem HTML do przeglądarki. `url_for('home')` generuje adres na podstawie nazwy funkcji, a `url_for('static', filename='style.css')` wskazuje zasób statyczny.
+
+W `head` zachowaj metadane i własny tytuł. Poza CSS i menu nie zmieniaj przygotowanej wcześniej treści.
+
+### 6. Uruchom pierwszą stronę
+
+W terminalu z aktywnym środowiskiem, pozostając w katalogu z `app.py`, wykonaj:
 
 ```bash
-git init
-echo ".venv/\n__pycache__/\n*.pyc" > .gitignore
-git add main.py .gitignore
-git commit -m "Init: pierwszy serwer FastAPI"
+python -m flask --app app run --debug
 ```
 
-Ten projekt będzie rósł przez cały semestr — każda kolejna część to nowy commit.
+`--app app` wskazuje moduł `app.py`. Polecenie `run` uruchamia serwer deweloperski. Opcja `--debug` pomaga podczas lokalnych ćwiczeń i automatycznie przeładowuje aplikację po zmianach kodu Pythona.
 
----
-
-# Część II — Pierwszy prawdziwy endpoint REST
-
-## 🎯 Cel
-
-Zastąpić sztywno wpisane listy z części I prawdziwym modelem danych (Pydantic) i
-zaimplementować pierwsze operacje REST na zasobie `Poligon`: `GET` (lista, jeden) i
-`POST` (utworzenie). Dane na razie żyją w pamięci procesu (lista Pythona) — baza
-danych to dopiero część III.
-
-## 1️⃣ Model danych — Pydantic
-
-FastAPI używa biblioteki **Pydantic** do opisu kształtu danych i automatycznej
-walidacji. Zamiast zwracać gołe słowniki jak w części I, zdefiniuj klasę:
-
-```python
-from pydantic import BaseModel
-
-class Poligon(BaseModel):
-    id: int
-    nazwa: str
-    lokalizacja: str
-    typ: str  # "strzelnica" albo "teren manewrowy"
-```
-
-Pydantic automatycznie sprawdzi, czy przychodzące dane pasują do tych typów — jeśli
-klient wyśle `id` jako tekst zamiast liczby, dostanie czytelny błąd `422`, zanim
-Twój kod w ogóle zobaczy te dane.
-
-## 2️⃣ Dane w pamięci (na razie)
-
-```python
-poligony: list[Poligon] = [
-    Poligon(id=1, nazwa="Poligon Nowa Deba", lokalizacja="Nowa Deba", typ="strzelnica"),
-    Poligon(id=2, nazwa="Poligon Drawsko", lokalizacja="Drawsko Pomorskie", typ="teren manewrowy"),
-]
-```
-
-## 3️⃣ GET — lista i pojedynczy zasób
-
-```python
-from fastapi import FastAPI, HTTPException
-
-app = FastAPI(title="System rezerwacji poligonu")
-
-@app.get("/poligony", response_model=list[Poligon])
-def lista_poligonow():
-    return poligony
-
-
-@app.get("/poligony/{poligon_id}", response_model=Poligon)
-def pobierz_poligon(poligon_id: int):
-    for p in poligony:
-        if p.id == poligon_id:
-            return p
-    raise HTTPException(status_code=404, detail="Poligon nie znaleziony")
-```
-
-`{poligon_id}` w ścieżce to **path parameter** — FastAPI automatycznie wyciąga go z
-URL-a i konwertuje na `int` (dzięki adnotacji typu w parametrze funkcji). Spróbuj
-wywołać `/poligony/abc` — zobaczysz błąd walidacji zamiast crashu.
-
-`response_model=Poligon` mówi FastAPI, jakiego kształtu odpowiedzi się spodziewać —
-to też trafia do automatycznej dokumentacji w `/docs`.
-
-## 4️⃣ POST — tworzenie nowego zasobu
-
-```python
-@app.post("/poligony", response_model=Poligon, status_code=201)
-def utworz_poligon(poligon: Poligon):
-    for p in poligony:
-        if p.id == poligon.id:
-            raise HTTPException(status_code=409, detail="Poligon o tym ID juz istnieje")
-    poligony.append(poligon)
-    return poligon
-```
-
-Zwróć uwagę na `status_code=201` — zgodnie ze spotkaniem 1 (część II wykładu),
-tworzenie zasobu powinno zwracać `201 Created`, nie domyślne `200 OK`. `409 Conflict`
-to kod statusu na sytuację "żądanie jest poprawne, ale koliduje z obecnym stanem" —
-dokładnie pasuje do "ID już zajęte".
-
-Sprawdź w `/docs`: kliknij "Try it out" przy `POST /poligony` i wyślij nowy poligon —
-zobaczysz go od razu w `GET /poligony`.
-
-## 5️⃣ Query parameters — filtrowanie listy
-
-```python
-@app.get("/poligony", response_model=list[Poligon])
-def lista_poligonow(typ: str | None = None):
-    if typ is None:
-        return poligony
-    return [p for p in poligony if p.typ == typ]
-```
-
-Parametr `typ`, którego **nie ma** w ścieżce URL (`/poligony`), a jest w liście
-argumentów funkcji, FastAPI automatycznie traktuje jako **query parameter**:
-`/poligony?typ=strzelnica`. `str | None = None` oznacza "opcjonalny, domyślnie brak
-filtra".
-
-### ✅ Mini-zadanie części II
-
-Dodaj model `Jednostka` (pola: `id`, `nazwa`, `garnizon`) i analogiczne endpointy
-`GET /jednostki`, `GET /jednostki/{id}`, `POST /jednostki`.
-
----
-
-# Część III — Podłączenie bazy danych
-
-## 🎯 Cel
-
-Zastąpić listę w pamięci (część I-II) prawdziwą bazą SQLite — dane mają
-przetrwać restart serwera. Używamy modułu `sqlite3` z biblioteki standardowej Pythona
-(bez ORM-a) — chodzi o projektowanie API, nie o naukę nowego narzędzia do baz danych,
-którą już znacie z innych kursów.
-
-## 1️⃣ Schemat bazy
-
-Utwórz plik `schema.sql`:
-
-```sql
-CREATE TABLE IF NOT EXISTS poligony (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    nazwa TEXT NOT NULL,
-    lokalizacja TEXT NOT NULL,
-    typ TEXT NOT NULL,
-    dostepny INTEGER NOT NULL DEFAULT 1
-);
-
-CREATE TABLE IF NOT EXISTS jednostki (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    nazwa TEXT NOT NULL,
-    garnizon TEXT NOT NULL
-);
-```
-
-`dostepny INTEGER` zamiast `BOOLEAN` — SQLite nie ma natywnego typu logicznego,
-konwencja to `0`/`1` (dokładnie to, co już znacie z kursów o bazach danych).
-
-## 2️⃣ Połączenie z bazą w FastAPI
-
-```python
-import sqlite3
-from contextlib import contextmanager
-
-DB_PATH = "poligony.db"
-
-def init_db():
-    with sqlite3.connect(DB_PATH) as conn:
-        with open("schema.sql") as f:
-            conn.executescript(f.read())
-
-@contextmanager
-def get_db():
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row  # dostep do kolumn po nazwie, nie tylko indeksie
-    try:
-        yield conn
-    finally:
-        conn.close()
-```
-
-`conn.row_factory = sqlite3.Row` sprawia, że wiersze zwrócone z zapytań zachowują się
-trochę jak słowniki (`row["nazwa"]`), zamiast gołych krotek (`row[1]`) — dużo
-czytelniej przy konwersji na model Pydantic.
-
-Wywołaj `init_db()` raz, przy starcie aplikacji:
-
-```python
-@app.on_event("startup")
-def startup():
-    init_db()
-```
-
-## 3️⃣ GET z bazy zamiast z listy
-
-```python
-@app.get("/poligony", response_model=list[Poligon])
-def lista_poligonow(typ: str | None = None):
-    with get_db() as conn:
-        if typ:
-            rows = conn.execute("SELECT * FROM poligony WHERE typ = ?", (typ,)).fetchall()
-        else:
-            rows = conn.execute("SELECT * FROM poligony").fetchall()
-        return [Poligon(**dict(row)) for row in rows]
-```
+Otwórz **[http://127.0.0.1:5000/](http://127.0.0.1:5000/)**. Terminal pozostaw uruchomiony. Zatrzymanie procesu przez **Ctrl+C** wyłącza serwer.
 
 ::: {.callout-important}
-## Zawsze parametryzowane zapytania — nigdy sklejanie stringów
-```python
-# NIGDY TAK:
-conn.execute(f"SELECT * FROM poligony WHERE typ = '{typ}'")
+## Otwieraj adres HTTP, nie plik szablonu
 
-# ZAWSZE TAK:
-conn.execute("SELECT * FROM poligony WHERE typ = ?", (typ,))
-```
-Sklejanie zapytań SQL z danych wejściowych użytkownika to klasyczna podatność **SQL
-injection** — do tego wrócimy dokładniej na spotkaniu 2 (część II, bezpieczeństwo),
-ale zasada obowiązuje od pierwszego zapytania, które napiszecie.
+Od tego etapu korzystaj z adresu serwera. Podwójne kliknięcie `templates/index.html` nie uruchamia Flaska ani Jinja. Przy adresie `file:///` wyrażenia `{{ ... }}` nie zostaną obliczone.
+
+Tryb debugowania służy do lokalnej pracy laboratoryjnej. Nie udostępniaj go jako publicznego serwera.
 :::
 
-## 4️⃣ POST — zapis do bazy
+Sprawdź stronę główną i otwórz również [http://127.0.0.1:5000/static/style.css](http://127.0.0.1:5000/static/style.css). Powinien pojawić się kod Twojego arkusza. Adres `/about` na tym etapie zwróci `404`, ponieważ nie dodaliśmy jeszcze takiej trasy.
+
+Jeżeli port jest zajęty, uruchom serwer na innym porcie:
+
+```bash
+python -m flask --app app run --debug --port 5001
+```
+
+Wtedy we wszystkich adresach używaj portu `5001`.
+
+### 7. Dodaj dwie podstrony
+
+Zastąp `app.py` poniższą kompletną wersją:
 
 ```python
-@app.post("/poligony", response_model=Poligon, status_code=201)
-def utworz_poligon(poligon: PoligonCreate):  # model bez pola id -- baza je nada
-    with get_db() as conn:
-        cursor = conn.execute(
-            "INSERT INTO poligony (nazwa, lokalizacja, typ, dostepny) VALUES (?, ?, ?, ?)",
-            (poligon.nazwa, poligon.lokalizacja, poligon.typ, int(poligon.dostepny)),
-        )
-        conn.commit()
-        nowy_id = cursor.lastrowid
-        return Poligon(id=nowy_id, **poligon.model_dump())
+from flask import Flask, render_template
+
+app = Flask(__name__)
+
+
+@app.route("/")
+def home() -> str:
+    """Render the home page."""
+    return render_template("index.html")
+
+
+@app.route("/about")
+def about() -> str:
+    """Render the about page."""
+    return render_template("about.html")
+
+
+@app.route("/interests")
+def interests() -> str:
+    """Render the interests page."""
+    return render_template("interests.html")
 ```
 
-Zwróć uwagę na nowy model `PoligonCreate` (bez pola `id`) — klient tworzący zasób nie
-powinien sam nadawać mu ID, robi to baza (`AUTOINCREMENT`). To częsty wzorzec w
-projektowaniu API: osobny model dla "danych wejściowych przy tworzeniu" i osobny dla
-"pełnego zasobu zwracanego klientowi".
+Zapisz plik. Przy uruchomionym trybie debugowania serwer powinien przeładować kod. Jeśli został zatrzymany, uruchom go ponownie tym samym poleceniem.
+
+| Adres w przeglądarce | Funkcja / endpoint | Plik szablonu |
+|---|---|---|
+| `/` | `home` | `templates/index.html` |
+| `/about` | `about` | `templates/about.html` |
+| `/interests` | `interests` | `templates/interests.html` |
+
+Nazwa funkcji jest tutaj domyślną nazwą endpointu. Rozróżniaj trzy rzeczy: adres URL, nazwę funkcji oraz nazwę pliku. W przykładzie `/about` prowadzi do `about()`, a funkcja renderuje `about.html`.
+
+### 8. Podłącz CSS na obu podstronach
+
+W `templates/about.html` i `templates/interests.html` zastąp dotychczasowy element `link` tym samym zapisem co na stronie głównej:
+
+```html
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+```
+
+Nie wpisuj `../static/style.css`. Przeglądarka rozwiązuje względne adresy względem adresu dokumentu, a nie położenia szablonu na dysku serwera. `url_for()` pozwala uniknąć tego pomieszania.
+
+### 9. Zaktualizuj całe menu na trzech stronach
+
+Teraz wszystkie trzy endpointy istnieją. Wstaw właściwe menu do każdego szablonu, zastępując dotychczasowy element `nav`.
+
+**`templates/index.html`:**
+
+```html
+<nav aria-label="Nawigacja główna">
+    <ul>
+        <li><a href="{{ url_for('home') }}" aria-current="page">Strona główna</a></li>
+        <li><a href="{{ url_for('about') }}">O mnie</a></li>
+        <li><a href="{{ url_for('interests') }}">Zainteresowania</a></li>
+    </ul>
+</nav>
+```
+
+**`templates/about.html`:**
+
+```html
+<nav aria-label="Nawigacja główna">
+    <ul>
+        <li><a href="{{ url_for('home') }}">Strona główna</a></li>
+        <li><a href="{{ url_for('about') }}" aria-current="page">O mnie</a></li>
+        <li><a href="{{ url_for('interests') }}">Zainteresowania</a></li>
+    </ul>
+</nav>
+```
+
+**`templates/interests.html`:**
+
+```html
+<nav aria-label="Nawigacja główna">
+    <ul>
+        <li><a href="{{ url_for('home') }}">Strona główna</a></li>
+        <li><a href="{{ url_for('about') }}">O mnie</a></li>
+        <li><a href="{{ url_for('interests') }}" aria-current="page">Zainteresowania</a></li>
+    </ul>
+</nav>
+```
+
+Zachowaj własną treść `main`, metadane, nagłówek i stopkę. Odnośniki zewnętrzne oraz odnośnik `#top`, jeśli go dodałeś, nie wymagają zmiany.
+
+### 10. Prześledź żądanie i odpowiedź
+
+Kliknij „O mnie” i prześledź kolejne etapy:
+
+1. Przeglądarka wysyła żądanie `GET /about` do lokalnego serwera.
+2. Flask dopasowuje trasę i wykonuje `about()`.
+3. Funkcja renderuje `about.html`, obliczając wyrażenia Jinja.
+4. Serwer zwraca wynikowy HTML.
+5. Przeglądarka odczytuje odwołanie do CSS i wysyła osobne żądanie `GET /static/style.css`.
+
+Otwórz źródło strony w przeglądarce i znajdź menu. Powinny być w nim zwykłe adresy `/`, `/about` i `/interests`, bez wyrażeń `{{ url_for(...) }}`. Kod Pythona i źródło szablonu nie są wysyłane jako kod do wykonania w przeglądarce.
+
+### 11. Sprawdź aplikację i obsługę błędów
+
+| Próba | Oczekiwany efekt |
+|---|---|
+| Otwórz `/` | Strona główna, właściwy tytuł i wspólny CSS. |
+| Otwórz `/about` | Własna treść strony „O mnie”. |
+| Otwórz `/interests` | Własna treść zainteresowań. |
+| Przejdź między stronami przez menu | Każdy odnośnik otwiera właściwą trasę. |
+| Otwórz `/static/style.css` | Kod wspólnego arkusza. |
+| Otwórz `/missing` | Odpowiedź `404`, bo takiej trasy nie zdefiniowano. |
+
+Obserwuj terminal: zobaczysz żądania oraz ich statusy. `200` oznacza powodzenie, `404` brak wskazanego zasobu, a `500` błąd po stronie aplikacji.
+
+| Problem | Co sprawdzić? |
+|---|---|
+| `No module named flask` | Interpreter i instalację Flask w aktywnym `.venv`. |
+| `TemplateNotFound` | Pisownię nazwy i obecność pliku w `templates` obok `app.py`. |
+| `BuildError` | Czy argument `url_for()` jest nazwą istniejącego endpointu, np. `about`, a nie `about.html`? |
+| Brak stylów | Obecność `static/style.css` i poprawny element `link` w każdym szablonie. |
+| `404` dla `/about.html` | Użyj `/about`: to adres zdefiniowany w aplikacji. |
+| Brak połączenia | Czy serwer działa i czy używasz portu wskazanego w terminalu? |
+
+W tych przykładach trasy podstron nie kończą się ukośnikiem. Korzystaj z adresów generowanych przez menu, np. `/about`, zamiast samodzielnie dopisywać `/about/`.
+
+### 12. Samodzielny eksperyment z adresem
+
+Zmień tylko dekorator trasy strony „O mnie”:
 
 ```python
-class PoligonCreate(BaseModel):
-    nazwa: str
-    lokalizacja: str
-    typ: str
-    dostepny: bool = True
+@app.route("/about-me")
+def about() -> str:
+    """Render the about page."""
+    return render_template("about.html")
 ```
 
-### ✅ Mini-zadanie części III
+Nie zmieniaj nazwy funkcji ani `url_for('about')` w menu. Po zapisaniu pliku odśwież stronę główną i kliknij „O mnie”. Adres powinien teraz kończyć się na `/about-me`. Stary adres `/about` zwróci `404`.
 
-1. Rozbuduj schemat o tabelę `jednostki` (już w `schema.sql` powyżej) i migruj
-   endpointy `/jednostki` na bazę, analogicznie do `/poligony`.
-2. Napisz mały skrypt `seed.py`, wypełniający bazę kilkoma przykładowymi
-   poligonami i jednostkami.
-3. Sprawdź, że dane **przetrwają restart** serwera.
+To pokazuje, po co generujemy adresy na podstawie nazw endpointów. **Po eksperymencie przywróć trasę `/about`**, aby projekt był zgodny z dalszą instrukcją.
 
----
+### 13. Punkt kontrolny sekcji 4
 
-# Część IV — Pełny CRUD i pierwsze rezerwacje
+- [ ] Flask jest zainstalowany w lokalnym środowisku `.venv`.
+- [ ] Potrafisz uruchomić i zatrzymać serwer.
+- [ ] Otwierasz aplikację przez `http://`, a nie `file:///`.
+- [ ] Trasy `/`, `/about` i `/interests` renderują właściwe dokumenty.
+- [ ] Wszystkie trzy strony pobierają wspólny arkusz z `/static/style.css`.
+- [ ] Menu używa nazw endpointów w `url_for()`.
+- [ ] Potrafisz odróżnić trasę, funkcję Pythona i plik szablonu.
+- [ ] Po eksperymencie przywróciłeś adres `/about`.
 
-## 🎯 Cel
+**Rezultat:** Twoja witryna działa jako aplikacja Flask z trzema stronami. Wspólne elementy HTML nadal się powtarzają; w kolejnym etapie wydzielimy je do szablonu bazowego, zanim przygotujemy kontener.
 
-Dodać brakujące operacje (`PUT`, `PATCH`, `DELETE`) do zasobów z części III i
-wprowadzić trzeci, kluczowy zasób projektu: `Rezerwacja` — z pierwszą wersją
-sprawdzania konfliktu terminów, zapowiedzianego jeszcze na spotkaniu 1 (wykład).
-
-## 1️⃣ PUT — zastąp cały zasób
-
-```python
-@app.put("/poligony/{poligon_id}", response_model=Poligon)
-def zaktualizuj_poligon(poligon_id: int, poligon: PoligonCreate):
-    with get_db() as conn:
-        cursor = conn.execute(
-            "UPDATE poligony SET nazwa=?, lokalizacja=?, typ=?, dostepny=? WHERE id=?",
-            (poligon.nazwa, poligon.lokalizacja, poligon.typ, int(poligon.dostepny), poligon_id),
-        )
-        conn.commit()
-        if cursor.rowcount == 0:
-            raise HTTPException(status_code=404, detail="Poligon nie znaleziony")
-        return Poligon(id=poligon_id, **poligon.model_dump())
-```
-
-Zgodnie ze spotkaniem 1 (część II wykładu), `PUT` zastępuje **cały** zasób — klient
-musi przysłać wszystkie pola, nawet te, których nie zmienia. Stąd `PATCH` na
-częściowe aktualizacje:
-
-```python
-class PoligonPatch(BaseModel):
-    nazwa: str | None = None
-    lokalizacja: str | None = None
-    typ: str | None = None
-    dostepny: bool | None = None
-
-@app.patch("/poligony/{poligon_id}", response_model=Poligon)
-def czesciowa_aktualizacja(poligon_id: int, zmiany: PoligonPatch):
-    pola_do_zmiany = zmiany.model_dump(exclude_unset=True)  # tylko pola faktycznie przeslane
-    if not pola_do_zmiany:
-        raise HTTPException(status_code=400, detail="Brak pol do aktualizacji")
-    # zbuduj dynamiczne zapytanie UPDATE tylko dla przeslanych pol
-    ...
-```
-
-`exclude_unset=True` to klucz do poprawnego `PATCH`-a: rozróżnia "klient nie przysłał
-tego pola" od "klient przysłał `null`" — bez tego nie dałoby się odróżnić "nie
-zmieniaj tego pola" od "ustaw je na puste".
-
-## 2️⃣ DELETE
-
-```python
-@app.delete("/poligony/{poligon_id}", status_code=204)
-def usun_poligon(poligon_id: int):
-    with get_db() as conn:
-        cursor = conn.execute("DELETE FROM poligony WHERE id=?", (poligon_id,))
-        conn.commit()
-        if cursor.rowcount == 0:
-            raise HTTPException(status_code=404, detail="Poligon nie znaleziony")
-```
-
-`204 No Content` — sukces, ale świadomie **bez ciała odpowiedzi** (nie ma czego
-zwracać, zasób już nie istnieje). FastAPI z `status_code=204` automatycznie nie
-wysyła ciała, nawet jeśli funkcja by coś zwróciła.
-
-## 3️⃣ Zasób `Rezerwacja` — model i tabela
-
-```sql
-CREATE TABLE IF NOT EXISTS rezerwacje (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    poligon_id INTEGER NOT NULL REFERENCES poligony(id),
-    jednostka_id INTEGER NOT NULL REFERENCES jednostki(id),
-    data_od TEXT NOT NULL,   -- ISO 8601: "2026-03-10T08:00:00"
-    data_do TEXT NOT NULL,
-    status TEXT NOT NULL DEFAULT 'oczekujaca'  -- oczekujaca / zatwierdzona / odrzucona
-);
-```
-
-```python
-class RezerwacjaCreate(BaseModel):
-    poligon_id: int
-    jednostka_id: int
-    data_od: str
-    data_do: str
-```
-
-## 4️⃣ Sprawdzanie konfliktu terminów — i dlaczego "sprawdź, potem zapisz" nie wystarcza
-
-To dokładnie problem zapowiedziany na spotkaniu 1: dwie jednostki nie mogą
-zarezerwować tego samego poligonu w nakładających się terminach.
-
-```python
-def sprawdz_konflikt(conn, poligon_id: int, data_od: str, data_do: str) -> bool:
-    wiersze = conn.execute(
-        """
-        SELECT id FROM rezerwacje
-        WHERE poligon_id = ?
-          AND status != 'odrzucona'
-          AND data_od < ?
-          AND data_do > ?
-        """,
-        (poligon_id, data_do, data_od),
-    ).fetchall()
-    return len(wiersze) > 0
-```
-
-Warunek `data_od < ? AND data_do > ?` to klasyczny test nakładania się dwóch
-przedziałów czasowych: dwa przedziały **nie** nakładają się tylko wtedy, gdy jeden
-kończy się przed rozpoczęciem drugiego. Zanegowanie tego warunku (logicznie — de
-Morgan) daje właśnie powyższe zapytanie. `409 Conflict` (nie `400 Bad Request`!) —
-dane są poprawnie sformułowane, problem to konflikt ze **stanem systemu**, dokładnie
-jak w części II z duplikatem ID.
-
-::: {.callout-important}
-## "Sprawdź, potem zapisz" ma lukę czasową — i to jest WŁAŚNIE nasz problem z wykładu 1
-
-```python
-# WERSJA Z LUKA — NIE KOPIUJ:
-@app.post("/rezerwacje", status_code=201)
-def utworz_rezerwacje(rez: RezerwacjaCreate):
-    with get_db() as conn:
-        if sprawdz_konflikt(conn, rez.poligon_id, rez.data_od, rez.data_do):
-            raise HTTPException(status_code=409, detail="Konflikt terminow")
-        # <-- MIEDZY TA LINIA A NASTEPNA moze wcisnac sie DRUGIE zadanie
-        conn.execute("INSERT INTO rezerwacje (...) VALUES (...)", (...))
-        conn.commit()
-```
-
-`SELECT` (sprawdzanie konfliktu) **nie blokuje zapisu** innym połączeniom — to zwykły
-odczyt. Jeśli dwa żądania POST przyjdą prawie jednocześnie, oba mogą wykonać
-`sprawdz_konflikt` **zanim którekolwiek** zdąży wstawić swój wiersz — oba widzą "brak
-konfliktu", oba wstawiają, i mamy dokładnie to, czemu miał zapobiegać ten kod:
-podwójną rezerwację. To nie hipotetyczne ćwiczenie akademickie — to jest dosłownie
-problem zapowiedziany w pierwszym wykładzie, teraz w konkretnej, kodowej postaci.
-:::
-
-### 🔹 Naprawa: `BEGIN IMMEDIATE` — zablokuj zapis, zanim sprawdzisz
-
-```python
-import sqlite3
-
-@app.post("/rezerwacje", status_code=201)
-def utworz_rezerwacje(rez: RezerwacjaCreate):
-    with get_db() as conn:
-        conn.execute("BEGIN IMMEDIATE")  # zajmij blokade zapisu NATYCHMIAST, przed SELECT-em
-        try:
-            if sprawdz_konflikt(conn, rez.poligon_id, rez.data_od, rez.data_do):
-                conn.rollback()
-                raise HTTPException(status_code=409, detail="Konflikt terminow na tym poligonie")
-            cursor = conn.execute(
-                "INSERT INTO rezerwacje (poligon_id, jednostka_id, data_od, data_do) VALUES (?, ?, ?, ?)",
-                (rez.poligon_id, rez.jednostka_id, rez.data_od, rez.data_do),
-            )
-            conn.commit()
-            return {"id": cursor.lastrowid, **rez.model_dump(), "status": "oczekujaca"}
-        except sqlite3.OperationalError:
-            conn.rollback()
-            raise HTTPException(status_code=503, detail="Baza chwilowo zajeta, sprobuj ponownie")
-```
-
-`BEGIN IMMEDIATE` każe SQLite zająć blokadę zapisu **od razu**, zanim wykonamy
-choćby jeden `SELECT` — drugie żądanie, próbujące własnego `BEGIN IMMEDIATE` w tym
-samym momencie, zostanie zablokowane (albo dostanie `OperationalError: database is
-locked`, jeśli przekroczy limit czasu), dopóki pierwsza transakcja się nie zakończy
-(`commit` albo `rollback`). Efekt: dwa równoczesne żądania na ten sam poligon są
-teraz **serializowane** — drugie zobaczy w swoim `sprawdz_konflikt` rezerwację, którą
-pierwsze zdążyło już zacommitować, zamiast pustego wyniku.
-
-::: {.callout-note}
-## To rozwiązuje problem w skali jednego procesu/pliku SQLite — nie w skali wielu serwerów
-Jak zobaczycie na spotkaniu 3 (skalowanie), jeśli kiedyś ta aplikacja miałaby działać
-na wielu serwerach ze wspólną bazą sieciową (PostgreSQL), blokada `BEGIN IMMEDIATE`
-przestałaby wystarczać — trzeba by sięgnąć po blokady na poziomie bazy sieciowej
-(`SELECT ... FOR UPDATE`) albo ograniczenie `UNIQUE` na poziomie schematu. Na razie,
-z jednym plikiem SQLite i jednym procesem serwera, `BEGIN IMMEDIATE` w pełni
-rozwiązuje problem.
-:::
-
----
-
-## ✅ Zadanie na koniec spotkania
-
-1. Dokończ `PATCH /poligony/{id}` (dynamiczne zapytanie `UPDATE` tylko dla przesłanych pól).
-2. Dodaj `GET /rezerwacje` z filtrowaniem po `poligon_id` i `status` (query params).
-3. Napisz test ręczny w `/docs`: spróbuj utworzyć dwie rezerwacje na ten sam poligon w nakładających się terminach — sprawdź, że druga dostaje `409`.
-4. Napisz też test **negatywny**: dwie rezerwacje na ten sam poligon w terminach, które **się nie nakładają** — obie powinny się udać.
-5. Zacommituj zmiany — dodaj `poligony.db` do `.gitignore`.
-
-**Do oddania:** link do repozytorium / commit hash — prowadzący sprawdza na następnym spotkaniu.
+Dalsza lektura: oficjalne instrukcje [instalacji Flask](https://flask.palletsprojects.com/en/stable/installation/) oraz [Quickstart](https://flask.palletsprojects.com/en/stable/quickstart/) opisują środowisko, routing, szablony i pliki statyczne.
