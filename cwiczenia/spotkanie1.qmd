@@ -1,6 +1,6 @@
 ---
 title: "Laboratorium 1: HTML5, CSS i Flask"
-subtitle: "HTML5, CSS, API Flask i kontenery Docker"
+subtitle: "HTML5, CSS, API Flask, Docker i GitHub"
 lang: pl
 toc-title: "Na tej stronie"
 code-copy: true
@@ -1559,3 +1559,255 @@ docker compose down
 **Rezultat:** aplikacja HTML + JSON API + fetch działa w kontenerze bez lokalnej instalacji Pythona. Potrafisz uruchomić ją zarówno ręcznie, jak i przez konfigurację Compose.
 
 Dokumentacja: [Dockerfile](https://docs.docker.com/reference/dockerfile/), [publikowanie portów](https://docs.docker.com/get-started/docker-concepts/running-containers/publishing-ports/) i [Docker Compose](https://docs.docker.com/compose/gettingstarted/).
+
+
+## Sekcja 8. Git i wysłanie projektu na GitHub
+
+Zapiszesz historię kalkulatora w Git i wyślesz kod na GitHub. Pracuj w katalogu **`flask-calculator`**, zawierającym `app.py` i `Dockerfile`. Nie wykonuj tych poleceń w repozytorium materiałów kursu ani w katalogu nadrzędnym obejmującym wszystkie projekty.
+
+Git przechowuje historię lokalnie. GitHub udostępnia zdalne repozytorium, do którego wysyłamy commity. Sam push nie uruchamia aplikacji: do działania Flaska nadal potrzebny jest serwer lub kontener. GitHub Pages obsługuje strony statyczne i nie wykonuje naszego backendu Pythona.
+
+### 1. Sprawdź Git i katalog roboczy
+
+W terminalu otwartym w `flask-calculator` wykonaj:
+
+```bash
+git --version
+git status
+```
+
+Jeśli projekt nie ma jeszcze repozytorium, drugie polecenie zwróci komunikat `not a git repository`. To oczekiwany stan przed inicjalizacją.
+
+Jeśli `git status` pokazuje pliki spoza kalkulatora, zatrzymaj się i sprawdź katalog: możesz znajdować się wewnątrz innego repozytorium. Nie twórz zagnieżdżonego repozytorium bez uzgodnienia z prowadzącym.
+
+### 2. Przygotuj .gitignore
+
+Obok `app.py` utwórz `.gitignore` i wpisz:
+
+```text
+.venv/
+__pycache__/
+*.pyc
+.env
+.DS_Store
+```
+
+Nie wysyłamy środowiska wirtualnego ani plików tymczasowych. Kod, szablon, zasoby, `requirements.txt`, `Dockerfile`, `.dockerignore` i `docker-compose.yml` powinny trafić do repozytorium.
+
+`.gitignore` dotyczy Gita, a `.dockerignore` kontekstu budowania Dockera. Potrzebujemy obu. Reguła ignorowania nie usuwa z historii pliku, który został już zapisany w commicie.
+
+### 3. Dodaj instrukcję uruchomienia
+
+Utwórz `README.md` z poniższą treścią. Dokumentację projektu zapisujemy po angielsku:
+
+````markdown
+# Flask Calculator
+
+A small Flask application with an HTML form and a JSON addition API.
+
+## Requirements
+
+- Docker Engine or Docker Desktop
+- Docker Compose
+
+Local Python installation is not required for the Docker workflow.
+
+## Run
+
+```bash
+docker compose up --build -d
+```
+
+Open http://localhost:5000/ in a browser.
+
+## API example
+
+GET http://localhost:5000/api/add?a=2&b=3
+
+A successful response contains `a`, `b`, `operation`, and `result`.
+Invalid or missing numbers produce a JSON error with HTTP status 400.
+
+## Logs and shutdown
+
+```bash
+docker compose logs web
+docker compose down
+```
+````
+
+Jeżeli zmieniłeś port w Compose, popraw również adresy w README. Instrukcja powinna odpowiadać rzeczywistej konfiguracji projektu.
+
+### 4. Zainicjalizuj repozytorium
+
+Dla nowego projektu wykonaj:
+
+```bash
+git init -b main
+```
+
+Polecenie tworzy lokalne repozytorium i gałąź `main`. Jeżeli w tym projekcie masz już repozytorium, pomiń inicjalizację i sprawdź nazwę bieżącej gałęzi przez `git branch --show-current`.
+
+Dla dalszych kroków przyjmujemy gałąź `main`. Jeśli Git jest starszy i nie rozpoznaje `-b`, dla nowego repozytorium użyj:
+
+```bash
+git init
+git branch -M main
+```
+
+### 5. Ustaw autora commitów
+
+Sprawdź bieżące ustawienia:
+
+```bash
+git config user.name
+git config user.email
+```
+
+Jeśli są puste lub nieprawidłowe, ustaw dane **lokalnie dla tego repozytorium**:
+
+```bash
+git config --local user.name "Jan Kowalski"
+git config --local user.email "YOUR_COMMIT_EMAIL"
+```
+
+Zastąp przykładowe nazwisko i `YOUR_COMMIT_EMAIL` własnymi wartościami. Możesz użyć adresu `noreply` wskazanego w ustawieniach adresów e-mail konta GitHub. Dane autora trafiają do commitów; nie są hasłem ani konfiguracją logowania.
+
+### 6. Wybierz pliki do pierwszego commita
+
+Najpierw sprawdź stan:
+
+```bash
+git status --short
+```
+
+Dodaj konkretne pliki:
+
+```bash
+git add app.py requirements.txt templates/index.html static/style.css static/app.js Dockerfile docker-compose.yml .dockerignore .gitignore README.md
+```
+
+`git add` zapisuje wybraną zawartość w indeksie, czyli zestawie zmian przygotowanych do commita. Nie wysyła nic na GitHub.
+
+Sprawdź przygotowany zestaw:
+
+```bash
+git diff --cached --stat
+git diff --cached
+git status
+```
+
+Upewnij się, że nie dodano `.venv`, haseł ani plików niezwiązanych z projektem. Jeśli plik edytowano po `git add`, dodaj go ponownie, aby commit zawierał aktualną wersję.
+
+### 7. Zapisz pierwszy commit
+
+```bash
+git commit -m "Add Flask calculator with JSON API and Docker setup"
+git log --oneline -3
+git status
+```
+
+Commit jest lokalnym punktem historii. Komunikat opisuje zmianę po angielsku w trybie rozkazującym. Po zapisaniu wszystkich zmian `git status` powinien pokazać czysty katalog roboczy.
+
+Rozróżniaj trzy kroki: **`add` wybiera zawartość, `commit` zapisuje ją w lokalnej historii, `push` wysyła commity do repozytorium zdalnego**.
+
+### 8. Utwórz puste repozytorium na GitHubie
+
+Zaloguj się do własnego konta GitHub i wybierz utworzenie nowego repozytorium:
+
+1. Nadaj nazwę `flask-calculator`.
+2. Wybierz widoczność zgodną z ustaleniami prowadzącego. Przy repozytorium prywatnym zapewnij prowadzącemu dostęp do odbioru pracy.
+3. Nie dodawaj automatycznie README, `.gitignore` ani licencji — zaczynamy od pustego repozytorium, ponieważ pliki i commit masz już lokalnie.
+4. Utwórz repozytorium i skopiuj jego adres HTTPS z sekcji konfiguracji lub przycisku **Code**.
+
+Przykładowy adres ma postać:
+
+```text
+https://github.com/YOUR_USERNAME/flask-calculator.git
+```
+
+`YOUR_USERNAME` jest miejscem do zastąpienia, nie tekstem, który Git uzupełni automatycznie. Najlepiej skopiuj pełny adres swojego repozytorium z GitHuba.
+
+### 9. Połącz lokalne repozytorium ze zdalnym
+
+W katalogu projektu wykonaj polecenie z własnym adresem:
+
+```bash
+git remote add origin https://github.com/YOUR_USERNAME/flask-calculator.git
+git remote -v
+```
+
+`origin` to umowna nazwa zdalnego repozytorium. Polecenie dodaje adres, ale nie tworzy repozytorium na GitHubie i nie wysyła jeszcze plików.
+
+Jeżeli `origin` już istnieje, najpierw sprawdź jego adres przez `git remote -v`. Nie usuwaj go w ciemno. Jeśli jest błędny, skonsultuj zmianę z prowadzącym.
+
+### 10. Wykonaj pierwszy push
+
+```bash
+git push -u origin main
+```
+
+`main` wskazuje wysyłaną gałąź. `-u` zapisuje powiązanie ze zdalną gałęzią, dzięki czemu kolejne wysłanie zwykle wymaga tylko `git push`.
+
+Przy HTTPS Git może uruchomić logowanie przez przeglądarkę lub menedżera poświadczeń. Hasło do konta GitHub nie służy do uwierzytelniania operacji Git przez HTTPS. Jeśli konfiguracja wymaga tokenu dostępu, użyj go zgodnie z instrukcją prowadzącego; nie wpisuj tokenu do adresu repozytorium ani do plików projektu. Jeżeli masz już skonfigurowane SSH, możesz użyć adresu SSH skopiowanego z własnego repozytorium.
+
+Po sukcesie odśwież repozytorium w przeglądarce. Sprawdź pliki, wyświetlony README i komunikat commita. Git wysyła zawartość commitów, a nie wszystkie pliki widoczne na dysku.
+
+### 11. Zapisz i wyślij kolejną zmianę
+
+Zmień opis autora w `templates/index.html`. Następnie:
+
+```bash
+git diff
+git add templates/index.html
+git diff --cached
+git commit -m "Update calculator author description"
+git push
+```
+
+Zobacz na GitHubie nowy commit i jego diff. W kolejnych zmianach stosuj ten sam cykl: edycja, kontrola, dodanie wybranych plików, commit i push.
+
+Zmiana w repozytorium nie aktualizuje automatycznie wcześniej zbudowanego kontenera. Aby zobaczyć ją lokalnie, wykonaj ponownie `docker compose up --build -d` i odśwież stronę.
+
+### 12. Sprawdź projekt po pobraniu
+
+Możesz sprawdzić kompletność repozytorium w osobnym katalogu, bez korzystania z lokalnej `.venv`. Użyj własnego adresu i nowej nazwy katalogu:
+
+```bash
+git clone https://github.com/YOUR_USERNAME/flask-calculator.git flask-calculator-check
+cd flask-calculator-check
+docker compose up --build -d
+```
+
+Przed uruchomieniem zatrzymaj wcześniejszą instancję kalkulatora, aby zwolnić port `5000`. Otwórz stronę, oblicz sumę i sprawdź API. Na końcu w sklonowanym katalogu wykonaj:
+
+```bash
+docker compose down
+```
+
+Ta próba pokazuje, czy repozytorium zawiera wszystkie potrzebne pliki. Sam widok plików na GitHubie nie potwierdza, że inna osoba potrafi uruchomić projekt.
+
+### 13. Typowe problemy
+
+| Komunikat lub objaw | Co sprawdzić? |
+|---|---|
+| `git` nie jest rozpoznawany | Instalację Gita i dostępność polecenia w nowym terminalu. |
+| `Author identity unknown` | Lokalne ustawienia `user.name` i `user.email`. |
+| `nothing to commit` | Czy plik zapisano i czy rzeczywiście różni się od wersji w ostatnim commicie? |
+| `src refspec main does not match any` | Czy istnieje pierwszy commit i czy bieżąca gałąź nazywa się `main`? |
+| `remote origin already exists` | Obecny adres z `git remote -v`. |
+| `Repository not found` lub błąd uprawnień | Adres, zalogowane konto i uprawnienia do repozytorium. |
+| `non-fast-forward` | Na GitHubie są commity, których nie masz lokalnie, np. automatycznie utworzony README. Nie używaj `--force`; pokaż stan prowadzącemu i uzgodnij połączenie historii. |
+| Brak zmienionego pliku na GitHubie | Czy plik trafił do commita i czy `push` zakończył się sukcesem? |
+
+### 14. Oddanie projektu
+
+Oddaj **link do repozytorium**, nie adres lokalnej aplikacji `localhost`. Repozytorium powinno zawierać:
+
+- kod Flaska, HTML, CSS i JavaScript;
+- `requirements.txt`, `Dockerfile` i `docker-compose.yml`;
+- `.gitignore`, `.dockerignore` oraz działającą instrukcję w README;
+- co najmniej dwa commity pokazujące pierwszą wersję i późniejszą zmianę.
+
+**Końcowy punkt kontrolny:** prowadzący ma dostęp do repozytorium, a po jego sklonowaniu można uruchomić kalkulator przez `docker compose up --build`, otworzyć formularz i uzyskać JSON z sumą dwóch liczb.
+
+Dokumentacja: [wysłanie lokalnego projektu na GitHub](https://docs.github.com/en/migrations/importing-source-code/using-the-command-line-to-import-source-code/adding-locally-hosted-code-to-github), [uwierzytelnianie GitHub](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github).

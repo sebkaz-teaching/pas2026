@@ -229,6 +229,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#sekcja-5.-fetch-wynik-json-na-stronie-html" id="toc-sekcja-5.-fetch-wynik-json-na-stronie-html" class="nav-link" data-scroll-target="#sekcja-5.-fetch-wynik-json-na-stronie-html">Sekcja 5. Fetch: wynik JSON na stronie HTML</a></li>
   <li><a href="#dockerfile" id="toc-dockerfile" class="nav-link" data-scroll-target="#dockerfile">Sekcja 6. Dockerfile: aplikacja bez lokalnego Pythona</a></li>
   <li><a href="#sekcja-7.-ta-sama-aplikacja-przez-docker-compose" id="toc-sekcja-7.-ta-sama-aplikacja-przez-docker-compose" class="nav-link" data-scroll-target="#sekcja-7.-ta-sama-aplikacja-przez-docker-compose">Sekcja 7. Ta sama aplikacja przez Docker Compose</a></li>
+  <li><a href="#sekcja-8.-git-i-wysłanie-projektu-na-github" id="toc-sekcja-8.-git-i-wysłanie-projektu-na-github" class="nav-link" data-scroll-target="#sekcja-8.-git-i-wysłanie-projektu-na-github">Sekcja 8. Git i wysłanie projektu na GitHub</a></li>
   </ul>
 </nav>
     </div>
@@ -238,7 +239,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../cwiczenia/spotkanie1.html">Laboratoria</a></li><li class="breadcrumb-item"><a href="../cwiczenia/spotkanie1.html">Laboratorium 1: HTML5, CSS i Flask</a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title">Laboratorium 1: HTML5, CSS i Flask</h1>
-<p class="subtitle lead">HTML5, CSS, API Flask i kontenery Docker</p>
+<p class="subtitle lead">HTML5, CSS, API Flask, Docker i GitHub</p>
 </div>
 
 
@@ -2030,6 +2031,217 @@ __pycache__/
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb55"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose down</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>Rezultat:</strong> aplikacja HTML + JSON API + fetch działa w kontenerze bez lokalnej instalacji Pythona. Potrafisz uruchomić ją zarówno ręcznie, jak i przez konfigurację Compose.</p>
 <p>Dokumentacja: <a href="https://docs.docker.com/reference/dockerfile/">Dockerfile</a>, <a href="https://docs.docker.com/get-started/docker-concepts/running-containers/publishing-ports/">publikowanie portów</a> i <a href="https://docs.docker.com/compose/gettingstarted/">Docker Compose</a>.</p>
+</section>
+</section>
+<section id="sekcja-8.-git-i-wysłanie-projektu-na-github" class="level2">
+<h2 class="anchored" data-anchor-id="sekcja-8.-git-i-wysłanie-projektu-na-github">Sekcja 8. Git i wysłanie projektu na GitHub</h2>
+<p>Zapiszesz historię kalkulatora w Git i wyślesz kod na GitHub. Pracuj w katalogu <strong><code>flask-calculator</code></strong>, zawierającym <code>app.py</code> i <code>Dockerfile</code>. Nie wykonuj tych poleceń w repozytorium materiałów kursu ani w katalogu nadrzędnym obejmującym wszystkie projekty.</p>
+<p>Git przechowuje historię lokalnie. GitHub udostępnia zdalne repozytorium, do którego wysyłamy commity. Sam push nie uruchamia aplikacji: do działania Flaska nadal potrzebny jest serwer lub kontener. GitHub Pages obsługuje strony statyczne i nie wykonuje naszego backendu Pythona.</p>
+<section id="sprawdź-git-i-katalog-roboczy" class="level3">
+<h3 class="anchored" data-anchor-id="sprawdź-git-i-katalog-roboczy">1. Sprawdź Git i katalog roboczy</h3>
+<p>W terminalu otwartym w <code>flask-calculator</code> wykonaj:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb56"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> <span class="at">--version</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Jeśli projekt nie ma jeszcze repozytorium, drugie polecenie zwróci komunikat <code>not a git repository</code>. To oczekiwany stan przed inicjalizacją.</p>
+<p>Jeśli <code>git status</code> pokazuje pliki spoza kalkulatora, zatrzymaj się i sprawdź katalog: możesz znajdować się wewnątrz innego repozytorium. Nie twórz zagnieżdżonego repozytorium bez uzgodnienia z prowadzącym.</p>
+</section>
+<section id="przygotuj-.gitignore" class="level3">
+<h3 class="anchored" data-anchor-id="przygotuj-.gitignore">2. Przygotuj .gitignore</h3>
+<p>Obok <code>app.py</code> utwórz <code>.gitignore</code> i wpisz:</p>
+<pre class="text"><code>.venv/
+__pycache__/
+*.pyc
+.env
+.DS_Store</code></pre>
+<p>Nie wysyłamy środowiska wirtualnego ani plików tymczasowych. Kod, szablon, zasoby, <code>requirements.txt</code>, <code>Dockerfile</code>, <code>.dockerignore</code> i <code>docker-compose.yml</code> powinny trafić do repozytorium.</p>
+<p><code>.gitignore</code> dotyczy Gita, a <code>.dockerignore</code> kontekstu budowania Dockera. Potrzebujemy obu. Reguła ignorowania nie usuwa z historii pliku, który został już zapisany w commicie.</p>
+</section>
+<section id="dodaj-instrukcję-uruchomienia" class="level3">
+<h3 class="anchored" data-anchor-id="dodaj-instrukcję-uruchomienia">3. Dodaj instrukcję uruchomienia</h3>
+<p>Utwórz <code>README.md</code> z poniższą treścią. Dokumentację projektu zapisujemy po angielsku:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb58"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Flask Calculator</span></span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>A small Flask application with an HTML form and a JSON addition API.</span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a><span class="fu">## Requirements</span></span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Docker Engine or Docker Desktop</span>
+<span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Docker Compose</span>
+<span id="cb58-9"><a href="#cb58-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-10"><a href="#cb58-10" aria-hidden="true" tabindex="-1"></a>Local Python installation is not required for the Docker workflow.</span>
+<span id="cb58-11"><a href="#cb58-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-12"><a href="#cb58-12" aria-hidden="true" tabindex="-1"></a><span class="fu">## Run</span></span>
+<span id="cb58-13"><a href="#cb58-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-14"><a href="#cb58-14" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb58-15"><a href="#cb58-15" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose up <span class="at">--build</span> <span class="at">-d</span></span>
+<span id="cb58-16"><a href="#cb58-16" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb58-17"><a href="#cb58-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-18"><a href="#cb58-18" aria-hidden="true" tabindex="-1"></a>Open http://localhost:5000/ in a browser.</span>
+<span id="cb58-19"><a href="#cb58-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-20"><a href="#cb58-20" aria-hidden="true" tabindex="-1"></a><span class="fu">## API example</span></span>
+<span id="cb58-21"><a href="#cb58-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-22"><a href="#cb58-22" aria-hidden="true" tabindex="-1"></a>GET http://localhost:5000/api/add?a=2&amp;b=3</span>
+<span id="cb58-23"><a href="#cb58-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-24"><a href="#cb58-24" aria-hidden="true" tabindex="-1"></a>A successful response contains <span class="in">`a`</span>, <span class="in">`b`</span>, <span class="in">`operation`</span>, and <span class="in">`result`</span>.</span>
+<span id="cb58-25"><a href="#cb58-25" aria-hidden="true" tabindex="-1"></a>Invalid or missing numbers produce a JSON error with HTTP status 400.</span>
+<span id="cb58-26"><a href="#cb58-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-27"><a href="#cb58-27" aria-hidden="true" tabindex="-1"></a><span class="fu">## Logs and shutdown</span></span>
+<span id="cb58-28"><a href="#cb58-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-29"><a href="#cb58-29" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb58-30"><a href="#cb58-30" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose logs web</span>
+<span id="cb58-31"><a href="#cb58-31" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose down</span>
+<span id="cb58-32"><a href="#cb58-32" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Jeżeli zmieniłeś port w Compose, popraw również adresy w README. Instrukcja powinna odpowiadać rzeczywistej konfiguracji projektu.</p>
+</section>
+<section id="zainicjalizuj-repozytorium" class="level3">
+<h3 class="anchored" data-anchor-id="zainicjalizuj-repozytorium">4. Zainicjalizuj repozytorium</h3>
+<p>Dla nowego projektu wykonaj:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb59"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> init <span class="at">-b</span> main</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Polecenie tworzy lokalne repozytorium i gałąź <code>main</code>. Jeżeli w tym projekcie masz już repozytorium, pomiń inicjalizację i sprawdź nazwę bieżącej gałęzi przez <code>git branch --show-current</code>.</p>
+<p>Dla dalszych kroków przyjmujemy gałąź <code>main</code>. Jeśli Git jest starszy i nie rozpoznaje <code>-b</code>, dla nowego repozytorium użyj:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb60"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> init</span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> branch <span class="at">-M</span> main</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="ustaw-autora-commitów" class="level3">
+<h3 class="anchored" data-anchor-id="ustaw-autora-commitów">5. Ustaw autora commitów</h3>
+<p>Sprawdź bieżące ustawienia:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb61"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config user.name</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config user.email</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Jeśli są puste lub nieprawidłowe, ustaw dane <strong>lokalnie dla tego repozytorium</strong>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb62"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--local</span> user.name <span class="st">"Jan Kowalski"</span></span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--local</span> user.email <span class="st">"YOUR_COMMIT_EMAIL"</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Zastąp przykładowe nazwisko i <code>YOUR_COMMIT_EMAIL</code> własnymi wartościami. Możesz użyć adresu <code>noreply</code> wskazanego w ustawieniach adresów e-mail konta GitHub. Dane autora trafiają do commitów; nie są hasłem ani konfiguracją logowania.</p>
+</section>
+<section id="wybierz-pliki-do-pierwszego-commita" class="level3">
+<h3 class="anchored" data-anchor-id="wybierz-pliki-do-pierwszego-commita">6. Wybierz pliki do pierwszego commita</h3>
+<p>Najpierw sprawdź stan:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb63"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status <span class="at">--short</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Dodaj konkretne pliki:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb64"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add app.py requirements.txt templates/index.html static/style.css static/app.js Dockerfile docker-compose.yml .dockerignore .gitignore README.md</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>git add</code> zapisuje wybraną zawartość w indeksie, czyli zestawie zmian przygotowanych do commita. Nie wysyła nic na GitHub.</p>
+<p>Sprawdź przygotowany zestaw:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb65"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> diff <span class="at">--cached</span> <span class="at">--stat</span></span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> diff <span class="at">--cached</span></span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Upewnij się, że nie dodano <code>.venv</code>, haseł ani plików niezwiązanych z projektem. Jeśli plik edytowano po <code>git add</code>, dodaj go ponownie, aby commit zawierał aktualną wersję.</p>
+</section>
+<section id="zapisz-pierwszy-commit" class="level3">
+<h3 class="anchored" data-anchor-id="zapisz-pierwszy-commit">7. Zapisz pierwszy commit</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb66"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Add Flask calculator with JSON API and Docker setup"</span></span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> log <span class="at">--oneline</span> <span class="at">-3</span></span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Commit jest lokalnym punktem historii. Komunikat opisuje zmianę po angielsku w trybie rozkazującym. Po zapisaniu wszystkich zmian <code>git status</code> powinien pokazać czysty katalog roboczy.</p>
+<p>Rozróżniaj trzy kroki: <strong><code>add</code> wybiera zawartość, <code>commit</code> zapisuje ją w lokalnej historii, <code>push</code> wysyła commity do repozytorium zdalnego</strong>.</p>
+</section>
+<section id="utwórz-puste-repozytorium-na-githubie" class="level3">
+<h3 class="anchored" data-anchor-id="utwórz-puste-repozytorium-na-githubie">8. Utwórz puste repozytorium na GitHubie</h3>
+<p>Zaloguj się do własnego konta GitHub i wybierz utworzenie nowego repozytorium:</p>
+<ol type="1">
+<li>Nadaj nazwę <code>flask-calculator</code>.</li>
+<li>Wybierz widoczność zgodną z ustaleniami prowadzącego. Przy repozytorium prywatnym zapewnij prowadzącemu dostęp do odbioru pracy.</li>
+<li>Nie dodawaj automatycznie README, <code>.gitignore</code> ani licencji — zaczynamy od pustego repozytorium, ponieważ pliki i commit masz już lokalnie.</li>
+<li>Utwórz repozytorium i skopiuj jego adres HTTPS z sekcji konfiguracji lub przycisku <strong>Code</strong>.</li>
+</ol>
+<p>Przykładowy adres ma postać:</p>
+<pre class="text"><code>https://github.com/YOUR_USERNAME/flask-calculator.git</code></pre>
+<p><code>YOUR_USERNAME</code> jest miejscem do zastąpienia, nie tekstem, który Git uzupełni automatycznie. Najlepiej skopiuj pełny adres swojego repozytorium z GitHuba.</p>
+</section>
+<section id="połącz-lokalne-repozytorium-ze-zdalnym" class="level3">
+<h3 class="anchored" data-anchor-id="połącz-lokalne-repozytorium-ze-zdalnym">9. Połącz lokalne repozytorium ze zdalnym</h3>
+<p>W katalogu projektu wykonaj polecenie z własnym adresem:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb68"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> remote add origin https://github.com/YOUR_USERNAME/flask-calculator.git</span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> remote <span class="at">-v</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>origin</code> to umowna nazwa zdalnego repozytorium. Polecenie dodaje adres, ale nie tworzy repozytorium na GitHubie i nie wysyła jeszcze plików.</p>
+<p>Jeżeli <code>origin</code> już istnieje, najpierw sprawdź jego adres przez <code>git remote -v</code>. Nie usuwaj go w ciemno. Jeśli jest błędny, skonsultuj zmianę z prowadzącym.</p>
+</section>
+<section id="wykonaj-pierwszy-push" class="level3">
+<h3 class="anchored" data-anchor-id="wykonaj-pierwszy-push">10. Wykonaj pierwszy push</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb69"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push <span class="at">-u</span> origin main</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>main</code> wskazuje wysyłaną gałąź. <code>-u</code> zapisuje powiązanie ze zdalną gałęzią, dzięki czemu kolejne wysłanie zwykle wymaga tylko <code>git push</code>.</p>
+<p>Przy HTTPS Git może uruchomić logowanie przez przeglądarkę lub menedżera poświadczeń. Hasło do konta GitHub nie służy do uwierzytelniania operacji Git przez HTTPS. Jeśli konfiguracja wymaga tokenu dostępu, użyj go zgodnie z instrukcją prowadzącego; nie wpisuj tokenu do adresu repozytorium ani do plików projektu. Jeżeli masz już skonfigurowane SSH, możesz użyć adresu SSH skopiowanego z własnego repozytorium.</p>
+<p>Po sukcesie odśwież repozytorium w przeglądarce. Sprawdź pliki, wyświetlony README i komunikat commita. Git wysyła zawartość commitów, a nie wszystkie pliki widoczne na dysku.</p>
+</section>
+<section id="zapisz-i-wyślij-kolejną-zmianę" class="level3">
+<h3 class="anchored" data-anchor-id="zapisz-i-wyślij-kolejną-zmianę">11. Zapisz i wyślij kolejną zmianę</h3>
+<p>Zmień opis autora w <code>templates/index.html</code>. Następnie:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb70"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> diff</span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add templates/index.html</span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> diff <span class="at">--cached</span></span>
+<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Update calculator author description"</span></span>
+<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Zobacz na GitHubie nowy commit i jego diff. W kolejnych zmianach stosuj ten sam cykl: edycja, kontrola, dodanie wybranych plików, commit i push.</p>
+<p>Zmiana w repozytorium nie aktualizuje automatycznie wcześniej zbudowanego kontenera. Aby zobaczyć ją lokalnie, wykonaj ponownie <code>docker compose up --build -d</code> i odśwież stronę.</p>
+</section>
+<section id="sprawdź-projekt-po-pobraniu" class="level3">
+<h3 class="anchored" data-anchor-id="sprawdź-projekt-po-pobraniu">12. Sprawdź projekt po pobraniu</h3>
+<p>Możesz sprawdzić kompletność repozytorium w osobnym katalogu, bez korzystania z lokalnej <code>.venv</code>. Użyj własnego adresu i nowej nazwy katalogu:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb71"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/YOUR_USERNAME/flask-calculator.git flask-calculator-check</span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> flask-calculator-check</span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose up <span class="at">--build</span> <span class="at">-d</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Przed uruchomieniem zatrzymaj wcześniejszą instancję kalkulatora, aby zwolnić port <code>5000</code>. Otwórz stronę, oblicz sumę i sprawdź API. Na końcu w sklonowanym katalogu wykonaj:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb72"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose down</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Ta próba pokazuje, czy repozytorium zawiera wszystkie potrzebne pliki. Sam widok plików na GitHubie nie potwierdza, że inna osoba potrafi uruchomić projekt.</p>
+</section>
+<section id="typowe-problemy" class="level3">
+<h3 class="anchored" data-anchor-id="typowe-problemy">13. Typowe problemy</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Komunikat lub objaw</th>
+<th>Co sprawdzić?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>git</code> nie jest rozpoznawany</td>
+<td>Instalację Gita i dostępność polecenia w nowym terminalu.</td>
+</tr>
+<tr class="even">
+<td><code>Author identity unknown</code></td>
+<td>Lokalne ustawienia <code>user.name</code> i <code>user.email</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>nothing to commit</code></td>
+<td>Czy plik zapisano i czy rzeczywiście różni się od wersji w ostatnim commicie?</td>
+</tr>
+<tr class="even">
+<td><code>src refspec main does not match any</code></td>
+<td>Czy istnieje pierwszy commit i czy bieżąca gałąź nazywa się <code>main</code>?</td>
+</tr>
+<tr class="odd">
+<td><code>remote origin already exists</code></td>
+<td>Obecny adres z <code>git remote -v</code>.</td>
+</tr>
+<tr class="even">
+<td><code>Repository not found</code> lub błąd uprawnień</td>
+<td>Adres, zalogowane konto i uprawnienia do repozytorium.</td>
+</tr>
+<tr class="odd">
+<td><code>non-fast-forward</code></td>
+<td>Na GitHubie są commity, których nie masz lokalnie, np. automatycznie utworzony README. Nie używaj <code>--force</code>; pokaż stan prowadzącemu i uzgodnij połączenie historii.</td>
+</tr>
+<tr class="even">
+<td>Brak zmienionego pliku na GitHubie</td>
+<td>Czy plik trafił do commita i czy <code>push</code> zakończył się sukcesem?</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="oddanie-projektu" class="level3">
+<h3 class="anchored" data-anchor-id="oddanie-projektu">14. Oddanie projektu</h3>
+<p>Oddaj <strong>link do repozytorium</strong>, nie adres lokalnej aplikacji <code>localhost</code>. Repozytorium powinno zawierać:</p>
+<ul>
+<li>kod Flaska, HTML, CSS i JavaScript;</li>
+<li><code>requirements.txt</code>, <code>Dockerfile</code> i <code>docker-compose.yml</code>;</li>
+<li><code>.gitignore</code>, <code>.dockerignore</code> oraz działającą instrukcję w README;</li>
+<li>co najmniej dwa commity pokazujące pierwszą wersję i późniejszą zmianę.</li>
+</ul>
+<p><strong>Końcowy punkt kontrolny:</strong> prowadzący ma dostęp do repozytorium, a po jego sklonowaniu można uruchomić kalkulator przez <code>docker compose up --build</code>, otworzyć formularz i uzyskać JSON z sumą dwóch liczb.</p>
+<p>Dokumentacja: <a href="https://docs.github.com/en/migrations/importing-source-code/using-the-command-line-to-import-source-code/adding-locally-hosted-code-to-github">wysłanie lokalnego projektu na GitHub</a>, <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github">uwierzytelnianie GitHub</a>.</p>
 
 
 </section>
