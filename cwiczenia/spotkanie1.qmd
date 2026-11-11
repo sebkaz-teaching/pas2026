@@ -6,13 +6,46 @@ toc-title: "Na tej stronie"
 code-copy: true
 ---
 
-## Cel tej sekcji
+## Plan pracy: 180 minut
+
+Materiał jest instrukcją do wykorzystania podczas zajęć i późniejszej pracy, nie tekstem do przeczytania w całości na sali. **W 3 godziny wykonujemy ścieżkę podstawową, kopiując kompletne przykłady i samodzielnie zmieniając wskazane fragmenty.** Przepisywanie całego kodu oraz wykonanie wszystkich eksperymentów wymaga dodatkowego czasu.
+
+Budżet oznacza 180 minut pracy (4 × 45 minut), z przerwą organizowaną osobno. Jeśli zajęcia trwają 3 × 45 minut, pełny zakres nie zmieści się w jednym spotkaniu.
+
+| Czas od początku | Zadanie | Rezultat |
+|---|---|---|
+| 0–10 min | Organizacja i istniejący test, jeśli przewidziano go na spotkanie | Gotowe narzędzia, dostęp do konta |
+| 10–30 min | Sekcja 1: HTML | Strona główna z własną treścią |
+| 30–45 min | Sekcja 2: podstrony | Działające menu trzech stron |
+| 45–65 min | Sekcja 3: CSS | Wspólny arkusz i sprawdzenie układu |
+| 65–90 min | Sekcja 4: pliki Flaska i formularz | Kod aplikacji, jeszcze bez JavaScriptu |
+| 90–115 min | Sekcja 6: Dockerfile, potem próby z sekcji 4.8 | Strona i JSON działające w kontenerze |
+| 115–135 min | Sekcja 5: fetch i przebudowa obrazu | Wynik pokazany na stronie |
+| 135–150 min | Sekcja 7: Compose | To samo uruchomienie z YAML |
+| 150–175 min | Sekcja 8: Git i GitHub | Dwa commity i push |
+| 175–180 min | Odbiór i rezerwa | Sprawdzenie repozytorium i zatrzymanie kontenera |
+
+**Przed zajęciami:** działający Docker z Compose, Git, edytor i konto GitHub z możliwością logowania z Gita. Prowadzący powinien sprawdzić z wyprzedzeniem `docker pull python:3.12-slim` i pierwszą budowę obrazu kalkulatora; instalacji narzędzi, zakładania kont i długiego pobierania nie wliczamy do powyższego planu. Jeśli test trwa ponad 10 minut, odpowiednio skróć zakres pracy lub dokończ wskazane ćwiczenia po zajęciach.
+
+### Ścieżka podstawowa bez lokalnego Pythona
+
+1. W sekcjach 1–3 skopiuj przykłady, zmień autora i dwa akapity, sprawdź menu oraz wspólny CSS.
+2. W sekcji 4 pomiń krok 1 z lokalną instalacją; wykonaj kroki 2–7 i pozostaw `static/app.js` pusty.
+3. Wykonaj kroki 1–7 [sekcji 6](#dockerfile), zbuduj obraz i uruchom kontener. Pozostaw go działającego. Wróć do [prób API w sekcji 4.8](#api-check), pomijając lokalne polecenie `python`.
+4. Dopiero teraz wykonaj sekcję 5: dodaj `fetch()`, przebuduj obraz i sprawdź wynik na stronie.
+5. W sekcji 7 przenieś uruchomienie do Compose, a w sekcji 8 zapisz i wyślij projekt.
+
+**Na zajęciach obowiązkowe:** trzy strony statyczne, wspólny CSS, poprawne GET dla `2` i `3`, jedna próba błędnych danych, formularz z fetch, uruchomienie Docker/Compose i push na GitHub. Dodatkowe eksperymenty HTML/CSS, rozbudowana personalizacja, wszystkie przypadki graniczne API oraz ponowne klonowanie repozytorium są do wykonania po zajęciach lub w pozostałym czasie. Wyjaśnienia pozostają na stronie jako materiał do powtórki.
+
+## Sekcja 1. Pierwsza strona HTML5
+
+### Cel tej sekcji
 
 Przygotujesz stronę główną osobistej witryny. Wpiszesz własną treść, otworzysz dokument w przeglądarce i sprawdzisz, jak znaczniki HTML opisują strukturę strony. Możesz przedstawić siebie, fikcyjną postać albo wybrany temat. Nie musisz podawać prawdziwych danych osobowych.
 
 To pierwszy etap laboratorium: **HTML5 → CSS → Flask → Dockerfile → Docker Compose → GitHub**. W tej sekcji pracujemy wyłącznie z HTML. Podstrony uzupełnimy w następnym etapie.
 
-## 1. Przygotuj katalog projektu
+### 1. Przygotuj katalog projektu
 
 Utwórz katalog `personal-website`. W Visual Studio Code wybierz **File → Open Folder** i otwórz ten katalog. Następnie utwórz cztery puste pliki:
 
@@ -33,7 +66,7 @@ personal-website/
 
 Nazwa `index.html` jest zwyczajową nazwą strony domyślnej w katalogu witryny. Sprawdź rozszerzenia plików: `index.html.txt` nie jest plikiem `index.html`.
 
-## 2. Wpisz kompletny dokument HTML5
+### 2. Wpisz kompletny dokument HTML5
 
 Otwórz `index.html` i wprowadź poniższy kod. Przycisk kopiowania w prawym górnym rogu bloku pozwala skopiować cały przykład.
 
@@ -82,9 +115,9 @@ Otwórz `index.html` i wprowadź poniższy kod. Przycisk kopiowania w prawym gó
 
 Zapisz plik: **Ctrl+S** w Windows/Linux lub **Cmd+S** w macOS.
 
-## 3. Zrozum szkielet dokumentu
+### 3. Zrozum szkielet dokumentu
 
-### Znaczniki i elementy
+#### Znaczniki i elementy
 
 HTML opisuje strukturę i znaczenie treści. Zwykle element składa się ze znacznika otwierającego, treści i znacznika zamykającego:
 
@@ -96,7 +129,7 @@ HTML opisuje strukturę i znaczenie treści. Zwykle element składa się ze znac
 
 Elementy mogą zawierać inne elementy. Wcięcia pokazują to zagnieżdżenie i ułatwiają czytanie kodu. Zamykaj elementy w odwrotnej kolejności do ich otwierania.
 
-### Typ dokumentu i język
+#### Typ dokumentu i język
 
 ```html
 <!DOCTYPE html>
@@ -107,7 +140,7 @@ Deklaracja `<!DOCTYPE html>` uruchamia standardowy tryb interpretacji HTML w prz
 
 Atrybut to dodatkowa informacja zapisana w znaczniku otwierającym. W tym przykładzie nazwą atrybutu jest `lang`, a jego wartością `pl`.
 
-### Metadane w head
+#### Metadane w head
 
 | Fragment | Znaczenie |
 |---|---|
@@ -117,7 +150,7 @@ Atrybut to dodatkowa informacja zapisana w znaczniku otwierającym. W tym przyk�
 
 `head` zawiera metadane. Widoczną treść umieszczamy w `body`. Ustawienie `viewport` przyda się przy tworzeniu układu na telefon; samo nie zapewnia jeszcze responsywności.
 
-### Semantyczny podział body
+#### Semantyczny podział body
 
 | Element | Rola w naszej stronie |
 |---|---|
@@ -129,7 +162,7 @@ Atrybut to dodatkowa informacja zapisana w znaczniku otwierającym. W tym przyk�
 
 W naszym dokumencie używamy jednego widocznego elementu `main`. Elementy semantyczne opisują przeznaczenie treści. Wygląd nadamy im później przez CSS.
 
-### Nagłówki i akapity
+#### Nagłówki i akapity
 
 `h1` to główny nagłówek strony. `h2` oznacza nagłówek sekcji, a `p` akapit. Dobieraj poziom nagłówka według hierarchii treści, a nie rozmiaru liter.
 
@@ -139,7 +172,7 @@ W naszym dokumencie używamy jednego widocznego elementu `main`. Elementy semant
 Zmień sam `title`, zapisz plik i odśwież przeglądarkę. Zmieni się podpis karty. Zmiana `h1` zmieni nagłówek w treści dokumentu. To dwa różne elementy.
 :::
 
-## 4. Przeanalizuj nawigację
+### 4. Przeanalizuj nawigację
 
 ```html
 <a href="about.html">O mnie</a>
@@ -157,7 +190,7 @@ Menu zapisaliśmy jako listę: `ul` to lista nieuporządkowana, a każdy `li` je
 Kliknięcie „O mnie” lub „Zainteresowania” otworzy pusty dokument, jeżeli utworzyłeś odpowiedni pusty plik. To oczekiwany stan tego etapu. Wróć przyciskiem Wstecz; zawartość podstron dodamy w kolejnej sekcji.
 :::
 
-## 5. Otwórz stronę w przeglądarce
+### 5. Otwórz stronę w przeglądarce
 
 1. Znajdź `index.html` w menedżerze plików.
 2. Otwórz go w przeglądarce lub przeciągnij do jej okna.
@@ -167,7 +200,7 @@ Adres rozpoczynający się od `file:///` oznacza odczyt lokalnego pliku. Nie dzi
 
 Strona będzie miała domyślny wygląd przeglądarki. Menu może być pionową listą z punktami. Plik `style.css` jest pusty i nie został jeszcze podłączony.
 
-## 6. Uzupełnij własną treść
+### 6. Uzupełnij własną treść
 
 Zastąp przykładowe dane własnymi lub wymyślonymi. Zmień:
 
@@ -180,9 +213,9 @@ Zachowaj strukturę dokumentu. Samodzielnie zdecyduj, jaki temat rozwiniesz na p
 
 Po każdej zmianie **zapisz plik i odśwież przeglądarkę**: Ctrl+R lub Cmd+R. Samo wpisanie tekstu w edytorze nie zmienia pliku na dysku.
 
-## 7. Wykonaj dwa eksperymenty
+### 7. Opcjonalnie: wykonaj dwa eksperymenty
 
-### Nowa linia w kodzie a nowy akapit
+#### Nowa linia w kodzie a nowy akapit
 
 Zastąp jeden akapit poniższym fragmentem:
 
@@ -204,7 +237,7 @@ Następnie porównaj z trzema osobnymi akapitami:
 <p>Trzeci akapit.</p>
 ```
 
-### Znaczenie wyróżnienia
+#### Znaczenie wyróżnienia
 
 Wstaw do jednego akapitu element `strong`:
 
@@ -217,7 +250,7 @@ Wstaw do jednego akapitu element `strong`:
 
 `strong` oznacza treść o dużej wadze i domyślnie jest wyświetlany pogrubieniem. Zwróć uwagę: zamykamy `strong` przed zamknięciem otaczającego go `p`.
 
-## 8. Sprawdź rezultat
+### 8. Sprawdź rezultat
 
 To lista kontrolna wykonania zadania, nie punktowany test.
 
@@ -393,7 +426,7 @@ Zapisz plik. Tutaj użyliśmy `ol`, czyli listy uporządkowanej: kolejność kro
 
 Zastąp fotografię dowolnym własnym tematem. Zachowaj dwa akapity, nagłówek listy, listę i odnośnik zewnętrzny. Jeśli opisujesz zbiór zainteresowań bez określonej kolejności, możesz zamienić `ol` na `ul`, zmieniając oba znaczniki: otwierający i zamykający.
 
-### 4. Ujednolić menu na stronie głównej
+### 4. Ujednolicenie menu na stronie głównej
 
 W `index.html` znajdź cały element `nav` i zastąp go poniższym fragmentem:
 
@@ -433,7 +466,7 @@ Porównaj trzy zapisy:
 | `https://developer.mozilla.org/pl/docs/Web/HTML` | Otwiera wskazany adres w internecie. |
 | `#top` | Przechodzi do elementu o `id="top"` w bieżącym dokumencie. |
 
-Aby wypróbować trzeci wariant, dodaj `id="top"` do istniejącego nagłówka strony:
+Opcjonalnie, aby wypróbować trzeci wariant, dodaj `id="top"` do istniejącego nagłówka strony:
 
 ```html
 <header id="top">
@@ -499,7 +532,7 @@ Zachowuj identyczną wielkość liter w nazwach plików i adresach. `About.html`
 - [ ] Rozróżniasz odnośnik do pliku, adres internetowy i fragment dokumentu.
 - [ ] Nawigacja działa również przy użyciu klawiatury.
 
-**Rezultat:** masz kompletną statyczną witrynę z trzema stronami. W kolejnym etapie podłączysz wspólny arkusz CSS. Powtarzający się kod menu pozostaje na razie w trzech plikach; później przeniesiemy go do wspólnego szablonu Flaska.
+**Rezultat:** masz kompletną statyczną witrynę z trzema stronami. W kolejnym etapie podłączysz wspólny arkusz CSS. W tym ćwiczeniu menu pozostaje w trzech statycznych plikach. W części API przygotujemy osobny kalkulator z jednym dokumentem HTML.
 
 
 ## Sekcja 3. Podstawy CSS i wspólny arkusz stylów
@@ -779,7 +812,7 @@ Jeżeli na każdej stronie wyróżnione jest „O mnie”, sprawdź `aria-curren
 
 Nie usuwaj obramowania fokusu bez zapewnienia innego wyraźnego oznaczenia. Użytkownik klawiatury musi wiedzieć, który odnośnik otworzy po naciśnięciu Enter.
 
-### 10. Zmień wygląd całej witryny w jednym miejscu
+### 10. Opcjonalnie: zmień wygląd całej witryny w jednym miejscu
 
 Wybierz własną paletę i zmodyfikuj tylko arkusz:
 
@@ -792,7 +825,7 @@ Zachowaj czytelny kontrast tekstu względem tła. Po każdej zmianie sprawdź ws
 
 **Eksperyment ze wspólnym arkuszem:** ustaw `border-radius: 0` w `main section`. Otwórz kolejno każdą stronę. We wszystkich panel powinien mieć prostokątne narożniki, mimo że zmieniłeś tylko jeden plik.
 
-### 11. Znajdź regułę w narzędziach przeglądarki
+### 11. Opcjonalnie: znajdź regułę w narzędziach przeglądarki
 
 Kliknij prawym przyciskiem myszy panel z treścią i wybierz **Zbadaj / Inspect**. W narzędziach deweloperskich odszukaj zakładkę ze stylami wybranego elementu.
 
@@ -826,7 +859,7 @@ Nie wpisuj znaczników `<style>` do pliku `.css`. Zewnętrzny arkusz zawiera sam
 - [ ] Bieżąca pozycja menu ma właściwe wyróżnienie.
 - [ ] Odnośniki reagują na kursor i mają widoczny fokus klawiatury.
 - [ ] Zmiana reguły w jednym arkuszu jest widoczna na trzech stronach po odświeżeniu.
-- [ ] Potrafisz odnaleźć regułę elementu w narzędziach przeglądarki.
+- [ ] Opcjonalnie: potrafisz odnaleźć regułę elementu w narzędziach przeglądarki.
 
 **Rezultat:** masz statyczną witrynę z trzema podstronami i jednym wspólnym arkuszem CSS. Kolejny etap to jedna strona obsługiwana przez Flask, endpoint obliczeniowy JSON i komunikacja przez `fetch()`.
 
@@ -846,7 +879,7 @@ Nie tworzymy trzech tras HTML ani wspólnego szablonu bazowego. Jedyny szablon t
 
 ### 1. Przygotuj środowisko
 
-**Wariant bez lokalnego Pythona:** pomiń tworzenie `.venv` i instalację Flask. Przygotuj pliki z kroków 2–7 oraz sekcji 5, a uruchomienie i próby wykonaj według [sekcji Dockerfile](#dockerfile). Wszystkie polecenia `python` i instalacja zależności zostaną wykonane w obrazie.
+**Wariant bez lokalnego Pythona:** pomiń tworzenie `.venv` i instalację Flask. Przygotuj pliki z kroków 2–7, pozostaw `static/app.js` pusty i przejdź do [sekcji Dockerfile](#dockerfile). Po uruchomieniu kontenera wróć do prób z kroku 8; JavaScript z sekcji 5 dodasz dopiero po sprawdzeniu surowego JSON. Wszystkie polecenia `python` i instalacja zależności zostaną wykonane w obrazie.
 
 Otwórz `flask-calculator` w edytorze i terminalu. Korzystamy z Pythona 3.11 lub nowszego.
 
@@ -887,7 +920,7 @@ Przygotuj strukturę:
 
 ```text
 flask-calculator/
-├── .venv/
+├── .venv/                 # Only for the optional local Python workflow
 ├── app.py
 ├── templates/
 │   └── index.html
@@ -1092,7 +1125,9 @@ Na końcu skopiowanego `static/style.css` dopisz:
 
 Selektor zaczynający się od `#` wybiera element o podanym `id`. Używamy go, aby reguły dotyczyły formularza kalkulatora. Zachowujemy widoczny fokus pól i przycisku.
 
-### 8. Uruchom aplikację i sprawdź API bez JavaScriptu
+### 8. Uruchom aplikację i sprawdź API bez JavaScriptu {#api-check}
+
+**Jeśli kontener z sekcji 6 już działa, pomiń poniższe polecenie i od razu otwórz stronę.** Polecenie dotyczy wyłącznie wariantu z lokalnym Pythonem:
 
 W terminalu z aktywnym `.venv`, w katalogu z `app.py`, wykonaj:
 
@@ -1102,7 +1137,7 @@ python -m flask --app app run --debug
 
 Otwórz [http://127.0.0.1:5000/](http://127.0.0.1:5000/). Terminal pozostaw uruchomiony. **Ctrl+C** zatrzymuje serwer. Tryb debugowania służy do lokalnych ćwiczeń.
 
-Najpierw wyślij formularz z pustym jeszcze `app.js`: powinien otworzyć JSON. Wróć na stronę przyciskiem Wstecz. Następnie wpisuj adresy ręcznie:
+Wariant Docker: upewnij się, że `app.js` był pusty podczas budowania obrazu. Najpierw wyślij formularz z pustym jeszcze `app.js`: powinien otworzyć JSON. Wróć na stronę przyciskiem Wstecz. Następnie wpisuj adresy ręcznie. Na zajęciach wystarczą pierwszy przykład i jedna próba błędnych danych; pozostałe przypadki sprawdź po zajęciach:
 
 | Parametry po `/api/add` | Oczekiwany rezultat |
 |---|---|
@@ -1167,7 +1202,15 @@ form.addEventListener("submit", async (event) => {
 });
 ```
 
-Zapisz plik, odśwież stronę główną i wyślij formularz. Adres karty powinien pozostać `/`, a wynik pojawić się pod formularzem.
+Zapisz plik. **W wariancie Docker przebuduj obraz i uruchom nowy kontener**, ponieważ poprzedni zawierał pusty skrypt:
+
+```bash
+docker stop flask-calculator-lab
+docker build -t flask-calculator:lab .
+docker run --rm --name flask-calculator-lab -p 127.0.0.1:5000:5000 flask-calculator:lab
+```
+
+Polecenia wykonaj w drugim terminalu, w katalogu `flask-calculator`. W wariancie z lokalnym Pythonem nie przebudowujesz obrazu. Odśwież stronę główną i wyślij formularz. Adres karty powinien pozostać `/`, a wynik pojawić się pod formularzem.
 
 ### 2. Znajdź elementy i przechwyć formularz
 
@@ -1223,7 +1266,7 @@ Przy odświeżeniu strony zobaczysz też osobne żądania dokumentu HTML, CSS i 
 
 Błędne dane sprawdzaj przez bezpośredni adres API: przeglądarka może nie dopuścić tekstu `hello` w polu liczbowym. To pokazuje, dlaczego serwer musi sam walidować dane.
 
-Aby sprawdzić brak połączenia, pozostaw stronę otwartą, zatrzymaj Flask przez Ctrl+C i ponownie wyślij formularz. Powinien pojawić się komunikat o nieudanym pobraniu odpowiedzi. Uruchom serwer ponownie przed dalszą pracą.
+Opcjonalnie sprawdź brak połączenia: pozostaw stronę otwartą, zatrzymaj Flask przez Ctrl+C (albo `docker stop flask-calculator-lab` w wariancie Docker) i ponownie wyślij formularz. Powinien pojawić się komunikat o nieudanym pobraniu odpowiedzi. Uruchom serwer ponownie przed dalszą pracą.
 
 | Problem | Co sprawdzić? |
 |---|---|
@@ -1283,7 +1326,7 @@ flask-calculator/
 ├── requirements.txt
 ├── Dockerfile
 ├── .dockerignore
-├── docker-compose.yml
+├── docker-compose.yml     # Added in section 7
 ├── templates/
 │   └── index.html
 └── static/
@@ -1401,9 +1444,11 @@ Terminal będzie pokazywał logi. Otwórz:
 - [stronę kalkulatora](http://localhost:5000/);
 - [API dla liczb 2 i 3](http://localhost:5000/api/add?a=2&b=3).
 
-Formularz powinien pokazać sumę bez przeładowania, a bezpośredni adres API odpowiedź JSON. To działa również wtedy, gdy na komputerze nie ma polecenia `python`.
+Przy pierwszym uruchomieniu, z pustym `app.js`, formularz powinien przejść do surowego JSON. Wróć do [sekcji 4.8](#api-check), sprawdź API, a następnie wykonaj sekcję 5 i przebuduj obraz. Dopiero po dodaniu `fetch()` formularz pokaże sumę bez przeładowania dokumentu. Aplikacja działa również wtedy, gdy na komputerze nie ma polecenia `python`.
 
 ### 8. Sprawdź proces i zatrzymaj aplikację
+
+**W ścieżce podstawowej najpierw wykonaj sekcję 5 z działającym kontenerem.** Poniższe polecenia diagnostyczne możesz wykonać po sprawdzeniu fetch; zatrzymanie aplikacji jest potrzebne przed przejściem do Compose.
 
 W drugim terminalu:
 
@@ -1423,7 +1468,7 @@ docker stop flask-calculator-lab
 
 Po zakończeniu `--rm` usuwa kontener. Obraz pozostaje dostępny do kolejnego `docker run`.
 
-### 9. Zmień kod i przebuduj obraz
+### 9. Opcjonalnie: zmień kod i przebuduj obraz
 
 Zmień tekst nagłówka w `templates/index.html`. W tym wariancie pliki są kopiowane przy budowie: edycja pliku na komputerze nie aktualizuje automatycznie kontenera.
 
@@ -1647,7 +1692,7 @@ git init -b main
 
 Polecenie tworzy lokalne repozytorium i gałąź `main`. Jeżeli w tym projekcie masz już repozytorium, pomiń inicjalizację i sprawdź nazwę bieżącej gałęzi przez `git branch --show-current`.
 
-Dla dalszych kroków przyjmujemy gałąź `main`. Jeśli Git jest starszy i nie rozpoznaje `-b`, dla nowego repozytorium użyj:
+Dla dalszych kroków przyjmujemy gałąź `main`. Jeśli istniejące repozytorium używa innej nazwy, uzgodnij ją z prowadzącym przed dodaniem zdalnego repozytorium. Jeśli Git jest starszy i nie rozpoznaje `-b`, dla nowego repozytorium użyj:
 
 ```bash
 git init
@@ -1768,7 +1813,7 @@ Zobacz na GitHubie nowy commit i jego diff. W kolejnych zmianach stosuj ten sam 
 
 Zmiana w repozytorium nie aktualizuje automatycznie wcześniej zbudowanego kontenera. Aby zobaczyć ją lokalnie, wykonaj ponownie `docker compose up --build -d` i odśwież stronę.
 
-### 12. Sprawdź projekt po pobraniu
+### 12. Po zajęciach: sprawdź projekt po pobraniu
 
 Możesz sprawdzić kompletność repozytorium w osobnym katalogu, bez korzystania z lokalnej `.venv`. Użyj własnego adresu i nowej nazwy katalogu:
 

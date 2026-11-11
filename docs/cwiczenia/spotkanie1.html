@@ -214,15 +214,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Na tej stronie</h2>
    
   <ul class="collapse">
-  <li><a href="#cel-tej-sekcji" id="toc-cel-tej-sekcji" class="nav-link active" data-scroll-target="#cel-tej-sekcji">Cel tej sekcji</a></li>
-  <li><a href="#przygotuj-katalog-projektu" id="toc-przygotuj-katalog-projektu" class="nav-link" data-scroll-target="#przygotuj-katalog-projektu">1. Przygotuj katalog projektu</a></li>
-  <li><a href="#wpisz-kompletny-dokument-html5" id="toc-wpisz-kompletny-dokument-html5" class="nav-link" data-scroll-target="#wpisz-kompletny-dokument-html5">2. Wpisz kompletny dokument HTML5</a></li>
-  <li><a href="#zrozum-szkielet-dokumentu" id="toc-zrozum-szkielet-dokumentu" class="nav-link" data-scroll-target="#zrozum-szkielet-dokumentu">3. Zrozum szkielet dokumentu</a></li>
-  <li><a href="#przeanalizuj-nawigację" id="toc-przeanalizuj-nawigację" class="nav-link" data-scroll-target="#przeanalizuj-nawigację">4. Przeanalizuj nawigację</a></li>
-  <li><a href="#otwórz-stronę-w-przeglądarce" id="toc-otwórz-stronę-w-przeglądarce" class="nav-link" data-scroll-target="#otwórz-stronę-w-przeglądarce">5. Otwórz stronę w przeglądarce</a></li>
-  <li><a href="#uzupełnij-własną-treść" id="toc-uzupełnij-własną-treść" class="nav-link" data-scroll-target="#uzupełnij-własną-treść">6. Uzupełnij własną treść</a></li>
-  <li><a href="#wykonaj-dwa-eksperymenty" id="toc-wykonaj-dwa-eksperymenty" class="nav-link" data-scroll-target="#wykonaj-dwa-eksperymenty">7. Wykonaj dwa eksperymenty</a></li>
-  <li><a href="#sprawdź-rezultat" id="toc-sprawdź-rezultat" class="nav-link" data-scroll-target="#sprawdź-rezultat">8. Sprawdź rezultat</a></li>
+  <li><a href="#plan-pracy-180-minut" id="toc-plan-pracy-180-minut" class="nav-link active" data-scroll-target="#plan-pracy-180-minut">Plan pracy: 180 minut</a></li>
+  <li><a href="#sekcja-1.-pierwsza-strona-html5" id="toc-sekcja-1.-pierwsza-strona-html5" class="nav-link" data-scroll-target="#sekcja-1.-pierwsza-strona-html5">Sekcja 1. Pierwsza strona HTML5</a></li>
   <li><a href="#sekcja-2.-dwie-podstrony-i-nawigacja" id="toc-sekcja-2.-dwie-podstrony-i-nawigacja" class="nav-link" data-scroll-target="#sekcja-2.-dwie-podstrony-i-nawigacja">Sekcja 2. Dwie podstrony i nawigacja</a></li>
   <li><a href="#sekcja-3.-podstawy-css-i-wspólny-arkusz-stylów" id="toc-sekcja-3.-podstawy-css-i-wspólny-arkusz-stylów" class="nav-link" data-scroll-target="#sekcja-3.-podstawy-css-i-wspólny-arkusz-stylów">Sekcja 3. Podstawy CSS i wspólny arkusz stylów</a></li>
   <li><a href="#sekcja-4.-flask-jedna-strona-html-i-endpoint-json" id="toc-sekcja-4.-flask-jedna-strona-html-i-endpoint-json" class="nav-link" data-scroll-target="#sekcja-4.-flask-jedna-strona-html-i-endpoint-json">Sekcja 4. Flask: jedna strona HTML i endpoint JSON</a></li>
@@ -256,13 +249,98 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="cel-tej-sekcji" class="level2">
-<h2 class="anchored" data-anchor-id="cel-tej-sekcji">Cel tej sekcji</h2>
+<section id="plan-pracy-180-minut" class="level2">
+<h2 class="anchored" data-anchor-id="plan-pracy-180-minut">Plan pracy: 180 minut</h2>
+<p>Materiał jest instrukcją do wykorzystania podczas zajęć i późniejszej pracy, nie tekstem do przeczytania w całości na sali. <strong>W 3 godziny wykonujemy ścieżkę podstawową, kopiując kompletne przykłady i samodzielnie zmieniając wskazane fragmenty.</strong> Przepisywanie całego kodu oraz wykonanie wszystkich eksperymentów wymaga dodatkowego czasu.</p>
+<p>Budżet oznacza 180 minut pracy (4 × 45 minut), z przerwą organizowaną osobno. Jeśli zajęcia trwają 3 × 45 minut, pełny zakres nie zmieści się w jednym spotkaniu.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Czas od początku</th>
+<th>Zadanie</th>
+<th>Rezultat</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0–10 min</td>
+<td>Organizacja i istniejący test, jeśli przewidziano go na spotkanie</td>
+<td>Gotowe narzędzia, dostęp do konta</td>
+</tr>
+<tr class="even">
+<td>10–30 min</td>
+<td>Sekcja 1: HTML</td>
+<td>Strona główna z własną treścią</td>
+</tr>
+<tr class="odd">
+<td>30–45 min</td>
+<td>Sekcja 2: podstrony</td>
+<td>Działające menu trzech stron</td>
+</tr>
+<tr class="even">
+<td>45–65 min</td>
+<td>Sekcja 3: CSS</td>
+<td>Wspólny arkusz i sprawdzenie układu</td>
+</tr>
+<tr class="odd">
+<td>65–90 min</td>
+<td>Sekcja 4: pliki Flaska i formularz</td>
+<td>Kod aplikacji, jeszcze bez JavaScriptu</td>
+</tr>
+<tr class="even">
+<td>90–115 min</td>
+<td>Sekcja 6: Dockerfile, potem próby z sekcji 4.8</td>
+<td>Strona i JSON działające w kontenerze</td>
+</tr>
+<tr class="odd">
+<td>115–135 min</td>
+<td>Sekcja 5: fetch i przebudowa obrazu</td>
+<td>Wynik pokazany na stronie</td>
+</tr>
+<tr class="even">
+<td>135–150 min</td>
+<td>Sekcja 7: Compose</td>
+<td>To samo uruchomienie z YAML</td>
+</tr>
+<tr class="odd">
+<td>150–175 min</td>
+<td>Sekcja 8: Git i GitHub</td>
+<td>Dwa commity i push</td>
+</tr>
+<tr class="even">
+<td>175–180 min</td>
+<td>Odbiór i rezerwa</td>
+<td>Sprawdzenie repozytorium i zatrzymanie kontenera</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Przed zajęciami:</strong> działający Docker z Compose, Git, edytor i konto GitHub z możliwością logowania z Gita. Prowadzący powinien sprawdzić z wyprzedzeniem <code>docker pull python:3.12-slim</code> i pierwszą budowę obrazu kalkulatora; instalacji narzędzi, zakładania kont i długiego pobierania nie wliczamy do powyższego planu. Jeśli test trwa ponad 10 minut, odpowiednio skróć zakres pracy lub dokończ wskazane ćwiczenia po zajęciach.</p>
+<section id="ścieżka-podstawowa-bez-lokalnego-pythona" class="level3">
+<h3 class="anchored" data-anchor-id="ścieżka-podstawowa-bez-lokalnego-pythona">Ścieżka podstawowa bez lokalnego Pythona</h3>
+<ol type="1">
+<li>W sekcjach 1–3 skopiuj przykłady, zmień autora i dwa akapity, sprawdź menu oraz wspólny CSS.</li>
+<li>W sekcji 4 pomiń krok 1 z lokalną instalacją; wykonaj kroki 2–7 i pozostaw <code>static/app.js</code> pusty.</li>
+<li>Wykonaj kroki 1–7 <a href="#dockerfile">sekcji 6</a>, zbuduj obraz i uruchom kontener. Pozostaw go działającego. Wróć do <a href="#api-check">prób API w sekcji 4.8</a>, pomijając lokalne polecenie <code>python</code>.</li>
+<li>Dopiero teraz wykonaj sekcję 5: dodaj <code>fetch()</code>, przebuduj obraz i sprawdź wynik na stronie.</li>
+<li>W sekcji 7 przenieś uruchomienie do Compose, a w sekcji 8 zapisz i wyślij projekt.</li>
+</ol>
+<p><strong>Na zajęciach obowiązkowe:</strong> trzy strony statyczne, wspólny CSS, poprawne GET dla <code>2</code> i <code>3</code>, jedna próba błędnych danych, formularz z fetch, uruchomienie Docker/Compose i push na GitHub. Dodatkowe eksperymenty HTML/CSS, rozbudowana personalizacja, wszystkie przypadki graniczne API oraz ponowne klonowanie repozytorium są do wykonania po zajęciach lub w pozostałym czasie. Wyjaśnienia pozostają na stronie jako materiał do powtórki.</p>
+</section>
+</section>
+<section id="sekcja-1.-pierwsza-strona-html5" class="level2">
+<h2 class="anchored" data-anchor-id="sekcja-1.-pierwsza-strona-html5">Sekcja 1. Pierwsza strona HTML5</h2>
+<section id="cel-tej-sekcji" class="level3">
+<h3 class="anchored" data-anchor-id="cel-tej-sekcji">Cel tej sekcji</h3>
 <p>Przygotujesz stronę główną osobistej witryny. Wpiszesz własną treść, otworzysz dokument w przeglądarce i sprawdzisz, jak znaczniki HTML opisują strukturę strony. Możesz przedstawić siebie, fikcyjną postać albo wybrany temat. Nie musisz podawać prawdziwych danych osobowych.</p>
 <p>To pierwszy etap laboratorium: <strong>HTML5 → CSS → Flask → Dockerfile → Docker Compose → GitHub</strong>. W tej sekcji pracujemy wyłącznie z HTML. Podstrony uzupełnimy w następnym etapie.</p>
 </section>
-<section id="przygotuj-katalog-projektu" class="level2">
-<h2 class="anchored" data-anchor-id="przygotuj-katalog-projektu">1. Przygotuj katalog projektu</h2>
+<section id="przygotuj-katalog-projektu" class="level3">
+<h3 class="anchored" data-anchor-id="przygotuj-katalog-projektu">1. Przygotuj katalog projektu</h3>
 <p>Utwórz katalog <code>personal-website</code>. W Visual Studio Code wybierz <strong>File → Open Folder</strong> i otwórz ten katalog. Następnie utwórz cztery puste pliki:</p>
 <pre class="text"><code>personal-website/
 ├── index.html
@@ -297,8 +375,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 <p>Nazwa <code>index.html</code> jest zwyczajową nazwą strony domyślnej w katalogu witryny. Sprawdź rozszerzenia plików: <code>index.html.txt</code> nie jest plikiem <code>index.html</code>.</p>
 </section>
-<section id="wpisz-kompletny-dokument-html5" class="level2">
-<h2 class="anchored" data-anchor-id="wpisz-kompletny-dokument-html5">2. Wpisz kompletny dokument HTML5</h2>
+<section id="wpisz-kompletny-dokument-html5" class="level3">
+<h3 class="anchored" data-anchor-id="wpisz-kompletny-dokument-html5">2. Wpisz kompletny dokument HTML5</h3>
 <p>Otwórz <code>index.html</code> i wprowadź poniższy kod. Przycisk kopiowania w prawym górnym rogu bloku pozwala skopiować cały przykład.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;!DOCTYPE</span> html<span class="dt">&gt;</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">html</span><span class="ot"> lang</span><span class="op">=</span><span class="st">"pl"</span><span class="dt">&gt;</span></span>
@@ -342,24 +420,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">html</span><span class="dt">&gt;</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Zapisz plik: <strong>Ctrl+S</strong> w Windows/Linux lub <strong>Cmd+S</strong> w macOS.</p>
 </section>
-<section id="zrozum-szkielet-dokumentu" class="level2">
-<h2 class="anchored" data-anchor-id="zrozum-szkielet-dokumentu">3. Zrozum szkielet dokumentu</h2>
-<section id="znaczniki-i-elementy" class="level3">
-<h3 class="anchored" data-anchor-id="znaczniki-i-elementy">Znaczniki i elementy</h3>
+<section id="zrozum-szkielet-dokumentu" class="level3">
+<h3 class="anchored" data-anchor-id="zrozum-szkielet-dokumentu">3. Zrozum szkielet dokumentu</h3>
+<section id="znaczniki-i-elementy" class="level4">
+<h4 class="anchored" data-anchor-id="znaczniki-i-elementy">Znaczniki i elementy</h4>
 <p>HTML opisuje strukturę i znaczenie treści. Zwykle element składa się ze znacznika otwierającego, treści i znacznika zamykającego:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span>Witaj na mojej stronie!<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>&lt;p&gt;</code> rozpoczyna akapit, a <code>&lt;/p&gt;</code> go zamyka. Ukośnik oznacza znacznik zamykający. Nie wszystkie elementy mają znacznik zamykający: przykładowo <code>meta</code> go nie ma.</p>
 <p>Elementy mogą zawierać inne elementy. Wcięcia pokazują to zagnieżdżenie i ułatwiają czytanie kodu. Zamykaj elementy w odwrotnej kolejności do ich otwierania.</p>
 </section>
-<section id="typ-dokumentu-i-język" class="level3">
-<h3 class="anchored" data-anchor-id="typ-dokumentu-i-język">Typ dokumentu i język</h3>
+<section id="typ-dokumentu-i-język" class="level4">
+<h4 class="anchored" data-anchor-id="typ-dokumentu-i-język">Typ dokumentu i język</h4>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;!DOCTYPE</span> html<span class="dt">&gt;</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">html</span><span class="ot"> lang</span><span class="op">=</span><span class="st">"pl"</span><span class="dt">&gt;</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Deklaracja <code>&lt;!DOCTYPE html&gt;</code> uruchamia standardowy tryb interpretacji HTML w przeglądarce. Element <code>html</code> obejmuje dokument. Atrybut <code>lang="pl"</code> określa język treści, co pomaga między innymi czytnikom ekranu.</p>
 <p>Atrybut to dodatkowa informacja zapisana w znaczniku otwierającym. W tym przykładzie nazwą atrybutu jest <code>lang</code>, a jego wartością <code>pl</code>.</p>
 </section>
-<section id="metadane-w-head" class="level3">
-<h3 class="anchored" data-anchor-id="metadane-w-head">Metadane w head</h3>
+<section id="metadane-w-head" class="level4">
+<h4 class="anchored" data-anchor-id="metadane-w-head">Metadane w head</h4>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
@@ -388,8 +466,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 <p><code>head</code> zawiera metadane. Widoczną treść umieszczamy w <code>body</code>. Ustawienie <code>viewport</code> przyda się przy tworzeniu układu na telefon; samo nie zapewnia jeszcze responsywności.</p>
 </section>
-<section id="semantyczny-podział-body" class="level3">
-<h3 class="anchored" data-anchor-id="semantyczny-podział-body">Semantyczny podział body</h3>
+<section id="semantyczny-podział-body" class="level4">
+<h4 class="anchored" data-anchor-id="semantyczny-podział-body">Semantyczny podział body</h4>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -422,8 +500,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 <p>W naszym dokumencie używamy jednego widocznego elementu <code>main</code>. Elementy semantyczne opisują przeznaczenie treści. Wygląd nadamy im później przez CSS.</p>
 </section>
-<section id="nagłówki-i-akapity" class="level3">
-<h3 class="anchored" data-anchor-id="nagłówki-i-akapity">Nagłówki i akapity</h3>
+<section id="nagłówki-i-akapity" class="level4">
+<h4 class="anchored" data-anchor-id="nagłówki-i-akapity">Nagłówki i akapity</h4>
 <p><code>h1</code> to główny nagłówek strony. <code>h2</code> oznacza nagłówek sekcji, a <code>p</code> akapit. Dobieraj poziom nagłówka według hierarchii treści, a nie rozmiaru liter.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -440,8 +518,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section>
 </section>
-<section id="przeanalizuj-nawigację" class="level2">
-<h2 class="anchored" data-anchor-id="przeanalizuj-nawigację">4. Przeanalizuj nawigację</h2>
+<section id="przeanalizuj-nawigację" class="level3">
+<h3 class="anchored" data-anchor-id="przeanalizuj-nawigację">4. Przeanalizuj nawigację</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">a</span><span class="ot"> href</span><span class="op">=</span><span class="st">"about.html"</span><span class="dt">&gt;</span>O mnie<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Element <code>a</code> tworzy odnośnik. Atrybut <code>href</code> podaje jego cel, a tekst między znacznikami jest etykietą widoczną na stronie.</p>
 <p>Adres <code>about.html</code> jest ścieżką względną. Przeglądarka szuka pliku w tym samym katalogu co bieżący dokument. Dlatego wszystkie trzy pliki HTML umieszczamy obok siebie.</p>
@@ -460,8 +538,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="otwórz-stronę-w-przeglądarce" class="level2">
-<h2 class="anchored" data-anchor-id="otwórz-stronę-w-przeglądarce">5. Otwórz stronę w przeglądarce</h2>
+<section id="otwórz-stronę-w-przeglądarce" class="level3">
+<h3 class="anchored" data-anchor-id="otwórz-stronę-w-przeglądarce">5. Otwórz stronę w przeglądarce</h3>
 <ol type="1">
 <li>Znajdź <code>index.html</code> w menedżerze plików.</li>
 <li>Otwórz go w przeglądarce lub przeciągnij do jej okna.</li>
@@ -470,8 +548,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Adres rozpoczynający się od <code>file:///</code> oznacza odczyt lokalnego pliku. Nie działa tu jeszcze serwer HTTP ani aplikacja Flask.</p>
 <p>Strona będzie miała domyślny wygląd przeglądarki. Menu może być pionową listą z punktami. Plik <code>style.css</code> jest pusty i nie został jeszcze podłączony.</p>
 </section>
-<section id="uzupełnij-własną-treść" class="level2">
-<h2 class="anchored" data-anchor-id="uzupełnij-własną-treść">6. Uzupełnij własną treść</h2>
+<section id="uzupełnij-własną-treść" class="level3">
+<h3 class="anchored" data-anchor-id="uzupełnij-własną-treść">6. Uzupełnij własną treść</h3>
 <p>Zastąp przykładowe dane własnymi lub wymyślonymi. Zmień:</p>
 <ul>
 <li>tytuł dokumentu w <code>title</code>;</li>
@@ -482,10 +560,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Zachowaj strukturę dokumentu. Samodzielnie zdecyduj, jaki temat rozwiniesz na podstronie „Zainteresowania”. Napisz kilka zdań, które go zapowiadają.</p>
 <p>Po każdej zmianie <strong>zapisz plik i odśwież przeglądarkę</strong>: Ctrl+R lub Cmd+R. Samo wpisanie tekstu w edytorze nie zmienia pliku na dysku.</p>
 </section>
-<section id="wykonaj-dwa-eksperymenty" class="level2">
-<h2 class="anchored" data-anchor-id="wykonaj-dwa-eksperymenty">7. Wykonaj dwa eksperymenty</h2>
-<section id="nowa-linia-w-kodzie-a-nowy-akapit" class="level3">
-<h3 class="anchored" data-anchor-id="nowa-linia-w-kodzie-a-nowy-akapit">Nowa linia w kodzie a nowy akapit</h3>
+<section id="opcjonalnie-wykonaj-dwa-eksperymenty" class="level3">
+<h3 class="anchored" data-anchor-id="opcjonalnie-wykonaj-dwa-eksperymenty">7. Opcjonalnie: wykonaj dwa eksperymenty</h3>
+<section id="nowa-linia-w-kodzie-a-nowy-akapit" class="level4">
+<h4 class="anchored" data-anchor-id="nowa-linia-w-kodzie-a-nowy-akapit">Nowa linia w kodzie a nowy akapit</h4>
 <p>Zastąp jeden akapit poniższym fragmentem:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    Pierwsze zdanie.</span>
@@ -498,8 +576,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span>Drugi akapit.<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span>Trzeci akapit.<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="znaczenie-wyróżnienia" class="level3">
-<h3 class="anchored" data-anchor-id="znaczenie-wyróżnienia">Znaczenie wyróżnienia</h3>
+<section id="znaczenie-wyróżnienia" class="level4">
+<h4 class="anchored" data-anchor-id="znaczenie-wyróżnienia">Znaczenie wyróżnienia</h4>
 <p>Wstaw do jednego akapitu element <code>strong</code>:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    Na tych zajęciach tworzę</span>
@@ -508,8 +586,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><code>strong</code> oznacza treść o dużej wadze i domyślnie jest wyświetlany pogrubieniem. Zwróć uwagę: zamykamy <code>strong</code> przed zamknięciem otaczającego go <code>p</code>.</p>
 </section>
 </section>
-<section id="sprawdź-rezultat" class="level2">
-<h2 class="anchored" data-anchor-id="sprawdź-rezultat">8. Sprawdź rezultat</h2>
+<section id="sprawdź-rezultat" class="level3">
+<h3 class="anchored" data-anchor-id="sprawdź-rezultat">8. Sprawdź rezultat</h3>
 <p>To lista kontrolna wykonania zadania, nie punktowany test.</p>
 <ul class="task-list">
 <li><label><input type="checkbox">Projekt zawiera trzy pliki HTML i jeden CSS.</label></li>
@@ -522,6 +600,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>Jeżeli widzisz sam kod zamiast strony, sprawdź rozszerzenie pliku i upewnij się, że otwierasz go w przeglądarce. Jeżeli widzisz poprzednią treść, zapisz plik i sprawdź, czy edytujesz ten sam dokument, który jest otwarty w przeglądarce.</p>
 <p><strong>Rezultat:</strong> masz stronę główną z własną treścią. Następny etap to uzupełnienie dwóch podstron i sprawdzenie nawigacji między nimi.</p>
+</section>
 </section>
 <section id="sekcja-2.-dwie-podstrony-i-nawigacja" class="level2">
 <h2 class="anchored" data-anchor-id="sekcja-2.-dwie-podstrony-i-nawigacja">Sekcja 2. Dwie podstrony i nawigacja</h2>
@@ -696,8 +775,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Zapisz plik. Tutaj użyliśmy <code>ol</code>, czyli listy uporządkowanej: kolejność kroków ma znaczenie. Jej pozycje również zapisujemy jako <code>li</code>.</p>
 <p>Zastąp fotografię dowolnym własnym tematem. Zachowaj dwa akapity, nagłówek listy, listę i odnośnik zewnętrzny. Jeśli opisujesz zbiór zainteresowań bez określonej kolejności, możesz zamienić <code>ol</code> na <code>ul</code>, zmieniając oba znaczniki: otwierający i zamykający.</p>
 </section>
-<section id="ujednolić-menu-na-stronie-głównej" class="level3">
-<h3 class="anchored" data-anchor-id="ujednolić-menu-na-stronie-głównej">4. Ujednolić menu na stronie głównej</h3>
+<section id="ujednolicenie-menu-na-stronie-głównej" class="level3">
+<h3 class="anchored" data-anchor-id="ujednolicenie-menu-na-stronie-głównej">4. Ujednolicenie menu na stronie głównej</h3>
 <p>W <code>index.html</code> znajdź cały element <code>nav</code> i zastąp go poniższym fragmentem:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">nav</span><span class="ot"> aria-label</span><span class="op">=</span><span class="st">"Nawigacja główna"</span><span class="dt">&gt;</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">ul</span><span class="dt">&gt;</span></span>
@@ -763,7 +842,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-<p>Aby wypróbować trzeci wariant, dodaj <code>id="top"</code> do istniejącego nagłówka strony:</p>
+<p>Opcjonalnie, aby wypróbować trzeci wariant, dodaj <code>id="top"</code> do istniejącego nagłówka strony:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">header</span><span class="ot"> id</span><span class="op">=</span><span class="st">"top"</span><span class="dt">&gt;</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">h1</span><span class="dt">&gt;</span>Jan Kowalski<span class="dt">&lt;/</span><span class="kw">h1</span><span class="dt">&gt;</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span>Moja osobista witryna internetowa<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
@@ -886,7 +965,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><label><input type="checkbox">Rozróżniasz odnośnik do pliku, adres internetowy i fragment dokumentu.</label></li>
 <li><label><input type="checkbox">Nawigacja działa również przy użyciu klawiatury.</label></li>
 </ul>
-<p><strong>Rezultat:</strong> masz kompletną statyczną witrynę z trzema stronami. W kolejnym etapie podłączysz wspólny arkusz CSS. Powtarzający się kod menu pozostaje na razie w trzech plikach; później przeniesiemy go do wspólnego szablonu Flaska.</p>
+<p><strong>Rezultat:</strong> masz kompletną statyczną witrynę z trzema stronami. W kolejnym etapie podłączysz wspólny arkusz CSS. W tym ćwiczeniu menu pozostaje w trzech statycznych plikach. W części API przygotujemy osobny kalkulator z jednym dokumentem HTML.</p>
 </section>
 </section>
 <section id="sekcja-3.-podstawy-css-i-wspólny-arkusz-stylów" class="level2">
@@ -1211,8 +1290,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Jeżeli na każdej stronie wyróżnione jest „O mnie”, sprawdź <code>aria-current</code> w HTML. Arkusz odczytuje ten atrybut; nie rozpoznaje samodzielnie nazwy otwartego pliku.</p>
 <p>Nie usuwaj obramowania fokusu bez zapewnienia innego wyraźnego oznaczenia. Użytkownik klawiatury musi wiedzieć, który odnośnik otworzy po naciśnięciu Enter.</p>
 </section>
-<section id="zmień-wygląd-całej-witryny-w-jednym-miejscu" class="level3">
-<h3 class="anchored" data-anchor-id="zmień-wygląd-całej-witryny-w-jednym-miejscu">10. Zmień wygląd całej witryny w jednym miejscu</h3>
+<section id="opcjonalnie-zmień-wygląd-całej-witryny-w-jednym-miejscu" class="level3">
+<h3 class="anchored" data-anchor-id="opcjonalnie-zmień-wygląd-całej-witryny-w-jednym-miejscu">10. Opcjonalnie: zmień wygląd całej witryny w jednym miejscu</h3>
 <p>Wybierz własną paletę i zmodyfikuj tylko arkusz:</p>
 <ul>
 <li>kolor tła <code>body</code>;</li>
@@ -1223,8 +1302,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Zachowaj czytelny kontrast tekstu względem tła. Po każdej zmianie sprawdź wszystkie trzy strony oraz stan aktywnego odnośnika.</p>
 <p><strong>Eksperyment ze wspólnym arkuszem:</strong> ustaw <code>border-radius: 0</code> w <code>main section</code>. Otwórz kolejno każdą stronę. We wszystkich panel powinien mieć prostokątne narożniki, mimo że zmieniłeś tylko jeden plik.</p>
 </section>
-<section id="znajdź-regułę-w-narzędziach-przeglądarki" class="level3">
-<h3 class="anchored" data-anchor-id="znajdź-regułę-w-narzędziach-przeglądarki">11. Znajdź regułę w narzędziach przeglądarki</h3>
+<section id="opcjonalnie-znajdź-regułę-w-narzędziach-przeglądarki" class="level3">
+<h3 class="anchored" data-anchor-id="opcjonalnie-znajdź-regułę-w-narzędziach-przeglądarki">11. Opcjonalnie: znajdź regułę w narzędziach przeglądarki</h3>
 <p>Kliknij prawym przyciskiem myszy panel z treścią i wybierz <strong>Zbadaj / Inspect</strong>. W narzędziach deweloperskich odszukaj zakładkę ze stylami wybranego elementu.</p>
 <p>Sprawdź:</p>
 <ol type="1">
@@ -1286,7 +1365,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><label><input type="checkbox">Bieżąca pozycja menu ma właściwe wyróżnienie.</label></li>
 <li><label><input type="checkbox">Odnośniki reagują na kursor i mają widoczny fokus klawiatury.</label></li>
 <li><label><input type="checkbox">Zmiana reguły w jednym arkuszu jest widoczna na trzech stronach po odświeżeniu.</label></li>
-<li><label><input type="checkbox">Potrafisz odnaleźć regułę elementu w narzędziach przeglądarki.</label></li>
+<li><label><input type="checkbox">Opcjonalnie: potrafisz odnaleźć regułę elementu w narzędziach przeglądarki.</label></li>
 </ul>
 <p><strong>Rezultat:</strong> masz statyczną witrynę z trzema podstronami i jednym wspólnym arkuszem CSS. Kolejny etap to jedna strona obsługiwana przez Flask, endpoint obliczeniowy JSON i komunikacja przez <code>fetch()</code>.</p>
 </section>
@@ -1319,7 +1398,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Nie tworzymy trzech tras HTML ani wspólnego szablonu bazowego. Jedyny szablon to strona kalkulatora. Najpierw uruchomisz stronę i API, potem połączysz je JavaScriptem.</p>
 <section id="przygotuj-środowisko" class="level3">
 <h3 class="anchored" data-anchor-id="przygotuj-środowisko">1. Przygotuj środowisko</h3>
-<p><strong>Wariant bez lokalnego Pythona:</strong> pomiń tworzenie <code>.venv</code> i instalację Flask. Przygotuj pliki z kroków 2–7 oraz sekcji 5, a uruchomienie i próby wykonaj według <a href="#dockerfile">sekcji Dockerfile</a>. Wszystkie polecenia <code>python</code> i instalacja zależności zostaną wykonane w obrazie.</p>
+<p><strong>Wariant bez lokalnego Pythona:</strong> pomiń tworzenie <code>.venv</code> i instalację Flask. Przygotuj pliki z kroków 2–7, pozostaw <code>static/app.js</code> pusty i przejdź do <a href="#dockerfile">sekcji Dockerfile</a>. Po uruchomieniu kontenera wróć do prób z kroku 8; JavaScript z sekcji 5 dodasz dopiero po sprawdzeniu surowego JSON. Wszystkie polecenia <code>python</code> i instalacja zależności zostaną wykonane w obrazie.</p>
 <p>Otwórz <code>flask-calculator</code> w edytorze i terminalu. Korzystamy z Pythona 3.11 lub nowszego.</p>
 <p><strong>macOS / Linux:</strong></p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">--version</span></span>
@@ -1340,7 +1419,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="utwórz-pliki-aplikacji">2. Utwórz pliki aplikacji</h3>
 <p>Przygotuj strukturę:</p>
 <pre class="text"><code>flask-calculator/
-├── .venv/
+├── .venv/                 # Only for the optional local Python workflow
 ├── app.py
 ├── templates/
 │   └── index.html
@@ -1516,12 +1595,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb31-45"><a href="#cb31-45" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Selektor zaczynający się od <code>#</code> wybiera element o podanym <code>id</code>. Używamy go, aby reguły dotyczyły formularza kalkulatora. Zachowujemy widoczny fokus pól i przycisku.</p>
 </section>
-<section id="uruchom-aplikację-i-sprawdź-api-bez-javascriptu" class="level3">
-<h3 class="anchored" data-anchor-id="uruchom-aplikację-i-sprawdź-api-bez-javascriptu">8. Uruchom aplikację i sprawdź API bez JavaScriptu</h3>
+<section id="api-check" class="level3">
+<h3 class="anchored" data-anchor-id="api-check">8. Uruchom aplikację i sprawdź API bez JavaScriptu</h3>
+<p><strong>Jeśli kontener z sekcji 6 już działa, pomiń poniższe polecenie i od razu otwórz stronę.</strong> Polecenie dotyczy wyłącznie wariantu z lokalnym Pythonem:</p>
 <p>W terminalu z aktywnym <code>.venv</code>, w katalogu z <code>app.py</code>, wykonaj:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> flask <span class="at">--app</span> app run <span class="at">--debug</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Otwórz <a href="http://127.0.0.1:5000/">http://127.0.0.1:5000/</a>. Terminal pozostaw uruchomiony. <strong>Ctrl+C</strong> zatrzymuje serwer. Tryb debugowania służy do lokalnych ćwiczeń.</p>
-<p>Najpierw wyślij formularz z pustym jeszcze <code>app.js</code>: powinien otworzyć JSON. Wróć na stronę przyciskiem Wstecz. Następnie wpisuj adresy ręcznie:</p>
+<p>Wariant Docker: upewnij się, że <code>app.js</code> był pusty podczas budowania obrazu. Najpierw wyślij formularz z pustym jeszcze <code>app.js</code>: powinien otworzyć JSON. Wróć na stronę przyciskiem Wstecz. Następnie wpisuj adresy ręcznie. Na zajęciach wystarczą pierwszy przykład i jedna próba błędnych danych; pozostałe przypadki sprawdź po zajęciach:</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -1604,7 +1684,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb34-30"><a href="#cb34-30" aria-hidden="true" tabindex="-1"></a>        button<span class="op">.</span><span class="at">disabled</span> <span class="op">=</span> <span class="kw">false</span><span class="op">;</span></span>
 <span id="cb34-31"><a href="#cb34-31" aria-hidden="true" tabindex="-1"></a>    }</span>
 <span id="cb34-32"><a href="#cb34-32" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Zapisz plik, odśwież stronę główną i wyślij formularz. Adres karty powinien pozostać <code>/</code>, a wynik pojawić się pod formularzem.</p>
+<p>Zapisz plik. <strong>W wariancie Docker przebuduj obraz i uruchom nowy kontener</strong>, ponieważ poprzedni zawierał pusty skrypt:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> stop flask-calculator-lab</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> build <span class="at">-t</span> flask-calculator:lab .</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--rm</span> <span class="at">--name</span> flask-calculator-lab <span class="at">-p</span> 127.0.0.1:5000:5000 flask-calculator:lab</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Polecenia wykonaj w drugim terminalu, w katalogu <code>flask-calculator</code>. W wariancie z lokalnym Pythonem nie przebudowujesz obrazu. Odśwież stronę główną i wyślij formularz. Adres karty powinien pozostać <code>/</code>, a wynik pojawić się pod formularzem.</p>
 </section>
 <section id="znajdź-elementy-i-przechwyć-formularz" class="level3">
 <h3 class="anchored" data-anchor-id="znajdź-elementy-i-przechwyć-formularz">2. Znajdź elementy i przechwyć formularz</h3>
@@ -1647,7 +1731,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="przetestuj-błędy-świadomie" class="level3">
 <h3 class="anchored" data-anchor-id="przetestuj-błędy-świadomie">7. Przetestuj błędy świadomie</h3>
 <p>Błędne dane sprawdzaj przez bezpośredni adres API: przeglądarka może nie dopuścić tekstu <code>hello</code> w polu liczbowym. To pokazuje, dlaczego serwer musi sam walidować dane.</p>
-<p>Aby sprawdzić brak połączenia, pozostaw stronę otwartą, zatrzymaj Flask przez Ctrl+C i ponownie wyślij formularz. Powinien pojawić się komunikat o nieudanym pobraniu odpowiedzi. Uruchom serwer ponownie przed dalszą pracą.</p>
+<p>Opcjonalnie sprawdź brak połączenia: pozostaw stronę otwartą, zatrzymaj Flask przez Ctrl+C (albo <code>docker stop flask-calculator-lab</code> w wariancie Docker) i ponownie wyślij formularz. Powinien pojawić się komunikat o nieudanym pobraniu odpowiedzi. Uruchom serwer ponownie przed dalszą pracą.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
@@ -1717,8 +1801,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="sprawdź-docker" class="level3">
 <h3 class="anchored" data-anchor-id="sprawdź-docker">1. Sprawdź Docker</h3>
 <p>Uruchom Docker Desktop, jeśli używasz go na swoim komputerze, i poczekaj na gotowość silnika. W terminalu wykonaj:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> version</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose version</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> version</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose version</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Pierwsze polecenie powinno pokazać informacje o kliencie i serwerze. Sam numer wersji klienta nie potwierdza działającego silnika. Jeśli pojawia się błąd połączenia, uruchom Docker lub zgłoś problem prowadzącemu. Nie rozwiązuj go przez przypadkowe użycie <code>sudo</code>.</p>
 <p>Pierwsze budowanie obrazu wymaga internetu do pobrania obrazu Pythona i pakietów. Przygotuj środowisko przed wykonywaniem zadania.</p>
 </section>
@@ -1730,7 +1814,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 ├── requirements.txt
 ├── Dockerfile
 ├── .dockerignore
-├── docker-compose.yml
+├── docker-compose.yml     # Added in section 7
 ├── templates/
 │   └── index.html
 └── static/
@@ -1744,20 +1828,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="napisz-kompletny-dockerfile" class="level3">
 <h3 class="anchored" data-anchor-id="napisz-kompletny-dockerfile">3. Napisz kompletny Dockerfile</h3>
 <p>Plik ma nazywać się dokładnie <code>Dockerfile</code>, bez rozszerzenia <code>.txt</code>. Wpisz:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> python:3.12-slim</span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WORKDIR</span> /app</span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> requirements.txt ./</span>
-<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">python</span> <span class="at">-m</span> pip install <span class="at">--no-cache-dir</span> <span class="at">-r</span> requirements.txt</span>
-<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> app.py ./</span>
-<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> templates/ ./templates/</span>
-<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> static/ ./static/</span>
-<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a><span class="kw">EXPOSE</span> 5000</span>
-<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a><span class="kw">CMD</span> [<span class="st">"python"</span>, <span class="st">"-m"</span>, <span class="st">"flask"</span>, <span class="st">"--app"</span>, <span class="st">"app"</span>, <span class="st">"run"</span>, <span class="st">"--host=0.0.0.0"</span>, <span class="st">"--port=5000"</span>]</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb40"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> python:3.12-slim</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WORKDIR</span> /app</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> requirements.txt ./</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">python</span> <span class="at">-m</span> pip install <span class="at">--no-cache-dir</span> <span class="at">-r</span> requirements.txt</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> app.py ./</span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> templates/ ./templates/</span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> static/ ./static/</span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a><span class="kw">EXPOSE</span> 5000</span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a><span class="kw">CMD</span> [<span class="st">"python"</span>, <span class="st">"-m"</span>, <span class="st">"flask"</span>, <span class="st">"--app"</span>, <span class="st">"app"</span>, <span class="st">"run"</span>, <span class="st">"--host=0.0.0.0"</span>, <span class="st">"--port=5000"</span>]</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
@@ -1824,16 +1908,16 @@ __pycache__/
 <section id="zbuduj-obraz" class="level3">
 <h3 class="anchored" data-anchor-id="zbuduj-obraz">6. Zbuduj obraz</h3>
 <p>Otwórz terminal w katalogu zawierającym <code>Dockerfile</code> i wykonaj:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> build <span class="at">-t</span> flask-calculator:lab .</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb42"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> build <span class="at">-t</span> flask-calculator:lab .</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>-t</code> nadaje obrazowi nazwę i tag. Końcowa kropka wskazuje bieżący katalog jako kontekst budowania. Ścieżki źródłowe w <code>COPY</code> odnoszą się do tego kontekstu.</p>
 <p>Sprawdź utworzony obraz:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb42"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> image ls flask-calculator</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> image ls flask-calculator</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>Obraz</strong> jest przygotowanym środowiskiem z kodem. <strong>Kontener</strong> będzie uruchomioną instancją tego obrazu. Zbudowanie obrazu nie uruchamia jeszcze strony.</p>
 </section>
 <section id="uruchom-kontener" class="level3">
 <h3 class="anchored" data-anchor-id="uruchom-kontener">7. Uruchom kontener</h3>
 <p>Jeśli lokalny Flask nadal działa na porcie <code>5000</code>, zatrzymaj go przez Ctrl+C. Następnie wykonaj:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--rm</span> <span class="at">--name</span> flask-calculator-lab <span class="at">-p</span> 127.0.0.1:5000:5000 flask-calculator:lab</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb44"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--rm</span> <span class="at">--name</span> flask-calculator-lab <span class="at">-p</span> 127.0.0.1:5000:5000 flask-calculator:lab</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
@@ -1870,25 +1954,26 @@ __pycache__/
 <li><a href="http://localhost:5000/">stronę kalkulatora</a>;</li>
 <li><a href="http://localhost:5000/api/add?a=2&amp;b=3">API dla liczb 2 i 3</a>.</li>
 </ul>
-<p>Formularz powinien pokazać sumę bez przeładowania, a bezpośredni adres API odpowiedź JSON. To działa również wtedy, gdy na komputerze nie ma polecenia <code>python</code>.</p>
+<p>Przy pierwszym uruchomieniu, z pustym <code>app.js</code>, formularz powinien przejść do surowego JSON. Wróć do <a href="#api-check">sekcji 4.8</a>, sprawdź API, a następnie wykonaj sekcję 5 i przebuduj obraz. Dopiero po dodaniu <code>fetch()</code> formularz pokaże sumę bez przeładowania dokumentu. Aplikacja działa również wtedy, gdy na komputerze nie ma polecenia <code>python</code>.</p>
 </section>
 <section id="sprawdź-proces-i-zatrzymaj-aplikację" class="level3">
 <h3 class="anchored" data-anchor-id="sprawdź-proces-i-zatrzymaj-aplikację">8. Sprawdź proces i zatrzymaj aplikację</h3>
+<p><strong>W ścieżce podstawowej najpierw wykonaj sekcję 5 z działającym kontenerem.</strong> Poniższe polecenia diagnostyczne możesz wykonać po sprawdzeniu fetch; zatrzymanie aplikacji jest potrzebne przed przejściem do Compose.</p>
 <p>W drugim terminalu:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb44"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> ps</span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> logs flask-calculator-lab</span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> exec flask-calculator-lab python <span class="at">--version</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb45"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> ps</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> logs flask-calculator-lab</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> exec flask-calculator-lab python <span class="at">--version</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Ostatnie polecenie wykonuje Pythona <strong>wewnątrz działającego kontenera</strong>. Nie wymaga lokalnego interpretera.</p>
 <p>Zatrzymaj kontener przez Ctrl+C w jego terminalu albo poleceniem:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb45"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> stop flask-calculator-lab</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb46"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> stop flask-calculator-lab</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Po zakończeniu <code>--rm</code> usuwa kontener. Obraz pozostaje dostępny do kolejnego <code>docker run</code>.</p>
 </section>
-<section id="zmień-kod-i-przebuduj-obraz" class="level3">
-<h3 class="anchored" data-anchor-id="zmień-kod-i-przebuduj-obraz">9. Zmień kod i przebuduj obraz</h3>
+<section id="opcjonalnie-zmień-kod-i-przebuduj-obraz" class="level3">
+<h3 class="anchored" data-anchor-id="opcjonalnie-zmień-kod-i-przebuduj-obraz">9. Opcjonalnie: zmień kod i przebuduj obraz</h3>
 <p>Zmień tekst nagłówka w <code>templates/index.html</code>. W tym wariancie pliki są kopiowane przy budowie: edycja pliku na komputerze nie aktualizuje automatycznie kontenera.</p>
 <p>Zatrzymaj kontener, ponownie wykonaj <code>docker build</code>, a następnie <code>docker run</code> z poprzednich kroków. Odśwież stronę i sprawdź zmianę.</p>
 <p>Jeśli port <code>5000</code> jest zajęty, możesz użyć:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb46"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--rm</span> <span class="at">--name</span> flask-calculator-lab <span class="at">-p</span> 127.0.0.1:5001:5000 flask-calculator:lab</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb47"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--rm</span> <span class="at">--name</span> flask-calculator-lab <span class="at">-p</span> 127.0.0.1:5001:5000 flask-calculator:lab</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Stronę otwórz wtedy na <code>http://localhost:5001</code>. Port wewnątrz kontenera nadal wynosi <code>5000</code>. Względny adres <code>fetch('/api/add...')</code> automatycznie korzysta z portu strony, więc nie zmieniasz JavaScriptu.</p>
 </section>
 </section>
@@ -1898,12 +1983,12 @@ __pycache__/
 <section id="utwórz-docker-compose.yml" class="level3">
 <h3 class="anchored" data-anchor-id="utwórz-docker-compose.yml">1. Utwórz docker-compose.yml</h3>
 <p>W katalogu obok <code>Dockerfile</code> wpisz kompletną konfigurację:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb47"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">services</span><span class="kw">:</span></span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">web</span><span class="kw">:</span></span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">build</span><span class="kw">:</span><span class="at"> .</span></span>
-<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> flask-calculator:lab</span></span>
-<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
-<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"127.0.0.1:5000:5000"</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb48"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">web</span><span class="kw">:</span></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">build</span><span class="kw">:</span><span class="at"> .</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> flask-calculator:lab</span></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"127.0.0.1:5000:5000"</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
 <p>W YAML stosuj spacje, nie tabulatory, i zachowaj wcięcia. Korzystamy z polecenia <code>docker compose</code>, z odstępem. Nie dodajemy starego pola <code>version</code>.</p>
 </section>
 <section id="porównaj-z-wcześniejszymi-poleceniami" class="level3">
@@ -1940,31 +2025,31 @@ __pycache__/
 <section id="sprawdź-i-uruchom-konfigurację" class="level3">
 <h3 class="anchored" data-anchor-id="sprawdź-i-uruchom-konfigurację">3. Sprawdź i uruchom konfigurację</h3>
 <p>Najpierw zatrzymaj kontener uruchomiony przez <code>docker run</code>, aby zwolnić port. W katalogu z <code>docker-compose.yml</code> wykonaj:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb48"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose config</span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose up <span class="at">--build</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb49"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose config</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose up <span class="at">--build</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>config</code> odczytuje i sprawdza konfigurację. <code>up --build</code> buduje obraz według <code>Dockerfile</code> i uruchamia usługę. Sprawdź ponownie stronę, formularz i bezpośredni adres API.</p>
 <p>Ctrl+C zatrzymuje usługę uruchomioną na pierwszym planie. Aby usunąć jej kontener i utworzoną sieć, wykonaj:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb49"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose down</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb50"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose down</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="uruchom-w-tle-i-odczytaj-logi" class="level3">
 <h3 class="anchored" data-anchor-id="uruchom-w-tle-i-odczytaj-logi">4. Uruchom w tle i odczytaj logi</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb50"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose up <span class="at">--build</span> <span class="at">-d</span></span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose ps</span>
-<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose logs web</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb51"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose up <span class="at">--build</span> <span class="at">-d</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose ps</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose logs web</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>-d</code> pozwala wrócić do terminala, gdy kontener działa w tle. Aby obserwować logi na bieżąco:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb51"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose logs <span class="at">-f</span> web</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb52"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose logs <span class="at">-f</span> web</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Ctrl+C kończy obserwację logów, ale nie zatrzymuje usługi działającej w tle. Zatrzymasz ją przez <code>docker compose down</code>.</p>
 <p>Sprawdź interpreter w usłudze:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb52"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose exec web python <span class="at">--version</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb53"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose exec web python <span class="at">--version</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="zmień-kod-lub-port" class="level3">
 <h3 class="anchored" data-anchor-id="zmień-kod-lub-port">5. Zmień kod lub port</h3>
 <p>Po zmianie HTML, CSS, JavaScriptu lub Pythona wykonaj:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb53"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose up <span class="at">--build</span> <span class="at">-d</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb54"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose up <span class="at">--build</span> <span class="at">-d</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Compose przebuduje obraz i w razie potrzeby odtworzy kontener. Sam <code>docker compose restart</code> nie kopiuje zmienionych plików do obrazu. Na tym etapie nie dodajemy montowania katalogów ani automatycznej synchronizacji.</p>
 <p>Aby użyć portu <code>5001</code> na komputerze, zmień tylko wpis <code>ports</code>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb54"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ports</span><span class="kw">:</span></span>
-<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="st">"127.0.0.1:5001:5000"</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb55"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="st">"127.0.0.1:5001:5000"</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Zachowaj jego położenie wewnątrz usługi <code>web</code> i uruchom ponownie <code>docker compose up --build -d</code>. Korzystaj z <code>http://localhost:5001</code>.</p>
 </section>
 <section id="rozwiąż-typowe-problemy" class="level3">
@@ -2028,7 +2113,7 @@ __pycache__/
 <li><label><input type="checkbox">Po zmianie kodu przebudowujesz obraz.</label></li>
 </ul>
 <p>Na końcu zatrzymaj zasoby tego ćwiczenia:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb55"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose down</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb56"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose down</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>Rezultat:</strong> aplikacja HTML + JSON API + fetch działa w kontenerze bez lokalnej instalacji Pythona. Potrafisz uruchomić ją zarówno ręcznie, jak i przez konfigurację Compose.</p>
 <p>Dokumentacja: <a href="https://docs.docker.com/reference/dockerfile/">Dockerfile</a>, <a href="https://docs.docker.com/get-started/docker-concepts/running-containers/publishing-ports/">publikowanie portów</a> i <a href="https://docs.docker.com/compose/gettingstarted/">Docker Compose</a>.</p>
 </section>
@@ -2040,8 +2125,8 @@ __pycache__/
 <section id="sprawdź-git-i-katalog-roboczy" class="level3">
 <h3 class="anchored" data-anchor-id="sprawdź-git-i-katalog-roboczy">1. Sprawdź Git i katalog roboczy</h3>
 <p>W terminalu otwartym w <code>flask-calculator</code> wykonaj:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb56"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> <span class="at">--version</span></span>
-<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb57"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> <span class="at">--version</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Jeśli projekt nie ma jeszcze repozytorium, drugie polecenie zwróci komunikat <code>not a git repository</code>. To oczekiwany stan przed inicjalizacją.</p>
 <p>Jeśli <code>git status</code> pokazuje pliki spoza kalkulatora, zatrzymaj się i sprawdź katalog: możesz znajdować się wewnątrz innego repozytorium. Nie twórz zagnieżdżonego repozytorium bez uzgodnienia z prowadzącym.</p>
 </section>
@@ -2059,77 +2144,77 @@ __pycache__/
 <section id="dodaj-instrukcję-uruchomienia" class="level3">
 <h3 class="anchored" data-anchor-id="dodaj-instrukcję-uruchomienia">3. Dodaj instrukcję uruchomienia</h3>
 <p>Utwórz <code>README.md</code> z poniższą treścią. Dokumentację projektu zapisujemy po angielsku:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb58"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Flask Calculator</span></span>
-<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>A small Flask application with an HTML form and a JSON addition API.</span>
-<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a><span class="fu">## Requirements</span></span>
-<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Docker Engine or Docker Desktop</span>
-<span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Docker Compose</span>
-<span id="cb58-9"><a href="#cb58-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb58-10"><a href="#cb58-10" aria-hidden="true" tabindex="-1"></a>Local Python installation is not required for the Docker workflow.</span>
-<span id="cb58-11"><a href="#cb58-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb58-12"><a href="#cb58-12" aria-hidden="true" tabindex="-1"></a><span class="fu">## Run</span></span>
-<span id="cb58-13"><a href="#cb58-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb58-14"><a href="#cb58-14" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
-<span id="cb58-15"><a href="#cb58-15" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose up <span class="at">--build</span> <span class="at">-d</span></span>
-<span id="cb58-16"><a href="#cb58-16" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb58-17"><a href="#cb58-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb58-18"><a href="#cb58-18" aria-hidden="true" tabindex="-1"></a>Open http://localhost:5000/ in a browser.</span>
-<span id="cb58-19"><a href="#cb58-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb58-20"><a href="#cb58-20" aria-hidden="true" tabindex="-1"></a><span class="fu">## API example</span></span>
-<span id="cb58-21"><a href="#cb58-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb58-22"><a href="#cb58-22" aria-hidden="true" tabindex="-1"></a>GET http://localhost:5000/api/add?a=2&amp;b=3</span>
-<span id="cb58-23"><a href="#cb58-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb58-24"><a href="#cb58-24" aria-hidden="true" tabindex="-1"></a>A successful response contains <span class="in">`a`</span>, <span class="in">`b`</span>, <span class="in">`operation`</span>, and <span class="in">`result`</span>.</span>
-<span id="cb58-25"><a href="#cb58-25" aria-hidden="true" tabindex="-1"></a>Invalid or missing numbers produce a JSON error with HTTP status 400.</span>
-<span id="cb58-26"><a href="#cb58-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb58-27"><a href="#cb58-27" aria-hidden="true" tabindex="-1"></a><span class="fu">## Logs and shutdown</span></span>
-<span id="cb58-28"><a href="#cb58-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb58-29"><a href="#cb58-29" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
-<span id="cb58-30"><a href="#cb58-30" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose logs web</span>
-<span id="cb58-31"><a href="#cb58-31" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose down</span>
-<span id="cb58-32"><a href="#cb58-32" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb59"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Flask Calculator</span></span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>A small Flask application with an HTML form and a JSON addition API.</span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a><span class="fu">## Requirements</span></span>
+<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Docker Engine or Docker Desktop</span>
+<span id="cb59-8"><a href="#cb59-8" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Docker Compose</span>
+<span id="cb59-9"><a href="#cb59-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-10"><a href="#cb59-10" aria-hidden="true" tabindex="-1"></a>Local Python installation is not required for the Docker workflow.</span>
+<span id="cb59-11"><a href="#cb59-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-12"><a href="#cb59-12" aria-hidden="true" tabindex="-1"></a><span class="fu">## Run</span></span>
+<span id="cb59-13"><a href="#cb59-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-14"><a href="#cb59-14" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb59-15"><a href="#cb59-15" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose up <span class="at">--build</span> <span class="at">-d</span></span>
+<span id="cb59-16"><a href="#cb59-16" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-17"><a href="#cb59-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-18"><a href="#cb59-18" aria-hidden="true" tabindex="-1"></a>Open http://localhost:5000/ in a browser.</span>
+<span id="cb59-19"><a href="#cb59-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-20"><a href="#cb59-20" aria-hidden="true" tabindex="-1"></a><span class="fu">## API example</span></span>
+<span id="cb59-21"><a href="#cb59-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-22"><a href="#cb59-22" aria-hidden="true" tabindex="-1"></a>GET http://localhost:5000/api/add?a=2&amp;b=3</span>
+<span id="cb59-23"><a href="#cb59-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-24"><a href="#cb59-24" aria-hidden="true" tabindex="-1"></a>A successful response contains <span class="in">`a`</span>, <span class="in">`b`</span>, <span class="in">`operation`</span>, and <span class="in">`result`</span>.</span>
+<span id="cb59-25"><a href="#cb59-25" aria-hidden="true" tabindex="-1"></a>Invalid or missing numbers produce a JSON error with HTTP status 400.</span>
+<span id="cb59-26"><a href="#cb59-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-27"><a href="#cb59-27" aria-hidden="true" tabindex="-1"></a><span class="fu">## Logs and shutdown</span></span>
+<span id="cb59-28"><a href="#cb59-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-29"><a href="#cb59-29" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb59-30"><a href="#cb59-30" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose logs web</span>
+<span id="cb59-31"><a href="#cb59-31" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose down</span>
+<span id="cb59-32"><a href="#cb59-32" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Jeżeli zmieniłeś port w Compose, popraw również adresy w README. Instrukcja powinna odpowiadać rzeczywistej konfiguracji projektu.</p>
 </section>
 <section id="zainicjalizuj-repozytorium" class="level3">
 <h3 class="anchored" data-anchor-id="zainicjalizuj-repozytorium">4. Zainicjalizuj repozytorium</h3>
 <p>Dla nowego projektu wykonaj:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb59"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> init <span class="at">-b</span> main</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb60"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> init <span class="at">-b</span> main</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Polecenie tworzy lokalne repozytorium i gałąź <code>main</code>. Jeżeli w tym projekcie masz już repozytorium, pomiń inicjalizację i sprawdź nazwę bieżącej gałęzi przez <code>git branch --show-current</code>.</p>
-<p>Dla dalszych kroków przyjmujemy gałąź <code>main</code>. Jeśli Git jest starszy i nie rozpoznaje <code>-b</code>, dla nowego repozytorium użyj:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb60"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> init</span>
-<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> branch <span class="at">-M</span> main</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Dla dalszych kroków przyjmujemy gałąź <code>main</code>. Jeśli istniejące repozytorium używa innej nazwy, uzgodnij ją z prowadzącym przed dodaniem zdalnego repozytorium. Jeśli Git jest starszy i nie rozpoznaje <code>-b</code>, dla nowego repozytorium użyj:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb61"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> init</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> branch <span class="at">-M</span> main</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="ustaw-autora-commitów" class="level3">
 <h3 class="anchored" data-anchor-id="ustaw-autora-commitów">5. Ustaw autora commitów</h3>
 <p>Sprawdź bieżące ustawienia:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb61"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config user.name</span>
-<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config user.email</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb62"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config user.name</span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config user.email</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Jeśli są puste lub nieprawidłowe, ustaw dane <strong>lokalnie dla tego repozytorium</strong>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb62"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--local</span> user.name <span class="st">"Jan Kowalski"</span></span>
-<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--local</span> user.email <span class="st">"YOUR_COMMIT_EMAIL"</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb63"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--local</span> user.name <span class="st">"Jan Kowalski"</span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--local</span> user.email <span class="st">"YOUR_COMMIT_EMAIL"</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Zastąp przykładowe nazwisko i <code>YOUR_COMMIT_EMAIL</code> własnymi wartościami. Możesz użyć adresu <code>noreply</code> wskazanego w ustawieniach adresów e-mail konta GitHub. Dane autora trafiają do commitów; nie są hasłem ani konfiguracją logowania.</p>
 </section>
 <section id="wybierz-pliki-do-pierwszego-commita" class="level3">
 <h3 class="anchored" data-anchor-id="wybierz-pliki-do-pierwszego-commita">6. Wybierz pliki do pierwszego commita</h3>
 <p>Najpierw sprawdź stan:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb63"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status <span class="at">--short</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb64"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status <span class="at">--short</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Dodaj konkretne pliki:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb64"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add app.py requirements.txt templates/index.html static/style.css static/app.js Dockerfile docker-compose.yml .dockerignore .gitignore README.md</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb65"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add app.py requirements.txt templates/index.html static/style.css static/app.js Dockerfile docker-compose.yml .dockerignore .gitignore README.md</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>git add</code> zapisuje wybraną zawartość w indeksie, czyli zestawie zmian przygotowanych do commita. Nie wysyła nic na GitHub.</p>
 <p>Sprawdź przygotowany zestaw:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb65"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> diff <span class="at">--cached</span> <span class="at">--stat</span></span>
-<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> diff <span class="at">--cached</span></span>
-<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb66"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> diff <span class="at">--cached</span> <span class="at">--stat</span></span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> diff <span class="at">--cached</span></span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Upewnij się, że nie dodano <code>.venv</code>, haseł ani plików niezwiązanych z projektem. Jeśli plik edytowano po <code>git add</code>, dodaj go ponownie, aby commit zawierał aktualną wersję.</p>
 </section>
 <section id="zapisz-pierwszy-commit" class="level3">
 <h3 class="anchored" data-anchor-id="zapisz-pierwszy-commit">7. Zapisz pierwszy commit</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb66"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Add Flask calculator with JSON API and Docker setup"</span></span>
-<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> log <span class="at">--oneline</span> <span class="at">-3</span></span>
-<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb67"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Add Flask calculator with JSON API and Docker setup"</span></span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> log <span class="at">--oneline</span> <span class="at">-3</span></span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Commit jest lokalnym punktem historii. Komunikat opisuje zmianę po angielsku w trybie rozkazującym. Po zapisaniu wszystkich zmian <code>git status</code> powinien pokazać czysty katalog roboczy.</p>
 <p>Rozróżniaj trzy kroki: <strong><code>add</code> wybiera zawartość, <code>commit</code> zapisuje ją w lokalnej historii, <code>push</code> wysyła commity do repozytorium zdalnego</strong>.</p>
 </section>
@@ -2149,14 +2234,14 @@ __pycache__/
 <section id="połącz-lokalne-repozytorium-ze-zdalnym" class="level3">
 <h3 class="anchored" data-anchor-id="połącz-lokalne-repozytorium-ze-zdalnym">9. Połącz lokalne repozytorium ze zdalnym</h3>
 <p>W katalogu projektu wykonaj polecenie z własnym adresem:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb68"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> remote add origin https://github.com/YOUR_USERNAME/flask-calculator.git</span>
-<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> remote <span class="at">-v</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb69"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> remote add origin https://github.com/YOUR_USERNAME/flask-calculator.git</span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> remote <span class="at">-v</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>origin</code> to umowna nazwa zdalnego repozytorium. Polecenie dodaje adres, ale nie tworzy repozytorium na GitHubie i nie wysyła jeszcze plików.</p>
 <p>Jeżeli <code>origin</code> już istnieje, najpierw sprawdź jego adres przez <code>git remote -v</code>. Nie usuwaj go w ciemno. Jeśli jest błędny, skonsultuj zmianę z prowadzącym.</p>
 </section>
 <section id="wykonaj-pierwszy-push" class="level3">
 <h3 class="anchored" data-anchor-id="wykonaj-pierwszy-push">10. Wykonaj pierwszy push</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb69"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push <span class="at">-u</span> origin main</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb70"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push <span class="at">-u</span> origin main</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>main</code> wskazuje wysyłaną gałąź. <code>-u</code> zapisuje powiązanie ze zdalną gałęzią, dzięki czemu kolejne wysłanie zwykle wymaga tylko <code>git push</code>.</p>
 <p>Przy HTTPS Git może uruchomić logowanie przez przeglądarkę lub menedżera poświadczeń. Hasło do konta GitHub nie służy do uwierzytelniania operacji Git przez HTTPS. Jeśli konfiguracja wymaga tokenu dostępu, użyj go zgodnie z instrukcją prowadzącego; nie wpisuj tokenu do adresu repozytorium ani do plików projektu. Jeżeli masz już skonfigurowane SSH, możesz użyć adresu SSH skopiowanego z własnego repozytorium.</p>
 <p>Po sukcesie odśwież repozytorium w przeglądarce. Sprawdź pliki, wyświetlony README i komunikat commita. Git wysyła zawartość commitów, a nie wszystkie pliki widoczne na dysku.</p>
@@ -2164,22 +2249,22 @@ __pycache__/
 <section id="zapisz-i-wyślij-kolejną-zmianę" class="level3">
 <h3 class="anchored" data-anchor-id="zapisz-i-wyślij-kolejną-zmianę">11. Zapisz i wyślij kolejną zmianę</h3>
 <p>Zmień opis autora w <code>templates/index.html</code>. Następnie:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb70"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> diff</span>
-<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add templates/index.html</span>
-<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> diff <span class="at">--cached</span></span>
-<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Update calculator author description"</span></span>
-<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb71"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> diff</span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add templates/index.html</span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> diff <span class="at">--cached</span></span>
+<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Update calculator author description"</span></span>
+<span id="cb71-5"><a href="#cb71-5" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Zobacz na GitHubie nowy commit i jego diff. W kolejnych zmianach stosuj ten sam cykl: edycja, kontrola, dodanie wybranych plików, commit i push.</p>
 <p>Zmiana w repozytorium nie aktualizuje automatycznie wcześniej zbudowanego kontenera. Aby zobaczyć ją lokalnie, wykonaj ponownie <code>docker compose up --build -d</code> i odśwież stronę.</p>
 </section>
-<section id="sprawdź-projekt-po-pobraniu" class="level3">
-<h3 class="anchored" data-anchor-id="sprawdź-projekt-po-pobraniu">12. Sprawdź projekt po pobraniu</h3>
+<section id="po-zajęciach-sprawdź-projekt-po-pobraniu" class="level3">
+<h3 class="anchored" data-anchor-id="po-zajęciach-sprawdź-projekt-po-pobraniu">12. Po zajęciach: sprawdź projekt po pobraniu</h3>
 <p>Możesz sprawdzić kompletność repozytorium w osobnym katalogu, bez korzystania z lokalnej <code>.venv</code>. Użyj własnego adresu i nowej nazwy katalogu:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb71"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/YOUR_USERNAME/flask-calculator.git flask-calculator-check</span>
-<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> flask-calculator-check</span>
-<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose up <span class="at">--build</span> <span class="at">-d</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb72"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/YOUR_USERNAME/flask-calculator.git flask-calculator-check</span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> flask-calculator-check</span>
+<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose up <span class="at">--build</span> <span class="at">-d</span></span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Przed uruchomieniem zatrzymaj wcześniejszą instancję kalkulatora, aby zwolnić port <code>5000</code>. Otwórz stronę, oblicz sumę i sprawdź API. Na końcu w sklonowanym katalogu wykonaj:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb72"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose down</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb73"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose down</span></code></pre></div><button title="Kopiuj do schowka" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Ta próba pokazuje, czy repozytorium zawiera wszystkie potrzebne pliki. Sam widok plików na GitHubie nie potwierdza, że inna osoba potrafi uruchomić projekt.</p>
 </section>
 <section id="typowe-problemy" class="level3">
